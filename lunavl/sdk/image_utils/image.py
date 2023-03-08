@@ -12,9 +12,9 @@ from FaceEngine import FormatType, Image as CoreImage  # pylint: disable=E0611,E
 from PIL import Image as pilImage
 from PIL.Image import Image as PilImage
 
+from ..errors.exceptions import assertError
 from .geometry import Rect
 from .pil.np import getNPImageType, pilToNumpy
-from ..errors.exceptions import assertError
 
 
 class ImageFormat(Enum):
@@ -238,7 +238,6 @@ class VLImage:
     def load(
         cls, *, filename: Optional[str] = None, url: Optional[str] = None, colorFormat: Optional[ColorFormat] = None
     ) -> "VLImage":
-
         """
         Load image from numpy array or file or url.
 

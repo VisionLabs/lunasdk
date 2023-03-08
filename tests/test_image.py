@@ -1,14 +1,14 @@
+import io
+import os
 from collections import namedtuple
 from pathlib import Path
 from typing import List, Union
-import os
-import io
 
 import FaceEngine as fe
 import numpy as np
+import PIL.Image
 import pytest
 from PIL import Image
-import PIL.Image
 
 from lunavl.sdk.errors.errors import LunaVLError
 from lunavl.sdk.errors.exceptions import LunaSDKException

@@ -1,6 +1,7 @@
 from collections import namedtuple
 
 import pytest
+from FaceEngine import Detection, RectFloat
 
 from lunavl.sdk.base import BoundingBox
 from lunavl.sdk.detectors.facedetector import FaceDetection, FaceDetector
@@ -12,8 +13,6 @@ from lunavl.sdk.faceengine.setting_provider import DetectorType
 from lunavl.sdk.image_utils.image import VLImage
 from tests.base import BaseTestClass
 from tests.resources import FRONTAL_HEAD_POSE_FACE, GOST_HEAD_POSE_FACE, ONE_FACE, TURNED_HEAD_POSE_FACE
-
-from FaceEngine import Detection, RectFloat
 
 
 class TestHeadPose(BaseTestClass):

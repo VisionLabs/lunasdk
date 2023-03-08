@@ -6,25 +6,19 @@ from lunavl.sdk.base import BoundingBox
 from lunavl.sdk.detectors.base import ImageForDetection
 from lunavl.sdk.detectors.bodydetector import BodyDetection
 from lunavl.sdk.detectors.facedetector import FaceDetection
-from lunavl.sdk.detectors.humandetector import HumanDetector, HumanDetection
+from lunavl.sdk.detectors.humandetector import HumanDetection, HumanDetector
 from lunavl.sdk.errors.errors import LunaVLError
 from lunavl.sdk.errors.exceptions import LunaSDKException
 from lunavl.sdk.image_utils.geometry import Rect
 from lunavl.sdk.image_utils.image import ColorFormat, VLImage
 from tests.base import BaseTestClass
-from tests.detect_test_class import (
-    AREA_WITHOUT_FACE,
-    GOOD_AREA,
-    OUTSIDE_AREA,
-    VLIMAGE_ONE_FACE,
-    VLIMAGE_SEVERAL_FACE,
-)
+from tests.detect_test_class import AREA_WITHOUT_FACE, GOOD_AREA, OUTSIDE_AREA, VLIMAGE_ONE_FACE, VLIMAGE_SEVERAL_FACE
 from tests.resources import (
+    IMAGE_WITH_DIFFERENT_FACE_AND_BODY,
+    IMAGE_WITH_TWO_BODY_ONE_FACE,
     MANY_FACES,
     NO_FACES,
     ONE_FACE,
-    IMAGE_WITH_TWO_BODY_ONE_FACE,
-    IMAGE_WITH_DIFFERENT_FACE_AND_BODY,
 )
 
 

@@ -6,17 +6,18 @@ from enum import Enum
 from typing import Dict, List, Literal, Union, overload
 
 from FaceEngine import (  # pylint: disable=E0611,E0401; pylint: disable=E0611,E0401
+    DetailedMaskType,
     MedicalMask as CoreMask,
     MedicalMaskEstimation,
-    DetailedMaskType,
 )
+
 from lunavl.sdk.detectors.facedetector import FaceDetection
 
+from ...async_task import AsyncTask, DefaultPostprocessingFactory
+from ...base import BaseEstimation
 from ..base import BaseEstimator
 from ..estimators_utils.extractor_utils import validateInputByBatchEstimator
 from ..face_estimators.facewarper import FaceWarp, FaceWarpedImage
-from ...async_task import AsyncTask, DefaultPostprocessingFactory
-from ...base import BaseEstimation
 
 
 class FaceOcclusionState(Enum):

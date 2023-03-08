@@ -1,12 +1,14 @@
-from lunavl.sdk.estimators.base import BaseEstimator
-from lunavl.sdk.image_utils.image import VLImage, ColorFormat, CoreImage
-from lunavl.sdk.image_utils.geometry import Rect, CoreRectI
+from typing import List, NamedTuple, Tuple, Union
+
+from FaceEngine import CrowdEstimation, FSDKErrorResult
+
 from lunavl.sdk.async_task import AsyncTask
-from lunavl.sdk.errors.exceptions import LunaSDKException, LunaVLError
-from FaceEngine import FSDKErrorResult, CrowdEstimation
-from lunavl.sdk.errors.exceptions import assertError
+from lunavl.sdk.errors.exceptions import LunaSDKException, LunaVLError, assertError
+from lunavl.sdk.estimators.base import BaseEstimator
 from lunavl.sdk.estimators.estimators_utils.extractor_utils import validateInputByBatchEstimator
-from typing import List, Union, NamedTuple, Tuple
+from lunavl.sdk.image_utils.geometry import CoreRectI, Rect
+from lunavl.sdk.image_utils.image import ColorFormat, CoreImage, VLImage
+
 
 class ImageForPeopleEstimation(NamedTuple):
     """
@@ -22,7 +24,7 @@ class ImageForPeopleEstimation(NamedTuple):
 
 
 def getEstimatorArgsFromImages(
-        images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]]
+    images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]]
 ) -> Tuple[List[CoreImage], List[CoreRectI]]:
     """
     Create args for people estimation from image list
@@ -79,11 +81,10 @@ def postProcessing(error: FSDKErrorResult, crowdEstimation: CrowdEstimation) -> 
 
 
 class PeopleCountEstimator(BaseEstimator):
-
     def estimate(
-            self,
-            image: Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]],
-            asyncEstimate: bool = False,
+        self,
+        image: Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]],
+        asyncEstimate: bool = False,
     ):
         """
         Estimate people count from single image
@@ -110,9 +111,9 @@ class PeopleCountEstimator(BaseEstimator):
         return postProcessing(error, crowdEstimation)
 
     def estimateBatch(
-            self,
-            images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]],
-            asyncEstimate: bool = False,
+        self,
+        images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]],
+        asyncEstimate: bool = False,
     ):
         """
         Estimate people count from single image

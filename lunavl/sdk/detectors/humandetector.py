@@ -4,23 +4,15 @@ Module contains function for detection on images.
 from functools import partial
 from typing import Any, Dict, List, Literal, Optional, Union, overload
 
-from FaceEngine import (  # pylint: disable=E0611,E0401
-    Face,
-    Human,
-    FSDKErrorResult,
-)
+from FaceEngine import Face, FSDKErrorResult, Human  # pylint: disable=E0611,E0401
 
-from .bodydetector import BodyDetection
-from .facedetector import FaceDetection
 from ..async_task import AsyncTask
-from ..detectors.base import (
-    ImageForDetection,
-    getArgsForCoreDetectorForImages,
-    validateBatchDetectInput,
-)
+from ..detectors.base import ImageForDetection, getArgsForCoreDetectorForImages, validateBatchDetectInput
 from ..errors.exceptions import assertError
 from ..image_utils.image import VLImage
 from ..launch_options import LaunchOptions
+from .bodydetector import BodyDetection
+from .facedetector import FaceDetection
 
 
 class HumanDetection:

@@ -6,10 +6,10 @@ from typing import Optional, Union
 
 import FaceEngine as CoreFE  # pylint: disable=E0611,E0401
 
-from ..descriptors.descriptors import FaceDescriptorFactory, BodyDescriptorFactory
+from ..descriptors.descriptors import BodyDescriptorFactory, FaceDescriptorFactory
 from ..descriptors.matcher import FaceMatcher
-from ..detectors.facedetector import FaceDetector
 from ..detectors.bodydetector import BodyDetector
+from ..detectors.facedetector import FaceDetector
 from ..detectors.humandetector import HumanDetector
 from ..estimators.body_estimators.body_attributes import BodyAttributesEstimator
 from ..estimators.body_estimators.body_descriptor import BodyDescriptorEstimator
@@ -18,6 +18,7 @@ from ..estimators.face_estimators.ags import AGSEstimator
 from ..estimators.face_estimators.background import FaceDetectionBackgroundEstimator
 from ..estimators.face_estimators.basic_attributes import BasicAttributesEstimator
 from ..estimators.face_estimators.credibility import CredibilityEstimator
+from ..estimators.face_estimators.dynamic_range import DynamicRangeEstimator
 from ..estimators.face_estimators.emotions import EmotionsEstimator
 from ..estimators.face_estimators.eyebrow_expressions import EyebrowExpressionEstimator
 from ..estimators.face_estimators.eyes import EyeEstimator, GazeEstimator
@@ -35,14 +36,13 @@ from ..estimators.face_estimators.mouth_state import MouthStateEstimator
 from ..estimators.face_estimators.natural_light import FaceNaturalLightEstimator
 from ..estimators.face_estimators.red_eye import RedEyesEstimator
 from ..estimators.face_estimators.warp_quality import WarpQualityEstimator
-from ..estimators.face_estimators.dynamic_range import DynamicRangeEstimator
 from ..estimators.image_estimators.orientation_mode import OrientationModeEstimator
 from ..estimators.image_estimators.people_count import PeopleCountEstimator
 from ..faceengine.setting_provider import (
     DetectorType,
     FaceEngineSettingsProvider,
-    RuntimeSettingsProvider,
     PeopleCountEstimatorType,
+    RuntimeSettingsProvider,
 )
 from ..globals import DEFAULT_HUMAN_DESCRIPTOR_VERSION as DHDV
 from ..indexes.builder import IndexBuilder

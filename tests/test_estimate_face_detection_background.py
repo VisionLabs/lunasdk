@@ -1,4 +1,5 @@
 import pytest
+from FaceEngine import Detection, RectFloat
 
 from lunavl.sdk.base import BoundingBox
 from lunavl.sdk.errors.errors import LunaVLError
@@ -9,8 +10,6 @@ from lunavl.sdk.faceengine.setting_provider import DetectorType
 from lunavl.sdk.image_utils.image import VLImage
 from tests.base import BaseTestClass
 from tests.resources import MASK_CHIN, ONE_FACE
-
-from FaceEngine import Detection, RectFloat
 
 
 class TestFaceDetectionBackgroundEffect(BaseTestClass):

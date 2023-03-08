@@ -11,7 +11,7 @@ from PIL.Image import Image as PilImage
 
 from .detectors.base import ImageForDetection, ImageForRedetection
 from .detectors.facedetector import FaceDetection, FaceDetector, Landmarks5
-from .estimator_collections import FaceEstimatorsCollection, EstimatorsSettings
+from .estimator_collections import EstimatorsSettings, FaceEstimatorsCollection
 from .estimators.base import ImageWithFaceDetection
 from .estimators.face_estimators.basic_attributes import BasicAttributes
 from .estimators.face_estimators.credibility import Credibility

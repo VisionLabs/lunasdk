@@ -3,11 +3,12 @@ Example of using VLFaceDetector
 """
 import pprint
 
+from resources import EXAMPLE_O
+
 from lunavl.sdk.estimator_collections import EstimatorsSettings, FaceDescriptorEstimatorSettings
 from lunavl.sdk.image_utils.image import VLImage
-from lunavl.sdk.launch_options import LaunchOptions, DeviceClass
-from lunavl.sdk.luna_faces import VLFaceDetector, FaceDetectorSettings
-from resources import EXAMPLE_O
+from lunavl.sdk.launch_options import DeviceClass, LaunchOptions
+from lunavl.sdk.luna_faces import FaceDetectorSettings, VLFaceDetector
 
 
 def estimateAll():

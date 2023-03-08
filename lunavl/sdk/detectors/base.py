@@ -1,12 +1,12 @@
 from typing import Any, Dict, List, NamedTuple, Tuple, Union
 
-from FaceEngine import (
+from FaceEngine import (  # pylint: disable=E0611,E0401
     Detection,
-    IHumanFaceDetectorPtr,
     FSDKError,
+    IHumanFaceDetectorPtr,
     Image as CoreImage,
     Rect as CoreRectI,
-)  # pylint: disable=E0611,E0401
+)
 
 from ..base import BaseEstimation, BoundingBox
 from ..errors.errors import LunaVLError

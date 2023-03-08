@@ -23,7 +23,7 @@ from tests.detect_test_class import (
     VLIMAGE_SMALL,
     FaceDetectTestClass,
 )
-from tests.resources import MANY_FACES, ONE_FACE, WARP_CLEAN_FACE, BAD_IMAGE
+from tests.resources import BAD_IMAGE, MANY_FACES, ONE_FACE, WARP_CLEAN_FACE
 from tests.schemas import LANDMARKS5, REQUIRED_FACE_DETECTION, jsonValidator
 
 

@@ -8,11 +8,11 @@ from lunavl.sdk.errors.errors import LunaVLError
 from lunavl.sdk.errors.exceptions import LunaSDKException
 from lunavl.sdk.estimators.face_estimators.facewarper import FaceWarpedImage
 from lunavl.sdk.estimators.face_estimators.mask import (
+    FaceOcclusionState,
     Mask,
     MaskEstimator,
-    FaceOcclusionState,
-    _FaceOcclusion,
     MaskState,
+    _FaceOcclusion,
 )
 from lunavl.sdk.faceengine.setting_provider import DetectorType
 from lunavl.sdk.image_utils.image import VLImage
@@ -23,11 +23,11 @@ from tests.resources import (
     FULL_FACE_WITH_MASK,
     FULL_OCCLUDED_FACE,
     LARGE_IMAGE,
-    OCCLUDED_FACE,
-    WARP_CLEAN_FACE,
     MASK_CHIN,
     MASK_FULL,
     MASK_NOT_IN_PLACE,
+    OCCLUDED_FACE,
+    WARP_CLEAN_FACE,
 )
 from tests.schemas import MASK_SCHEMA, jsonValidator
 

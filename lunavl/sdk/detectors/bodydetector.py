@@ -2,7 +2,7 @@
 Module contains function for detection human bodies on images.
 """
 from functools import partial
-from typing import Any, Dict, List, Optional, Union, Literal, overload
+from typing import Any, Dict, List, Literal, Optional, Union, overload
 
 from FaceEngine import (  # pylint: disable=E0611,E0401
     Detection,
@@ -12,6 +12,12 @@ from FaceEngine import (  # pylint: disable=E0611,E0401
     HumanLandmarks17 as CoreLandmarks17,
 )
 
+from ..async_task import AsyncTask
+from ..base import LandmarksWithScore
+from ..errors.exceptions import assertError
+from ..image_utils.geometry import Rect
+from ..image_utils.image import VLImage
+from ..launch_options import LaunchOptions
 from .base import (
     BaseDetection,
     ImageForDetection,
@@ -22,12 +28,6 @@ from .base import (
     validateBatchDetectInput,
     validateReDetectInput,
 )
-from ..async_task import AsyncTask
-from ..base import LandmarksWithScore
-from ..errors.exceptions import assertError
-from ..image_utils.geometry import Rect
-from ..image_utils.image import VLImage
-from ..launch_options import LaunchOptions
 
 
 def _createCoreBodies(image: ImageForRedetection) -> List[Human]:

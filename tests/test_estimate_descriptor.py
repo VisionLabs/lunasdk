@@ -9,10 +9,10 @@ import pytest
 from lunavl.sdk.descriptors.descriptors import (
     BaseDescriptor,
     BaseDescriptorBatch,
-    FaceDescriptor,
-    FaceDescriptorBatch,
     BodyDescriptor,
     BodyDescriptorBatch,
+    FaceDescriptor,
+    FaceDescriptorBatch,
 )
 from lunavl.sdk.errors.errors import LunaVLError
 from lunavl.sdk.errors.exceptions import LunaSDKException
@@ -94,7 +94,6 @@ class TestDescriptorFunctionality(BaseTestClass):
         Generator for sub tests for human descriptor and face descriptor.
         """
         for descriptorType in DescriptorType:
-
             subTest = self.subTest(descriptorType=descriptorType)
             if descriptorType == DescriptorType.human:
                 descriptor: BaseDescriptor = self.bodyDescriptor
@@ -187,7 +186,6 @@ class TestDescriptorFunctionality(BaseTestClass):
         """
         for subTest, case in self.descriptorSubTest():
             with subTest:
-
                 maxLength = 2
 
                 descriptorFactory = case.estimator.descriptorFactory
@@ -209,7 +207,6 @@ class TestDescriptorFunctionality(BaseTestClass):
         """
         for subTest, case in self.descriptorSubTest():
             with subTest:
-
                 maxLength = 3
                 descriptorFactory = case.estimator.descriptorFactory
                 if case.type == DescriptorType.face:
@@ -310,7 +307,6 @@ class TestEstimateDescriptor(BaseTestClass):
         for case in self.cases:
             with self.subTest(type=case.type):
                 for planVersion in case.versions:
-
                     with self.subTest(descriptor_version=planVersion):
                         try:
                             case.extractorFactory(descriptorVersion=planVersion)
@@ -325,7 +321,6 @@ class TestEstimateDescriptor(BaseTestClass):
         """
         for case in self.cases:
             with self.subTest(type=case.type):
-
                 nonexistentVersions = set(range(min(case.versions) - 10, max(case.versions) + 10)) - set(case.versions)
                 for planVersion in nonexistentVersions:
                     with self.subTest(descriptor_version=planVersion):
@@ -342,7 +337,6 @@ class TestEstimateDescriptor(BaseTestClass):
         """
         for case in self.cases:
             with self.subTest(type=case.type):
-
                 for planVersion in case.versions:
                     for kw in (dict(), dict(descriptor=self.getDescr(planVersion, case.type))):
                         extractor = case.extractorFactory(descriptorVersion=planVersion)
@@ -356,7 +350,6 @@ class TestEstimateDescriptor(BaseTestClass):
         """
         for case in self.cases:
             with self.subTest(type=case.type):
-
                 for planVersion in case.versions:
                     extractor = case.extractorFactory(descriptorVersion=planVersion)
                     for descriptorVersion in set(EFDVa) - {planVersion}:
