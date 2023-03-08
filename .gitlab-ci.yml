@@ -57,7 +57,7 @@ stages:
 
 build:
   stage: build
-  tags: ['python_build']
+  tags: ['k8s-python']
   extends: .build_pyhon_package
   script:
     - echo "Done"
