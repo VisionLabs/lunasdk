@@ -1,0 +1,80 @@
+variables:
+# ------------------ GLOBAL VARS ------------------
+  GIT_SUBMODULE_STRATEGY: recursive
+# ------------------ ROOT DIRS ------------------
+  ROOT_DIR: ${CI_PROJECT_DIR}
+  PATH_TO_SDK: /opt/sdk/luna-sdk-ci
+  LUNA_SDK_TAG: v.5.12.0
+  RELEASE_PORTAL: http://release-portal.vlabs
+# ------------------ FSDK ---------------------------
+  FSDK_ROOT: ${PATH_TO_SDK}
+# ------------------ DECLARE STAGES ------------------
+
+include:
+  - project: 'common/pypi-template'
+    ref: master
+    file: 'public_pypi.yml'
+  - project: 'luna/ci-templates'
+    ref: master
+    file:
+      - '/.python-builder-image.yml'
+      - '/.formatters.yml'
+
+stages:
+  - build
+  - test
+  - validate
+
+.prepare_env: &prepare_env
+  poetry env use python3.10;
+  poetry env info;
+  poetry install;
+  source $(poetry env info -p)/bin/activate
+
+.build:artifact: &build_artifact
+  artifacts:
+    name: "luna-sdk-loop"
+    expire_in: "30 min"
+    paths:
+      - ${CI_PROJECT_DIR}/tests/test_benchmark/logs
+
+.run_tests: &run_tests
+  cd tests/test_benchmark;
+  wget -O ./benchmark_settings.toml http://git.visionlabs.ru/configs/sdkloop-benchmark-config/raw/master/benchmark_settings_sdk_5_12_0.toml;
+  python test_benchmark.py
+
+.get_sdk: &get_sdk
+  if [ ! -d "/opt/sdk/luna-sdk_linux_rel_${LUNA_SDK_TAG}" ];
+  then
+  wget -O /opt/sdk/luna-sdk_linux_rel_${LUNA_SDK_TAG}.zip "${RELEASE_PORTAL}/search?tag=${LUNA_SDK_TAG}&project=faceengine&stage=linux_no_hasp&ci=1" 2> /dev/null;
+  unzip -d /opt/sdk -n /opt/sdk/luna-sdk_linux_rel_${LUNA_SDK_TAG}.zip 2> /dev/null;
+  rm /opt/sdk/luna-sdk_linux_rel_${LUNA_SDK_TAG}.zip;
+  fi;
+  ln -sfn /opt/sdk/luna-sdk_linux_no_hasp_rel_${LUNA_SDK_TAG} ${FSDK_ROOT};
+
+.run_unittests: &run_unittests
+  python -m pytest;
+
+build:
+  stage: build
+  tags: ['python_build']
+  extends: .build_pyhon_package
+  script:
+    - echo "Done"
+
+forrmaters:
+  stage: validate
+  extends: .code_style_formatters
+
+test:unittests:
+  stage: test
+  tags: [ 'python-bench' ]
+  variables:
+    SDK_LOOP_TEST_DEVICE: 'cpu'
+  script:
+    # poetry bug https://github.com/python-poetry/poetry/issues/2921
+    - rm -rf /home/gitlab-runner/.cache/pypoetry
+    - *get_sdk
+    - *prepare_env
+    - *run_unittests
+
