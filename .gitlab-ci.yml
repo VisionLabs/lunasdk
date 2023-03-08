@@ -58,6 +58,7 @@ stages:
 build:
   stage: build
   tags: ['k8s-python']
+  image: ${BUILDER_IMAGE}
   extends: .build_pyhon_package
   script:
     - echo "Done"
