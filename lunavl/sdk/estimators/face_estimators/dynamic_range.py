@@ -44,7 +44,7 @@ class DynamicRangeEstimator(BaseEstimator):
 
     def estimate(  # type: ignore
         self,
-        imageWithFaceDetection:  Union[ImageWithFaceDetection, FaceDetection],
+        imageWithFaceDetection: Union[ImageWithFaceDetection, FaceDetection],
         asyncEstimate: bool = False,
     ):
         """
@@ -66,13 +66,9 @@ class DynamicRangeEstimator(BaseEstimator):
             coreImage = imageWithFaceDetection[0].coreImage
             bbox = imageWithFaceDetection[1].coreEstimation
         if asyncEstimate:
-            task = self._coreEstimator.asyncEstimate(
-                [coreImage], [bbox]
-            )
+            task = self._coreEstimator.asyncEstimate([coreImage], [bbox])
             return AsyncTask(task, postProcessing)
-        error, dynamicRangeEstimation = self._coreEstimator.estimate(
-            [coreImage], [bbox]
-        )
+        error, dynamicRangeEstimation = self._coreEstimator.estimate([coreImage], [bbox])
         return postProcessing(error, dynamicRangeEstimation)
 
     def estimateBatch(
