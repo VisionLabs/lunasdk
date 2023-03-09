@@ -1,13 +1,13 @@
-from typing import List, NamedTuple, Tuple, Union, overload, Literal
+from typing import List, Literal, NamedTuple, Tuple, Union, overload
 
 from FaceEngine import CrowdEstimation, FSDKErrorResult
 
 from lunavl.sdk.async_task import AsyncTask
-from lunavl.sdk.errors.exceptions import LunaSDKException, LunaVLError, assertError
+from lunavl.sdk.errors.exceptions import assertError
 from lunavl.sdk.estimators.base import BaseEstimator
 from lunavl.sdk.estimators.estimators_utils.extractor_utils import validateInputByBatchEstimator
 from lunavl.sdk.image_utils.geometry import CoreRectI, Rect
-from lunavl.sdk.image_utils.image import ColorFormat, CoreImage, VLImage
+from lunavl.sdk.image_utils.image import CoreImage, VLImage
 
 
 class ImageForPeopleEstimation(NamedTuple):

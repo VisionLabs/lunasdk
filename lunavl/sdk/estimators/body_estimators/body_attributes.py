@@ -3,7 +3,7 @@
 See headwear_.
 """
 from enum import Enum
-from typing import Iterable, List, Optional, Type, Union, Dict, TypeVar, Generic
+from typing import Dict, Generic, Iterable, List, Optional, Type, TypeVar, Union
 
 from FaceEngine import HumanAttributeRequest, LowerBodyClothing  # pylint: disable=E0611,E0401
 
@@ -663,7 +663,7 @@ class BodyAttributesEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     def estimate(  # type: ignore
-            self, warp: Union[BodyWarp, BodyWarpedImage], asyncEstimate: bool = False
+        self, warp: Union[BodyWarp, BodyWarpedImage], asyncEstimate: bool = False
     ) -> Union[BodyAttributes, AsyncTask[BodyAttributes]]:
         """
         Estimate body attributes on warp.
@@ -685,7 +685,7 @@ class BodyAttributesEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     def estimateBatch(
-            self, warps: List[Union[BodyWarp, BodyWarpedImage]], asyncEstimate: bool = False
+        self, warps: List[Union[BodyWarp, BodyWarpedImage]], asyncEstimate: bool = False
     ) -> Union[List[BodyAttributes], AsyncTask[List[BodyAttributes]]]:
         """
         Batch estimate body attributes

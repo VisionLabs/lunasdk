@@ -83,11 +83,6 @@ class TestPeopleCount(BaseTestClass):
         """
         with pytest.raises(LunaSDKException) as exceptionInfo:
             self.peopleCountEstimator.estimate(self.badFormatImage)
-        detail = (
-            f"Bad image format for people estimation,"
-            f" format: {self.badFormatImage.format.value},"
-            f" image: {self.badFormatImage.filename}"
-        )
         self.assertLunaVlError(exceptionInfo, LunaVLError.BatchedInternalError.format("Failed validation."))
         self.assertReceivedAndRawExpectedErrors(exceptionInfo.value.context[0], LunaVLError.InvalidImageFormat)
 
