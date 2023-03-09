@@ -68,6 +68,7 @@ mypy:storages:
   tags: ['k8s-python']
   image: ${BUILDER_IMAGE}
   script:
+    - *get_sdk
     - *prepare_env
     - poetry run mypy ${CI_PROJECT_DIR}/lunavl/
   allow_failure: true
