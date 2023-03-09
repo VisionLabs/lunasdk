@@ -66,6 +66,7 @@ build:pypi:
 mypy:storages:
   stage: build
   tags: ['k8s-python']
+  image: ${BUILDER_IMAGE}
   script:
     - *prepare_env
     - poetry run mypy ${CI_PROJECT_DIR}/lunavl/
