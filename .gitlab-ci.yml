@@ -65,7 +65,7 @@ build:pypi:
 
 mypy:storages:
   stage: build
-  tags: ['k8s-python']
+  tags: [ 'python-bench' ]
   image: ${BUILDER_IMAGE}
   script:
     - *get_sdk
@@ -80,8 +80,6 @@ forrmaters:
 test:unittests:
   stage: test
   tags: [ 'python-bench' ]
-  variables:
-    SDK_LOOP_TEST_DEVICE: 'cpu'
   script:
     # poetry bug https://github.com/python-poetry/poetry/issues/2921
     - rm -rf /home/gitlab-runner/.cache/pypoetry
