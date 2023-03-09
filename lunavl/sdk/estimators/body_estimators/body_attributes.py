@@ -3,7 +3,7 @@
 See headwear_.
 """
 from enum import Enum
-from typing import Iterable, List, Optional, Type, Union
+from typing import Iterable, List, Optional, Type, Union, Dict, TypeVar, Generic
 
 from FaceEngine import HumanAttributeRequest, LowerBodyClothing  # pylint: disable=E0611,E0401
 
@@ -370,7 +370,7 @@ class OutwearColor(BaseEstimation):
         return [color.value for color in self.colors]
 
 
-def asDict(x: object):
+def asDict(x):
     """Wraps object asDict(). Returns None in case of no object."""
     if x is None:
         return None
@@ -378,7 +378,7 @@ def asDict(x: object):
     return x.asDict()
 
 
-def nullable(cls: Type, estimation: object) -> Optional[object]:
+def nullable(cls: Type, estimation) -> Optional[object]:
     """
     Ensure validation is valid before creating resulting object.
     """
@@ -397,19 +397,22 @@ class LowerGarmentType(Enum):
     Trousers = "trousers"
 
 
-class ColorMixin:
+ColorTypeVar = TypeVar("ColorTypeVar")
+
+
+class ColorMixin(Generic[ColorTypeVar]):
     """Extracts color from core estimation."""
 
-    _colors = {}
+    _colors: Dict[str, ColorTypeVar] = {}
 
-    def singleColor(self, estimation: object, unknown: object) -> object:
+    def singleColor(self, estimation, unknown: ColorTypeVar) -> ColorTypeVar:
         """Find first method (ie isBlack) that returns true, and return appropriate color name."""
         for key, value in self._colors.items():
             if getattr(estimation, key):
                 return value
         return unknown
 
-    def multiColor(self, estimation: object, unknown: object) -> list[object]:
+    def multiColor(self, estimation, unknown: ColorTypeVar) -> list[ColorTypeVar]:
         """Find all methods (ie isBlack) that return true, and return appropriate color name."""
         result = []
         for key, value in self._colors.items():
@@ -430,7 +433,7 @@ class HeadwearColor(Enum):
     Unknown = "unknown"
 
 
-class HeadwearState(BaseEstimation, ColorMixin):
+class HeadwearState(BaseEstimation, ColorMixin[HeadwearColor]):
     """
     Class for Headwear state estimation.
 
@@ -515,7 +518,7 @@ class ShoesColor(Enum):
     Unknown = "unknown"
 
 
-class Shoes(BaseEstimation, ColorMixin):
+class Shoes(BaseEstimation, ColorMixin[ShoesColor]):
     """Shoes estimation."""
 
     _colors = {
@@ -535,7 +538,7 @@ class Shoes(BaseEstimation, ColorMixin):
         return {"apparent_color": self.apparentColor.value}
 
 
-class LowerGarment(BaseEstimation, ColorMixin):
+class LowerGarment(BaseEstimation, ColorMixin[LowerGarmentColor]):
     """Lower garment estimantion."""
 
     _colors = {
@@ -660,7 +663,7 @@ class BodyAttributesEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     def estimate(  # type: ignore
-        self, warp: Union[BodyWarp, BodyWarpedImage], asyncEstimate: bool = False
+            self, warp: Union[BodyWarp, BodyWarpedImage], asyncEstimate: bool = False
     ) -> Union[BodyAttributes, AsyncTask[BodyAttributes]]:
         """
         Estimate body attributes on warp.
@@ -682,7 +685,7 @@ class BodyAttributesEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     def estimateBatch(
-        self, warps: List[Union[BodyWarp, BodyWarpedImage]], asyncEstimate: bool = False
+            self, warps: List[Union[BodyWarp, BodyWarpedImage]], asyncEstimate: bool = False
     ) -> Union[List[BodyAttributes], AsyncTask[List[BodyAttributes]]]:
         """
         Batch estimate body attributes

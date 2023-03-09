@@ -1,4 +1,4 @@
-from typing import List, NamedTuple, Tuple, Union
+from typing import List, NamedTuple, Tuple, Union, overload, Literal
 
 from FaceEngine import CrowdEstimation, FSDKErrorResult
 
@@ -81,9 +81,27 @@ def postProcessing(error: FSDKErrorResult, crowdEstimation: CrowdEstimation) -> 
 
 
 class PeopleCountEstimator(BaseEstimator):
+    """People count estimator"""
+
+    @overload  # type: ignore
     def estimate(
         self,
-        image: Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]],
+        image: Union[VLImage, ImageForPeopleEstimation],
+        asyncEstimate: Literal[False] = False,
+    ) -> int:
+        ...
+
+    @overload
+    def estimate(
+        self,
+        image: Union[VLImage, ImageForPeopleEstimation],
+        asyncEstimate: Literal[True],
+    ) -> AsyncTask[int]:
+        ...
+
+    def estimate(
+        self,
+        image: Union[VLImage, ImageForPeopleEstimation],
         asyncEstimate: bool = False,
     ):
         """
@@ -98,17 +116,33 @@ class PeopleCountEstimator(BaseEstimator):
         Raises:
             LunaSDKException: if estimation is failed
         """
-        if isinstance(image, ImageForPeopleEstimation):
-            detectArea = image.detectArea.coreRectI
-            image = image.image
-        else:
+        if isinstance(image, VLImage):
             detectArea = image.coreImage.getRect()
+        else:
+            detectArea = image[1].coreRectI
+            image = image[0]
         validateInputByBatchEstimator(self._coreEstimator, [image.coreImage], [detectArea])
         if asyncEstimate:
             task = self._coreEstimator.asyncEstimate([image.coreImage], [detectArea])
             return AsyncTask(task, postProcessing)
         error, crowdEstimation = self._coreEstimator.estimate([image.coreImage], [detectArea])
         return postProcessing(error, crowdEstimation)
+
+    @overload  # type: ignore
+    def estimateBatch(
+        self,
+        images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]],
+        asyncEstimate: Literal[False] = False,
+    ) -> List[int]:
+        ...
+
+    @overload
+    def estimateBatch(
+        self,
+        images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]],
+        asyncEstimate: Literal[True],
+    ) -> AsyncTask[List[int]]:
+        ...
 
     def estimateBatch(
         self,

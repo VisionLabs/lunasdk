@@ -55,13 +55,21 @@ stages:
 .run_unittests: &run_unittests
   python -m pytest;
 
-build:
+build:pypi:
   stage: build
   tags: ['k8s-python']
   image: ${BUILDER_IMAGE}
   extends: .build_pyhon_package
   script:
     - echo "Done"
+
+mypy:storages:
+  stage: build
+  tags: ['k8s-python']
+  script:
+    - *prepare_env
+    - poetry run mypy ${CI_PROJECT_DIR}/storages
+  allow_failure: true
 
 forrmaters:
   stage: validate
