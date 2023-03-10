@@ -6,8 +6,8 @@ See `background`_.
 from typing import Dict, List, Union
 
 from FaceEngine import (  # pylint: disable=E0611,E0401
-    BackgroundStatus as CoreBackgroundStatus,
     BackgroundEstimation as CoreBackgroundEstimation,
+    BackgroundStatus as CoreBackgroundStatus,
 )
 
 from lunavl.sdk.base import BaseEstimation

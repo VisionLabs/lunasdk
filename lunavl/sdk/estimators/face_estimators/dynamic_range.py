@@ -1,9 +1,12 @@
-from lunavl.sdk.estimators.base import BaseEstimator, ImageWithFaceDetection
+from typing import List, Union
+
+from FaceEngine import DynamicRangeEstimation, FSDKErrorResult
+
 from lunavl.sdk.async_task import AsyncTask
-from FaceEngine import FSDKErrorResult, DynamicRangeEstimation
+from lunavl.sdk.detectors.facedetector import FaceDetection
 from lunavl.sdk.errors.exceptions import assertError
+from lunavl.sdk.estimators.base import BaseEstimator, ImageWithFaceDetection
 from lunavl.sdk.estimators.estimators_utils.extractor_utils import validateInputByBatchEstimator
-from typing import List
 
 
 def postProcessingBatch(error: FSDKErrorResult, dynamicRangeEstimations: List[DynamicRangeEstimation]) -> List[float]:
@@ -37,11 +40,12 @@ def postProcessing(error: FSDKErrorResult, dynamicRangeEstimator: DynamicRangeEs
 
 
 class DynamicRangeEstimator(BaseEstimator):
+    """Dynamic range estimator"""
 
-    def estimate(
-            self,
-            imageWithFaceDetection: ImageWithFaceDetection,
-            asyncEstimate: bool = False,
+    def estimate(  # type: ignore
+        self,
+        imageWithFaceDetection: Union[ImageWithFaceDetection, FaceDetection],
+        asyncEstimate: bool = False,
     ):
         """
         Estimate dynamic range from single image
@@ -55,22 +59,22 @@ class DynamicRangeEstimator(BaseEstimator):
         Raises:
             LunaSDKException: if estimation is failed
         """
+        if isinstance(imageWithFaceDetection, FaceDetection):
+            coreImage = imageWithFaceDetection.image.coreImage
+            bbox = imageWithFaceDetection.boundingBox.coreEstimation
+        else:
+            coreImage = imageWithFaceDetection[0].coreImage
+            bbox = imageWithFaceDetection[1].coreEstimation
         if asyncEstimate:
-            task = self._coreEstimator.asyncEstimate(
-                [imageWithFaceDetection.image.coreImage],
-                [imageWithFaceDetection.boundingBox.coreEstimation]
-            )
+            task = self._coreEstimator.asyncEstimate([coreImage], [bbox])
             return AsyncTask(task, postProcessing)
-        error, dynamicRangeEstimation = self._coreEstimator.estimate(
-            [imageWithFaceDetection.image.coreImage],
-            [imageWithFaceDetection.boundingBox.coreEstimation]
-        )
+        error, dynamicRangeEstimation = self._coreEstimator.estimate([coreImage], [bbox])
         return postProcessing(error, dynamicRangeEstimation)
 
     def estimateBatch(
-            self,
-            batch: ImageWithFaceDetection,
-            asyncEstimate: bool = False,
+        self,
+        batch: List[Union[ImageWithFaceDetection, FaceDetection]],
+        asyncEstimate: bool = False,
     ):
         """
         Estimate dynamic range from single image
@@ -83,8 +87,15 @@ class DynamicRangeEstimator(BaseEstimator):
         Raises:
             LunaSDKException: if estimation is failed
         """
-        coreImages = [row.image.coreImage for row in batch]
-        detections = [row.boundingBox.coreEstimation for row in batch]
+        coreImages = []
+        detections = []
+        for data in batch:
+            if isinstance(data, FaceDetection):
+                coreImages.append(data.image.coreImage)
+                detections.append(data.boundingBox.coreEstimation)
+            else:
+                coreImages.append(data[0].coreImage)
+                detections.append(data[1].coreEstimation)
         validateInputByBatchEstimator(self._coreEstimator, coreImages, detections)
         if asyncEstimate:
             task = self._coreEstimator.asyncEstimate(coreImages, detections)

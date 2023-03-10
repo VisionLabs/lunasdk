@@ -1,17 +1,20 @@
 import pytest
+
 from lunavl.sdk.errors.errors import LunaVLError
 from lunavl.sdk.errors.exceptions import LunaSDKException
-from tests.base import BaseTestClass
 from lunavl.sdk.estimators.image_estimators.people_count import ImageForPeopleEstimation
 from lunavl.sdk.faceengine.setting_provider import PeopleCountEstimatorType
-from lunavl.sdk.image_utils.image import VLImage, ColorFormat
 from lunavl.sdk.image_utils.geometry import Rect
-from tests.resources import CROWD_9_PEOPLE, CROWD_7_PEOPLE, IMAGE_WITH_TWO_FACES
+from lunavl.sdk.image_utils.image import ColorFormat, VLImage
+from tests.base import BaseTestClass
+from tests.resources import CROWD_7_PEOPLE, CROWD_9_PEOPLE, IMAGE_WITH_TWO_FACES
+
 
 class TestPeopleCount(BaseTestClass):
     """
     Test estimate people count
     """
+
     @classmethod
     def setup_class(cls):
         super().setup_class()
@@ -20,12 +23,10 @@ class TestPeopleCount(BaseTestClass):
         cls.crowd7People = VLImage.load(filename=CROWD_7_PEOPLE)
         cls.badFormatImage = VLImage.load(filename=CROWD_7_PEOPLE, colorFormat=ColorFormat.B8G8R8)
         cls.outsideArea = ImageForPeopleEstimation(
-            cls.crowd9People,
-            Rect(100, 100, cls.crowd9People.rect.width, cls.crowd9People.rect.height)
+            cls.crowd9People, Rect(100, 100, cls.crowd9People.rect.width, cls.crowd9People.rect.height)
         )
         cls.areaLargerImage = ImageForPeopleEstimation(
-            cls.crowd9People,
-            Rect(100, 100, cls.crowd9People.rect.width + 100, cls.crowd9People.rect.height + 100)
+            cls.crowd9People, Rect(100, 100, cls.crowd9People.rect.width + 100, cls.crowd9People.rect.height + 100)
         )
         cls.areaOutsideImage = ImageForPeopleEstimation(
             cls.crowd9People,
@@ -34,22 +35,23 @@ class TestPeopleCount(BaseTestClass):
                 cls.crowd9People.rect.height,
                 cls.crowd9People.rect.width + 100,
                 cls.crowd9People.rect.height + 100,
-            )
+            ),
         )
 
-    def test_people_count_async(self): # todo: change asserted values LUNA-6049
+    def test_people_count_async(self):  # todo: change asserted values LUNA-6049
         """
         Test single image async estimation
         """
         peopleCount = self.peopleCountEstimator.estimate(self.crowd9People, asyncEstimate=True).get()
         assert peopleCount == 10
 
-    def test_people_count_batch_async(self): # todo: change asserted values LUNA-6049
+    def test_people_count_batch_async(self):  # todo: change asserted values LUNA-6049
         """
         Test batch async estimation
         """
         peopleCount = self.peopleCountEstimator.estimateBatch(
-            [self.crowd9People, self.crowd7People], asyncEstimate=True).get()
+            [self.crowd9People, self.crowd7People], asyncEstimate=True
+        ).get()
         assert peopleCount == [9, 10]
 
     def test_people_count(self):  # todo: change asserted values LUNA-6049
@@ -63,11 +65,7 @@ class TestPeopleCount(BaseTestClass):
         """
         Test batch estimation
         """
-        images = [
-            self.crowd9People,
-            VLImage.load(filename=IMAGE_WITH_TWO_FACES),
-            self.crowd7People
-        ]
+        images = [self.crowd9People, VLImage.load(filename=IMAGE_WITH_TWO_FACES), self.crowd7People]
         peopleCount = self.peopleCountEstimator.estimateBatch(images)
         assert peopleCount == [9, 8, 10]
 
@@ -85,9 +83,6 @@ class TestPeopleCount(BaseTestClass):
         """
         with pytest.raises(LunaSDKException) as exceptionInfo:
             self.peopleCountEstimator.estimate(self.badFormatImage)
-        detail = f"Bad image format for people estimation," \
-                 f" format: {self.badFormatImage.format.value}," \
-                 f" image: {self.badFormatImage.filename}"
         self.assertLunaVlError(exceptionInfo, LunaVLError.BatchedInternalError.format("Failed validation."))
         self.assertReceivedAndRawExpectedErrors(exceptionInfo.value.context[0], LunaVLError.InvalidImageFormat)
 
@@ -168,10 +163,7 @@ class TestPeopleCount(BaseTestClass):
         """
         Test estimation with not contain people area
         """
-        areaWithoutPeople = ImageForPeopleEstimation(
-            self.crowd9People,
-            Rect(10, 10, 100, 100)
-        )
+        areaWithoutPeople = ImageForPeopleEstimation(self.crowd9People, Rect(10, 10, 100, 100))
         peopleCount = self.peopleCountEstimator.estimateBatch([areaWithoutPeople, self.crowd7People])
         assert peopleCount == [0, 8]
 
@@ -179,10 +171,7 @@ class TestPeopleCount(BaseTestClass):
         """
         Test estimation with invalid rectangle
         """
-        invalidRectImage = ImageForPeopleEstimation(
-            self.crowd9People,
-            Rect(0, 0, 0, 0)
-        )
+        invalidRectImage = ImageForPeopleEstimation(self.crowd9People, Rect(0, 0, 0, 0))
         with pytest.raises(LunaSDKException) as exceptionInfo:
             self.peopleCountEstimator.estimate(invalidRectImage)
         self.assertLunaVlError(exceptionInfo, LunaVLError.BatchedInternalError.format("Failed validation."))
@@ -194,14 +183,10 @@ class TestPeopleCount(BaseTestClass):
         """
         Test estimation with invalid core rectangle
         """
-        errorCoreRectImage = ImageForPeopleEstimation(
-            self.crowd9People,
-            Rect(0.1, 0.1, 0.1, 0.1)
-        )
+        errorCoreRectImage = ImageForPeopleEstimation(self.crowd9People, Rect(0.1, 0.1, 0.1, 0.1))
         with pytest.raises(LunaSDKException) as exceptionInfo:
             self.peopleCountEstimator.estimate(errorCoreRectImage)
         self.assertLunaVlError(exceptionInfo, LunaVLError.BatchedInternalError.format("Failed validation."))
         self.assertReceivedAndRawExpectedErrors(
             exceptionInfo.value.context[0], LunaVLError.InvalidRect.format("Invalid rectangle")
         )
-

@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any, Optional, Tuple, Type, TypeVar, Union
 
 import FaceEngine as CoreFE
-from FaceEngine import ObjectDetectorClassType, PyISettingsProvider, CrowdEstimatorType  # pylint: disable=E0611,E0401
+from FaceEngine import CrowdEstimatorType, ObjectDetectorClassType, PyISettingsProvider  # pylint: disable=E0611,E0401
 
 from lunavl.sdk.launch_options import DeviceClass
 

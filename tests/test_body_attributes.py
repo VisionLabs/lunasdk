@@ -33,8 +33,6 @@ from tests.resources import (
     HUMAN_WARP,
     LONG_SLEEVE,
     ONE_FACE,
-    PALETTE_MODE,
-    PINK,
     RAISED,
     RED,
     RED_EYES,

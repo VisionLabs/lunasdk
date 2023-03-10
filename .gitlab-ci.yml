@@ -1,0 +1,79 @@
+variables:
+# ------------------ GLOBAL VARS ------------------
+  GIT_SUBMODULE_STRATEGY: recursive
+# ------------------ ROOT DIRS ------------------
+  ROOT_DIR: ${CI_PROJECT_DIR}
+  LUNA_SDK_ARCH: linux_no_hasp
+  FSDK_ROOT: /opt/sdk/luna-sdk-ci
+  LUNA_SDK_TAG: v.5.12.0
+  RELEASE_PORTAL: http://release-portal.vlabs
+  DOWNLOAD_PATH: '/opt/sdk'
+  SYMLINK_FSDK: ${FSDK_ROOT}
+
+# ------------------ DECLARE STAGES ------------------
+
+include:
+  - project: 'common/pypi-template'
+    ref: master
+    file: 'public_pypi.yml'
+  - project: 'luna/ci-templates'
+    ref: master
+    file:
+      - '/.python-builder-image.yml'
+      - '/.formatters.yml'
+      - '/.download_fsdk.yml'
+      - '/.additions.yml'
+
+stages:
+  - build
+  - test
+  - validate
+
+.build:artifact: &build_artifact
+  artifacts:
+    name: "luna-sdk-loop"
+    expire_in: "30 min"
+    paths:
+      - ${CI_PROJECT_DIR}/tests/test_benchmark/logs
+
+.run_tests: &run_tests
+  cd tests/test_benchmark;
+  wget -O ./benchmark_settings.toml http://git.visionlabs.ru/configs/sdkloop-benchmark-config/raw/master/benchmark_settings_sdk_5_12_0.toml;
+  python test_benchmark.py
+
+.run_unittests: &run_unittests
+  python -m pytest;
+
+build:pypi:
+  stage: build
+  tags: ['k8s-python']
+  image: ${BUILDER_IMAGE}
+  extends: .build_pyhon_package
+  script:
+    - echo "Done"
+
+mypy:storages:
+  stage: build
+  tags: [ 'python-bench' ]
+  image: ${BUILDER_IMAGE}
+  script:
+    - !reference [.download_fsdk]
+    - !reference [.prepare_poetry]
+    - poetry run mypy ${CI_PROJECT_DIR}/lunavl/
+  allow_failure: true
+
+forrmaters:
+  stage: validate
+  extends: .code_style_formatters
+
+test:unittests:
+  stage: test
+  tags: [ 'python-bench' ]
+  script:
+    # poetry bug https://github.com/python-poetry/poetry/issues/2921
+    - rm -rf /home/gitlab-runner/.cache/pypoetry
+    - !reference [.download_fsdk]
+    - !reference [.prepare_poetry]
+    - source $(poetry env info -p)/bin/activate
+    - *run_unittests
+

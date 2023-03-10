@@ -1,12 +1,14 @@
-from lunavl.sdk.estimators.base import BaseEstimator
-from lunavl.sdk.image_utils.image import VLImage, ColorFormat, CoreImage
-from lunavl.sdk.image_utils.geometry import Rect, CoreRectI
+from typing import List, Literal, NamedTuple, Tuple, Union, overload
+
+from FaceEngine import CrowdEstimation, FSDKErrorResult
+
 from lunavl.sdk.async_task import AsyncTask
-from lunavl.sdk.errors.exceptions import LunaSDKException, LunaVLError
-from FaceEngine import FSDKErrorResult, CrowdEstimation
 from lunavl.sdk.errors.exceptions import assertError
+from lunavl.sdk.estimators.base import BaseEstimator
 from lunavl.sdk.estimators.estimators_utils.extractor_utils import validateInputByBatchEstimator
-from typing import List, Union, NamedTuple, Tuple
+from lunavl.sdk.image_utils.geometry import CoreRectI, Rect
+from lunavl.sdk.image_utils.image import CoreImage, VLImage
+
 
 class ImageForPeopleEstimation(NamedTuple):
     """
@@ -22,7 +24,7 @@ class ImageForPeopleEstimation(NamedTuple):
 
 
 def getEstimatorArgsFromImages(
-        images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]]
+    images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]]
 ) -> Tuple[List[CoreImage], List[CoreRectI]]:
     """
     Create args for people estimation from image list
@@ -79,11 +81,28 @@ def postProcessing(error: FSDKErrorResult, crowdEstimation: CrowdEstimation) -> 
 
 
 class PeopleCountEstimator(BaseEstimator):
+    """People count estimator"""
+
+    @overload  # type: ignore
+    def estimate(
+        self,
+        image: Union[VLImage, ImageForPeopleEstimation],
+        asyncEstimate: Literal[False] = False,
+    ) -> int:
+        ...
+
+    @overload
+    def estimate(
+        self,
+        image: Union[VLImage, ImageForPeopleEstimation],
+        asyncEstimate: Literal[True],
+    ) -> AsyncTask[int]:
+        ...
 
     def estimate(
-            self,
-            image: Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]],
-            asyncEstimate: bool = False,
+        self,
+        image: Union[VLImage, ImageForPeopleEstimation],
+        asyncEstimate: bool = False,
     ):
         """
         Estimate people count from single image
@@ -97,11 +116,11 @@ class PeopleCountEstimator(BaseEstimator):
         Raises:
             LunaSDKException: if estimation is failed
         """
-        if isinstance(image, ImageForPeopleEstimation):
-            detectArea = image.detectArea.coreRectI
-            image = image.image
-        else:
+        if isinstance(image, VLImage):
             detectArea = image.coreImage.getRect()
+        else:
+            detectArea = image[1].coreRectI
+            image = image[0]
         validateInputByBatchEstimator(self._coreEstimator, [image.coreImage], [detectArea])
         if asyncEstimate:
             task = self._coreEstimator.asyncEstimate([image.coreImage], [detectArea])
@@ -109,10 +128,26 @@ class PeopleCountEstimator(BaseEstimator):
         error, crowdEstimation = self._coreEstimator.estimate([image.coreImage], [detectArea])
         return postProcessing(error, crowdEstimation)
 
+    @overload  # type: ignore
     def estimateBatch(
-            self,
-            images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]],
-            asyncEstimate: bool = False,
+        self,
+        images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]],
+        asyncEstimate: Literal[False] = False,
+    ) -> List[int]:
+        ...
+
+    @overload
+    def estimateBatch(
+        self,
+        images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]],
+        asyncEstimate: Literal[True],
+    ) -> AsyncTask[List[int]]:
+        ...
+
+    def estimateBatch(
+        self,
+        images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]],
+        asyncEstimate: bool = False,
     ):
         """
         Estimate people count from single image

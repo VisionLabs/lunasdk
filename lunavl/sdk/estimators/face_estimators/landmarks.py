@@ -1,13 +1,14 @@
 from functools import partial
-from typing import Union, List, Literal, overload, Tuple, Dict
+from typing import Dict, List, Literal, Tuple, Union, overload
 
-from FaceEngine import Image as CoreImage, Detection as CoreFaceDetection, FSDKError  # pylint: disable=E0611,E0401
+from FaceEngine import Detection as CoreFaceDetection, FSDKError, Image as CoreImage  # pylint: disable=E0611,E0401
 
 from lunavl.sdk.async_task import AsyncTask
-from lunavl.sdk.detectors.facedetector import Landmarks5, FaceDetection, Landmarks68, FaceLandmarks
-from lunavl.sdk.errors.exceptions import assertError, LunaSDKException
-from ..base import BaseEstimator
+from lunavl.sdk.detectors.facedetector import FaceDetection, FaceLandmarks, Landmarks5, Landmarks68
+from lunavl.sdk.errors.exceptions import LunaSDKException, assertError
+
 from ...errors.errors import LunaVLError
+from ..base import BaseEstimator
 
 PreparedBatch = List[Tuple[CoreImage, CoreFaceDetection, List[int]]]
 

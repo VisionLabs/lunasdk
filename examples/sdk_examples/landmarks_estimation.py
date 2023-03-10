@@ -5,10 +5,11 @@ Module realize simple examples following features:
 """
 import asyncio
 
+from resources import EXAMPLE_SEVERAL_FACES
+
 from lunavl.sdk.detectors.facedetector import FaceLandmarks
 from lunavl.sdk.faceengine.engine import VLFaceEngine
 from lunavl.sdk.image_utils.image import VLImage
-from resources import EXAMPLE_SEVERAL_FACES
 
 
 def estimateLandmarks():

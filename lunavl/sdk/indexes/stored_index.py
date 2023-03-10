@@ -7,8 +7,8 @@ from typing import List, Literal, Union, overload
 from lunavl.sdk.descriptors.descriptors import FaceDescriptor, FaceDescriptorBatch
 from lunavl.sdk.errors.exceptions import assertError
 
+from ..async_task import AsyncTask, DefaultPostprocessingFactory
 from .base import CoreIndex, IndexResult
-from ..async_task import DefaultPostprocessingFactory, AsyncTask
 
 
 class IndexType(Enum):

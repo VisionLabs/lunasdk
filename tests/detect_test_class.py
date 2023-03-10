@@ -4,8 +4,8 @@ from typing import List, Type, Union
 
 from lunavl.sdk.base import BoundingBox, LandmarkWithScore
 from lunavl.sdk.detectors.base import BaseDetection
-from lunavl.sdk.detectors.facedetector import FaceDetection, FaceDetector, Landmarks5, Landmarks68
 from lunavl.sdk.detectors.bodydetector import BodyDetection, BodyDetector, Landmarks17
+from lunavl.sdk.detectors.facedetector import FaceDetection, FaceDetector, Landmarks5, Landmarks68
 from lunavl.sdk.faceengine.engine import DetectorType
 from lunavl.sdk.image_utils.geometry import Point, Rect
 from lunavl.sdk.image_utils.image import VLImage

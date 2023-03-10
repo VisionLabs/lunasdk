@@ -1,13 +1,13 @@
 import pytest
 
-from lunavl.sdk.detectors.facedetector import FaceDetection, FaceDetector, Landmarks5, Landmarks68, FaceLandmarks
+from lunavl.sdk.detectors.facedetector import FaceDetection, FaceDetector, FaceLandmarks, Landmarks5, Landmarks68
 from lunavl.sdk.errors.errors import LunaVLError
 from lunavl.sdk.errors.exceptions import LunaSDKException
 from lunavl.sdk.estimators.face_estimators.landmarks import FaceLandmarksEstimator, _prepareBatch
 from lunavl.sdk.faceengine.setting_provider import DetectorType
 from lunavl.sdk.image_utils.image import VLImage
 from tests.base import BaseTestClass
-from tests.resources import ONE_FACE, SEVERAL_FACES, IMAGE_WITH_TWO_FACES
+from tests.resources import IMAGE_WITH_TWO_FACES, ONE_FACE, SEVERAL_FACES
 
 
 class TestFaceLandmarks(BaseTestClass):

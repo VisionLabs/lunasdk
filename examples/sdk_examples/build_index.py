@@ -5,10 +5,11 @@
 import asyncio
 import pprint
 
+from resources import EXAMPLE_1, EXAMPLE_O
+
 from lunavl.sdk.faceengine.engine import VLFaceEngine
 from lunavl.sdk.faceengine.setting_provider import DetectorType, FaceEngineSettingsProvider
 from lunavl.sdk.image_utils.image import VLImage
-from resources import EXAMPLE_1, EXAMPLE_O
 
 
 def buildDescriptorIndex():
