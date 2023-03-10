@@ -3,11 +3,12 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
 # ------------------ ROOT DIRS ------------------
   ROOT_DIR: ${CI_PROJECT_DIR}
-  PATH_TO_SDK: /opt/sdk/luna-sdk-ci
+  FSDK_ROOT: /opt/sdk/luna-sdk-ci
   LUNA_SDK_TAG: v.5.12.0
   RELEASE_PORTAL: http://release-portal.vlabs
-# ------------------ FSDK ---------------------------
-  FSDK_ROOT: ${PATH_TO_SDK}
+  DOWNLOAD_PATH: '/opt'
+  SYMLINK_FSDK: ${FSDK_ROOT}
+
 # ------------------ DECLARE STAGES ------------------
 
 include:
