@@ -57,12 +57,7 @@ mypy:storages:
   tags: [ 'python-bench' ]
   image: ${BUILDER_IMAGE}
   script:
-    - if [ ! -d "${DOWNLOAD_PATH}/luna-sdk_${LUNA_SDK_ARCH}_rel_${LUNA_SDK_TAG}" ]
-    - then wget  --tries=10 -O  ${DOWNLOAD_PATH}/luna-sdk_${LUNA_SDK_ARCH}_rel_${LUNA_SDK_TAG}.zip --content-disposition "${RELEASE_PORTAL}/search?tag=${LUNA_SDK_TAG}&project=faceengine&stage=${LUNA_SDK_ARCH}&ci=1" 2> /dev/null
-    - unzip -q -d ${DOWNLOAD_PATH} -n ${DOWNLOAD_PATH}/luna-sdk_${LUNA_SDK_ARCH}_rel_${LUNA_SDK_TAG}.zip
-    - rm ${DOWNLOAD_PATH}/luna-sdk_${LUNA_SDK_ARCH}_rel_${LUNA_SDK_TAG}.zip
-    - else echo "fsdk already downloaded"; fi; rm -f ${SYMLINK_FSDK}
-    - ln -sf ${DOWNLOAD_PATH}/luna-sdk_${LUNA_SDK_ARCH}_rel_${LUNA_SDK_TAG} ${SYMLINK_FSDK}
+    - !reference [.download_fsdk]
     - !reference [.prepare_poetry]
     - poetry run mypy ${CI_PROJECT_DIR}/lunavl/
   allow_failure: true
