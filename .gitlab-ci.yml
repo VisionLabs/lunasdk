@@ -20,6 +20,7 @@ include:
       - '/.python-builder-image.yml'
       - '/.formatters.yml'
       - '/.download_fsdk.yml'
+      - '/.additions.yml'
 
 stages:
   - build
