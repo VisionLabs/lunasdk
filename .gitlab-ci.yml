@@ -19,17 +19,12 @@ include:
     file:
       - '/.python-builder-image.yml'
       - '/.formatters.yml'
+      - '/.download_fsdk.yml'
 
 stages:
   - build
   - test
   - validate
-
-.prepare_env: &prepare_env
-  poetry env use python3.10;
-  poetry env info;
-  poetry install;
-  source $(poetry env info -p)/bin/activate
 
 .build:artifact: &build_artifact
   artifacts:
@@ -68,8 +63,8 @@ mypy:storages:
   tags: [ 'python-bench' ]
   image: ${BUILDER_IMAGE}
   script:
-    - *get_sdk
-    - *prepare_env
+    - !reference [.download_fsdk]
+    - !reference [.prepare_poetry]
     - poetry run mypy ${CI_PROJECT_DIR}/lunavl/
   allow_failure: true
 
@@ -83,7 +78,8 @@ test:unittests:
   script:
     # poetry bug https://github.com/python-poetry/poetry/issues/2921
     - rm -rf /home/gitlab-runner/.cache/pypoetry
-    - *get_sdk
-    - *prepare_env
+    - !reference [.download_fsdk]
+    - !reference [.prepare_poetry]
+    - source $(poetry env info -p)/bin/activate
     - *run_unittests
 
