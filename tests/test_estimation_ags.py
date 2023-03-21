@@ -15,8 +15,7 @@ EXPECTED_PRECISION = 10**-5
 class TestBasicAttributes(BaseTestClass):
     """Test basic attributes."""
 
-    # estimator to call
-    estimator: AGSEstimator = BaseTestClass.faceEngine.createAGSEstimator()
+    estimator: AGSEstimator
     # first image
     image1: VLImage = VLImage.load(filename=ONE_FACE)
     # second image
@@ -25,6 +24,8 @@ class TestBasicAttributes(BaseTestClass):
     @classmethod
     def setUpClass(cls) -> None:
         """Load warps."""
+        # estimator to call
+        cls.estimator: AGSEstimator = BaseTestClass.faceEngine.createAGSEstimator()
         detector = VLFaceEngine().createFaceDetector(DetectorType.FACE_DET_V1)
         cls.detection1 = detector.detectOne(cls.image1)
         cls.detection2 = detector.detectOne(cls.image2)

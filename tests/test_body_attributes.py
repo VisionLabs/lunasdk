@@ -258,7 +258,7 @@ class TestBodyAttributes(BaseTestClass):
         """Lower body garment type."""
         cases = (
             (resources.BROWN, [LowerGarmentColor.Brown]),
-            (resources.YELLOW, [LowerGarmentColor.Yellow]),
+            (resources.YELLOW_SKIRT, [LowerGarmentColor.Yellow]),
             (resources.RED_SHORTS, [LowerGarmentColor.Red]),
             (resources.STATUE, [LowerGarmentColor.Unknown]),
             (resources.WHITE_SKIRT, [LowerGarmentColor.White]),
@@ -292,7 +292,7 @@ class TestBodyAttributes(BaseTestClass):
     def test_headwear_color(self):
         """Headwear color."""
         cases = (
-            (resources.BLACK_TROUSERS, HeadwearColor.White),
+            (resources.WHITE_HAT, HeadwearColor.White),
             (resources.BEANIE, HeadwearColor.Other),
             (resources.HOOD, HeadwearColor.Black),
             (resources.STATUE, HeadwearColor.Unknown),

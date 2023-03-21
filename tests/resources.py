@@ -89,6 +89,8 @@ HELMET = getPathToImage("helmet.jpg")
 HOOD = getPathToImage("hood.jpg")
 # https://unsplash.com/photos/rr4bawLxOjc
 HAT = getPathToImage("hat.jpg")
+# https://www.pexels.com/photo/a-woman-wearing-a-white-hat-9604194/
+WHITE_HAT = getPathToImage("white_hat.jpg")
 # https://www.freeimages.com/photo/stupid-1431759
 FISHEYE = getPathToImage("fisheye.jpg")
 # https://www.freeimages.com/photo/boy-in-swimming-pool-3-1394664
@@ -132,7 +134,7 @@ YELLOW_SKIRT = getPathToImage("yellow_skirt.jpg")
 RED_SHORTS = getPathToImage("red_shorts.jpg")
 # https://unsplash.com/photos/yNlZ2Hpm4to
 STATUE = getPathToImage("statue.jpg")
-# https://unsplash.com/photos/LH5zrpVyWQE
+# https://unsplash.com/photos/GRfLA7aXlO4
 WHITE_SKIRT = getPathToImage("white_skirt.jpg")
 # https://unsplash.com/photos/AAJXPWF0-VE
 BLUE_SKIRT = getPathToImage("blue_skirt.jpg")
