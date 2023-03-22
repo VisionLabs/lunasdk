@@ -74,8 +74,6 @@ test:unittests:
     # poetry bug https://github.com/python-poetry/poetry/issues/2921
     - rm -rf /home/gitlab-runner/.cache/pypoetry
     - !reference [.download_fsdk]
-    - export DOWNLOAD_PATH=/opt/sdk_complete_edition
-    - mkdir ${DOWNLOAD_PATH}
     - export SYMLINK_FSDK=/opt/sdk/luna-sdk-ci-complete-edition
     - mkdir ${SYMLINK_FSDK}
     - export LUNA_SDK_ARCH=linux
