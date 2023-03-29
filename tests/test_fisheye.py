@@ -1,4 +1,4 @@
-from lunavl.sdk.estimators.face_estimators.fisheye_warp import Fisheye
+from lunavl.sdk.estimators.face_estimators.fisheye import Fisheye
 from lunavl.sdk.faceengine.setting_provider import DetectorType
 from lunavl.sdk.image_utils.image import VLImage
 from tests.base import BaseTestClass
@@ -15,7 +15,7 @@ class TestFisheyeEffect(BaseTestClass):
         super().setup_class()
         cls.detector = cls.faceEngine.createFaceDetector(DetectorType.FACE_DET_V3)
         cls.warper = cls.faceEngine.createFaceWarper()
-        cls.fisheyeEstimator = cls.faceEngine.createFisheyeWarpedEstimator()
+        cls.fisheyeEstimator = cls.faceEngine.createFisheyeEstimator()
 
     def test_estimate_fisheye_correctness(self):
         """
