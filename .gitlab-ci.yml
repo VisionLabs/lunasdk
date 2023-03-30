@@ -14,7 +14,7 @@ variables:
 
 include:
   - project: 'common/pypi-template'
-    ref: to_script
+    ref: master
     file: 'public_pypi.yml'
   - project: 'luna/ci-templates'
     ref: master
