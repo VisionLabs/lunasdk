@@ -1,12 +1,21 @@
+from functools import wraps
 from itertools import chain
-
-import pytest
 
 from lunavl.sdk.estimators.face_estimators.fisheye import Fisheye
 from lunavl.sdk.faceengine.setting_provider import DetectorType
 from lunavl.sdk.image_utils.image import VLImage
 from tests.base import BaseTestClass
 from tests.resources import FISHEYE, FROWNING
+
+
+def warpedSubTests(test):
+    @wraps(test)
+    def wrappedFunc(*func_args, **func_kwargs):
+        for warped in [True, False]:
+            with func_args[0].subTest(warped=warped):
+                test(*func_args, **func_kwargs, warped=warped)
+
+    return wrappedFunc
 
 
 class TestFisheyeEffect(BaseTestClass):
@@ -51,7 +60,7 @@ class TestFisheyeEffect(BaseTestClass):
         assert all(isinstance(estimation, Fisheye) for estimation in estimations)
         return estimations
 
-    @pytest.mark.parametrize("warped", [True, False])
+    @warpedSubTests
     def test_estimate_fisheye(self, warped):
         """
         Simple fisheye estimation
@@ -60,7 +69,7 @@ class TestFisheyeEffect(BaseTestClass):
         assert not estimation.status
         assert 0 <= estimation.score <= 1
 
-    @pytest.mark.parametrize("warped", [True, False])
+    @warpedSubTests
     def test_fisheye_as_dict(self, warped):
         """
         Test method Fisheye.asDict
@@ -71,7 +80,7 @@ class TestFisheyeEffect(BaseTestClass):
             "score": estimation.score,
         } == estimation.asDict()
 
-    @pytest.mark.parametrize("warped", [True, False])
+    @warpedSubTests
     def test_estimate_fisheye_batch(self, warped):
         """
         Batch fisheye estimation test

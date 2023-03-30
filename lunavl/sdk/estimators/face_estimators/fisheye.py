@@ -66,7 +66,9 @@ class FisheyeEstimator(BaseEstimator):
     """
 
     def estimate(  # type: ignore
-        self, image: Union[ImageWithFaceDetection, FaceWarp, FaceWarpedImage], asyncEstimate: bool = False
+        self,
+        image: Union[FaceDetection, ImageWithFaceDetection, FaceWarp, FaceWarpedImage],
+        asyncEstimate: bool = False,
     ) -> Union[Fisheye, AsyncTask[Fisheye]]:
         """
         Estimate fisheye.
@@ -86,7 +88,7 @@ class FisheyeEstimator(BaseEstimator):
                 return POST_PROCESSING.postProcessing(error, result)
             task = self._coreEstimator.asyncEstimate_warp(image.warpedImage.coreImage)
             return AsyncTask(task, POST_PROCESSING.postProcessing)
-        elif isinstance(image, ImageWithFaceDetection):
+        elif isinstance(image, (FaceDetection, ImageWithFaceDetection)):
             warnings.warn("fisheye crop is deprecated", DeprecationWarning, stacklevel=2)
             if not asyncEstimate:
                 error, result = self._coreEstimator.estimate(image.image.coreImage, image.boundingBox.coreEstimation)
