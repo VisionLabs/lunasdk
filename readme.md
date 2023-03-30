@@ -17,7 +17,7 @@ You can install this package several path:
 -   install from github:
   
     ```console
-    pip install git+https://github.com/VisionLabs/lunasdk.git
+    pip install git+https://github.com/matemax/lunasdk.git
     ```
 
 ## Setup
