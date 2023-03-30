@@ -592,6 +592,7 @@ class VLFaceEngine:
         Returns:
             estimator
         """
+
         launchOptions = self.getLaunchOptions(launchOptions)
         return FisheyeEstimator(
             self._faceEngine.createFishEyeEstimator(launchOptions=launchOptions.coreLaunchOptions), launchOptions
