@@ -48,9 +48,7 @@ build:pypi:
   stage: build
   tags: ['k8s-python']
   image: ${BUILDER_IMAGE}
-  extends: .build_pyhon_package
-  script:
-    - echo "Done"
+  extends: .build_python_package
 
 mypy:storages:
   stage: build
