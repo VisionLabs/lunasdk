@@ -11,7 +11,7 @@ line_length = 120
 
 [tool.poetry]
 name = "lunavl"
-version = "1.5.0"
+version = "1.6.0"
 description = "Python interface for VisionLabs Luna platform"
 authors = ["VisionLabs <m.limonov@visionlabs.ru>"]
 repository = "https://github.com/matemax/lunasdk"
@@ -40,7 +40,7 @@ bandit = "^1.6.2"
 
 [tool.poetry.dev-dependencies.FaceEngine]
 git = "ssh://git@git.visionlabs.ru/face-recognition/FaceEnginePythonBindings.git"
-tag = "v.5.12.0.0"
+tag = "v.5.13.0.0"
 
 
 [tool.poetry.group.dev.dependencies]
