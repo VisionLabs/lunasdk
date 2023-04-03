@@ -11,10 +11,10 @@ line_length = 120
 
 [tool.poetry]
 name = "lunavl"
-version = "1.6.0"
+version = "1.6.1"
 description = "Python interface for VisionLabs Luna platform"
 authors = ["VisionLabs <m.limonov@visionlabs.ru>"]
-repository = "https://github.com/matemax/lunasdk"
+repository = "https://github.com/VisionLabs/lunasdk"
 
 [tool.poetry.dependencies]
 python = ">=3.9"

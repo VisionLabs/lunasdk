@@ -3,6 +3,7 @@ Module contains a fisheye estimator.
 
 See `fisheye`_.
 """
+import warnings
 from typing import Dict, List, Union
 
 from FaceEngine import FishEye as CoreFishEye, FishEyeEstimation as CoreFishEyeEstimation  # pylint: disable=E0611,E0401
@@ -13,6 +14,7 @@ from lunavl.sdk.detectors.facedetector import FaceDetection
 from ...async_task import AsyncTask, DefaultPostprocessingFactory
 from ..base import BaseEstimator, ImageWithFaceDetection
 from ..estimators_utils.extractor_utils import validateInputByBatchEstimator
+from ..face_estimators.facewarper import FaceWarp, FaceWarpedImage
 
 
 class Fisheye(BaseEstimation):
@@ -64,37 +66,48 @@ class FisheyeEstimator(BaseEstimator):
     """
 
     def estimate(  # type: ignore
-        self, imageWithFaceDetection: ImageWithFaceDetection, asyncEstimate: bool = False
+        self,
+        image: Union[FaceDetection, ImageWithFaceDetection, FaceWarp, FaceWarpedImage],
+        asyncEstimate: bool = False,
     ) -> Union[Fisheye, AsyncTask[Fisheye]]:
         """
         Estimate fisheye.
 
         Args:
-            imageWithFaceDetection: image with face detection
+            image: image with face detection (deprecated), or warp
             asyncEstimate: estimate or run estimation in background
         Returns:
             fisheye estimation if asyncEstimate is false otherwise async task
         Raises:
             LunaSDKException: if estimation is failed
         """
-        if not asyncEstimate:
-            error, estimation = self._coreEstimator.estimate(
-                imageWithFaceDetection.image.coreImage, imageWithFaceDetection.boundingBox.coreEstimation
-            )
-            return POST_PROCESSING.postProcessing(error, estimation)
-        task = self._coreEstimator.asyncEstimate(
-            imageWithFaceDetection.image.coreImage, imageWithFaceDetection.boundingBox.coreEstimation
-        )
-        return AsyncTask(task, POST_PROCESSING.postProcessing)
+
+        if isinstance(image, (FaceWarp, FaceWarpedImage)):
+            if not asyncEstimate:
+                error, result = self._coreEstimator.estimate_warp(image.warpedImage.coreImage)
+                return POST_PROCESSING.postProcessing(error, result)
+            task = self._coreEstimator.asyncEstimate_warp(image.warpedImage.coreImage)
+            return AsyncTask(task, POST_PROCESSING.postProcessing)
+        elif isinstance(image, (FaceDetection, ImageWithFaceDetection)):
+            warnings.warn("fisheye crop is deprecated", DeprecationWarning, stacklevel=2)
+            if not asyncEstimate:
+                error, result = self._coreEstimator.estimate(image.image.coreImage, image.boundingBox.coreEstimation)
+                return POST_PROCESSING.postProcessing(error, result)
+            task = self._coreEstimator.asyncEstimate(image.image.coreImage, image.boundingBox.coreEstimation)
+            return AsyncTask(task, POST_PROCESSING.postProcessing)
+        else:
+            raise RuntimeError(f"Unsupported image type: {image}")
 
     def estimateBatch(
-        self, batch: Union[List[ImageWithFaceDetection], List[FaceDetection]], asyncEstimate: bool = False
+        self,
+        batch: Union[List[ImageWithFaceDetection], List[FaceDetection], List[FaceWarp], List[FaceWarpedImage]],
+        asyncEstimate: bool = False,
     ) -> Union[List[Fisheye], AsyncTask[List[Fisheye]]]:
         """
         Estimate fisheye batch.
 
         Args:
-            batch: list of image with face detection or face detections
+            batch: list of image with face detection or face detections (deprecated), or warps
             asyncEstimate: estimate or run estimation in background
         Returns:
             list of fisheye estimations if asyncEstimate is False otherwise async task
@@ -102,12 +115,23 @@ class FisheyeEstimator(BaseEstimator):
             LunaSDKException: if estimation is failed
         """
 
-        coreImages = [row.image.coreImage for row in batch]
-        detections = [row.boundingBox.coreEstimation for row in batch]
-
-        validateInputByBatchEstimator(self._coreEstimator, coreImages, detections)
-        if not asyncEstimate:
-            error, estimations = self._coreEstimator.estimate(coreImages, detections)
-            return POST_PROCESSING.postProcessingBatch(error, estimations)
-        task = self._coreEstimator.asyncEstimate(coreImages, detections)
-        return AsyncTask(task, POST_PROCESSING.postProcessingBatch)
+        if isinstance(batch[0], (FaceWarp, FaceWarpedImage)):
+            coreImages = [row.warpedImage.coreImage for row in batch]  # type: ignore
+            validateInputByBatchEstimator(self._coreEstimator, coreImages)
+            if not asyncEstimate:
+                error, result = self._coreEstimator.estimate_warp(coreImages)
+                return POST_PROCESSING.postProcessingBatch(error, result)
+            task = self._coreEstimator.asyncEstimate_warp(coreImages)
+            return AsyncTask(task, POST_PROCESSING.postProcessingBatch)
+        elif isinstance(batch[0], (ImageWithFaceDetection, FaceDetection)):
+            warnings.warn("fisheye crop is deprecated", DeprecationWarning, stacklevel=2)
+            coreImages = [row.image.coreImage for row in batch]  # type: ignore
+            detections = [row.boundingBox.coreEstimation for row in batch]  # type: ignore
+            validateInputByBatchEstimator(self._coreEstimator, coreImages, detections)
+            if not asyncEstimate:
+                error, result = self._coreEstimator.estimate(coreImages, detections)
+                return POST_PROCESSING.postProcessingBatch(error, result)
+            task = self._coreEstimator.asyncEstimate(coreImages, detections)
+            return AsyncTask(task, POST_PROCESSING.postProcessingBatch)
+        else:
+            raise RuntimeError(f"Unsupported image type: {batch[0]}")

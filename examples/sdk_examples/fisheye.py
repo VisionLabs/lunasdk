@@ -19,22 +19,21 @@ def estimateFisheye():
     image = VLImage.load(filename=EXAMPLE_O)
     faceEngine = VLFaceEngine()
     detector = faceEngine.createFaceDetector(DetectorType.FACE_DET_V3)
+    warper = faceEngine.createFaceWarper()
     fishEstimator = faceEngine.createFisheyeEstimator()
-    faceDetection = detector.detectOne(image, detect5Landmarks=False, detect68Landmarks=True)
+    faceDetection = detector.detectOne(image)
+    warp = warper.warp(faceDetection)
 
     #: single estimation
-    imageWithFaceDetection = ImageWithFaceDetection(image, faceDetection.boundingBox)
-    fisheye = fishEstimator.estimate(imageWithFaceDetection)
+    fisheye = fishEstimator.estimate(warp)
     pprint.pprint(fisheye)
 
     image2 = VLImage.load(filename=EXAMPLE_1)
-    faceDetection2 = detector.detectOne(image2, detect5Landmarks=False, detect68Landmarks=True)
+    faceDetection2 = detector.detectOne(image2)
+    warp = warper.warp(faceDetection2)
+
     #: batch estimation
-    imageWithFaceDetectionList = [
-        ImageWithFaceDetection(image, faceDetection.boundingBox),
-        ImageWithFaceDetection(image2, faceDetection2.boundingBox),
-    ]
-    fisheyeList = fishEstimator.estimateBatch(imageWithFaceDetectionList)
+    fisheyeList = fishEstimator.estimateBatch([warp, warp2])
     pprint.pprint(fisheyeList)
 
 
