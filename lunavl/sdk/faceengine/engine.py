@@ -25,7 +25,6 @@ from ..estimators.face_estimators.eyes import EyeEstimator, GazeEstimator
 from ..estimators.face_estimators.face_descriptor import FaceDescriptorEstimator
 from ..estimators.face_estimators.facewarper import FaceWarper
 from ..estimators.face_estimators.fisheye import FisheyeEstimator
-from ..estimators.face_estimators.portrait_style import PortraitStyleEstimator
 from ..estimators.face_estimators.glasses import GlassesEstimator
 from ..estimators.face_estimators.head_pose import HeadPoseEstimator
 from ..estimators.face_estimators.headwear import HeadwearEstimator
@@ -35,6 +34,7 @@ from ..estimators.face_estimators.livenessv1 import LivenessV1Estimator
 from ..estimators.face_estimators.mask import MaskEstimator
 from ..estimators.face_estimators.mouth_state import MouthStateEstimator
 from ..estimators.face_estimators.natural_light import FaceNaturalLightEstimator
+from ..estimators.face_estimators.portrait_style import PortraitStyleEstimator
 from ..estimators.face_estimators.red_eye import RedEyesEstimator
 from ..estimators.face_estimators.warp_quality import WarpQualityEstimator
 from ..estimators.image_estimators.orientation_mode import OrientationModeEstimator

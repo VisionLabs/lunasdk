@@ -4,8 +4,8 @@ from itertools import chain
 from lunavl.sdk.estimators.face_estimators.portrait_style import PortraitStyle
 from lunavl.sdk.faceengine.setting_provider import DetectorType
 from lunavl.sdk.image_utils.image import VLImage
-from tests.base import BaseTestClass
 from tests import resources
+from tests.base import BaseTestClass
 
 
 class TestPortraitStyle(BaseTestClass):

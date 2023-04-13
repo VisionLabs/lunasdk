@@ -65,7 +65,12 @@ class PortraitStyle(BaseEstimation):
 
     def asDict(self) -> Dict[str, Union[float, bool]]:
         """Convert estimation to dict."""
-        return {"non_portrait": self.nonPortrait, "portrait": self.portrait, "hidden_shoulders": self.hiddenShoulders, "status": self.status}
+        return {
+            "non_portrait": self.nonPortrait,
+            "portrait": self.portrait,
+            "hidden_shoulders": self.hiddenShoulders,
+            "status": self.status,
+        }
 
 
 POST_PROCESSING = DefaultPostprocessingFactory(PortraitStyle)
@@ -75,6 +80,7 @@ class PortraitStyleEstimator(BaseEstimator):
     """
     Estimate whether shoulders are visible and parallel.
     """
+
     def estimate(  # type: ignore
         self,
         faceDetection: FaceDetection,
