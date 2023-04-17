@@ -2,8 +2,8 @@
 Module contains portrait style estimator.
 
 See `portrait_style`_.
-TODO
 """
+from enum import Enum
 from typing import Dict, List, Union
 
 import FaceEngine
@@ -14,6 +14,16 @@ from lunavl.sdk.detectors.facedetector import FaceDetection
 from ...async_task import AsyncTask, DefaultPostprocessingFactory
 from ..base import BaseEstimator, ImageWithFaceDetection
 from ..estimators_utils.extractor_utils import validateInputByBatchEstimator
+
+
+class PortraitStyleCode(Enum):
+    """
+    Portrait style codes
+    """
+
+    NonPortrait = 0
+    Portrait = 1
+    HiddenShoulders = 2
 
 
 class PortraitStyle(BaseEstimation):
@@ -55,15 +65,15 @@ class PortraitStyle(BaseEstimation):
         return self._coreEstimation.hiddenShouldersScore
 
     @property
-    def status(self) -> bool:
+    def status(self) -> PortraitStyleCode:
         """
         Prediction status.
         Returns:
-            True if portait was estimated otherwise false
+            PortraitStyleCode for estimation
         """
-        return self._coreEstimation.status == FaceEngine.PortraitStyleStatus.Portrait
+        return getattr(PortraitStyleCode, self._coreEstimation.status.name)
 
-    def asDict(self) -> Dict[str, Union[float, bool]]:
+    def asDict(self) -> Dict[str, Union[float, PortraitStyleCode]]:
         """Convert estimation to dict."""
         return {
             "non_portrait": self.nonPortrait,

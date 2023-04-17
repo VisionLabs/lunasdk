@@ -1,7 +1,7 @@
 from functools import wraps
 from itertools import chain
 
-from lunavl.sdk.estimators.face_estimators.portrait_style import PortraitStyle
+from lunavl.sdk.estimators.face_estimators.portrait_style import PortraitStyle, PortraitStyleCode
 from lunavl.sdk.faceengine.setting_provider import DetectorType
 from lunavl.sdk.image_utils.image import VLImage
 from tests import resources
@@ -24,7 +24,7 @@ class TestPortraitStyle(BaseTestClass):
         Test portrait style estimator correctness
         """
         estimation = self.estimate(resources.PORTRAIT)
-        assert estimation.status
+        assert estimation.status == PortraitStyleCode.Portrait
 
     def estimate(self, image) -> PortraitStyle:
         """Estimate portrait style on image"""
@@ -53,5 +53,5 @@ class TestPortraitStyle(BaseTestClass):
         Batch portrait style estimation test
         """
         estimations = self.estimateBatch([resources.CLOSED_EYES, resources.PORTRAIT])
-        assert not estimations[0].status
-        assert estimations[1].status
+        assert estimations[0].status != PortraitStyleCode.Portrait
+        assert estimations[1].status == PortraitStyleCode.Portrait
