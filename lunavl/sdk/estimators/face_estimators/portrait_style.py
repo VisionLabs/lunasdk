@@ -73,12 +73,14 @@ class PortraitStyle(BaseEstimation):
         """
         return getattr(PortraitStyleCode, self._coreEstimation.status.name)
 
-    def asDict(self) -> Dict[str, Union[float, PortraitStyleCode]]:
+    def asDict(self) -> Dict[str, Union[PortraitStyleCode, Dict[str, float]]]:
         """Convert estimation to dict."""
         return {
-            "non_portrait": self.nonPortrait,
-            "portrait": self.portrait,
-            "hidden_shoulders": self.hiddenShoulders,
+            "estimations": {
+                "non_portrait": self.nonPortrait,
+                "portrait": self.portrait,
+                "hidden_shoulders": self.hiddenShoulders,
+            },
             "status": self.status,
         }
 

@@ -46,7 +46,8 @@ class TestPortraitStyle(BaseTestClass):
         """
         estimation = self.estimate(resources.FROWNING)
         keys = estimation.asDict().keys()
-        assert {"status", "non_portrait", "portrait", "hidden_shoulders"} == keys
+        assert {"status", "estimations"} == keys
+        assert {"non_portrait", "portrait", "hidden_shoulders"} == estimation.asDict()["estimations"].keys()
 
     def test_estimate_portrait_style_batch(self):
         """
