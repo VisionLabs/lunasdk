@@ -34,6 +34,7 @@ from ..estimators.face_estimators.livenessv1 import LivenessV1Estimator
 from ..estimators.face_estimators.mask import MaskEstimator
 from ..estimators.face_estimators.mouth_state import MouthStateEstimator
 from ..estimators.face_estimators.natural_light import FaceNaturalLightEstimator
+from ..estimators.face_estimators.portrait_style import PortraitStyleEstimator
 from ..estimators.face_estimators.red_eye import RedEyesEstimator
 from ..estimators.face_estimators.warp_quality import WarpQualityEstimator
 from ..estimators.image_estimators.orientation_mode import OrientationModeEstimator
@@ -596,6 +597,20 @@ class VLFaceEngine:
         launchOptions = self.getLaunchOptions(launchOptions)
         return FisheyeEstimator(
             self._faceEngine.createFishEyeEstimator(launchOptions=launchOptions.coreLaunchOptions), launchOptions
+        )
+
+    def createPortraitStyleEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> PortraitStyleEstimator:
+        """
+        Create a portrait style estimator.
+
+        Args:
+            launchOptions: estimator launch options
+        Returns:
+            estimator
+        """
+        launchOptions = self.getLaunchOptions(launchOptions)
+        return PortraitStyleEstimator(
+            self._faceEngine.createPortraitStyleEstimator(launchOptions=launchOptions.coreLaunchOptions), launchOptions
         )
 
     def createFaceDetectionBackgroundEstimator(

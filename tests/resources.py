@@ -93,6 +93,8 @@ HAT = getPathToImage("hat.jpg")
 WHITE_HAT = getPathToImage("white_hat.jpg")
 # https://www.freeimages.com/photo/stupid-1431759
 FISHEYE = getPathToImage("fisheye.jpg")
+# https://unsplash.com/photos/0qJBEzudn5E
+PORTRAIT = getPathToImage("portrait.jpg")
 # https://www.freeimages.com/photo/boy-in-swimming-pool-3-1394664
 SQUINTING = getPathToImage("squinting.jpg")
 # https://free-images.com/display/pouting_boy_in_shamar.html
