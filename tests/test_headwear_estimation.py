@@ -69,9 +69,9 @@ class TestHeadwear(BaseTestClass):
         """
         Batch headwear estimation test
         """
-        faceDetections = self.detector.detect([VLImage.load(filename=HAT), VLImage.load(filename=HOOD)])
+        faceDetections = self.detector.detect([VLImage.load(filename=HAT), VLImage.load(filename=HELMET)])
         warp1 = self.warper.warp(faceDetections[0][0])
         warp2 = self.warper.warp(faceDetections[1][0])
         estimations = self.headwearEstimator.estimateBatch([warp1, warp2])
         assert HeadwearType.Hat == estimations[0].type
-        assert HeadwearType.Hood == estimations[1].type
+        assert HeadwearType.Helmet == estimations[1].type

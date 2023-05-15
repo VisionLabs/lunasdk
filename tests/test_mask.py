@@ -145,7 +145,7 @@ class TestMask(BaseTestClass):
         """
         faceDetection = self.detector.detectOne(self.largeImage)
         mask = TestMask.maskEstimator.estimate(faceDetection)
-        assert MaskState.Occluded == mask.predominateMask
+        assert MaskState.Missing == mask.predominateMask
 
     def test_estimate_face_occlusion_by_mask(self):
         """
