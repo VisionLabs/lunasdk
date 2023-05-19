@@ -85,7 +85,7 @@ BEANIE = getPathToImage("beanie.jpg")
 USHANKA = getPathToImage("ushanka.jpg")
 # https://free-images.com/display/cyclist_sports_cycling_man_0.html
 HELMET = getPathToImage("helmet.jpg")
-# https://unsplash.com/photos/lxEqRDB9Ng8
+# https://images.unsplash.com/photo-1605002997574-09578c67d0c7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80
 HOOD = getPathToImage("hood.jpg")
 # https://unsplash.com/photos/rr4bawLxOjc
 HAT = getPathToImage("hat.jpg")

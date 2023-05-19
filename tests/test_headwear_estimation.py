@@ -42,6 +42,7 @@ class TestHeadwear(BaseTestClass):
                     assert estimation.asDict()["type"] == snakecase.convert(headwearType.name)
                 else:
                     assert estimation.asDict()["type"] == "none"
+                print(headwearType)
 
     def estimate(self, image: str = HOOD) -> Headwear:
         """Estimate headwear on image"""
