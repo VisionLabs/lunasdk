@@ -29,7 +29,7 @@ TURNED_HEAD_POSE_FACE = getPathToImage("turned_head_pose.jpg")
 FRONTAL_HEAD_POSE_FACE = getPathToImage("frontal_head_pose.jpg")
 
 OPEN_EYES = getPathToImage("girl_front_face.jpg")
-#https://unsplash.com/photos/ITH_dM_RQLk/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8d2lua3xlbnwwfHx8fDE2ODQzNzU2Mjl8MA&force=true
+# https://unsplash.com/photos/ITH_dM_RQLk/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8d2lua3xlbnwwfHx8fDE2ODQzNzU2Mjl8MA&force=true
 MIXED_EYES = getPathToImage("mixed_eyes.jpg")
 CLOSED_EYES = getPathToImage("closed_eyes.jpg")
 

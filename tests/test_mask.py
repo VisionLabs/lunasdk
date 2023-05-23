@@ -154,12 +154,12 @@ class TestMask(BaseTestClass):
 
         TestCase = namedtuple("TestCase", ("occlusion", "image"))
         cases = (
-            # TestCase(FaceOcclusionState.Chin, MASK_CHIN),
-            # TestCase(FaceOcclusionState.Mouth, MASK_NOT_IN_PLACE),
-            # TestCase(FaceOcclusionState.Correct, FACE_WITH_MASK),
-            # TestCase(FaceOcclusionState.Partially, FULL_OCCLUDED_FACE),
+            TestCase(FaceOcclusionState.Chin, MASK_CHIN),
+            TestCase(FaceOcclusionState.Mouth, MASK_NOT_IN_PLACE),
+            TestCase(FaceOcclusionState.Correct, FACE_WITH_MASK),
+            TestCase(FaceOcclusionState.Partially, FULL_OCCLUDED_FACE),
             TestCase(FaceOcclusionState.Clear, WARP_CLEAN_FACE),
-            # TestCase(FaceOcclusionState.Full, MASK_FULL),
+            TestCase(FaceOcclusionState.Full, MASK_FULL),
         )
         warper = self.faceEngine.createFaceWarper()
 
