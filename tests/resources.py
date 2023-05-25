@@ -29,7 +29,7 @@ TURNED_HEAD_POSE_FACE = getPathToImage("turned_head_pose.jpg")
 FRONTAL_HEAD_POSE_FACE = getPathToImage("frontal_head_pose.jpg")
 
 OPEN_EYES = getPathToImage("girl_front_face.jpg")
-# https://unsplash.com/photos/RfoISVdKM4U/download?ixid=MnwxMjA3fDB8MXxzZWFyY2h8NDZ8fGdpcmxzfGVufDB8fHx8MTY0NzU5NDU3NA&force=true&w=1920
+# https://unsplash.com/photos/ITH_dM_RQLk/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8d2lua3xlbnwwfHx8fDE2ODQzNzU2Mjl8MA&force=true
 MIXED_EYES = getPathToImage("mixed_eyes.jpg")
 CLOSED_EYES = getPathToImage("closed_eyes.jpg")
 
@@ -85,7 +85,7 @@ BEANIE = getPathToImage("beanie.jpg")
 USHANKA = getPathToImage("ushanka.jpg")
 # https://free-images.com/display/cyclist_sports_cycling_man_0.html
 HELMET = getPathToImage("helmet.jpg")
-# https://unsplash.com/photos/lxEqRDB9Ng8
+# https://images.unsplash.com/photo-1605002997574-09578c67d0c7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80
 HOOD = getPathToImage("hood.jpg")
 # https://unsplash.com/photos/rr4bawLxOjc
 HAT = getPathToImage("hat.jpg")

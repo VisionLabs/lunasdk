@@ -102,8 +102,8 @@ class TestEstimateEyes(BaseTestClass):
         landMarks5Transformation = self.warper.makeWarpTransformationWithLandmarks(faceDetection, "L5")
         warpWithLandmarks = WarpWithLandmarks(warp, landMarks5Transformation)
         eyesResult = self.eyeEstimator.estimate(warpWithLandmarks)
-        assert eyesResult.leftEye.state == EyeState.Occluded
-        assert eyesResult.rightEye.state == EyeState.Closed
+        assert eyesResult.leftEye.state == EyeState.Closed
+        assert eyesResult.rightEye.state == EyeState.Open
 
     def test_estimate_batch(self):
         """

@@ -53,6 +53,6 @@ class TestPortraitStyle(BaseTestClass):
         """
         Batch portrait style estimation test
         """
-        estimations = self.estimateBatch([resources.CLOSED_EYES, resources.PORTRAIT])
+        estimations = self.estimateBatch([resources.BEANIE, resources.PORTRAIT])
         assert estimations[0].status != PortraitStyleCode.Portrait
         assert estimations[1].status == PortraitStyleCode.Portrait

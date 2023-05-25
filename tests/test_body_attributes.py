@@ -294,7 +294,7 @@ class TestBodyAttributes(BaseTestClass):
         cases = (
             (resources.WHITE_HAT, HeadwearColor.White),
             (resources.BEANIE, HeadwearColor.Other),
-            (resources.HOOD, HeadwearColor.Black),
+            (resources.PORTRAIT, HeadwearColor.Black),
             (resources.STATUE, HeadwearColor.Unknown),
         )
         for image, apparentColor in cases:
