@@ -73,9 +73,9 @@ test:unittests:
     - rm -rf /home/gitlab-runner/.cache/pypoetry
     - !reference [.download_fsdk]
     - export SYMLINK_FSDK=/opt/sdk/luna-sdk-ci-complete-edition
-    - export LUNA_SDK_ARCH=linux_no_hasp_rel
+    - export LUNA_SDK_ARCH=linux
     - !reference [.download_fsdk]
-    - cp -r -n ${DOWNLOAD_PATH}/luna-sdk_${LUNA_SDK_ARCH}_${LUNA_SDK_TAG}/data/* ${FSDK_ROOT}/data
+    - cp -r ${DOWNLOAD_PATH}/luna-sdk_${LUNA_SDK_ARCH}_rel_${LUNA_SDK_TAG}/data/* ${FSDK_ROOT}/data
     - !reference [.prepare_poetry]
     - source $(poetry env info -p)/bin/activate
     - *run_unittests
