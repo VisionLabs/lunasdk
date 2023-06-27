@@ -11,10 +11,14 @@ line_length = 120
 
 [tool.poetry]
 name = "lunavl"
-version = "1.7.2"
+version = "1.8.0"
 description = "Python interface for VisionLabs Luna platform"
 authors = ["VisionLabs <m.limonov@visionlabs.ru>"]
 repository = "https://github.com/VisionLabs/lunasdk"
+[[tool.poetry.source]]
+name = "vlabspypi"
+url = "http://pypi.vlabs/root/public/+simple"
+secondary = true
 
 [tool.poetry.dependencies]
 python = ">=3.9"
@@ -22,6 +26,7 @@ numpy = "*"
 requests = "*"
 Pillow = {version = "*", markers = "sys_platform == 'win32' or sys_platform == 'darwin'"}
 pillow-simd = {version = "*", markers = "sys_platform != 'win32' and sys_platform != 'darwin'"}
+FaceEngine = "*"
 
 [tool.poetry.dev-dependencies]
 sphinx = ">=2.0.0"
@@ -36,12 +41,6 @@ jsonschema = "^3.2.0"
 mypy = "^0.931"
 flake8 = "^3.7.9"
 bandit = "^1.6.2"
-
-
-[tool.poetry.dev-dependencies.FaceEngine]
-git = "ssh://git@git.visionlabs.ru/face-recognition/FaceEnginePythonBindings.git"
-tag = "v.5.14.0.0"
-
 
 [tool.poetry.group.dev.dependencies]
 types-requests = "^2.28.11.15"
