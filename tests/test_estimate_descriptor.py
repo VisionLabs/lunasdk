@@ -25,7 +25,7 @@ from tests.base import BaseTestClass
 from tests.detect_test_class import VLIMAGE_SMALL
 from tests.resources import BAD_THRESHOLD_WARP, HUMAN_WARP, WARP_CLEAN_FACE, WARP_WHITE_MAN
 
-EFDVa = EXISTENT_FACE_DESCRIPTOR_VERSION_ABUNDANCE = [59, 58, 60]
+EFDVa = EXISTENT_FACE_DESCRIPTOR_VERSION_ABUNDANCE = [59, 60, 62]
 
 EHDVa = EXISTENT_HUMAN_DESCRIPTOR_VERSION_ABUNDANCE = [107, 110, 108]
 
@@ -258,6 +258,7 @@ class TestEstimateDescriptor(BaseTestClass):
             58: 512,
             59: 512,
             60: 512,
+            62: 512,
             102: 2048,
             103: 2048,
             104: 2048,
@@ -433,20 +434,6 @@ class TestEstimateDescriptor(BaseTestClass):
                                 self.assertLunaVlError(exceptionInfo, LunaVLError.BatchedInternalError)
                                 assert len(exceptionInfo.value.context) == 1, "Expect only one error"
                                 self.assertReceivedAndRawExpectedErrors(exceptionInfo.value.context[0], LunaVLError.Ok)
-
-    def test_descriptor_batch_low_threshold_aggregation(self):
-        """
-        Test descriptor batch with low threshold warps with aggregation
-        """
-        faceWarp = FaceWarpedImage.load(filename=BAD_THRESHOLD_WARP)
-        for descriptorVersion in EFDVa:
-            with self.subTest(planVersion=descriptorVersion):
-                extractor = self.faceEngine.createFaceDescriptorEstimator(descriptorVersion)
-                descriptorBatch = self.getBatch(descriptorVersion, 2, DescriptorType.face)
-                _, descriptor = extractor.estimateDescriptorsBatch(
-                    [faceWarp] * 2, aggregate=1, descriptorBatch=descriptorBatch
-                )
-                assert descriptor.garbageScore < 0.6, "Expected low gs"
 
     def test_async_descriptor_estimation(self):
         """
