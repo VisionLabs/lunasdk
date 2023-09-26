@@ -7,7 +7,12 @@ from pathlib import Path
 from typing import Any, Optional, Tuple, Type, TypeVar, Union
 
 import FaceEngine as CoreFE
-from FaceEngine import CrowdEstimatorType, ObjectDetectorClassType, PyISettingsProvider  # pylint: disable=E0611,E0401
+from FaceEngine import (
+    CrowdEstimatorType,
+    ObjectDetectorClassType,
+    PyISettingsProvider,
+    DeepFakeMode,
+)  # pylint: disable=E0611,E0401
 
 from lunavl.sdk.launch_options import DeviceClass
 
@@ -175,6 +180,20 @@ class DetectorType(BiDirectionEnum):
             "FaceDetV3": "FACE_DET_V3",
         }
         return getattr(ObjectDetectorClassType, mapEnumToCoreEnum[self.value])
+
+
+class DeepFakeEstimationMode(BiDirectionEnum):
+    """
+    DeepFake estimation mode
+    """
+
+    Default = 0
+    M1 = 1
+    M2 = 2
+
+    @property
+    def coreEstimatorType(self) -> DeepFakeMode:
+        return DeepFakeMode(self.value)
 
 
 class PeopleCountEstimatorType(Enum):

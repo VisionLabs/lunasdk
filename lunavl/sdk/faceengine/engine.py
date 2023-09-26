@@ -18,6 +18,7 @@ from ..estimators.face_estimators.ags import AGSEstimator
 from ..estimators.face_estimators.background import FaceDetectionBackgroundEstimator
 from ..estimators.face_estimators.basic_attributes import BasicAttributesEstimator
 from ..estimators.face_estimators.credibility import CredibilityEstimator
+from ..estimators.face_estimators.deepfake import DeepFakeEstimator
 from ..estimators.face_estimators.dynamic_range import DynamicRangeEstimator
 from ..estimators.face_estimators.emotions import EmotionsEstimator
 from ..estimators.face_estimators.eyebrow_expressions import EyebrowExpressionEstimator
@@ -44,6 +45,7 @@ from ..faceengine.setting_provider import (
     FaceEngineSettingsProvider,
     PeopleCountEstimatorType,
     RuntimeSettingsProvider,
+    DeepFakeEstimationMode,
 )
 from ..globals import DEFAULT_HUMAN_DESCRIPTOR_VERSION as DHDV
 from ..indexes.builder import IndexBuilder
@@ -438,6 +440,28 @@ class VLFaceEngine:
         launchOptions = self.getLaunchOptions(launchOptions)
         return LivenessV1Estimator(
             self._faceEngine.createLivenessOneShotRGBEstimator(launchOptions=launchOptions.coreLaunchOptions),
+            launchOptions,
+        )
+
+    def createDeepFakeEstimator(
+        self,
+        launchOptions: Optional[LaunchOptions] = None,
+        mode: DeepFakeEstimationMode = DeepFakeEstimationMode.Default,
+    ) -> DeepFakeEstimator:
+        """
+        Create deep fake estimator.
+
+        Args:
+            launchOptions: estimator launch options
+
+        Returns:
+            estimator
+        """
+        launchOptions = self.getLaunchOptions(launchOptions)
+        return DeepFakeEstimator(
+            self._faceEngine.createDeepFakeEstimator(
+                launchOptions=launchOptions.coreLaunchOptions, mode=mode.coreEstimatorType
+            ),
             launchOptions,
         )
 
