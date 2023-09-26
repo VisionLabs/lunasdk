@@ -76,3 +76,19 @@ class TestDeepfake(BaseTestClass):
         estimation2 = deepFakeEstimator2.estimate(faceDetection)
         assert defaultEstimation.asDict() == estimation2.asDict()
         assert defaultEstimation.asDict() != estimation1.asDict()
+
+    def test_async_detect_human(self):
+        """
+        Test async estimate deep fake feature
+        """
+        faceDetections = self.detector.detect([VLImage.load(filename=ONE_FACE), VLImage.load(filename=DEEPFAKE)])
+
+        task = self.deepFakeEstimator.estimateBatch(faceDetections[0] + faceDetections[1], asyncEstimate=True)
+        self.assertAsyncBatchEstimation(task, DeepFake)
+        estimations = task.get()
+        assert DeepFakeState.Real == estimations[0].state
+        assert DeepFakeState.Fake == estimations[1].state
+        task = self.deepFakeEstimator.estimate(faceDetections[0][0], asyncEstimate=True)
+        estimation = task.get()
+        assert isinstance(estimation, DeepFake)
+
