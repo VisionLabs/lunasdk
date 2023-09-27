@@ -182,9 +182,9 @@ class DetectorType(BiDirectionEnum):
         return getattr(ObjectDetectorClassType, mapEnumToCoreEnum[self.value])
 
 
-class DeepFakeEstimationMode(BiDirectionEnum):
+class DeepfakeEstimationMode(BiDirectionEnum):
     """
-    DeepFake estimation mode
+    Deepfake estimation mode
     """
 
     M1 = 1
@@ -2224,9 +2224,9 @@ class LivenessV1Estimator(BaseSettingsSection):
         self.setValue("qualityThreshold", value)
 
 
-class DeepFakeEstimator(BaseSettingsSection):
+class DeepfakeEstimator(BaseSettingsSection):
     """
-    DeepFakeEstimator settings section.
+    Deepfake estimator settings section.
 
     Properties:
         - realThreshold (float): realThreshold
@@ -2564,14 +2564,14 @@ class FaceEngineSettingsProvider(BaseSettingsProvider):
         return LivenessV1Estimator(self._coreSettingProvider)
 
     @property
-    def deepFakeEstimator(self) -> DeepFakeEstimator:
+    def deepFakeEstimator(self) -> DeepfakeEstimator:
         """
-        Getter for DeepFake estimator settings section.
+        Getter for Deepfake estimator settings section.
 
         Returns:
             Mutable LivenessV1Estimator section
         """
-        return DeepFakeEstimator(self._coreSettingProvider)
+        return DeepfakeEstimator(self._coreSettingProvider)
 
     @property
     def humanDetectorSettings(self) -> HumanDetectorSettings:

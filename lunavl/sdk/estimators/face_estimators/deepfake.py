@@ -15,9 +15,9 @@ from lunavl.sdk.estimators.base import BaseEstimator
 from lunavl.sdk.estimators.estimators_utils.extractor_utils import validateInputByBatchEstimator
 
 
-class DeepFakeEstimationMode(Enum):
+class DeepfakeEstimationMode(Enum):
     """
-    DeepFake estimation mode
+    Deepfake estimation mode
     """
 
     Default = 0
@@ -29,7 +29,7 @@ class DeepFakeEstimationMode(Enum):
         return DeepFakeMode(self.value)
 
 
-class DeepFakeState(Enum):
+class DeepfakePrediction(Enum):
     """
     Deepfake state enum
     """
@@ -39,7 +39,7 @@ class DeepFakeState(Enum):
     Fake = "fake"  # spoof
 
     @staticmethod
-    def fromCoreEmotion(coreState: DeepFakeEstimationState) -> "DeepFakeState":
+    def fromCoreEmotion(coreState: DeepFakeEstimationState) -> "DeepfakePrediction":
         """
         Get enum element by core deepfake state.
 
@@ -50,16 +50,16 @@ class DeepFakeState(Enum):
             corresponding state
         """
         if coreState == DeepFakeEstimationState.Real:
-            return DeepFakeState.Real
-        return DeepFakeState.Fake
+            return DeepfakePrediction.Real
+        return DeepfakePrediction.Fake
 
 
-class DeepFake(BaseEstimation):
+class Deepfake(BaseEstimation):
     """
-    DeepFake structure
+    Deepfake structure
 
     Attributes:
-        state: deepfake prediction
+        prediction: deepfake prediction
 
     Estimation properties:
 
@@ -67,7 +67,7 @@ class DeepFake(BaseEstimation):
         - quality
     """
 
-    __slots__ = ("state",)
+    __slots__ = ("prediction",)
     #  pylint: disable=W0235
 
     def __init__(self, coreEstimation: DeepFakeEstimation):
@@ -78,7 +78,7 @@ class DeepFake(BaseEstimation):
             coreEstimation: core estimation
         """
         super().__init__(coreEstimation)
-        self.state = DeepFakeState.fromCoreEmotion(coreEstimation.State)
+        self.prediction = DeepfakePrediction.fromCoreEmotion(coreEstimation.State)
 
     def asDict(self) -> dict:
         """
@@ -87,7 +87,7 @@ class DeepFake(BaseEstimation):
         Returns:
             {"state": self.state, "estimations": {"score": self.score}}
         """
-        return {"state": self.state.name, "score": self.coreEstimation.score}
+        return {"state": self.prediction.name, "score": self.coreEstimation.score}
 
     @property
     def score(self) -> float:
@@ -100,20 +100,20 @@ class DeepFake(BaseEstimation):
         return self._coreEstimation.score
 
 
-POST_PROCESSING = DefaultPostprocessingFactory(DeepFake)
+POST_PROCESSING = DefaultPostprocessingFactory(Deepfake)
 
 
-class DeepFakeEstimator(BaseEstimator):
+class DeepfakeEstimator(BaseEstimator):
     """
     Deep fake estimator.
     """
 
-    def __init__(self, *args, mode: DeepFakeEstimationMode = DeepFakeEstimationMode.Default, **kwargs):
+    def __init__(self, *args, mode: DeepfakeEstimationMode = DeepfakeEstimationMode.Default, **kwargs):
         super().__init__(*args, **kwargs)
         self._mode = mode
 
     @property
-    def mode(self) -> DeepFakeEstimationMode:
+    def mode(self) -> DeepfakeEstimationMode:
         """Estimation mode getter"""
         return self._mode
 
@@ -123,7 +123,7 @@ class DeepFakeEstimator(BaseEstimator):
         self,
         faceDetection: FaceDetection,
         asyncEstimate: Literal[False] = False,
-    ) -> DeepFake:
+    ) -> Deepfake:
         ...
 
     @overload
@@ -131,14 +131,14 @@ class DeepFakeEstimator(BaseEstimator):
         self,
         faceDetection: FaceDetection,
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[DeepFake]:
+    ) -> AsyncTask[Deepfake]:
         ...
 
     def estimate(  # type: ignore
         self,
         faceDetection: FaceDetection,
         asyncEstimate: bool = False,
-    ) -> Union[DeepFake, AsyncTask[DeepFake]]:
+    ) -> Union[Deepfake, AsyncTask[Deepfake]]:
         """
         Estimate a deep fake
 
@@ -167,7 +167,7 @@ class DeepFakeEstimator(BaseEstimator):
         self,
         faceDetections: List[FaceDetection],
         asyncEstimate: bool = False,
-    ) -> Union[List[DeepFake], AsyncTask[List[DeepFake]]]:
+    ) -> Union[List[Deepfake], AsyncTask[List[Deepfake]]]:
         """
         Batch estimate deep fake feature
 

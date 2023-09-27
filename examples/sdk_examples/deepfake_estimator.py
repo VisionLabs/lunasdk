@@ -1,5 +1,5 @@
 """
-DeepFake estimation example
+Deepfake estimation example
 """
 import asyncio
 import pprint
@@ -11,7 +11,7 @@ from lunavl.sdk.faceengine.setting_provider import DetectorType
 from lunavl.sdk.image_utils.image import VLImage
 
 
-def estimateDeepFake():
+def estimateDeepfake():
     """
     Estimate deep fake feature.
     """
@@ -21,7 +21,7 @@ def estimateDeepFake():
     detector = faceEngine.createFaceDetector(DetectorType.FACE_DET_V3)
     faceDetection = detector.detectOne(image)
 
-    deepFakeEstimator = faceEngine.createDeepFakeEstimator()
+    deepFakeEstimator = faceEngine.createDeepfakeEstimator()
 
     pprint.pprint(deepFakeEstimator.estimate(faceDetection).asDict())
 
@@ -29,7 +29,7 @@ def estimateDeepFake():
     pprint.pprint(deepFakeEstimator.estimateBatch([faceDetection, faceDetection2]))
 
 
-async def asyncEstimateDeepFake():
+async def asyncEstimateDeepfake():
     """
     Async estimate  deep fake feature.
     """
@@ -39,7 +39,7 @@ async def asyncEstimateDeepFake():
     detector = faceEngine.createFaceDetector(DetectorType.FACE_DET_V3)
     faceDetection = detector.detectOne(image, detect68Landmarks=True)
 
-    deepFakeEstimator = faceEngine.createDeepFakeEstimator()
+    deepFakeEstimator = faceEngine.createDeepfakeEstimator()
 
     deepFake = await deepFakeEstimator.estimate(faceDetection, asyncEstimate=True)
     pprint.pprint(deepFake.asDict())
@@ -53,5 +53,5 @@ async def asyncEstimateDeepFake():
 
 
 if __name__ == "__main__":
-    estimateDeepFake()
-    asyncio.run(asyncEstimateDeepFake())
+    estimateDeepfake()
+    asyncio.run(asyncEstimateDeepfake())
