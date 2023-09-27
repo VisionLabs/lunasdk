@@ -2564,7 +2564,7 @@ class FaceEngineSettingsProvider(BaseSettingsProvider):
         return LivenessV1Estimator(self._coreSettingProvider)
 
     @property
-    def deepFakeEstimator(self) -> DeepfakeEstimator:
+    def deepfakeEstimator(self) -> DeepfakeEstimator:
         """
         Getter for Deepfake estimator settings section.
 
