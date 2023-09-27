@@ -6,17 +6,27 @@ See `livenessv1`_.
 from enum import Enum
 from typing import List, Literal, Union, overload
 
-from FaceEngine import (  # pylint: disable=E0611,E0401
-    DeepFakeEstimation,
-    DeepFakeEstimationState,
-    IDeepFakeEstimatorPtr,
-)
+from FaceEngine import DeepFakeEstimation, DeepFakeEstimationState, DeepFakeMode  # pylint: disable=E0611,E0401
+
 from lunavl.sdk.async_task import AsyncTask, DefaultPostprocessingFactory
 from lunavl.sdk.base import BaseEstimation
 from lunavl.sdk.detectors.facedetector import FaceDetection
 from lunavl.sdk.estimators.base import BaseEstimator
 from lunavl.sdk.estimators.estimators_utils.extractor_utils import validateInputByBatchEstimator
-from lunavl.sdk.faceengine.setting_provider import DeepFakeEstimationMode
+
+
+class DeepFakeEstimationMode(Enum):
+    """
+    DeepFake estimation mode
+    """
+
+    Default = 0
+    M1 = 1
+    M2 = 2
+
+    @property
+    def coreEstimatorType(self) -> DeepFakeMode:
+        return DeepFakeMode(self.value)
 
 
 class DeepFakeState(Enum):

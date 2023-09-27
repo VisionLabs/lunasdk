@@ -18,7 +18,7 @@ from ..estimators.face_estimators.ags import AGSEstimator
 from ..estimators.face_estimators.background import FaceDetectionBackgroundEstimator
 from ..estimators.face_estimators.basic_attributes import BasicAttributesEstimator
 from ..estimators.face_estimators.credibility import CredibilityEstimator
-from ..estimators.face_estimators.deepfake import DeepFakeEstimator
+from ..estimators.face_estimators.deepfake import DeepFakeEstimationMode, DeepFakeEstimator
 from ..estimators.face_estimators.dynamic_range import DynamicRangeEstimator
 from ..estimators.face_estimators.emotions import EmotionsEstimator
 from ..estimators.face_estimators.eyebrow_expressions import EyebrowExpressionEstimator
@@ -45,7 +45,6 @@ from ..faceengine.setting_provider import (
     FaceEngineSettingsProvider,
     PeopleCountEstimatorType,
     RuntimeSettingsProvider,
-    DeepFakeEstimationMode,
 )
 from ..globals import DEFAULT_HUMAN_DESCRIPTOR_VERSION as DHDV
 from ..indexes.builder import IndexBuilder
@@ -453,6 +452,7 @@ class VLFaceEngine:
 
         Args:
             launchOptions: estimator launch options
+            mode: deep fake estimation mode
 
         Returns:
             estimator

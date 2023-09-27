@@ -1,6 +1,6 @@
 import snakecase
 
-from lunavl.sdk.estimators.face_estimators.deepfake import DeepFakeEstimationMode, DeepFakeState, DeepFake
+from lunavl.sdk.estimators.face_estimators.deepfake import DeepFake, DeepFakeEstimationMode, DeepFakeState
 from lunavl.sdk.faceengine.setting_provider import DetectorType
 from lunavl.sdk.image_utils.image import VLImage
 from tests.base import BaseTestClass
@@ -91,4 +91,3 @@ class TestDeepfake(BaseTestClass):
         task = self.deepFakeEstimator.estimate(faceDetections[0][0], asyncEstimate=True)
         estimation = task.get()
         assert isinstance(estimation, DeepFake)
-
