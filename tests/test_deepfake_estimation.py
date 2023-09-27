@@ -1,5 +1,6 @@
-import snakecase
-
+"""
+Test estimate deepfake.
+"""
 from lunavl.sdk.estimators.face_estimators.deepfake import Deepfake, DeepfakeEstimationMode, DeepfakePrediction
 from lunavl.sdk.faceengine.setting_provider import DetectorType
 from lunavl.sdk.image_utils.image import VLImage
@@ -30,7 +31,7 @@ class TestDeepfake(BaseTestClass):
             with self.subTest(deepfakeState):
                 estimation = self.estimate(image)
                 assert deepfakeState == estimation.prediction
-                assert estimation.asDict()["state"] == deepfakeState.name.lower()
+                assert estimation.asDict()["prediction"] == deepfakeState.name.lower()
 
     def estimate(self, image: str = ONE_FACE) -> Deepfake:
         """Estimate deepfake on image"""
@@ -51,7 +52,7 @@ class TestDeepfake(BaseTestClass):
         Test method DeepFae.asDict
         """
         estimation = self.estimate(ONE_FACE)
-        assert {"state": "real", "score": estimation.score} == estimation.asDict()
+        assert {"prediction": "real", "score": estimation.score} == estimation.asDict()
 
     def test_estimate_deepfake_batch(self):
         """
