@@ -87,7 +87,7 @@ class Deepfake(BaseEstimation):
         Returns:
             {"state": self.state, "estimations": {"score": self.score}}
         """
-        return {"state": self.prediction.name, "score": self.coreEstimation.score}
+        return {"state": self.prediction.value, "score": self.coreEstimation.score}
 
     @property
     def score(self) -> float:
