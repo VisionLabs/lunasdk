@@ -1,7 +1,7 @@
 """
-Module contains a  livenessv1 estimator.
+Module contains a  deepfake estimator.
 
-See `livenessv1`_.
+See `deepfake`_.
 """
 from enum import Enum
 from typing import List, Literal, Union, overload
@@ -56,10 +56,10 @@ class DeepFakeState(Enum):
 
 class DeepFake(BaseEstimation):
     """
-    Liveness structure (LivenessOneShotRGBEstimation).
+    DeepFake structure
 
     Attributes:
-        prediction: liveness prediction
+        state: deepfake prediction
 
     Estimation properties:
 
@@ -67,7 +67,9 @@ class DeepFake(BaseEstimation):
         - quality
     """
 
+    __slots__ = ("state",)
     #  pylint: disable=W0235
+
     def __init__(self, coreEstimation: DeepFakeEstimation):
         """
         Init.
@@ -76,35 +78,26 @@ class DeepFake(BaseEstimation):
             coreEstimation: core estimation
         """
         super().__init__(coreEstimation)
+        self.state = DeepFakeState.fromCoreEmotion(coreEstimation.State)
 
     def asDict(self) -> dict:
         """
         Convert to dict.
 
         Returns:
-            {"prediction": self.prediction, "estimations": {"quality": self.quality, "score": self.score}}
+            {"state": self.state, "estimations": {"score": self.score}}
         """
-        return {"state": self.coreEstimation.State.name.lower(), "score": self.coreEstimation.score}
+        return {"state": self.state.name, "score": self.coreEstimation.score}
 
     @property
     def score(self) -> float:
         """
-        Liveness score
+        Deepfake score
 
         Returns:
-            liveness score
+            deepfake score, higher better
         """
         return self._coreEstimation.score
-
-    @property
-    def state(self) -> DeepFakeState:
-        """
-        Liveness quality score
-
-        Returns:
-            liveness quality score
-        """
-        return DeepFakeState.fromCoreEmotion(self.coreEstimation.State)
 
 
 POST_PROCESSING = DefaultPostprocessingFactory(DeepFake)
@@ -182,7 +175,7 @@ class DeepFakeEstimator(BaseEstimator):
             faceDetections: face detection list
             asyncEstimate: estimate or run estimation in background
         Returns:
-            estimated liveness if asyncEstimate is False otherwise async task
+            estimated deepfake feature if asyncEstimate is False otherwise async task
         Raises:
             LunaSDKException: if estimation failed
         """
