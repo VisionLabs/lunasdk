@@ -14,6 +14,7 @@ from ..detectors.humandetector import HumanDetector
 from ..estimators.body_estimators.body_attributes import BodyAttributesEstimator
 from ..estimators.body_estimators.body_descriptor import BodyDescriptorEstimator
 from ..estimators.body_estimators.bodywarper import BodyWarper
+from ..estimators.body_estimators.landmarks import BodyLandmarksEstimator
 from ..estimators.face_estimators.ags import AGSEstimator
 from ..estimators.face_estimators.background import FaceDetectionBackgroundEstimator
 from ..estimators.face_estimators.basic_attributes import BasicAttributesEstimator
@@ -694,6 +695,22 @@ class VLFaceEngine:
         launchOptions = self.getLaunchOptions(launchOptions)
         return HumanDetector(
             self._faceEngine.createHumanFaceDetector(launchOptions=launchOptions.coreLaunchOptions),
+            launchOptions,
+        )
+
+    def createBodyLandmarksEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> BodyLandmarksEstimator:
+        """
+        Create body landmarks estimator.
+
+        Args:
+            launchOptions: estimator launch options
+
+        Returns:
+            estimator
+        """
+        launchOptions = self.getLaunchOptions(launchOptions)
+        return BodyLandmarksEstimator(
+            self._faceEngine.createHumanLandmarksDetector(launchOptions=launchOptions.coreLaunchOptions),
             launchOptions,
         )
 

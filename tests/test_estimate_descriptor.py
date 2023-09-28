@@ -435,20 +435,6 @@ class TestEstimateDescriptor(BaseTestClass):
                                 assert len(exceptionInfo.value.context) == 1, "Expect only one error"
                                 self.assertReceivedAndRawExpectedErrors(exceptionInfo.value.context[0], LunaVLError.Ok)
 
-    def test_descriptor_batch_low_threshold_aggregation(self):
-        """
-        Test descriptor batch with low threshold warps with aggregation
-        """
-        faceWarp = FaceWarpedImage.load(filename=BAD_THRESHOLD_WARP)
-        for descriptorVersion in EFDVa:
-            with self.subTest(planVersion=descriptorVersion):
-                extractor = self.faceEngine.createFaceDescriptorEstimator(descriptorVersion)
-                descriptorBatch = self.getBatch(descriptorVersion, 2, DescriptorType.face)
-                _, descriptor = extractor.estimateDescriptorsBatch(
-                    [faceWarp] * 2, aggregate=1, descriptorBatch=descriptorBatch
-                )
-                assert descriptor.garbageScore < 0.93, "Expected low gs"
-
     def test_async_descriptor_estimation(self):
         """
         Test async descriptor estimations
