@@ -37,14 +37,14 @@ async def asyncEstimateDeepfake():
     image = VLImage.load(filename=EXAMPLE_O)
     faceEngine = VLFaceEngine()
     detector = faceEngine.createFaceDetector(DetectorType.FACE_DET_V3)
-    faceDetection = detector.detectOne(image, detect68Landmarks=True)
+    faceDetection = detector.detectOne(image)
 
     deepFakeEstimator = faceEngine.createDeepfakeEstimator()
 
     deepFake = await deepFakeEstimator.estimate(faceDetection, asyncEstimate=True)
     pprint.pprint(deepFake.asDict())
 
-    faceDetection2 = detector.detectOne(VLImage.load(filename=EXAMPLE_1), detect68Landmarks=True)
+    faceDetection2 = detector.detectOne(VLImage.load(filename=EXAMPLE_1))
     task1 = deepFakeEstimator.estimateBatch([faceDetection, faceDetection], asyncEstimate=True)
     task2 = deepFakeEstimator.estimateBatch([faceDetection, faceDetection2], asyncEstimate=True)
 
