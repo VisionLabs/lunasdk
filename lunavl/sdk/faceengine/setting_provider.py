@@ -2255,23 +2255,26 @@ class DeepfakeEstimator(BaseSettingsSection):
         self.setValue("realThreshold", value)
 
     @property
-    def defaultEstimatorType(self) -> Optional[int]:
+    def defaultEstimatorType(self) -> Optional[DeepfakeEstimationMode]:
         """
         Getter for defaultEstimatorType
 
         Returns:
             realThreshold
         """
-        return self.getValue("defaultEstimatorType")
+        value = self.getValue("defaultEstimatorType")
+        if value is None:
+            return value
+        return DeepfakeEstimationMode(value)
 
     @defaultEstimatorType.setter
-    def defaultEstimatorType(self, value: int) -> None:
+    def defaultEstimatorType(self, value: DeepfakeEstimationMode) -> None:
         """
         Setter for defaultEstimatorType
         Args:
             value: new value
         """
-        self.setValue("defaultEstimatorType", value)
+        self.setValue("defaultEstimatorType", value.value)
 
 
 class IndexSettings(BaseSettingsSection):
