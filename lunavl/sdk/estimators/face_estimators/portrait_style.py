@@ -102,7 +102,7 @@ class PortraitStyleEstimator(BaseEstimator):
         Estimate portrait style from single image
 
         Args:
-            imageWithFaceDetection: image with face detection
+            faceDetection: image with face detection
             asyncEstimate: estimate or run estimation in background
 
         Returns:
@@ -121,14 +121,13 @@ class PortraitStyleEstimator(BaseEstimator):
     def estimateBatch(  # type: ignore
         self,
         faceDetections: List[FaceDetection],
-        qualityThreshold: float | None = None,
         asyncEstimate: bool = False,
     ) -> Union[List[PortraitStyle], AsyncTask[List[PortraitStyle]]]:
         """
         Estimate portrait style from chunk of images.
 
         Args:
-            batch: list of image with face detection or face detections
+            faceDetections: list of image with face detection or face detections
             asyncEstimate: estimate or run estimation in background
         Returns:
             list of estimated dynamic range or async task if asyncEstimate is true
