@@ -464,6 +464,7 @@ class VLFaceEngine:
                 launchOptions=launchOptions.coreLaunchOptions, mode=mode.coreEstimatorType
             ),
             launchOptions,
+            mode=mode,
         )
 
     def createOrientationModeEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> OrientationModeEstimator:

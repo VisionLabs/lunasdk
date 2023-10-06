@@ -108,7 +108,7 @@ class DeepfakeEstimator(BaseEstimator):
     Deep fake estimator.
     """
 
-    def __init__(self, *args, mode: DeepfakeEstimationMode = DeepfakeEstimationMode.Default, **kwargs):
+    def __init__(self, *args, mode: DeepfakeEstimationMode, **kwargs):
         super().__init__(*args, **kwargs)
         self._mode = mode
 
