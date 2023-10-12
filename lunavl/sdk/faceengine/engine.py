@@ -14,10 +14,12 @@ from ..detectors.humandetector import HumanDetector
 from ..estimators.body_estimators.body_attributes import BodyAttributesEstimator
 from ..estimators.body_estimators.body_descriptor import BodyDescriptorEstimator
 from ..estimators.body_estimators.bodywarper import BodyWarper
+from ..estimators.body_estimators.landmarks import BodyLandmarksEstimator
 from ..estimators.face_estimators.ags import AGSEstimator
 from ..estimators.face_estimators.background import FaceDetectionBackgroundEstimator
 from ..estimators.face_estimators.basic_attributes import BasicAttributesEstimator
 from ..estimators.face_estimators.credibility import CredibilityEstimator
+from ..estimators.face_estimators.deepfake import DeepfakeEstimationMode, DeepfakeEstimator
 from ..estimators.face_estimators.dynamic_range import DynamicRangeEstimator
 from ..estimators.face_estimators.emotions import EmotionsEstimator
 from ..estimators.face_estimators.eyebrow_expressions import EyebrowExpressionEstimator
@@ -441,6 +443,30 @@ class VLFaceEngine:
             launchOptions,
         )
 
+    def createDeepfakeEstimator(
+        self,
+        launchOptions: Optional[LaunchOptions] = None,
+        mode: DeepfakeEstimationMode = DeepfakeEstimationMode.Default,
+    ) -> DeepfakeEstimator:
+        """
+        Create deep fake estimator.
+
+        Args:
+            launchOptions: estimator launch options
+            mode: deep fake estimation mode
+
+        Returns:
+            estimator
+        """
+        launchOptions = self.getLaunchOptions(launchOptions)
+        return DeepfakeEstimator(
+            self._faceEngine.createDeepFakeEstimator(
+                launchOptions=launchOptions.coreLaunchOptions, mode=mode.coreEstimatorType
+            ),
+            launchOptions,
+            mode=mode,
+        )
+
     def createOrientationModeEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> OrientationModeEstimator:
         """
         Create an orientation mode estimator.
@@ -670,6 +696,22 @@ class VLFaceEngine:
         launchOptions = self.getLaunchOptions(launchOptions)
         return HumanDetector(
             self._faceEngine.createHumanFaceDetector(launchOptions=launchOptions.coreLaunchOptions),
+            launchOptions,
+        )
+
+    def createBodyLandmarksEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> BodyLandmarksEstimator:
+        """
+        Create body landmarks estimator.
+
+        Args:
+            launchOptions: estimator launch options
+
+        Returns:
+            estimator
+        """
+        launchOptions = self.getLaunchOptions(launchOptions)
+        return BodyLandmarksEstimator(
+            self._faceEngine.createHumanLandmarksDetector(launchOptions=launchOptions.coreLaunchOptions),
             launchOptions,
         )
 

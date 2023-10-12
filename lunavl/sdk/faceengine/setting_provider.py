@@ -7,7 +7,12 @@ from pathlib import Path
 from typing import Any, Optional, Tuple, Type, TypeVar, Union
 
 import FaceEngine as CoreFE
-from FaceEngine import CrowdEstimatorType, ObjectDetectorClassType, PyISettingsProvider  # pylint: disable=E0611,E0401
+from FaceEngine import (  # pylint: disable=E0611,E0401
+    CrowdEstimatorType,
+    DeepFakeMode,
+    ObjectDetectorClassType,
+    PyISettingsProvider,
+)
 
 from lunavl.sdk.launch_options import DeviceClass
 
@@ -175,6 +180,19 @@ class DetectorType(BiDirectionEnum):
             "FaceDetV3": "FACE_DET_V3",
         }
         return getattr(ObjectDetectorClassType, mapEnumToCoreEnum[self.value])
+
+
+class DeepfakeEstimationMode(BiDirectionEnum):
+    """
+    Deepfake estimation mode
+    """
+
+    M1 = 1
+    M2 = 2
+
+    @property
+    def coreEstimatorType(self) -> DeepFakeMode:
+        return DeepFakeMode(self.value)
 
 
 class PeopleCountEstimatorType(Enum):
@@ -2206,6 +2224,59 @@ class LivenessV1Estimator(BaseSettingsSection):
         self.setValue("qualityThreshold", value)
 
 
+class DeepfakeEstimator(BaseSettingsSection):
+    """
+    Deepfake estimator settings section.
+
+    Properties:
+        - realThreshold (float): realThreshold
+        - defaultEstimatorType (int): default estimation mode
+    """
+
+    sectionName = "DeepFakeEstimator::Settings"
+
+    @property
+    def realThreshold(self) -> Optional[float]:
+        """
+        Getter for realThreshold
+
+        Returns:
+            realThreshold
+        """
+        return self.getValue("realThreshold")
+
+    @realThreshold.setter
+    def realThreshold(self, value: float) -> None:
+        """
+        Setter for realThreshold
+        Args:
+            value: new value
+        """
+        self.setValue("realThreshold", value)
+
+    @property
+    def defaultEstimatorType(self) -> Optional[DeepfakeEstimationMode]:
+        """
+        Getter for defaultEstimatorType
+
+        Returns:
+            realThreshold
+        """
+        value = self.getValue("defaultEstimatorType")
+        if value is None:
+            return value
+        return DeepfakeEstimationMode(value)
+
+    @defaultEstimatorType.setter
+    def defaultEstimatorType(self, value: DeepfakeEstimationMode) -> None:
+        """
+        Setter for defaultEstimatorType
+        Args:
+            value: new value
+        """
+        self.setValue("defaultEstimatorType", value.value)
+
+
 class IndexSettings(BaseSettingsSection):
     """
     Index settings.
@@ -2494,6 +2565,16 @@ class FaceEngineSettingsProvider(BaseSettingsProvider):
             Mutable LivenessV1Estimator section
         """
         return LivenessV1Estimator(self._coreSettingProvider)
+
+    @property
+    def deepfakeEstimator(self) -> DeepfakeEstimator:
+        """
+        Getter for Deepfake estimator settings section.
+
+        Returns:
+            Mutable LivenessV1Estimator section
+        """
+        return DeepfakeEstimator(self._coreSettingProvider)
 
     @property
     def humanDetectorSettings(self) -> HumanDetectorSettings:

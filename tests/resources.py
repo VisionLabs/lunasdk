@@ -148,5 +148,7 @@ ORANGE_SKIRT = getPathToImage("orange_skirt.jpg")
 BLACK_TROUSERS = getPathToImage("black_trousers.jpg")
 # https://unsplash.com/photos/lWaMh5rXPVo
 PURPLE_SHORTS = getPathToImage("purple_shorts.jpg")
+# https://github.com/goberoi/faceit/raw/master/example.jpg
+DEEPFAKE = getPathToImage("deepfake.jpg")
 
 HAX = getPathToImage("hax.jpg")
