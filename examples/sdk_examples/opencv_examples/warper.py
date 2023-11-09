@@ -15,7 +15,9 @@ def createWarp():
     Create warp from detection.
 
     """
-    image = VLImage.load(url="https://img.championat.com/s/1350x900/news/big/g/v/oficialno-hbo-snimet-serial-garri-potter_16813235311040883005.jpg")
+    image = VLImage.load(
+        url="https://img.championat.com/s/1350x900/news/big/g/v/oficialno-hbo-snimet-serial-garri-potter_16813235311040883005.jpg"
+    )
     faceEngine = VLFaceEngine()
     detector = faceEngine.createFaceDetector(DetectorType.FACE_DET_V3)
     faceDetection = detector.detectOne(image)
