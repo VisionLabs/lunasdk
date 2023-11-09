@@ -6,6 +6,7 @@ IntO1 = Literal[0, 1]
 
 
 class TrackerType(BiDirectionEnum):
+    """Tracker type enum"""
     KCF = "kcf"
     OPENCV = "opencv"
     CARKALMAN = "carkalman"
@@ -14,6 +15,7 @@ class TrackerType(BiDirectionEnum):
 
 
 class OverlapRemovingType(BiDirectionEnum):
+    """Tracker type enum"""
     BOTH = "both"
     SCORE = "score"
     NONE = "none"
@@ -21,16 +23,9 @@ class OverlapRemovingType(BiDirectionEnum):
 
 class OtherSettings(BaseSettingsSection):
     """
-    Descriptor factory settings.
+    Other section settings.
 
-    Properties:
-
-        - model (int): CNN face descriptor version.
-        - UseMobileNet (bool): mobile Net is faster but less accurate
-        - distance (Distance): distance between descriptors on matching. L1 faster,L2 make better precision.
-        - descriptorCountWarningLevel (float): Threshold,that limits the ratio of created  descriptors to the amount,
-            defined by your liscence. Warning Level When the threshold is exceeded, FSDK prints the warning.
-
+    See details https://docs.visionlabs.ai/sdk/v.5.16.0/sdk/trackengine-handbook/settings/#other-section
     """
 
     sectionName = "other"
@@ -38,17 +33,17 @@ class OtherSettings(BaseSettingsSection):
     @property
     def callbackMode(self) -> Optional[IntO1]:
         """
-        Getter for model
+        Getter for callback mode
 
         Returns:
-            model
+            0, 1
         """
         return self.getValue("callback-mode")
 
     @callbackMode.setter
     def callbackMode(self, value: IntO1) -> None:
         """
-        Setter for model
+        Setter for callback mode
         Args:
             value: new value
         """
@@ -57,17 +52,17 @@ class OtherSettings(BaseSettingsSection):
     @property
     def detectorStep(self) -> Optional[int]:
         """
-        Getter for useMobileNet
+        Getter for detector step.
 
         Returns:
-            useMobileNet
+            detectorStep value
         """
         return self.getValue("detector-step")
 
     @detectorStep.setter
     def detectorStep(self, value: int) -> None:
         """
-        Setter for useMobileNet
+        Setter for detectorStep
         Args:
             value: new value
         """
@@ -76,17 +71,17 @@ class OtherSettings(BaseSettingsSection):
     @property
     def detectorComparer(self) -> Optional[int]:
         """
-        Getter for useMobileNet
+        Getter for detectorComparer
 
         Returns:
-            useMobileNet
+            detectorComparer
         """
         return self.getValue("detector-comparer")
 
     @detectorComparer.setter
     def detectorComparer(self, value: int) -> None:
         """
-        Setter for useMobileNet
+        Setter for detectorComparer
         Args:
             value: new value
         """
@@ -95,17 +90,17 @@ class OtherSettings(BaseSettingsSection):
     @property
     def useOneDetectionMode(self) -> Optional[IntO1]:
         """
-        Getter for useMobileNet
+        Getter for useOneDetectionMode.
 
         Returns:
-            useMobileNet
+            0, 1
         """
         return self.getValue("use-one-detection-mode")
 
     @useOneDetectionMode.setter
     def useOneDetectionMode(self, value: IntO1) -> None:
         """
-        Setter for useMobileNet
+        Setter for useOneDetectionMode
         Args:
             value: new value
         """
@@ -114,17 +109,17 @@ class OtherSettings(BaseSettingsSection):
     @property
     def skipFrames(self) -> Optional[int]:
         """
-        Getter for useMobileNet
+        Getter for skipFrames
 
         Returns:
-            useMobileNet
+            skipFrames
         """
         return self.getValue("skip-frames")
 
     @skipFrames.setter
     def skipFrames(self, value: int) -> None:
         """
-        Setter for useMobileNet
+        Setter for skipFrames
         Args:
             value: new value
         """
@@ -133,17 +128,17 @@ class OtherSettings(BaseSettingsSection):
     @property
     def frgSubtractor(self) -> Optional[IntO1]:
         """
-        Getter for useMobileNet
+        Getter for frgSubtractor
 
         Returns:
-            useMobileNet
+            frgSubtractor
         """
         return self.getValue("frg-subtractor")
 
     @frgSubtractor.setter
     def frgSubtractor(self, value: IntO1) -> None:
         """
-        Setter for useMobileNet
+        Setter for frgSubtractor
         Args:
             value: new value
         """
@@ -152,7 +147,7 @@ class OtherSettings(BaseSettingsSection):
     @property
     def callbackBufferSize(self) -> Optional[int]:
         """
-        Getter for useMobileNet
+        Getter for callbackBufferSize
 
         Returns:
             useMobileNet
@@ -162,7 +157,7 @@ class OtherSettings(BaseSettingsSection):
     @callbackBufferSize.setter
     def callbackBufferSize(self, value: int) -> None:
         """
-        Setter for useMobileNet
+        Setter for callbackBufferSize
         Args:
             value: new value
         """
@@ -171,7 +166,7 @@ class OtherSettings(BaseSettingsSection):
     @property
     def trackingResultsBufferSize(self) -> Optional[int]:
         """
-        Getter for useMobileNet
+        Getter for trackingResultsBufferSize
 
         Returns:
             useMobileNet
@@ -181,7 +176,7 @@ class OtherSettings(BaseSettingsSection):
     @trackingResultsBufferSize.setter
     def trackingResultsBufferSize(self, value: int) -> None:
         """
-        Setter for useMobileNet
+        Setter for trackingResultsBufferSize
         Args:
             value: new value
         """
@@ -190,7 +185,7 @@ class OtherSettings(BaseSettingsSection):
     @property
     def detectorScaling(self) -> Optional[IntO1]:
         """
-        Getter for useMobileNet
+        Getter for detectorScaling
 
         Returns:
             useMobileNet
@@ -200,7 +195,7 @@ class OtherSettings(BaseSettingsSection):
     @detectorScaling.setter
     def detectorScaling(self, value: IntO1) -> None:
         """
-        Setter for useMobileNet
+        Setter for detectorScaling
         Args:
             value: new value
         """
@@ -209,7 +204,7 @@ class OtherSettings(BaseSettingsSection):
     @property
     def scaleResultSize(self) -> Optional[int]:
         """
-        Getter for useMobileNet
+        Getter for scaleResultSize
 
         Returns:
             useMobileNet
@@ -219,7 +214,7 @@ class OtherSettings(BaseSettingsSection):
     @scaleResultSize.setter
     def scaleResultSize(self, value: int) -> None:
         """
-        Setter for useMobileNet
+        Setter for scaleResultSize
         Args:
             value: new value
         """
@@ -228,7 +223,7 @@ class OtherSettings(BaseSettingsSection):
     @property
     def maxDetectionCount(self) -> Optional[int]:
         """
-        Getter for useMobileNet
+        Getter for maxDetectionCount
 
         Returns:
             useMobileNet
@@ -238,7 +233,7 @@ class OtherSettings(BaseSettingsSection):
     @maxDetectionCount.setter
     def maxDetectionCount(self, value: int) -> None:
         """
-        Setter for useMobileNet
+        Setter for maxDetectionCount
         Args:
             value: new value
         """
@@ -247,7 +242,7 @@ class OtherSettings(BaseSettingsSection):
     @property
     def minimalTrackLength(self) -> Optional[int]:
         """
-        Getter for useMobileNet
+        Getter for minimalTrackLength
 
         Returns:
             useMobileNet
@@ -257,7 +252,7 @@ class OtherSettings(BaseSettingsSection):
     @minimalTrackLength.setter
     def minimalTrackLength(self, value: int) -> None:
         """
-        Setter for useMobileNet
+        Setter for minimalTrackLength
         Args:
             value: new value
         """
@@ -266,7 +261,7 @@ class OtherSettings(BaseSettingsSection):
     @property
     def trackerType(self) -> Optional[TrackerType]:
         """
-        Getter for useMobileNet
+        Getter for trackerType
 
         Returns:
             useMobileNet
@@ -279,7 +274,7 @@ class OtherSettings(BaseSettingsSection):
     @trackerType.setter
     def trackerType(self, value: TrackerType) -> None:
         """
-        Setter for useMobileNet
+        Setter for trackerType
         Args:
             value: new value
         """
@@ -288,7 +283,7 @@ class OtherSettings(BaseSettingsSection):
     @property
     def killIntersectedDetections(self) -> Optional[IntO1]:
         """
-        Getter for useMobileNet
+        Getter for killIntersectedDetections
 
         Returns:
             useMobileNet
@@ -298,7 +293,7 @@ class OtherSettings(BaseSettingsSection):
     @killIntersectedDetections.setter
     def killIntersectedDetections(self, value: IntO1) -> None:
         """
-        Setter for useMobileNet
+        Setter for killIntersectedDetections
         Args:
             value: new value
         """
@@ -307,7 +302,7 @@ class OtherSettings(BaseSettingsSection):
     @property
     def killIntersectionValue(self) -> Optional[float]:
         """
-        Getter for useMobileNet
+        Getter for killIntersectionValue
 
         Returns:
             useMobileNet
@@ -317,7 +312,7 @@ class OtherSettings(BaseSettingsSection):
     @killIntersectionValue.setter
     def killIntersectionValue(self, value: float) -> None:
         """
-        Setter for useMobileNet
+        Setter for killIntersectionValue
         Args:
             value: new value
         """
@@ -325,22 +320,27 @@ class OtherSettings(BaseSettingsSection):
 
 
 class FRGSettings(BaseSettingsSection):
+    """
+    Frg section settings.
+
+    See details https://docs.visionlabs.ai/sdk/v.5.16.0/sdk/trackengine-handbook/settings/#frg
+    """
     sectionName = "FRG"
 
     @property
     def useBinaryFrg(self) -> Optional[IntO1]:
         """
-        Getter for useMobileNet
+        Getter for useBinaryFrg
 
         Returns:
-            useMobileNet
+            useBinaryFrg
         """
         return self.getValue("use-binary-frg")
 
     @useBinaryFrg.setter
     def useBinaryFrg(self, value: IntO1) -> None:
         """
-        Setter for useMobileNet
+        Setter for useBinaryFrg
         Args:
             value: new value
         """
@@ -349,17 +349,17 @@ class FRGSettings(BaseSettingsSection):
     @property
     def frgUpdateStep(self) -> Optional[int]:
         """
-        Getter for useMobileNet
+        Getter for frgUpdateStep
 
         Returns:
-            useMobileNet
+            frgUpdateStep
         """
         return self.getValue("frg-update-step")
 
     @frgUpdateStep.setter
     def frgUpdateStep(self, value: int) -> None:
         """
-        Setter for useMobileNet
+        Setter for frgUpdateStep
         Args:
             value: new value
         """
@@ -368,17 +368,17 @@ class FRGSettings(BaseSettingsSection):
     @property
     def frgScaleSize(self) -> Optional[int]:
         """
-        Getter for useMobileNet
+        Getter for frgScaleSize
 
         Returns:
-            useMobileNet
+            frgScaleSize
         """
         return self.getValue("frg-scale-size")
 
     @frgScaleSize.setter
     def frgScaleSize(self, value: int) -> None:
         """
-        Setter for useMobileNet
+        Setter for frgScaleSize
         Args:
             value: new value
         """
@@ -386,6 +386,11 @@ class FRGSettings(BaseSettingsSection):
 
 
 class FaceTrackingSettings(BaseSettingsSection):
+    """
+    Face tracking section settings.
+
+    See details https://docs.visionlabs.ai/sdk/v.5.16.0/sdk/trackengine-handbook/settings/#face-tracking-specific-parameters-section
+    """
     sectionName = "face"
 
     @property
@@ -409,22 +414,27 @@ class FaceTrackingSettings(BaseSettingsSection):
 
 
 class BodyTrackingSettings(BaseSettingsSection):
+    """
+    Body tracking section settings.
+
+    See details https://docs.visionlabs.ai/sdk/v.5.16.0/sdk/trackengine-handbook/settings/#humanbody-tracking-specific-parameters-section
+    """
     sectionName = "human"
 
     @property
     def humanLandmarksDetection(self) -> Optional[IntO1]:
         """
-        Getter for useMobileNet
+        Getter for humanLandmarksDetection
 
         Returns:
-            useMobileNet
+            humanLandmarksDetection
         """
         return self.getValue("human-landmarks-detection")
 
     @humanLandmarksDetection.setter
     def humanLandmarksDetection(self, value: IntO1) -> None:
         """
-        Setter for useMobileNet
+        Setter for humanLandmarksDetection
         Args:
             value: new value
         """
@@ -433,7 +443,7 @@ class BodyTrackingSettings(BaseSettingsSection):
     @property
     def removeOverlappedStrategy(self) -> Optional[OverlapRemovingType]:
         """
-        Getter for useMobileNet
+        Getter for removeOverlappedStrategy
 
         Returns:
             useMobileNet
@@ -446,7 +456,7 @@ class BodyTrackingSettings(BaseSettingsSection):
     @removeOverlappedStrategy.setter
     def removeOverlappedStrategy(self, value: OverlapRemovingType) -> None:
         """
-        Setter for useMobileNet
+        Setter for removeOverlappedStrategy
         Args:
             value: new value
         """
@@ -455,17 +465,17 @@ class BodyTrackingSettings(BaseSettingsSection):
     @property
     def removeHorizontalRatio(self) -> Optional[float]:
         """
-        Getter for useMobileNet
+        Getter for removeHorizontalRatio
 
         Returns:
-            useMobileNet
+            removeHorizontalRatio
         """
         return self.getValue("remove-horizontal-ratio")
 
     @removeHorizontalRatio.setter
     def removeHorizontalRatio(self, value: float) -> None:
         """
-        Setter for useMobileNet
+        Setter for removeHorizontalRatio
         Args:
             value: new value
         """
@@ -474,17 +484,17 @@ class BodyTrackingSettings(BaseSettingsSection):
     @property
     def iouConnectionThreshold(self) -> Optional[float]:
         """
-        Getter for useMobileNet
+        Getter for iouConnectionThreshold
 
         Returns:
-            useMobileNet
+            iouConnectionThreshold
         """
         return self.getValue("iou-connection-threshold")
 
     @iouConnectionThreshold.setter
     def iouConnectionThreshold(self, value: float) -> None:
         """
-        Setter for useMobileNet
+        Setter for iouConnectionThreshold
         Args:
             value: new value
         """
@@ -493,17 +503,17 @@ class BodyTrackingSettings(BaseSettingsSection):
     @property
     def useBodyReid(self) -> Optional[IntO1]:
         """
-        Getter for useMobileNet
+        Getter for useBodyReid
 
         Returns:
-            useMobileNet
+            useBodyReid
         """
         return self.getValue("use-body-reid")
 
     @useBodyReid.setter
     def useBodyReid(self, value: IntO1) -> None:
         """
-        Setter for useMobileNet
+        Setter for useBodyReid
         Args:
             value: new value
         """
@@ -512,17 +522,17 @@ class BodyTrackingSettings(BaseSettingsSection):
     @property
     def bodyReidVersion(self) -> Optional[int]:
         """
-        Getter for useMobileNet
+        Getter for bodyReidVersion
 
         Returns:
-            useMobileNet
+            bodyReidVersion
         """
         return self.getValue("body-reid-version")
 
     @bodyReidVersion.setter
     def bodyReidVersion(self, value: int) -> None:
         """
-        Setter for useMobileNet
+        Setter for bodyReidVersion
         Args:
             value: new value
         """
@@ -531,17 +541,17 @@ class BodyTrackingSettings(BaseSettingsSection):
     @property
     def reidMatchingThreshold(self) -> Optional[float]:
         """
-        Getter for useMobileNet
+        Getter for reidMatchingThreshold
 
         Returns:
-            useMobileNet
+            reidMatchingThreshold
         """
         return self.getValue("reid-matching-threshold")
 
     @reidMatchingThreshold.setter
     def reidMatchingThreshold(self, value: float) -> None:
         """
-        Setter for useMobileNet
+        Setter for reidMatchingThreshold
         Args:
             value: new value
         """
@@ -550,17 +560,17 @@ class BodyTrackingSettings(BaseSettingsSection):
     @property
     def reidMatchingDetectionsCount(self) -> Optional[int]:
         """
-        Getter for useMobileNet
+        Getter for reidMatchingDetectionsCount
 
         Returns:
-            useMobileNet
+            reidMatchingDetectionsCount
         """
         return self.getValue("reid-matching-detections-count")
 
     @reidMatchingDetectionsCount.setter
     def reidMatchingDetectionsCount(self, value: int) -> None:
         """
-        Setter for useMobileNet
+        Setter for reidMatchingDetectionsCount
         Args:
             value: new value
         """
@@ -568,22 +578,27 @@ class BodyTrackingSettings(BaseSettingsSection):
 
 
 class DetectorsSettings(BaseSettingsSection):
+    """
+    Detectors section settings.
+
+    See details https://docs.visionlabs.ai/sdk/v.5.16.0/sdk/trackengine-handbook/settings/#detectors
+    """
     sectionName = "detectors"
 
     @property
     def useFaceDetector(self) -> Optional[IntO1]:
         """
-        Getter for useMobileNet
+        Getter for useFaceDetector
 
         Returns:
-            useMobileNet
+            useFaceDetector
         """
         return self.getValue("use-face-detector")
 
     @useFaceDetector.setter
     def useFaceDetector(self, value: IntO1) -> None:
         """
-        Setter for useMobileNet
+        Setter for useFaceDetector
         Args:
             value: new value
         """
@@ -592,17 +607,17 @@ class DetectorsSettings(BaseSettingsSection):
     @property
     def useBodyDetector(self) -> Optional[IntO1]:
         """
-        Getter for useMobileNet
+        Getter for useBodyDetector
 
         Returns:
-            useMobileNet
+            useBodyDetector
         """
         return self.getValue("use-body-detector")
 
     @useBodyDetector.setter
     def useBodyDetector(self, value: IntO1) -> None:
         """
-        Setter for useMobileNet
+        Setter for useBodyDetector
         Args:
             value: new value
         """
@@ -610,22 +625,27 @@ class DetectorsSettings(BaseSettingsSection):
 
 
 class ExperimentalSettings(BaseSettingsSection):
+    """
+    Experimental section settings.
+
+    See details https://docs.visionlabs.ai/sdk/v.5.16.0/sdk/trackengine-handbook/settings/#detectors
+    """
     sectionName = "experimental"
 
     @property
     def detectMaxBatchSize(self) -> Optional[int]:
         """
-        Getter for useMobileNet
+        Getter for detectMaxBatchSize
 
         Returns:
-            useMobileNet
+            detectMaxBatchSize
         """
         return self.getValue("detect-max-batch-size")
 
     @detectMaxBatchSize.setter
     def detectMaxBatchSize(self, value: int) -> None:
         """
-        Setter for useMobileNet
+        Setter for detectMaxBatchSize
         Args:
             value: new value
         """
@@ -634,17 +654,17 @@ class ExperimentalSettings(BaseSettingsSection):
     @property
     def redetectMaxBatchSize(self) -> Optional[int]:
         """
-        Getter for useMobileNet
+        Getter for redetectMaxBatchSize
 
         Returns:
-            useMobileNet
+            redetectMaxBatchSize
         """
         return self.getValue("redetect-max-batch-size")
 
     @redetectMaxBatchSize.setter
     def redetectMaxBatchSize(self, value: int) -> None:
         """
-        Setter for useMobileNet
+        Setter for redetectMaxBatchSize
         Args:
             value: new value
         """
@@ -653,17 +673,17 @@ class ExperimentalSettings(BaseSettingsSection):
     @property
     def trackerMaxBatchSize(self) -> Optional[int]:
         """
-        Getter for useMobileNet
+        Getter for trackerMaxBatchSize
 
         Returns:
-            useMobileNet
+            trackerMaxBatchSize
         """
         return self.getValue("tracker-max-batch-size")
 
     @trackerMaxBatchSize.setter
     def trackerMaxBatchSize(self, value: int) -> None:
         """
-        Setter for useMobileNet
+        Setter for trackerMaxBatchSize
         Args:
             value: new value
         """
@@ -672,17 +692,17 @@ class ExperimentalSettings(BaseSettingsSection):
     @property
     def reidMaxBatchSize(self) -> Optional[int]:
         """
-        Getter for useMobileNet
+        Getter for reidMaxBatchSize
 
         Returns:
-            useMobileNet
+            reidMaxBatchSize
         """
         return self.getValue("reid-max-batch-size")
 
     @reidMaxBatchSize.setter
     def reidMaxBatchSize(self, value: int) -> None:
         """
-        Setter for useMobileNet
+        Setter for reidMaxBatchSize
         Args:
             value: new value
         """
@@ -690,29 +710,36 @@ class ExperimentalSettings(BaseSettingsSection):
 
 
 class TrackEngineSettingsProvider(BaseSettingsProvider):
+    """TrackEngine settings provider"""
     # default configuration filename.
     defaultConfName = "trackengine.conf"
 
     @property
     def other(self) -> OtherSettings:
+        """Get other section"""
         return OtherSettings(self._coreSettingProvider)
 
     @property
     def faceTracking(self) -> FaceTrackingSettings:
+        """Get face tracking section"""
         return FaceTrackingSettings(self._coreSettingProvider)
 
     @property
     def bodyTracking(self) -> BodyTrackingSettings:
+        """Get body tracking section"""
         return BodyTrackingSettings(self._coreSettingProvider)
 
     @property
     def frg(self) -> FRGSettings:
+        """Get frg section"""
         return FRGSettings(self._coreSettingProvider)
 
     @property
     def detectors(self) -> DetectorsSettings:
+        """Get detectors section"""
         return DetectorsSettings(self._coreSettingProvider)
 
     @property
-    def experimenral(self) -> ExperimentalSettings:
+    def experimental(self) -> ExperimentalSettings:
+        """Get experimental section"""
         return ExperimentalSettings(self._coreSettingProvider)
