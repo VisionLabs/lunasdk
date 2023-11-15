@@ -88,3 +88,17 @@ class TestBasicAttributes(BaseTestClass):
         with pytest.raises(LunaSDKException) as exceptionInfo:
             self.estimator.estimateBatch([])
         self.assertLunaVlError(exceptionInfo, LunaVLError.InvalidSpanSize.format("Invalid span size"))
+
+    def test_async_ags(self):
+        """
+        Test async estimate ags feature
+        """
+
+        task = self.estimator.estimateBatch([self.detection1, self.detection2], asyncEstimate=True)
+        self.assertAsyncBatchEstimation(task, float)
+        estimationsAsync = task.get()
+        estimationsSync = self.estimator.estimateBatch([self.detection1, self.detection2], asyncEstimate=False)
+        assert estimationsAsync == estimationsSync
+        task = self.estimator.estimate(self.detection1, asyncEstimate=True)
+        estimation = task.get()
+        assert isinstance(estimation, float)

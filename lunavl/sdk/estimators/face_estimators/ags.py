@@ -111,13 +111,13 @@ class AGSEstimator(BaseEstimator):
         self,
         detections: Union[List[FaceDetection], List[ImageWithFaceDetection]],
         asyncEstimate: Literal[False] = False,
-    ) -> float:
+    ) -> List[float]:
         ...
 
     @overload
     def estimateBatch(
         self, detections: Union[List[FaceDetection], List[ImageWithFaceDetection]], asyncEstimate: Literal[True]
-    ) -> AsyncTask[float]:
+    ) -> AsyncTask[List[float]]:
         ...
 
     def estimateBatch(
