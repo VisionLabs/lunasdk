@@ -55,7 +55,7 @@ class AGSEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     @overload
-    def estimate(
+    def estimate(  # type: ignore
         self,
         detection: Optional[FaceDetection] = None,
         imageWithFaceDetection: ImageWithFaceDetection = None,
@@ -72,7 +72,7 @@ class AGSEstimator(BaseEstimator):
     ) -> AsyncTask[float]:
         ...
 
-    def estimate(  # type: ignore
+    def estimate(
         self,
         detection: Optional[FaceDetection] = None,
         imageWithFaceDetection: Optional[ImageWithFaceDetection] = None,
@@ -107,7 +107,7 @@ class AGSEstimator(BaseEstimator):
         return postProcessing(error, estimations)
 
     @overload
-    def estimateBatch(
+    def estimateBatch(  # type: ignore
         self,
         detections: Union[List[FaceDetection], List[ImageWithFaceDetection]],
         asyncEstimate: Literal[False] = False,

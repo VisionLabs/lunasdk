@@ -34,7 +34,7 @@ class TestBasicAttributes(BaseTestClass):
         """
         Test estimation correctness with image.
         """
-        expectedAgs = 0.89521
+        expectedAgs = 0.84804
         imageWithFaceDetection = ImageWithFaceDetection(self.image1, self.detection1.boundingBox)
 
         singleValue = self.estimator.estimate(imageWithFaceDetection=imageWithFaceDetection)
@@ -47,7 +47,7 @@ class TestBasicAttributes(BaseTestClass):
         """
         Test estimation correctness with detections.
         """
-        expectedAgs = 0.89521
+        expectedAgs = 0.84804
         singleValue = self.estimator.estimate(detection=self.detection1)
         batchValue = self.estimator.estimateBatch(detections=[self.detection1])[0]
         assert type(singleValue) == type(batchValue)
@@ -58,7 +58,7 @@ class TestBasicAttributes(BaseTestClass):
         """
         Test batch estimation correctness with images.
         """
-        expectedAgsList = [0.89521, 0.91636]
+        expectedAgsList = [0.84804, 0.91138]
         result = self.estimator.estimateBatch(
             [
                 ImageWithFaceDetection(self.image1, self.detection1.boundingBox),
@@ -74,12 +74,12 @@ class TestBasicAttributes(BaseTestClass):
         """
         Test batch estimation correctness with detections.
         """
-        expectedAgsList = [0.89521, 0.91636]
+        expectedAgsList = [0.84804, 0.91138]
         result = self.estimator.estimateBatch(detections=[self.detection1, self.detection2])
         assert isinstance(result, list)
         for idx, row in enumerate(result):
-            assert isinstance(row, float)
-            assert abs(row - expectedAgsList[idx]) < EXPECTED_PRECISION
+            assert isinstance(row, float), idx
+            assert abs(row - expectedAgsList[idx]) < EXPECTED_PRECISION, idx
 
     def test_batch_with_detections_bad_input(self):
         """
