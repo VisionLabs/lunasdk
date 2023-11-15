@@ -2,7 +2,7 @@ from typing import Optional, Union, TypeVar, Generic, Literal, List
 
 from FaceEngine.TrackEngine import FaceTrackData, BodyTrackData, PyTrackingResult, HumanTrackInfo
 
-from lunavl.sdk.detectors.bodydetector import BodyDetection
+from lunavl.sdk.detectors.bodydetector import BodyDetection, Landmarks17
 from lunavl.sdk.detectors.facedetector import Landmarks5, FaceDetection
 from lunavl.sdk.image_utils.geometry import Rect
 from lunavl.sdk.image_utils.image import VLImage
@@ -36,15 +36,15 @@ class HumanTrackingParams:
     """
 
     def __init__(
-            self,
-            inactiveTracksLifetime: Optional[int] = None,
-            IOUConnectionThreshold: Optional[float] = None,
-            reIDMatchingDetectionsCount: Optional[int] = None,
-            reIDMatchingThreshold: Optional[float] = None,
-            removeHorizontalRatio: Optional[float] = None,
-            removeOverlappedStrategy: Optional[Literal["none", "both", "score"]] = None,
-            *,
-            coreParams: Union[te.HumanTrackingStreamParamsOpt, te.HumanTrackingStreamParams] = None,
+        self,
+        inactiveTracksLifetime: Optional[int] = None,
+        IOUConnectionThreshold: Optional[float] = None,
+        reIDMatchingDetectionsCount: Optional[int] = None,
+        reIDMatchingThreshold: Optional[float] = None,
+        removeHorizontalRatio: Optional[float] = None,
+        removeOverlappedStrategy: Optional[Literal["none", "both", "score"]] = None,
+        *,
+        coreParams: Union[te.HumanTrackingStreamParamsOpt, te.HumanTrackingStreamParams] = None,
     ):
         """
 
@@ -124,21 +124,21 @@ class StreamParams:
     """
 
     def __init__(
-            self,
-            callbackBufferSize: Optional[int] = None,
-            detectorScaling: Optional[bool] = None,
-            detectorStep: Optional[int] = None,
-            framesBufferSize: Optional[int] = None,
-            roi: Optional[Rect] = None,
-            humanTrackingParams: Optional[HumanTrackingParams] = None,
-            killIntersectedIOUThreshold: Optional[float] = None,
-            minimalTrackLength: Optional[int] = None,
-            scaledSize: Optional[int] = None,
-            skipFrames: Optional[int] = None,
-            trackingResultsBufferSize: Optional[int] = None,
-            useFrg: Optional[bool] = None,
-            *,
-            coreParams: Union[te.StreamParamsOpt, te.StreamParams] = None,
+        self,
+        callbackBufferSize: Optional[int] = None,
+        detectorScaling: Optional[bool] = None,
+        detectorStep: Optional[int] = None,
+        framesBufferSize: Optional[int] = None,
+        roi: Optional[Rect] = None,
+        humanTrackingParams: Optional[HumanTrackingParams] = None,
+        killIntersectedIOUThreshold: Optional[float] = None,
+        minimalTrackLength: Optional[int] = None,
+        scaledSize: Optional[int] = None,
+        skipFrames: Optional[int] = None,
+        trackingResultsBufferSize: Optional[int] = None,
+        useFrg: Optional[bool] = None,
+        *,
+        coreParams: Union[te.StreamParamsOpt, te.StreamParams] = None,
     ):
         """
 
@@ -314,7 +314,7 @@ class BaseTrackObject(Generic[TrackedObject, TrackedDetectionObject]):
             "bbox": self.bbox.asDict(),
             "first_frame": self.firstFrame,
             "last_detection_frame": self.lastDetectionFrame,
-            "detection": self.detection.asDict() if self.detection else None
+            "detection": self.detection.asDict() if self.detection else None,
         }
 
     def __repr__(self) -> str:
@@ -354,7 +354,7 @@ class BodyTrack(BaseTrackObject[BodyTrackData, BodyDetection]):
         body = BodyDetection(coreBody, self.image)
         coreLandmarks = self.coreEstimation.landmarks
         if coreLandmarks:
-            body.landmarks17 = Landmarks5(coreLandmarks)
+            body.landmarks17 = Landmarks17(coreLandmarks)
         return body
 
 
@@ -399,7 +399,7 @@ class HumanTrack:
         return {
             "track_id": self.coreEstimation.trackId,
             "face": self.face.asDict() if self.face else None,
-            "body": self.body.asDict() if self.body else None
+            "body": self.body.asDict() if self.body else None,
         }
 
     def __repr__(self) -> str:

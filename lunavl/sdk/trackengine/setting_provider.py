@@ -7,6 +7,7 @@ IntO1 = Literal[0, 1]
 
 class TrackerType(BiDirectionEnum):
     """Tracker type enum"""
+
     KCF = "kcf"
     OPENCV = "opencv"
     CARKALMAN = "carkalman"
@@ -16,6 +17,7 @@ class TrackerType(BiDirectionEnum):
 
 class OverlapRemovingType(BiDirectionEnum):
     """Tracker type enum"""
+
     BOTH = "both"
     SCORE = "score"
     NONE = "none"
@@ -325,6 +327,7 @@ class FRGSettings(BaseSettingsSection):
 
     See details https://docs.visionlabs.ai/sdk/v.5.16.0/sdk/trackengine-handbook/settings/#frg
     """
+
     sectionName = "FRG"
 
     @property
@@ -391,6 +394,7 @@ class FaceTrackingSettings(BaseSettingsSection):
 
     See details https://docs.visionlabs.ai/sdk/v.5.16.0/sdk/trackengine-handbook/settings/#face-tracking-specific-parameters-section
     """
+
     sectionName = "face"
 
     @property
@@ -419,6 +423,7 @@ class BodyTrackingSettings(BaseSettingsSection):
 
     See details https://docs.visionlabs.ai/sdk/v.5.16.0/sdk/trackengine-handbook/settings/#humanbody-tracking-specific-parameters-section
     """
+
     sectionName = "human"
 
     @property
@@ -583,6 +588,7 @@ class DetectorsSettings(BaseSettingsSection):
 
     See details https://docs.visionlabs.ai/sdk/v.5.16.0/sdk/trackengine-handbook/settings/#detectors
     """
+
     sectionName = "detectors"
 
     @property
@@ -630,6 +636,7 @@ class ExperimentalSettings(BaseSettingsSection):
 
     See details https://docs.visionlabs.ai/sdk/v.5.16.0/sdk/trackengine-handbook/settings/#detectors
     """
+
     sectionName = "experimental"
 
     @property
@@ -711,6 +718,7 @@ class ExperimentalSettings(BaseSettingsSection):
 
 class TrackEngineSettingsProvider(BaseSettingsProvider):
     """TrackEngine settings provider"""
+
     # default configuration filename.
     defaultConfName = "trackengine.conf"
 

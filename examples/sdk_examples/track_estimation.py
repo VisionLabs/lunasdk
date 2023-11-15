@@ -4,49 +4,56 @@ An mouth state estimation example
 import asyncio
 import pprint
 
+from lunavl.sdk.faceengine.engine import VLFaceEngine
+from lunavl.sdk.image_utils.image import VLImage
 from lunavl.sdk.trackengine.engine import VLTrackEngine
+from lunavl.sdk.trackengine.setting_provider import TrackEngineSettingsProvider
 from lunavl.sdk.trackengine.structures import Frame
 from resources import EXAMPLE_O
 
-from lunavl.sdk.faceengine.engine import VLFaceEngine
-from lunavl.sdk.faceengine.setting_provider import DetectorType
-from lunavl.sdk.image_utils.image import VLImage
 
-
-def estimateFaceTrack():
+def estimateHumanTrack(detectFace=1, detectBody=1):
     """
-    Estimate emotion from a warped image.
+    Estimate human track
     """
     image = VLImage.load(filename=EXAMPLE_O)
     faceEngine = VLFaceEngine()
-    trackengine = VLTrackEngine(faceEngine)
+    trackEngineProvider = TrackEngineSettingsProvider()
+    trackEngineProvider.detectors.useFaceDetector = detectFace
+    trackEngineProvider.detectors.useBodyDetector = detectBody
+    trackengine = VLTrackEngine(faceEngine, trackEngineConf=trackEngineProvider)
     streamId = trackengine.registerStream()
     res = trackengine.track([Frame(image, 1, streamId)])
     pprint.pprint(res)
+    res = trackengine.track([Frame(image, 2, streamId)])
+    pprint.pprint(res)
+    res = trackengine.closeStream(streamId)
+    pprint.pprint(res)
 
 
-# async def asyncEstimateMouthState():
-#     """
-#     Async mouth state estimation example.
-#     """
-#     image = VLImage.load(filename=EXAMPLE_O)
-#     faceEngine = VLFaceEngine()
-#     detector = faceEngine.createFaceDetector(DetectorType.FACE_DET_V3)
-#     faceDetection = detector.detectOne(image)
-#     warper = faceEngine.createFaceWarper()
-#     warp = warper.warp(faceDetection)
-#
-#     mouthEstimator = faceEngine.createMouthEstimator()
-#     mouth = await mouthEstimator.estimate(warp.warpedImage, asyncEstimate=True)
-#     pprint.pprint(mouth.asDict())
-#
-#     task1 = mouthEstimator.estimate(warp.warpedImage, asyncEstimate=True)
-#     task2 = mouthEstimator.estimate(warp.warpedImage, asyncEstimate=True)
-#
-#     for task in (task1, task2):
-#         pprint.pprint(task.get())
+async def asyncEstimateHumanTrack():
+    """
+    Async estimate human track
+    """
+    image = VLImage.load(filename=EXAMPLE_O)
+    faceEngine = VLFaceEngine()
+    trackEngineProvider = TrackEngineSettingsProvider()
+    trackEngineProvider.detectors.useFaceDetector = 1
+    trackEngineProvider.detectors.useBodyDetector = 1
+    trackengine = VLTrackEngine(faceEngine, trackEngineConf=trackEngineProvider)
+    streamId = trackengine.registerStream()
+    res = await trackengine.track([Frame(image, 1, streamId)], asyncEstimate=True)
+    pprint.pprint(res)
+    res = trackengine.track([Frame(image, 2, streamId)], asyncEstimate=True).get()
+    pprint.pprint(res)
+    res = trackengine.closeStream(streamId)
+    pprint.pprint(res)
+
+
 #
 
 if __name__ == "__main__":
-    estimateFaceTrack()
-    # asyncio.run(asyncEstimateMouthState())
+    estimateHumanTrack(0, 1)
+    estimateHumanTrack(1, 0)
+    estimateHumanTrack(1, 1)
+    asyncio.run(asyncEstimateHumanTrack())
