@@ -77,7 +77,7 @@ class AGSEstimator(BaseEstimator):
         detection: Optional[FaceDetection] = None,
         imageWithFaceDetection: Optional[ImageWithFaceDetection] = None,
         asyncEstimate: bool = False,
-    ) -> float:
+    ) -> Union[float, AsyncTask[float]]:
         """
         Estimate ags for single image/detection.
 
@@ -124,7 +124,7 @@ class AGSEstimator(BaseEstimator):
         self,
         detections: Union[List[FaceDetection], List[ImageWithFaceDetection]],
         asyncEstimate: bool = False,
-    ) -> List[float]:
+    ) -> Union[List[float], AsyncTask[List[float]]]:
         """
         Estimate ags for list of detections.
 
