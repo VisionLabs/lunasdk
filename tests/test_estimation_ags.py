@@ -26,7 +26,7 @@ class TestBasicAttributes(BaseTestClass):
         """Load warps."""
         # estimator to call
         cls.estimator: AGSEstimator = BaseTestClass.faceEngine.createAGSEstimator()
-        detector = VLFaceEngine().createFaceDetector(DetectorType.FACE_DET_V1)
+        detector = VLFaceEngine().createFaceDetector(DetectorType.FACE_DET_V3)
         cls.detection1 = detector.detectOne(cls.image1)
         cls.detection2 = detector.detectOne(cls.image2)
 
