@@ -2,16 +2,51 @@
 
 See ags_.
 """
-from typing import List, Optional, Union, overload, Literal
+from typing import List, Literal, Optional, Union, overload
 
 from FaceEngine import FSDKErrorResult  # pylint: disable=E0611,E0401
 
 from lunavl.sdk.detectors.facedetector import FaceDetection
 from lunavl.sdk.errors.exceptions import assertError
 
+from ...async_task import AsyncTask, DefaultPostprocessingFactory
 from ..base import BaseEstimator, ImageWithFaceDetection
 from ..estimators_utils.extractor_utils import validateInputByBatchEstimator
 from ...async_task import AsyncTask, DefaultPostprocessingFactory
+
+
+def postProcessing(
+    error: FSDKErrorResult,
+    estimation: float,
+) -> float:
+    """
+    Postprocessing single core estimation
+    Args:
+        error: estimation error
+        estimation: core estimation
+
+    Returns:
+        estimation
+    """
+    assertError(error)
+    return estimation
+
+
+def postProcessingBatch(
+    error: FSDKErrorResult,
+    estimations: List[float],
+) -> List[float]:
+    """
+    Postprocessing batch core estimations
+    Args:
+        error: estimation error
+        estimations: core estimations
+
+    Returns:
+        list of estimations
+    """
+    assertError(error)
+    return estimations
 
 
 def postProcessing(
@@ -54,7 +89,7 @@ class AGSEstimator(BaseEstimator):
     """
 
     #  pylint: disable=W0221
-    @overload
+    @overload  # type: ignore
     def estimate(
         self,
         detection: Optional[FaceDetection] = None,
@@ -72,12 +107,12 @@ class AGSEstimator(BaseEstimator):
     ) -> AsyncTask[float]:
         ...
 
-    def estimate(  # type: ignore
+    def estimate(
         self,
         detection: Optional[FaceDetection] = None,
         imageWithFaceDetection: Optional[ImageWithFaceDetection] = None,
         asyncEstimate: bool = False,
-    ) -> float:
+    ) -> Union[float, AsyncTask[float]]:
         """
         Estimate ags for single image/detection.
 
@@ -106,25 +141,25 @@ class AGSEstimator(BaseEstimator):
         error, estimations = self._coreEstimator.estimate(coreImage, bbox)
         return postProcessing(error, estimations)
 
-    @overload
+    @overload  # type: ignore
     def estimateBatch(
         self,
         detections: Union[List[FaceDetection], List[ImageWithFaceDetection]],
         asyncEstimate: Literal[False] = False,
-    ) -> float:
+    ) -> List[float]:
         ...
 
     @overload
     def estimateBatch(
         self, detections: Union[List[FaceDetection], List[ImageWithFaceDetection]], asyncEstimate: Literal[True]
-    ) -> AsyncTask[float]:
+    ) -> AsyncTask[List[float]]:
         ...
 
     def estimateBatch(
         self,
         detections: Union[List[FaceDetection], List[ImageWithFaceDetection]],
         asyncEstimate: bool = False,
-    ) -> List[float]:
+    ) -> Union[List[float], AsyncTask[List[float]]]:
         """
         Estimate ags for list of detections.
 
