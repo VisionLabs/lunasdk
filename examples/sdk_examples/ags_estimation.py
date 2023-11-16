@@ -1,6 +1,7 @@
 """
 An approximate garbage score estimation example
 """
+import asyncio
 import pprint
 
 from resources import EXAMPLE_1, EXAMPLE_O
@@ -38,5 +39,24 @@ def estimateAGS():
     pprint.pprint(agsEstimator.estimateBatch(detections=[faceDetection, faceDetection2]))
 
 
+async def asyncEstimateAGS():
+    """
+    Async estimate AGS.
+    """
+    image = VLImage.load(filename=EXAMPLE_O)
+    faceEngine = VLFaceEngine()
+    detector = faceEngine.createFaceDetector(DetectorType.FACE_DET_V3)
+    faceDetection = await detector.detectOne(image, asyncEstimate=True)
+
+    agsEstimator = faceEngine.createAGSEstimator()
+    pprint.pprint(await agsEstimator.estimate(faceDetection, asyncEstimate=True))
+
+    image2 = VLImage.load(filename=EXAMPLE_1)
+    faceDetection2 = detector.detectOne(image2, asyncEstimate=True).get()
+
+    pprint.pprint(agsEstimator.estimateBatch(detections=[faceDetection, faceDetection2], asyncEstimate=True).get())
+
+
 if __name__ == "__main__":
     estimateAGS()
+    asyncio.run(asyncEstimateAGS())
