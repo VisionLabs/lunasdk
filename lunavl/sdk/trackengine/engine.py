@@ -1,11 +1,11 @@
-from typing import Optional, Union, Dict, TypeVar, overload, Literal, List
+from typing import Dict, List, Literal, Optional, TypeVar, Union, overload
 
 import TrackEngine as te
 
-from .setting_provider import TrackEngineSettingsProvider
-from .structures import Frame, StreamParams, TrackingResult
 from ..async_task import AsyncTask, DefaultPostprocessingFactory
 from ..faceengine.engine import VLFaceEngine
+from .setting_provider import TrackEngineSettingsProvider
+from .structures import Frame, StreamParams, TrackingResult
 
 TrackedObject = TypeVar("TrackedObject")
 

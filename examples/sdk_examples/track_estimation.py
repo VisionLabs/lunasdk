@@ -4,12 +4,13 @@ An mouth state estimation example
 import asyncio
 import pprint
 
+from resources import EXAMPLE_O
+
 from lunavl.sdk.faceengine.engine import VLFaceEngine
 from lunavl.sdk.image_utils.image import VLImage
 from lunavl.sdk.trackengine.engine import VLTrackEngine
 from lunavl.sdk.trackengine.setting_provider import TrackEngineSettingsProvider
 from lunavl.sdk.trackengine.structures import Frame
-from resources import EXAMPLE_O
 
 
 def estimateHumanTrack(detectFace=1, detectBody=1):

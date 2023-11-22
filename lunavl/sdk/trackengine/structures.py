@@ -1,12 +1,12 @@
-from typing import Optional, Union, TypeVar, Generic, Literal, List
+from typing import Generic, List, Literal, Optional, TypeVar, Union
 
-from FaceEngine.TrackEngine import FaceTrackData, BodyTrackData, PyTrackingResult, HumanTrackInfo
+from FaceEngine import Face, Human, Image, TrackEngine as te
+from FaceEngine.TrackEngine import BodyTrackData, FaceTrackData, HumanTrackInfo, PyTrackingResult
 
 from lunavl.sdk.detectors.bodydetector import BodyDetection, Landmarks17
-from lunavl.sdk.detectors.facedetector import Landmarks5, FaceDetection
+from lunavl.sdk.detectors.facedetector import FaceDetection, Landmarks5
 from lunavl.sdk.image_utils.geometry import Rect
 from lunavl.sdk.image_utils.image import VLImage
-from FaceEngine import TrackEngine as te, Image, Face, Human
 
 
 class Frame:

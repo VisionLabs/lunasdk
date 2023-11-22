@@ -1,4 +1,4 @@
-from typing import Optional, Literal
+from typing import Literal, Optional
 
 from lunavl.sdk.faceengine.setting_provider import BaseSettingsProvider, BaseSettingsSection, BiDirectionEnum
 

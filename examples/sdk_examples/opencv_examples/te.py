@@ -8,9 +8,8 @@ import cv2  # pylint: disable=E0611,E0401
 
 from lunavl.sdk.detectors.facedetector import FaceLandmarks
 from lunavl.sdk.faceengine.engine import VLFaceEngine
-from lunavl.sdk.trackengine.engine import VLTrackEngine
 from lunavl.sdk.image_utils.image import VLImage
-
+from lunavl.sdk.trackengine.engine import VLTrackEngine
 from lunavl.sdk.trackengine.structures import Frame, TrackingResult
 
 
