@@ -418,7 +418,7 @@ class TrackingResult:
 
     def __init__(self, coreResult: PyTrackingResult):
         self.coreResult = coreResult
-        self._humanTracks = None
+        self._humanTracks: Optional[List[HumanTrack]] = None
 
     @property
     def image(self) -> VLImage:

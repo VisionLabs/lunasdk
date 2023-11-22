@@ -8,45 +8,9 @@ from FaceEngine import FSDKErrorResult  # pylint: disable=E0611,E0401
 
 from lunavl.sdk.detectors.facedetector import FaceDetection
 from lunavl.sdk.errors.exceptions import assertError
-
-from ...async_task import AsyncTask, DefaultPostprocessingFactory
 from ..base import BaseEstimator, ImageWithFaceDetection
 from ..estimators_utils.extractor_utils import validateInputByBatchEstimator
-from ...async_task import AsyncTask, DefaultPostprocessingFactory
-
-
-def postProcessing(
-    error: FSDKErrorResult,
-    estimation: float,
-) -> float:
-    """
-    Postprocessing single core estimation
-    Args:
-        error: estimation error
-        estimation: core estimation
-
-    Returns:
-        estimation
-    """
-    assertError(error)
-    return estimation
-
-
-def postProcessingBatch(
-    error: FSDKErrorResult,
-    estimations: List[float],
-) -> List[float]:
-    """
-    Postprocessing batch core estimations
-    Args:
-        error: estimation error
-        estimations: core estimations
-
-    Returns:
-        list of estimations
-    """
-    assertError(error)
-    return estimations
+from ...async_task import AsyncTask
 
 
 def postProcessing(
