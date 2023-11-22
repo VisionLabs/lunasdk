@@ -172,7 +172,8 @@ class StreamParams:
         self.coreStreamParamsOpt.detector_scaling_opt = detectorScaling
         self.coreStreamParamsOpt.detector_step_opt = detectorStep
         self.coreStreamParamsOpt.frames_buffer_size_opt = framesBufferSize
-        self.coreStreamParamsOpt.human_relative_ROI_opt = roi.coreRectF
+        if roi:
+            self.coreStreamParamsOpt.human_relative_ROI_opt = roi.coreRectF
         if humanTrackingParams:
             self.coreStreamParamsOpt.human_tracking_params = humanTrackingParams.coreHumanTrackingParams
         self.coreStreamParamsOpt.kill_intersected_IOU_threshold_opt = killIntersectedIOUThreshold
@@ -293,17 +294,17 @@ class BaseTrackObject(Generic[TrackedObject, TrackedDetectionObject]):
     @property
     def bbox(self):
         """Object bbox. It is a detector or tracker work result"""
-        return Rect.fromCoreRect(self.coreEstimation.detection.getRawRect())
+        return Rect.fromCoreRect(self.coreEstimation.detection.getRawRect())  # type: ignore
 
     @property
     def lastDetectionFrame(self) -> int:
         """Last frame with detection"""
-        return self.coreEstimation.lastDetectionFrameId
+        return self.coreEstimation.lastDetectionFrameId  # type: ignore
 
     @property
     def firstFrame(self) -> int:
         """First frame with detection"""
-        return self.coreEstimation.firstFrameId
+        return self.coreEstimation.firstFrameId  # type: ignore
 
     @property
     def detection(self) -> TrackedObject | None:
@@ -314,7 +315,7 @@ class BaseTrackObject(Generic[TrackedObject, TrackedDetectionObject]):
             "bbox": self.bbox.asDict(),
             "first_frame": self.firstFrame,
             "last_detection_frame": self.lastDetectionFrame,
-            "detection": self.detection.asDict() if self.detection else None,
+            "detection": self.detection.asDict() if self.detection else None,  # type: ignore
         }
 
     def __repr__(self) -> str:
