@@ -44,6 +44,7 @@ def test_simple_te_usage():
     firstDetection = track[0].humanTracks[0].face.detection.boundingBox.rect
     prevDetection = firstDetection
     for idx, trackDetection in enumerate(track[1:]):
+        assert trackDetection.humanTracks[0].face.detection is not None, idx
         detection = trackDetection.humanTracks[0].face.detection.boundingBox.rect
 
         assert abs(detection.center.x - prevDetection.center.x) < 40, idx + 1
