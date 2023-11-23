@@ -5,15 +5,15 @@ import asyncio
 from asyncio import Queue
 
 import cv2  # pylint: disable=E0611,E0401
+from numpy import ndarray
 
-from lunavl.sdk.detectors.facedetector import FaceLandmarks
 from lunavl.sdk.faceengine.engine import VLFaceEngine
 from lunavl.sdk.image_utils.image import VLImage
 from lunavl.sdk.trackengine.engine import VLTrackEngine
 from lunavl.sdk.trackengine.structures import Frame, TrackingResult
 
 
-def drawTrackBoxes(frame, tracks: TrackingResult):
+def drawTrackBoxes(frame: ndarray, tracks: TrackingResult):
     """Draw bboxes on frame"""
 
     def drawTrack(bbox):
@@ -57,10 +57,10 @@ async def processVideo(videoFile: str, queue: Queue):
     frameNumber = 1
     while True:
         # Capture frame-by-frame
-        ret, frame = await asyncio.to_thread(cap.read)
+        ret, cvFrame = await asyncio.to_thread(cap.read)
         if not ret:
             break
-        image = VLImage(frame)
+        image = VLImage(cvFrame)
         frame = Frame(image, frameNumber, streamId=streamId)
         trackingResults = await trackEngine.track([frame], asyncEstimate=True)
         if trackingResults:

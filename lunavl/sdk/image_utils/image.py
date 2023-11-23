@@ -153,7 +153,7 @@ class VLImage:
 
     def __init__(
         self,
-        body: Union[bytes, bytearray, PilImage, CoreImage],
+        body: Union[bytes, bytearray, PilImage, CoreImage, np.ndarray],
         colorFormat: Optional[ColorFormat] = None,
         filename: str = "",
     ):
