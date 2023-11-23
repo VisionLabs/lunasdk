@@ -307,7 +307,7 @@ class BaseTrackObject(Generic[TrackedObject, TrackedDetectionObject]):
         self.image = image
 
     @property
-    def bbox(self):
+    def bbox(self) -> Rect:
         """Object bbox. It is a detector or tracker work result"""
         return Rect.fromCoreRect(self.coreEstimation.detection.getRawRect())  # type: ignore
 
