@@ -1,7 +1,14 @@
 from typing import Generic, List, Literal, Optional, TypeVar, Union
 
 from FaceEngine import Face, Human, Image, TrackEngine as te
-from FaceEngine.TrackEngine import BodyTrackData, FaceTrackData, HumanTrackInfo, PyTrackingResult
+from FaceEngine.TrackEngine import (
+    BodyTrackData,
+    FaceTrackData,
+    HumanTrackInfo,
+    PyTrackingResult,
+    HumanTrackingRemoveOverlappedStrategyType,
+    HumanTrackingStreamParamsOpt,
+)
 
 from lunavl.sdk.detectors.bodydetector import BodyDetection, Landmarks17
 from lunavl.sdk.detectors.facedetector import FaceDetection, Landmarks5
@@ -32,7 +39,7 @@ class Frame:
 
 def _getOptionalValue(attr):
     if attr.isValid():
-        return attr.value
+        return attr.value()
     return None
 
 
@@ -49,11 +56,11 @@ class HumanTrackingParams:
     def __init__(
         self,
         inactiveTracksLifetime: Optional[int] = None,
-        IOUConnectionThreshold: Optional[float] = None,
+        iouConnectionThreshold: Optional[float] = None,
         reIDMatchingDetectionsCount: Optional[int] = None,
         reIDMatchingThreshold: Optional[float] = None,
         removeHorizontalRatio: Optional[float] = None,
-        removeOverlappedStrategy: Optional[Literal["none", "both", "score"]] = None,
+        removeOverlappedStrategy: Optional[Literal["NONE", "BOTH", "SCORE"]] = None,
         *,
         coreParams: Union[te.HumanTrackingStreamParamsOpt, te.HumanTrackingStreamParams] = None,
     ):
@@ -62,8 +69,8 @@ class HumanTrackingParams:
         Args:
             inactiveTracksLifetime: lifetime of inactive body tracks, which are used for reID. It's measured in
               frames count and used for matching tracks to each other
-            IOUConnectionThreshold: IOU value threshold, used for matching tracks and detections
-            reIDMatchingDetectionsCount: ount of detections, that track must have to be matched by reID
+            iouConnectionThreshold: IOU value threshold, used for matching tracks and detections
+            reIDMatchingDetectionsCount: count of detections, that track must have to be matched by reID
             reIDMatchingThreshold: reID value threshold, used for matching tracks to each other
             removeHorizontalRatio: width to height ratio threshold, used for removing horizontal detections
             removeOverlappedStrategy: strategy, used for removing overlapped detections after (re)detect
@@ -73,12 +80,14 @@ class HumanTrackingParams:
             self.coreHumanTrackingParams = coreParams
         else:
             self.coreHumanTrackingParams = te.HumanTrackingStreamParamsOpt()
-        _setOptionalValue(self.coreHumanTrackingParams.inactiveRracksLifetimeOpt, inactiveTracksLifetime)
-        _setOptionalValue(self.coreHumanTrackingParams.iouConnectionThresholdOpt, IOUConnectionThreshold)
-        self.coreHumanTrackingParams.reIDMatchingDetectionsCountOpt = reIDMatchingDetectionsCount
-        self.coreHumanTrackingParams.reIDMatchingThresholdOpt = reIDMatchingThreshold
-        self.coreHumanTrackingParams.removeHorizontalRatioOpt = removeHorizontalRatio
-        self.coreHumanTrackingParams.removeOverlappedStrategyOpt = removeOverlappedStrategy
+        _setOptionalValue(self.coreHumanTrackingParams.inactiveTracksLifetimeOpt, inactiveTracksLifetime)
+        _setOptionalValue(self.coreHumanTrackingParams.iouConnectionThresholdOpt, iouConnectionThreshold)
+        _setOptionalValue(self.coreHumanTrackingParams.reIDMatchingDetectionsCountOpt, reIDMatchingDetectionsCount)
+        _setOptionalValue(self.coreHumanTrackingParams.reIDMatchingThresholdOpt, reIDMatchingThreshold)
+        _setOptionalValue(self.coreHumanTrackingParams.removeHorizontalRatioOpt, removeHorizontalRatio)
+        if removeOverlappedStrategy:
+            ros = getattr(HumanTrackingRemoveOverlappedStrategyType, removeOverlappedStrategy)
+            self.coreHumanTrackingParams.removeOverlappedStrategyOpt.set(ros)
 
     @property
     def inactiveTracksLifetime(self) -> Optional[int]:
@@ -89,11 +98,11 @@ class HumanTrackingParams:
         _setOptionalValue(self.coreHumanTrackingParams.inactiveTracksLifetimeOpt, value)
 
     @property
-    def IOUConnectionThreshold(self) -> Optional[float]:
+    def iouConnectionThreshold(self) -> Optional[float]:
         return _getOptionalValue(self.coreHumanTrackingParams.iouConnectionThresholdOpt)
 
-    @IOUConnectionThreshold.setter
-    def IOUConnectionThreshold(self, value: float):
+    @iouConnectionThreshold.setter
+    def iouConnectionThreshold(self, value: float):
         _setOptionalValue(self.coreHumanTrackingParams.iouConnectionThresholdOpt, value)
 
     @property
@@ -122,11 +131,17 @@ class HumanTrackingParams:
 
     @property
     def removeOverlappedStrategy(self) -> Optional[str]:
-        return _getOptionalValue(self.coreHumanTrackingParams.removeOverlappedStrategyOpt)
+        value = _getOptionalValue(self.coreHumanTrackingParams.removeOverlappedStrategyOpt)
+        if value:
+            return value.name
 
     @removeOverlappedStrategy.setter
     def removeOverlappedStrategy(self, value: str):
-        _setOptionalValue(self.coreHumanTrackingParams.removeOverlappedStrategyOpt, value)
+        if value:
+            ros = getattr(HumanTrackingRemoveOverlappedStrategyType, value)
+        else:
+            ros = None
+        _setOptionalValue(self.coreHumanTrackingParams.removeOverlappedStrategyOpt, ros)
 
 
 class StreamParams:
@@ -187,7 +202,7 @@ class StreamParams:
         if roi:
             _setOptionalValue(self.coreStreamParamsOpt.humanRelativeROIOpt, roi.coreRectF)
         if humanTrackingParams:
-            _setOptionalValue(self.coreStreamParamsOpt.humanTrackingParams, humanTrackingParams.coreHumanTrackingParams)
+            self.coreStreamParamsOpt.humanTrackingParams = humanTrackingParams.coreHumanTrackingParams
         _setOptionalValue(self.coreStreamParamsOpt.killIntersectedIOUThresholdOpt, killIntersectedIOUThreshold)
         _setOptionalValue(self.coreStreamParamsOpt.minimalTrackLengthOpt, minimalTrackLength)
         _setOptionalValue(self.coreStreamParamsOpt.scaledSizeOpt, scaledSize)
@@ -231,7 +246,7 @@ class StreamParams:
     def roi(self) -> Optional[Rect]:
         rect = _getOptionalValue(self.coreStreamParamsOpt.humanRelativeROIOpt)
         if rect is not None:
-            return Rect.fromCoreRect(rect())
+            return Rect.fromCoreRect(rect)
         return None
 
     @roi.setter
@@ -248,7 +263,7 @@ class StreamParams:
 
     @property
     def humanTrackingParams(self) -> Optional[HumanTrackingParams]:
-        return HumanTrackingParams(coreParams=self.coreStreamParamsOpt.human_tracking_params)
+        return HumanTrackingParams(coreParams=self.coreStreamParamsOpt.humanTrackingParams)
 
     @humanTrackingParams.setter
     def humanTrackingParams(self, value: HumanTrackingParams):
