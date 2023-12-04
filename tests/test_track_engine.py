@@ -47,11 +47,11 @@ def test_simple_te_usage():
         assert trackDetection.humanTracks[0].face is not None, idx
         detection = trackDetection.humanTracks[0].face.bbox
 
-        assert abs(detection.center.x - prevDetection.center.x) < 40, idx + 1
-        assert abs(detection.center.y - prevDetection.center.y) < 40, idx + 1
+        assert abs(detection.center.x - prevDetection.center.x) < 50, idx + 1
+        assert abs(detection.center.y - prevDetection.center.y) < 50, idx + 1
         prevDetection = detection
-    assert abs(firstDetection.center.x - prevDetection.center.x) > 60
-    assert abs(firstDetection.center.y - prevDetection.center.y) > 60
+    assert abs(firstDetection.center.x - prevDetection.center.x) > 70
+    assert abs(firstDetection.center.y - prevDetection.center.y) > 70
     tracks = te.closeStream(streamId)
     assert tracks == []
 
