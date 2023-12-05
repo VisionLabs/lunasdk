@@ -6,7 +6,7 @@ from lunavl.sdk.image_utils.geometry import Rect
 from lunavl.sdk.image_utils.image import VLImage
 from lunavl.sdk.trackengine.engine import VLTrackEngine
 from lunavl.sdk.trackengine.setting_provider import TrackEngineSettingsProvider
-from lunavl.sdk.trackengine.structures import Frame, StreamParams, HumanTrackingParams
+from lunavl.sdk.trackengine.structures import Frame, HumanTrackingParams, StreamParams
 from tests.resources import ONE_FACE
 
 

@@ -5,9 +5,9 @@ from FaceEngine.TrackEngine import (
     BodyTrackData,
     FaceTrackData,
     HumanTrackInfo,
-    PyTrackingResult,
     HumanTrackingRemoveOverlappedStrategyType,
     HumanTrackingStreamParamsOpt,
+    PyTrackingResult,
 )
 
 from lunavl.sdk.detectors.bodydetector import BodyDetection, Landmarks17
@@ -134,6 +134,7 @@ class HumanTrackingParams:
         value = _getOptionalValue(self.coreHumanTrackingParams.removeOverlappedStrategyOpt)
         if value:
             return value.name
+        return None
 
     @removeOverlappedStrategy.setter
     def removeOverlappedStrategy(self, value: str):
