@@ -1,12 +1,11 @@
-from typing import Generic, List, Literal, Optional, TypeVar, Union
+from typing import Generic, List, Literal, Optional, TypeVar
 
-from FaceEngine import Face, Human, Image, TrackEngine as te
+from FaceEngine import Face, Human, TrackEngine as te
 from FaceEngine.TrackEngine import (
     BodyTrackData,
     FaceTrackData,
     HumanTrackInfo,
     HumanTrackingRemoveOverlappedStrategyType,
-    HumanTrackingStreamParamsOpt,
     PyTrackingResult,
 )
 
@@ -62,7 +61,7 @@ class HumanTrackingParams:
         removeHorizontalRatio: Optional[float] = None,
         removeOverlappedStrategy: Optional[Literal["NONE", "BOTH", "SCORE"]] = None,
         *,
-        coreParams: Union[te.HumanTrackingStreamParamsOpt, te.HumanTrackingStreamParams] = None,
+        coreParams: te.HumanTrackingStreamParams = None,
     ):
         """
 
@@ -77,72 +76,79 @@ class HumanTrackingParams:
             coreParams: external core params
         """
         if coreParams:
+            self.coreHumanTrackingParamsOpt = te.HumanTrackingStreamParamsOpt()
             self.coreHumanTrackingParams = coreParams
         else:
-            self.coreHumanTrackingParams = te.HumanTrackingStreamParamsOpt()
-        _setOptionalValue(self.coreHumanTrackingParams.inactiveTracksLifetimeOpt, inactiveTracksLifetime)
-        _setOptionalValue(self.coreHumanTrackingParams.iouConnectionThresholdOpt, iouConnectionThreshold)
-        _setOptionalValue(self.coreHumanTrackingParams.reIDMatchingDetectionsCountOpt, reIDMatchingDetectionsCount)
-        _setOptionalValue(self.coreHumanTrackingParams.reIDMatchingThresholdOpt, reIDMatchingThreshold)
-        _setOptionalValue(self.coreHumanTrackingParams.removeHorizontalRatioOpt, removeHorizontalRatio)
+            self.coreHumanTrackingParamsOpt = te.HumanTrackingStreamParamsOpt()
+            self.coreHumanTrackingParams = te.HumanTrackingStreamParams()
+        self._setOptionalValue("inactiveTracksLifetime", inactiveTracksLifetime)
+        self._setOptionalValue("iouConnectionThreshold", iouConnectionThreshold)
+        self._setOptionalValue("reIDMatchingDetectionsCount", reIDMatchingDetectionsCount)
+        self._setOptionalValue("reIDMatchingThreshold", reIDMatchingThreshold)
+        self._setOptionalValue("removeHorizontalRatio", removeHorizontalRatio)
         if removeOverlappedStrategy:
             ros = getattr(HumanTrackingRemoveOverlappedStrategyType, removeOverlappedStrategy)
-            self.coreHumanTrackingParams.removeOverlappedStrategyOpt.set(ros)
+            self.coreHumanTrackingParamsOpt.removeOverlappedStrategyOpt.set(ros)
+            self.coreHumanTrackingParams.removeOverlappedStrategy = ros
+        else:
+            ros = self.coreHumanTrackingParams.removeOverlappedStrategy
+            self.coreHumanTrackingParamsOpt.removeOverlappedStrategyOpt.set(ros)
 
+    def _setOptionalValue(self,  attr, value):
+        if value is None:
+            value = self.coreHumanTrackingParams.__getattribute__(f"{attr}")
+        else:
+            self.coreHumanTrackingParams.__setattr__(f"{attr}", value)
+        self.coreHumanTrackingParamsOpt.__getattribute__(f"{attr}Opt").set(value)
+        
     @property
-    def inactiveTracksLifetime(self) -> Optional[int]:
-        return _getOptionalValue(self.coreHumanTrackingParams.inactiveTracksLifetimeOpt)
+    def inactiveTracksLifetime(self) -> int:
+        return self.coreHumanTrackingParams.inactiveTracksLifetime
 
     @inactiveTracksLifetime.setter
     def inactiveTracksLifetime(self, value: int):
-        _setOptionalValue(self.coreHumanTrackingParams.inactiveTracksLifetimeOpt, value)
+        self._setOptionalValue("inactiveTracksLifetime", value)
 
     @property
-    def iouConnectionThreshold(self) -> Optional[float]:
-        return _getOptionalValue(self.coreHumanTrackingParams.iouConnectionThresholdOpt)
+    def iouConnectionThreshold(self) -> float:
+        return self.coreHumanTrackingParams.iouConnectionThreshold
 
     @iouConnectionThreshold.setter
     def iouConnectionThreshold(self, value: float):
-        _setOptionalValue(self.coreHumanTrackingParams.iouConnectionThresholdOpt, value)
+        self._setOptionalValue("iouConnectionThreshold", value)
 
     @property
-    def reIDMatchingDetectionsCount(self) -> Optional[int]:
-        return _getOptionalValue(self.coreHumanTrackingParams.reIDMatchingDetectionsCountOpt)
+    def reIDMatchingDetectionsCount(self) -> int:
+        return self.coreHumanTrackingParams.reIDMatchingDetectionsCount
 
     @reIDMatchingDetectionsCount.setter
     def reIDMatchingDetectionsCount(self, value: int):
-        _setOptionalValue(self.coreHumanTrackingParams.reIDMatchingDetectionsCountOpt, value)
+        self._setOptionalValue("reIDMatchingDetectionsCount", value)
 
     @property
-    def reIDMatchingThreshold(self) -> Optional[float]:
-        return _getOptionalValue(self.coreHumanTrackingParams.reIDMatchingThresholdOpt)
+    def reIDMatchingThreshold(self) -> float:
+        return self.coreHumanTrackingParams.reIDMatchingThreshold
 
     @reIDMatchingThreshold.setter
     def reIDMatchingThreshold(self, value: float):
-        _setOptionalValue(self.coreHumanTrackingParams.reIDMatchingThresholdOpt, value)
+        self._setOptionalValue("reIDMatchingThreshold", value)
 
     @property
-    def removeHorizontalRatio(self) -> Optional[float]:
-        return _getOptionalValue(self.coreHumanTrackingParams.removeHorizontalRatioOpt)
+    def removeHorizontalRatio(self) -> float:
+        return self.coreHumanTrackingParams.removeHorizontalRatio
 
     @removeHorizontalRatio.setter
     def removeHorizontalRatio(self, value: float):
-        _setOptionalValue(self.coreHumanTrackingParams.removeHorizontalRatioOpt, value)
+        self._setOptionalValue("removeHorizontalRatio", value)
 
     @property
-    def removeOverlappedStrategy(self) -> Optional[str]:
-        value = _getOptionalValue(self.coreHumanTrackingParams.removeOverlappedStrategyOpt)
-        if value:
-            return value.name
-        return None
+    def removeOverlappedStrategy(self) -> str:
+        return self.coreHumanTrackingParams.removeOverlappedStrategy.name
 
     @removeOverlappedStrategy.setter
     def removeOverlappedStrategy(self, value: str):
-        if value:
-            ros = getattr(HumanTrackingRemoveOverlappedStrategyType, value)
-        else:
-            ros = None
-        _setOptionalValue(self.coreHumanTrackingParams.removeOverlappedStrategyOpt, ros)
+        ros = getattr(HumanTrackingRemoveOverlappedStrategyType, value)
+        self._setOptionalValue("removeHorizontalRatio", ros)
 
 
 class StreamParams:
@@ -165,7 +171,7 @@ class StreamParams:
         trackingResultsBufferSize: Optional[int] = None,
         useFrg: Optional[bool] = None,
         *,
-        coreParams: Union[te.StreamParamsOpt, te.StreamParams] = None,
+        coreParams: te.StreamParams = None,
     ):
         """
 
@@ -192,123 +198,135 @@ class StreamParams:
             coreParams: external core params
         """
         if coreParams:
-            self.coreStreamParamsOpt = coreParams
+            self.coreStreamParams = coreParams
+            self.coreStreamParamsOpt = te.StreamParamsOpt()
         else:
+            self.coreStreamParams = te.StreamParams()
             self.coreStreamParamsOpt = te.StreamParamsOpt()
 
-        _setOptionalValue(self.coreStreamParamsOpt.callbackBufferSizeOpt, callbackBufferSize)
-        _setOptionalValue(self.coreStreamParamsOpt.detectorScalingOpt, detectorScaling)
-        _setOptionalValue(self.coreStreamParamsOpt.detectorStepOpt, detectorStep)
-        _setOptionalValue(self.coreStreamParamsOpt.framesBufferSizeOpt, framesBufferSize)
+        self._setOptionalValue("callbackBufferSize", callbackBufferSize)
+        self._setOptionalValue("detectorScaling", detectorScaling)
+        self._setOptionalValue("detectorStep", detectorStep)
+        self._setOptionalValue("framesBufferSize", framesBufferSize)
         if roi:
-            _setOptionalValue(self.coreStreamParamsOpt.humanRelativeROIOpt, roi.coreRectF)
+            self._setOptionalValue("humanRelativeROI", roi.coreRectF)
+        else:
+            self.coreStreamParamsOpt.humanRelativeROIOpt.set(self.coreStreamParams.humanRelativeROI)
         if humanTrackingParams:
-            self.coreStreamParamsOpt.humanTrackingParams = humanTrackingParams.coreHumanTrackingParams
-        _setOptionalValue(self.coreStreamParamsOpt.killIntersectedIOUThresholdOpt, killIntersectedIOUThreshold)
-        _setOptionalValue(self.coreStreamParamsOpt.minimalTrackLengthOpt, minimalTrackLength)
-        _setOptionalValue(self.coreStreamParamsOpt.scaledSizeOpt, scaledSize)
-        _setOptionalValue(self.coreStreamParamsOpt.skipFramesOpt, skipFrames)
-        _setOptionalValue(self.coreStreamParamsOpt.trackingResulsBufferSizeOpt, trackingResultsBufferSize)
-        _setOptionalValue(self.coreStreamParamsOpt.useFrgOpt, useFrg)
+            self.coreStreamParamsOpt.humanTrackingParams = humanTrackingParams.coreHumanTrackingParamsOpt
+            self.coreStreamParams.humanTrackingParams = humanTrackingParams.coreHumanTrackingParams
+
+        self._setOptionalValue("killIntersectedIOUThreshold", killIntersectedIOUThreshold)
+        self._setOptionalValue("minimalTrackLength", minimalTrackLength)
+        self._setOptionalValue("scaledSize", scaledSize)
+        self._setOptionalValue("skipFrames", skipFrames)
+        self._setOptionalValue("trackingResulsBufferSize", trackingResultsBufferSize)
+        self._setOptionalValue("useFrg", useFrg)
+
+    def _setOptionalValue(self,  attr, value):
+        if value is None:
+            value = self.coreStreamParams.__getattribute__(f"{attr}")
+        else:
+            self.coreStreamParams.__setattr__(f"{attr}", value)
+        self.coreStreamParamsOpt.__getattribute__(f"{attr}Opt").set(value)
 
     @property
-    def callbackBufferSize(self) -> Optional[int]:
-        return _getOptionalValue(self.coreStreamParamsOpt.callbackBufferSizeOpt)
+    def callbackBufferSize(self) -> int:
+        return self.coreStreamParams.callbackBufferSize
 
     @callbackBufferSize.setter
     def callbackBufferSize(self, value: int):
-        _setOptionalValue(self.coreStreamParamsOpt.callback_buffer_size_opt, value)
+        self._setOptionalValue("callbackBufferSize", value)
 
     @property
-    def detectorScaling(self) -> Optional[bool]:
-        return _getOptionalValue(self.coreStreamParamsOpt.detectorScalingOpt)
+    def detectorScaling(self) -> bool:
+        return self.coreStreamParams.detectorScaling
 
     @detectorScaling.setter
     def detectorScaling(self, value: bool):
-        _setOptionalValue(self.coreStreamParamsOpt.detectorScalingOpt, value)
+        self._setOptionalValue("detectorScaling", value)
 
     @property
-    def framesBufferSize(self) -> Optional[int]:
-        return _getOptionalValue(self.coreStreamParamsOpt.framesBufferSizeOpt)
+    def framesBufferSize(self) -> int:
+        return self.coreStreamParams.framesBufferSize
 
     @framesBufferSize.setter
     def framesBufferSize(self, value: int):
-        _setOptionalValue(self.coreStreamParamsOpt.framesBufferSizeOpt, value)
+        self._setOptionalValue("framesBufferSize", value)
 
     @property
-    def detectorStep(self) -> Optional[int]:
-        return _getOptionalValue(self.coreStreamParamsOpt.detectorStepOpt)
+    def detectorStep(self) -> int:
+        return self.coreStreamParams.detectorStep
 
     @detectorStep.setter
     def detectorStep(self, value: int):
-        _setOptionalValue(self.coreStreamParamsOpt.detectorStepOpt, value)
+        self._setOptionalValue("detectorStep", value)
 
     @property
-    def roi(self) -> Optional[Rect]:
-        rect = _getOptionalValue(self.coreStreamParamsOpt.humanRelativeROIOpt)
-        if rect is not None:
-            return Rect.fromCoreRect(rect)
-        return None
+    def roi(self) -> Rect:
+        rect = self.coreStreamParams.humanRelativeROI
+        return Rect.fromCoreRect(rect)
 
     @roi.setter
     def roi(self, value: Rect):
-        _setOptionalValue(self.coreStreamParamsOpt.humanRelativeROIOpt, value.coreRectF)
+        self._setOptionalValue("humanRelativeROI", value.coreRectF)
 
     @property
-    def killIntersectedIOUThreshold(self) -> Optional[float]:
-        return _getOptionalValue(self.coreStreamParamsOpt.killIntersectedIOUThresholdOpt)
+    def killIntersectedIOUThreshold(self) -> float:
+        return self.coreStreamParams.killIntersectedIOUThreshold
 
     @killIntersectedIOUThreshold.setter
     def killIntersectedIOUThreshold(self, value: float):
-        _setOptionalValue(self.coreStreamParamsOpt.killIntersectedIOUThresholdOpt, value)
+        self._setOptionalValue("killIntersectedIOUThreshold", value)
 
     @property
-    def humanTrackingParams(self) -> Optional[HumanTrackingParams]:
-        return HumanTrackingParams(coreParams=self.coreStreamParamsOpt.humanTrackingParams)
+    def humanTrackingParams(self) -> HumanTrackingParams:
+        return HumanTrackingParams(coreParams=self.coreStreamParams.humanTrackingParams)
 
     @humanTrackingParams.setter
     def humanTrackingParams(self, value: HumanTrackingParams):
-        _setOptionalValue(self.coreStreamParamsOpt.human_relative_ROI_opt, value.coreHumanTrackingParams)
+        self.coreStreamParamsOpt.humanTrackingParams = value.coreHumanTrackingParamsOpt
+        self.coreStreamParams.humanTrackingParams = value.coreHumanTrackingParams
 
     @property
-    def minimalTrackLength(self) -> Optional[int]:
-        return _getOptionalValue(self.coreStreamParamsOpt.minimalTrackLengthOpt)
+    def minimalTrackLength(self) -> int:
+        return self.coreStreamParams.minimalTrackLength
 
     @minimalTrackLength.setter
     def minimalTrackLength(self, value: int):
-        _setOptionalValue(self.coreStreamParamsOpt.minimalTrackLengthOpt, value)
+        self._setOptionalValue("minimalTrackLength", value)
 
     @property
-    def scaledSize(self) -> Optional[int]:
-        return _getOptionalValue(self.coreStreamParamsOpt.scaledSizeOpt)
+    def scaledSize(self) -> int:
+        return self.coreStreamParams.scaledSize
 
     @scaledSize.setter
     def scaledSize(self, value: int):
-        _setOptionalValue(self.coreStreamParamsOpt.scaledSizeOpt, value)
+        self._setOptionalValue("scaledSize", value)
 
     @property
-    def skipFrames(self) -> Optional[int]:
-        return _getOptionalValue(self.coreStreamParamsOpt.skipFramesOpt)
+    def skipFrames(self) -> int:
+        return self.coreStreamParams.skipFrames
 
     @skipFrames.setter
     def skipFrames(self, value: int):
-        _setOptionalValue(self.coreStreamParamsOpt.skipFramesOpt, value)
+        self._setOptionalValue("skipFrames", value)
 
     @property
-    def trackingResultsBufferSize(self) -> Optional[int]:
-        return _getOptionalValue(self.coreStreamParamsOpt.trackingResulsBufferSizeOpt)
+    def trackingResultsBufferSize(self) -> int:
+        return self.coreStreamParams.trackingResulsBufferSize
 
     @trackingResultsBufferSize.setter
     def trackingResultsBufferSize(self, value: int):
-        _setOptionalValue(self.coreStreamParamsOpt.trackingResulsBufferSizeOpt, value)
+        self._setOptionalValue("trackingResulsBufferSize", value)
 
     @property
-    def useFrg(self) -> Optional[int]:
-        return _getOptionalValue(self.coreStreamParamsOpt.useFrgOpt)
+    def useFrg(self) -> int:
+        return self.coreStreamParams.useFrg
 
     @useFrg.setter
     def useFrg(self, value: int):
-        _setOptionalValue(self.coreStreamParamsOpt.useFrgOpt, value)
+        self._setOptionalValue("useFrg", value)
 
 
 TrackedObject = TypeVar("TrackedObject")
