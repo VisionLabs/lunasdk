@@ -98,24 +98,34 @@ def test_stream_params():
         humanTrackingParams=humanTrackingParams,
     )
 
-    assert params.callbackBufferSize == 4
-    assert params.detectorScaling
-    assert params.detectorStep == 4
-    assert params.framesBufferSize == 4
-    assert params.minimalTrackLength == 4
-    assert pytest.approx(params.killIntersectedIOUThreshold) == 0.123
-    assert params.scaledSize == 4
-    assert params.skipFrames == 4
-    assert params.trackingResultsBufferSize == 4
-    assert not params.useFrg
-    assert pytest.approx(params.killIntersectedIOUThreshold) == 0.123
-    assert params.roi == Rect(0.1, 0.1, 0.6, 0.6)
-    assert params.humanTrackingParams.inactiveTracksLifetime == 4
-    assert params.humanTrackingParams.reIDMatchingDetectionsCount == 4
-    assert pytest.approx(params.humanTrackingParams.iouConnectionThreshold) == 0.123
-    assert pytest.approx(params.humanTrackingParams.reIDMatchingThreshold) == 0.123
-    assert pytest.approx(params.humanTrackingParams.removeHorizontalRatio) == 0.123
-    assert params.humanTrackingParams.removeOverlappedStrategy == "SCORE"
+    def assertParams(savedParams):
+        assert savedParams.callbackBufferSize == 4
+        assert savedParams.detectorScaling
+        assert savedParams.detectorStep == 4
+        assert savedParams.framesBufferSize == 4
+        assert savedParams.minimalTrackLength == 4
+        assert pytest.approx(savedParams.killIntersectedIOUThreshold) == 0.123
+        assert savedParams.scaledSize == 4
+        assert savedParams.skipFrames == 4
+        assert savedParams.trackingResultsBufferSize == 4
+        assert not savedParams.useFrg
+        assert pytest.approx(savedParams.killIntersectedIOUThreshold) == 0.123
+        assert savedParams.roi == Rect(0.1, 0.1, 0.6, 0.6)
+        assert savedParams.humanTrackingParams.inactiveTracksLifetime == 4
+        assert savedParams.humanTrackingParams.reIDMatchingDetectionsCount == 4
+        assert pytest.approx(savedParams.humanTrackingParams.iouConnectionThreshold) == 0.123
+        assert pytest.approx(savedParams.humanTrackingParams.reIDMatchingThreshold) == 0.123
+        assert pytest.approx(savedParams.humanTrackingParams.removeHorizontalRatio) == 0.123
+        assert savedParams.humanTrackingParams.removeOverlappedStrategy == "SCORE"
+
+    assertParams(params)
+    te = teFabric()
+    streamId = te.registerStream(params)
+    params = te.getStreamParams(streamId)
+    assertParams(params)
+    streamId = te.registerStream(params)
+    params = te.getStreamParams(streamId)
+    assertParams(params)
 
 
 @pytest.mark.parametrize("detectFace,detectBody", [(1, 0), (0, 1), (1, 1)])

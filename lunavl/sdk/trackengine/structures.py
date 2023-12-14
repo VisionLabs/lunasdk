@@ -94,13 +94,13 @@ class HumanTrackingParams:
             ros = self.coreHumanTrackingParams.removeOverlappedStrategy
             self.coreHumanTrackingParamsOpt.removeOverlappedStrategyOpt.set(ros)
 
-    def _setOptionalValue(self,  attr, value):
+    def _setOptionalValue(self, attr, value):
         if value is None:
             value = self.coreHumanTrackingParams.__getattribute__(f"{attr}")
         else:
             self.coreHumanTrackingParams.__setattr__(f"{attr}", value)
         self.coreHumanTrackingParamsOpt.__getattribute__(f"{attr}Opt").set(value)
-        
+
     @property
     def inactiveTracksLifetime(self) -> int:
         return self.coreHumanTrackingParams.inactiveTracksLifetime
@@ -212,9 +212,13 @@ class StreamParams:
             self._setOptionalValue("humanRelativeROI", roi.coreRectF)
         else:
             self.coreStreamParamsOpt.humanRelativeROIOpt.set(self.coreStreamParams.humanRelativeROI)
+
         if humanTrackingParams:
             self.coreStreamParamsOpt.humanTrackingParams = humanTrackingParams.coreHumanTrackingParamsOpt
             self.coreStreamParams.humanTrackingParams = humanTrackingParams.coreHumanTrackingParams
+        else:
+            humanParams = HumanTrackingParams(coreParams=self.coreStreamParams.humanTrackingParams)
+            self.coreStreamParamsOpt.humanTrackingParams = humanParams.coreHumanTrackingParamsOpt
 
         self._setOptionalValue("killIntersectedIOUThreshold", killIntersectedIOUThreshold)
         self._setOptionalValue("minimalTrackLength", minimalTrackLength)
@@ -223,7 +227,7 @@ class StreamParams:
         self._setOptionalValue("trackingResulsBufferSize", trackingResultsBufferSize)
         self._setOptionalValue("useFrg", useFrg)
 
-    def _setOptionalValue(self,  attr, value):
+    def _setOptionalValue(self, attr, value):
         if value is None:
             value = self.coreStreamParams.__getattribute__(f"{attr}")
         else:
