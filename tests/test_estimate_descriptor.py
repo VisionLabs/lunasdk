@@ -267,6 +267,7 @@ class TestEstimateDescriptor(BaseTestClass):
             107: 512,
             108: 512,
             110: 512,
+            113: 512,
         }[expectedVersion]
         assert length == len(descriptor.asBytes)
         assert length == len(descriptor.asVector)
