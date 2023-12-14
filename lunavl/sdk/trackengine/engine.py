@@ -128,3 +128,7 @@ class VLTrackEngine:
         coreStream = self._streamIdToStream[streamId]
         params = StreamParams(coreParams=coreStream.getParams())
         return params
+
+    def reconfigure(self, streamId: int, params: StreamParams):
+        coreStream = self._streamIdToStream[streamId]
+        coreStream.reconfigure(params.coreStreamParamsOpt)
