@@ -27,7 +27,7 @@ from tests.resources import BAD_THRESHOLD_WARP, HUMAN_WARP, WARP_CLEAN_FACE, WAR
 
 EFDVa = EXISTENT_FACE_DESCRIPTOR_VERSION_ABUNDANCE = [59, 60, 62]
 
-EHDVa = EXISTENT_HUMAN_DESCRIPTOR_VERSION_ABUNDANCE = [107, 110, 108]
+EHDVa = EXISTENT_HUMAN_DESCRIPTOR_VERSION_ABUNDANCE = [107, 110, 108, 113]
 
 
 class DescriptorType(Enum):
@@ -267,6 +267,7 @@ class TestEstimateDescriptor(BaseTestClass):
             107: 512,
             108: 512,
             110: 512,
+            113: 512,
         }[expectedVersion]
         assert length == len(descriptor.asBytes)
         assert length == len(descriptor.asVector)
