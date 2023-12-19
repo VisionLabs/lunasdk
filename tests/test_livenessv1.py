@@ -11,11 +11,9 @@ from lunavl.sdk.image_utils.image import VLImage
 from tests.base import BaseTestClass
 from tests.resources import (
     CLEAN_ONE_FACE,
-    FULL_FACE_WITH_MASK,
-    FULL_OCCLUDED_FACE,
     LIVENESS_FACE,
     SPOOF,
-    getPathToImage,
+    UNKNOWN_LIVENESS,
 )
 from tests.schemas import LIVENESSV1_SCHEMA, jsonValidator
 
@@ -72,7 +70,7 @@ class TestEstimateLivenessV1(BaseTestClass):
         cases = (
             Case(LIVENESS_FACE, LivenessPrediction.Real),
             Case(SPOOF, LivenessPrediction.Spoof),
-            Case(getPathToImage("sadness.jpg"), LivenessPrediction.Unknown),
+            Case(UNKNOWN_LIVENESS, LivenessPrediction.Unknown),
         )
         for case in cases:
             with self.subTest(prediction=case.prediction):
