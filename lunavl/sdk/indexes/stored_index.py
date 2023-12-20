@@ -112,7 +112,7 @@ class DynamicIndex(CoreIndex):
             raise PermissionError(f"Access is denied: {path}")
 
         if IndexType(indexType) == IndexType.dynamic:
-            error = self._coreIndex.saveToDynamicIndex(path)
+            error, state = self._coreIndex.saveToDynamicIndex(path)
         else:
             error = self._coreIndex.saveToDenseIndex(path)
 
