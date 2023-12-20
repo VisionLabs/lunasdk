@@ -26,7 +26,7 @@ numpy = "*"
 requests = "*"
 Pillow = {version = "*", markers = "sys_platform == 'win32' or sys_platform == 'darwin'"}
 pillow-simd = {version = "*", markers = "sys_platform != 'win32' and sys_platform != 'darwin'"}
-FaceEngine = "*"
+FaceEngine = ">=5.16.0.4"
 
 [tool.poetry.dev-dependencies]
 sphinx = ">=2.0.0"

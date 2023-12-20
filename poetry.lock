@@ -315,10 +315,10 @@ category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "FaceEngine-5.17.0.0-cp310-cp310-linux_x86_64.whl", hash = "sha256:55ce82798bdd5784dfd0a6d1c11afa7c087fedd10e86c3634218d120c4553565"},
-    {file = "FaceEngine-5.17.0.0-cp310-cp310-win_amd64.whl", hash = "sha256:6f155c5ece1ebc9c45ff0b7f575a754ccd856a17721297793a0610261b56caa1"},
-    {file = "FaceEngine-5.17.0.0-cp311-cp311-linux_x86_64.whl", hash = "sha256:b8561ff0308e56722f74ee735b8b0d225dd19f68bd219cdca8fe33bd59a1d712"},
-    {file = "FaceEngine-5.17.0.0-cp311-cp311-win_amd64.whl", hash = "sha256:459903469802633b798d20fdc94aad8ead6e34ccc162e8a0be7e34da96e88ad7"},
+    {file = "FaceEngine-5.17.0.0-cp310-cp310-linux_x86_64.whl", hash = "sha256:32d9e8d6a3ae2e3f5410aee8fa165e3474aa7b61ce0b7f7c408c727f9d033976"},
+    {file = "FaceEngine-5.17.0.0-cp310-cp310-win_amd64.whl", hash = "sha256:399cb07743585e854ca5650fd038264bc885f35cf66d42d8863a7ab57609f165"},
+    {file = "FaceEngine-5.17.0.0-cp311-cp311-linux_x86_64.whl", hash = "sha256:b9fa631e29207cfe302a9cbe10df95967711d5cc6793a75b8d93bfc227af71d8"},
+    {file = "FaceEngine-5.17.0.0-cp311-cp311-win_amd64.whl", hash = "sha256:fa84538aa361a218fe30a0fd089f43a50ff9c98dabb66333b9a834467442b5e5"},
 ]
 
 [package.source]
@@ -1464,4 +1464,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9"
-content-hash = "511ca104a5a7a514f10fd4440a0bb8a488e006313a51b167a899b4ad0f66fe10"
+content-hash = "e03a910a9357d3f280af68f706e95f077b22b3f7b26f1d5ec82001091e4fa11f"
