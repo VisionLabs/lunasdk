@@ -84,5 +84,5 @@ async def main(videoFile: str):
 
 
 if __name__ == "__main__":
-    video = "C:/Users/matem/Downloads/test.mov"
+    video = "PATH/TO/FILE"
     asyncio.run(main(video))
