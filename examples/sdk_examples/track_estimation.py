@@ -51,8 +51,6 @@ async def asyncEstimateHumanTrack():
     pprint.pprint(res)
 
 
-#
-
 if __name__ == "__main__":
     estimateHumanTrack(0, 1)
     estimateHumanTrack(1, 0)

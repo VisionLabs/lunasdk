@@ -56,7 +56,7 @@ class VLTrackEngine:
     def track(self, frames: list[Frame], asyncEstimate: Literal[True]) -> AsyncTask[List[TrackingResult]]:
         ...
 
-    def track(self, frames: list[Frame], asyncEstimate: bool = False):
+    def track(self, frames: list[Frame], asyncEstimate: bool = False, old=True):
         """
         Updates stream tracks by new frame per each stream and returns ready tracking
         results data for passed streams.Function returns only ready tracking results per each stream, so it can return
@@ -73,13 +73,19 @@ class VLTrackEngine:
             estimated tracks for processed frames(may differ from input frames) if asyncEstimate is false otherwise
             async task.
         """
-        streamIds = [frame.streamId for frame in frames]
-        frames = [frame.coreFrame for frame in frames]
-        if not asyncEstimate:
-            res = self._trackEngine.track(streamIds, frames)
+        streamIdsToFrames: Dict[int, List[te.Frame]] = {}
+        streamIds = []
+        coreStreamFrames = []
+        for frame in frames:
+            streamIdsToFrames.setdefault(frame.streamId, []).append(frame.coreFrame)
+        for streamId, coreFrames in streamIdsToFrames.items():
+            coreStreamFrames.append(coreFrames)
+            streamIds.append(streamId)
 
+        if not asyncEstimate:
+            res = self._trackEngine.trackMultiFrame(streamIds, coreStreamFrames)
             return POST_PROCESSING.postProcessingBatch(*res)
-        task = self._trackEngine.async_track(streamIds, frames)
+        task = self._trackEngine.async_trackMultiFrame(streamIds, coreStreamFrames)
         return AsyncTask(task, POST_PROCESSING.postProcessingBatch)
 
     def registerStream(self, params: Optional[StreamParams] = None) -> int:
