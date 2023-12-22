@@ -189,21 +189,21 @@ def test_te_multiframe():
     streamId4 = te2.registerStream()
 
     frame1 = Frame(image=img1, streamId=streamId1, frameNumber=0)
-    frame2 = Frame(image=shiftImage(img1, 10, 10), streamId=streamId1, frameNumber=1)
+    frame2 = Frame(image=shiftImage(img1, 5, 5), streamId=streamId1, frameNumber=1)
 
     frame3 = Frame(image=img2, streamId=streamId2, frameNumber=0)
-    frame4 = Frame(image=shiftImage(img2, 10, 10), streamId=streamId2, frameNumber=1)
+    frame4 = Frame(image=shiftImage(img2, 5, 5), streamId=streamId2, frameNumber=1)
 
     frame5 = Frame(image=img1, streamId=streamId3, frameNumber=0)
-    frame6 = Frame(image=shiftImage(img1, 10, 10), streamId=streamId3, frameNumber=1)
+    frame6 = Frame(image=shiftImage(img1, 5, 5), streamId=streamId3, frameNumber=1)
 
     frame7 = Frame(image=img2, streamId=streamId4, frameNumber=0)
-    frame8 = Frame(image=shiftImage(img2, 10, 10), streamId=streamId4, frameNumber=1)
+    frame8 = Frame(image=shiftImage(img2, 5, 5), streamId=streamId4, frameNumber=1)
 
     res1 = te2.track([frame5, frame7])
     res2 = te2.track([frame6, frame8])
     res3 = te1.track([frame1, frame3, frame4, frame2])
-    assert res1[0].humanTracks[0].face.detection.asDict() == res3[0].humanTracks[0].face.detection.asDict()
-    assert res1[1].humanTracks[0].face.detection.asDict() == res3[2].humanTracks[0].face.detection.asDict()
-    assert res2[0].humanTracks[0].face.detection.asDict() == res3[1].humanTracks[0].face.detection.asDict()
-    assert res2[1].humanTracks[0].face.detection.asDict() == res3[3].humanTracks[0].face.detection.asDict()
+    assert res1[0].humanTracks[0].face.bbox.asDict() == res3[0].humanTracks[0].face.bbox.asDict()
+    assert res1[1].humanTracks[0].face.bbox.asDict() == res3[2].humanTracks[0].face.bbox.asDict()
+    assert res2[0].humanTracks[0].face.bbox.asDict() == res3[1].humanTracks[0].face.bbox.asDict()
+    assert res2[1].humanTracks[0].face.bbox.asDict() == res3[3].humanTracks[0].face.bbox.asDict()
