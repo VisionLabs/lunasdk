@@ -7,7 +7,7 @@ from lunavl.sdk.image_utils.image import VLImage
 from lunavl.sdk.trackengine.engine import VLTrackEngine
 from lunavl.sdk.trackengine.setting_provider import TrackEngineSettingsProvider
 from lunavl.sdk.trackengine.structures import Frame, HumanTrackingParams, StreamParams
-from tests.resources import ONE_FACE, CLEAN_ONE_FACE
+from tests.resources import CLEAN_ONE_FACE, ONE_FACE
 
 
 def shiftImage(image: VLImage, x, y):
