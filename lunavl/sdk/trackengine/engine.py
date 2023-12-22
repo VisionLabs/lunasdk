@@ -56,7 +56,7 @@ class VLTrackEngine:
     def track(self, frames: list[Frame], asyncEstimate: Literal[True]) -> AsyncTask[List[TrackingResult]]:
         ...
 
-    def track(self, frames: list[Frame], asyncEstimate: bool = False, old = True):
+    def track(self, frames: list[Frame], asyncEstimate: bool = False, old=True):
         """
         Updates stream tracks by new frame per each stream and returns ready tracking
         results data for passed streams.Function returns only ready tracking results per each stream, so it can return
@@ -73,7 +73,7 @@ class VLTrackEngine:
             estimated tracks for processed frames(may differ from input frames) if asyncEstimate is false otherwise
             async task.
         """
-        streamIdsToFrames = {}
+        streamIdsToFrames: Dict[int, List[te.Frame]] = {}
         streamIds = []
         coreStreamFrames = []
         for frame in frames:
