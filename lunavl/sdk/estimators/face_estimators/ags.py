@@ -9,7 +9,7 @@ from FaceEngine import FSDKErrorResult  # pylint: disable=E0611,E0401
 from lunavl.sdk.detectors.facedetector import FaceDetection
 from lunavl.sdk.errors.exceptions import assertError
 
-from ...async_task import AsyncTask, DefaultPostprocessingFactory
+from ...async_task import AsyncTask
 from ..base import BaseEstimator, ImageWithFaceDetection
 from ..estimators_utils.extractor_utils import validateInputByBatchEstimator
 

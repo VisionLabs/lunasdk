@@ -309,16 +309,16 @@ test = ["pytest (>=6)"]
 
 [[package]]
 name = "faceengine"
-version = "5.17.0.0"
+version = "5.17.0.1"
 description = "Python bindings of FaceEngine using pybind11 and CMake"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "FaceEngine-5.17.0.0-cp310-cp310-linux_x86_64.whl", hash = "sha256:55ce82798bdd5784dfd0a6d1c11afa7c087fedd10e86c3634218d120c4553565"},
-    {file = "FaceEngine-5.17.0.0-cp310-cp310-win_amd64.whl", hash = "sha256:6f155c5ece1ebc9c45ff0b7f575a754ccd856a17721297793a0610261b56caa1"},
-    {file = "FaceEngine-5.17.0.0-cp311-cp311-linux_x86_64.whl", hash = "sha256:b8561ff0308e56722f74ee735b8b0d225dd19f68bd219cdca8fe33bd59a1d712"},
-    {file = "FaceEngine-5.17.0.0-cp311-cp311-win_amd64.whl", hash = "sha256:459903469802633b798d20fdc94aad8ead6e34ccc162e8a0be7e34da96e88ad7"},
+    {file = "FaceEngine-5.17.0.1-cp310-cp310-linux_x86_64.whl", hash = "sha256:e8fe4e5cc33249ba5318650ef6dde1af0c2db768f6f40cc174fe9a329ccf3fd9"},
+    {file = "FaceEngine-5.17.0.1-cp310-cp310-win_amd64.whl", hash = "sha256:57ad6dcf91c5cc7ba3a2058a474af1cea61e9a638f96bf6e1e7e1aa417595fb4"},
+    {file = "FaceEngine-5.17.0.1-cp311-cp311-linux_x86_64.whl", hash = "sha256:0e13e4135f03ab8192bdcbd589fbfff7f1fad7cd9d66fd45ba000ea1e0d31f4d"},
+    {file = "FaceEngine-5.17.0.1-cp311-cp311-win_amd64.whl", hash = "sha256:696aa6bc3328c8511aacc6d0a5a3352d3b51bb00f13c39624c954df86e5dbb80"},
 ]
 
 [package.source]
@@ -1464,4 +1464,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9"
-content-hash = "511ca104a5a7a514f10fd4440a0bb8a488e006313a51b167a899b4ad0f66fe10"
+content-hash = "f3babc1e919a7e08419e0db4a9e7b785e11023f62112f369c92597ac0b332370"
