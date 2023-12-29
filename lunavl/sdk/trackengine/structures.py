@@ -379,17 +379,23 @@ class FaceTrack(BaseTrackObject[FaceTrackData, FaceDetection]):
     """
     Containers for track body detection
     """
+    __slots__ = ["_detection"]
+
+    def __init__(self, coreEstimation, image):
+        super().__init__(coreEstimation, image)
+        self._detection: FaceDetection | None = None
 
     @property
     def detection(self) -> Optional[FaceDetection]:
         """Get honest face detection. This detection is a result of detector work (not tracker)"""
-        if not self.coreEstimation.isDetector:
-            return None
-        face = FaceDetection(Face(self.image.coreImage, self.coreEstimation.detection), self.image)
-        coreLandmarks = self.coreEstimation.landmarks
-        if coreLandmarks:
-            face.landmarks5 = Landmarks5(coreLandmarks)
-        return face
+        if self._detection is None:
+            if not self.coreEstimation.isDetector:
+                return None
+            self._detection = FaceDetection(Face(self.image.coreImage, self.coreEstimation.detection), self.image)
+            coreLandmarks = self.coreEstimation.landmarks
+            if coreLandmarks:
+                self._detection.landmarks5 = Landmarks5(coreLandmarks)
+        return self._detection
 
 
 class BodyTrack(BaseTrackObject[BodyTrackData, BodyDetection]):
@@ -397,19 +403,26 @@ class BodyTrack(BaseTrackObject[BodyTrackData, BodyDetection]):
     Containers for track body detection
     """
 
+    __slots__ = ["_detection"]
+
+    def __init__(self, coreEstimation, image):
+        super().__init__(coreEstimation, image)
+        self._detection: BodyDetection | None = None
+
     @property
     def detection(self) -> Optional[BodyDetection]:
         """Get honest body detection. This detection is a result of detector work (not tracker)"""
-        if not self.coreEstimation.isDetector:
-            return None
-        coreBody = Human()
-        coreBody.img = self.image.coreImage
-        coreBody.detection = self.coreEstimation.detection
-        body = BodyDetection(coreBody, self.image)
-        coreLandmarks = self.coreEstimation.landmarks
-        if coreLandmarks:
-            body.landmarks17 = Landmarks17(coreLandmarks)
-        return body
+        if self._detection is None:
+            if not self.coreEstimation.isDetector:
+                return None
+            coreBody = Human()
+            coreBody.img = self.image.coreImage
+            coreBody.detection = self.coreEstimation.detection
+            self._detection = BodyDetection(coreBody, self.image)
+            coreLandmarks = self.coreEstimation.landmarks
+            if coreLandmarks:
+                self._detection.landmarks17 = Landmarks17(coreLandmarks)
+        return self._detection
 
 
 class HumanTrack:
