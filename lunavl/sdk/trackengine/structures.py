@@ -379,6 +379,7 @@ class FaceTrack(BaseTrackObject[FaceTrackData, FaceDetection]):
     """
     Containers for track body detection
     """
+
     __slots__ = ["_detection"]
 
     def __init__(self, coreEstimation, image):
