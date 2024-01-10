@@ -207,3 +207,19 @@ def test_te_multiframe():
     assert res1[1].humanTracks[0].face.bbox.asDict() == res3[2].humanTracks[0].face.bbox.asDict()
     assert res2[0].humanTracks[0].face.bbox.asDict() == res3[1].humanTracks[0].face.bbox.asDict()
     assert res2[1].humanTracks[0].face.bbox.asDict() == res3[3].humanTracks[0].face.bbox.asDict()
+
+
+@pytest.mark.parametrize("detectBody", [0, 1])
+def test_return_landmarks(detectBody):
+    """Return or not landmarks test"""
+    te = teFabric(detectFace=1, detectBody=detectBody)
+    img = VLImage.load(filename=ONE_FACE)
+    streamId = te.registerStream()
+    frame = Frame(image=img, streamId=streamId, frameNumber=1)
+    res = te.track([frame])
+    track = res[0].humanTracks[0]
+    assert track.face is not None
+    if detectBody:
+        assert track.face.detection.landmarks5 is None
+    else:
+        assert track.face.detection.landmarks5 is not None

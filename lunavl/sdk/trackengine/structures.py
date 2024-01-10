@@ -385,9 +385,11 @@ class FaceTrack(BaseTrackObject[FaceTrackData, FaceDetection]):
         """Get honest face detection. This detection is a result of detector work (not tracker)"""
         if not self.coreEstimation.isDetector:
             return None
-        face = FaceDetection(Face(self.image.coreImage, self.coreEstimation.detection), self.image)
+        coreFace = Face(self.image.coreImage, self.coreEstimation.detection)
+        face = FaceDetection(coreFace, self.image)
         coreLandmarks = self.coreEstimation.landmarks
-        if coreLandmarks:
+        if coreLandmarks and not all((landmark.x == 0 and landmark.y == 0 for landmark in coreLandmarks)):
+            coreFace.landmarks5_opt.set(coreLandmarks)
             face.landmarks5 = Landmarks5(coreLandmarks)
         return face
 
