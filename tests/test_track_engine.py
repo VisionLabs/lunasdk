@@ -207,3 +207,71 @@ def test_te_multiframe():
     assert res1[1].humanTracks[0].face.bbox.asDict() == res3[2].humanTracks[0].face.bbox.asDict()
     assert res2[0].humanTracks[0].face.bbox.asDict() == res3[1].humanTracks[0].face.bbox.asDict()
     assert res2[1].humanTracks[0].face.bbox.asDict() == res3[3].humanTracks[0].face.bbox.asDict()
+
+
+def teFabricLandmarks(detectBody=0, detectFace=0, detectLandmarks17=0, detectLandmarks5=0):
+    faceEngine = VLFaceEngine()
+    trackEngineProvider = TrackEngineSettingsProvider()
+    trackEngineProvider.detectors.useFaceDetector = detectFace
+    trackEngineProvider.detectors.useBodyDetector = detectBody
+    trackEngineProvider.faceTracking.faceLandmarksDetection = detectLandmarks5
+    trackEngineProvider.bodyTracking.humanLandmarksDetection = detectLandmarks17
+    return VLTrackEngine(faceEngine, trackEngineConf=trackEngineProvider)
+
+
+@pytest.mark.parametrize("detectFace,detectBody", [(1, 0), (0, 1), (1, 1)])
+def test_return_face_landmarks(detectFace, detectBody):
+    """Return or not landmarks test"""
+    te = teFabricLandmarks(detectFace=detectFace, detectBody=detectBody, detectLandmarks5=1, detectLandmarks17=1)
+    img = VLImage.load(filename=ONE_FACE)
+    streamId = te.registerStream()
+    frame = Frame(image=img, streamId=streamId, frameNumber=1)
+
+    if detectBody:
+        te.track([frame])
+        res = te.closeStream(streamId)
+        track = res[0].humanTracks[0]
+    else:
+        res = te.track([frame])
+        track = res[0].humanTracks[0]
+
+    if detectBody and detectFace:
+        assert track.face.detection.landmarks5 is None
+        assert track.body.detection.landmarks17 is None
+    elif detectBody:
+        assert track.body.detection.landmarks17 is not None
+    else:
+        assert track.face.detection.landmarks5 is not None
+
+
+@pytest.mark.parametrize("detectLandmarks", [0, 1])
+def test_detect_body_landmarks(detectLandmarks):
+    """Detect or not body landmarks test"""
+
+    te = teFabricLandmarks(detectBody=1, detectLandmarks17=detectLandmarks)
+    img = VLImage.load(filename=ONE_FACE)
+    streamId = te.registerStream()
+    frame = Frame(image=img, streamId=streamId, frameNumber=1)
+    te.track([frame])
+    res = te.closeStream(streamId)
+    track = res[0].humanTracks[0]
+    if not detectLandmarks:
+        assert track.body.detection.landmarks17 is None
+    else:
+        assert track.body.detection.landmarks17 is not None
+
+
+@pytest.mark.parametrize("detectLandmarks", [0, 1])
+def test_detect_face_landmarks(detectLandmarks):
+    """Detect or not face landmarks test"""
+
+    te = teFabricLandmarks(detectFace=1, detectLandmarks5=detectLandmarks)
+    img = VLImage.load(filename=ONE_FACE)
+    streamId = te.registerStream()
+    frame = Frame(image=img, streamId=streamId, frameNumber=1)
+    res = te.track([frame])
+    track = res[0].humanTracks[0]
+    if not detectLandmarks:
+        assert track.face.detection.landmarks5 is None
+    else:
+        assert track.face.detection.landmarks5 is not None

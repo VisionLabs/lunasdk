@@ -392,10 +392,13 @@ class FaceTrack(BaseTrackObject[FaceTrackData, FaceDetection]):
         if self._detection is None:
             if not self.coreEstimation.isDetector:
                 return None
-            self._detection = FaceDetection(Face(self.image.coreImage, self.coreEstimation.detection), self.image)
+            coreFace = Face(self.image.coreImage, self.coreEstimation.detection)
+            face = FaceDetection(coreFace, self.image)
             coreLandmarks = self.coreEstimation.landmarks
-            if coreLandmarks:
-                self._detection.landmarks5 = Landmarks5(coreLandmarks)
+            if coreLandmarks and not all((landmark.x == 0 and landmark.y == 0 for landmark in coreLandmarks)):
+                coreFace.landmarks5_opt.set(coreLandmarks)
+                face.landmarks5 = Landmarks5(coreLandmarks)
+            self._detection = face
         return self._detection
 
 
@@ -421,7 +424,10 @@ class BodyTrack(BaseTrackObject[BodyTrackData, BodyDetection]):
             coreBody.detection = self.coreEstimation.detection
             self._detection = BodyDetection(coreBody, self.image)
             coreLandmarks = self.coreEstimation.landmarks
-            if coreLandmarks:
+            if coreLandmarks and not all(
+                (landmark.point.x == 0 and landmark.point.y == 0 for landmark in coreLandmarks)
+            ):
+                coreBody.landmarks17_opt.set(coreLandmarks)
                 self._detection.landmarks17 = Landmarks17(coreLandmarks)
         return self._detection
 
