@@ -424,7 +424,10 @@ class BodyTrack(BaseTrackObject[BodyTrackData, BodyDetection]):
             coreBody.detection = self.coreEstimation.detection
             self._detection = BodyDetection(coreBody, self.image)
             coreLandmarks = self.coreEstimation.landmarks
-            if coreLandmarks:
+            if coreLandmarks and not all(
+                (landmark.point.x == 0 and landmark.point.y == 0 for landmark in coreLandmarks)
+            ):
+                coreBody.landmarks17_opt.set(coreLandmarks)
                 self._detection.landmarks17 = Landmarks17(coreLandmarks)
         return self._detection
 
