@@ -2,6 +2,7 @@
 Module realize simple examples following features:
     * image rotation
 """
+
 import asyncio
 import pprint
 

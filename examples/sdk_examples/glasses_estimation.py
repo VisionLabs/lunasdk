@@ -1,6 +1,7 @@
 """
 Glasses estimation example
 """
+
 import asyncio
 import pprint
 

@@ -2,6 +2,7 @@
 
 see `mouth state`_
 """
+
 from enum import Enum
 from typing import Dict, List, Literal, Union, overload
 
@@ -164,12 +165,14 @@ class MouthStateEstimator(BaseEstimator):
     """
 
     @overload  # type: ignore
-    def estimate(self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[False] = False) -> MouthStates:
-        ...
+    def estimate(
+        self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[False] = False
+    ) -> MouthStates: ...
 
     @overload
-    def estimate(self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[True]) -> AsyncTask[MouthStates]:
-        ...
+    def estimate(
+        self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[True]
+    ) -> AsyncTask[MouthStates]: ...
 
     #  pylint: disable=W0221
     def estimate(

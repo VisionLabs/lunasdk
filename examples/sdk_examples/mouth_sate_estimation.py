@@ -1,6 +1,7 @@
 """
 An mouth state estimation example
 """
+
 import asyncio
 import pprint
 

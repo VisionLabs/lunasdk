@@ -1,6 +1,7 @@
 """
 Module contains function for detection human bodies on images.
 """
+
 from functools import partial
 from typing import Any, Dict, List, Literal, Optional, Union, overload
 
@@ -303,8 +304,7 @@ class BodyDetector:
         limit: int = 5,
         detectLandmarks: bool = True,
         asyncEstimate: Literal[False] = False,
-    ) -> DetectOneResult:
-        ...
+    ) -> DetectOneResult: ...
 
     @overload
     def detectOne(
@@ -314,8 +314,7 @@ class BodyDetector:
         limit: int,
         detectLandmarks: bool,
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[DetectOneResult]:
-        ...
+    ) -> AsyncTask[DetectOneResult]: ...
 
     def detectOne(
         self,
@@ -360,8 +359,7 @@ class BodyDetector:
         limit: int = 5,
         detectLandmarks: bool = True,
         asyncEstimate: Literal[False] = False,
-    ) -> Union[DetectResult, AsyncTask[DetectResult]]:
-        ...
+    ) -> Union[DetectResult, AsyncTask[DetectResult]]: ...
 
     @overload
     def detect(
@@ -370,8 +368,7 @@ class BodyDetector:
         limit: int,
         detectLandmarks: bool,
         asyncEstimate: Literal[True] = True,
-    ) -> Union[DetectResult, AsyncTask[DetectResult]]:
-        ...
+    ) -> Union[DetectResult, AsyncTask[DetectResult]]: ...
 
     def detect(
         self,

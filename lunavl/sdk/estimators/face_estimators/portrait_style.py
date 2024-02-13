@@ -3,6 +3,7 @@ Module contains portrait style estimator.
 
 See `portrait_style`_.
 """
+
 from enum import Enum
 from typing import Dict, List, Union
 

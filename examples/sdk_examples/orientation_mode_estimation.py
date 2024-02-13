@@ -2,6 +2,7 @@
 Module realize simple examples following features:
     * orientation mode estimation
 """
+
 import pprint
 
 from resources import EXAMPLE_1, EXAMPLE_O

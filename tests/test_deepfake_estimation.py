@@ -1,6 +1,7 @@
 """
 Test estimate deepfake.
 """
+
 from lunavl.sdk.estimators.face_estimators.deepfake import Deepfake, DeepfakeEstimationMode, DeepfakePrediction
 from lunavl.sdk.faceengine.setting_provider import DetectorType
 from lunavl.sdk.image_utils.image import VLImage

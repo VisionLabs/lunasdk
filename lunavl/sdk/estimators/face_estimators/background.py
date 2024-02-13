@@ -3,6 +3,7 @@ Module contains a background estimator.
 
 See `background`_.
 """
+
 from typing import Dict, List, Union
 
 from FaceEngine import (  # pylint: disable=E0611,E0401

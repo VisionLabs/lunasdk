@@ -49,12 +49,10 @@ class VLTrackEngine:
         self._streamIdToStream: Dict[int, te.PyIStream] = {}
 
     @overload  # type: ignore
-    def track(self, frames: list[Frame], asyncEstimate: Literal[False] = False) -> List[TrackingResult]:
-        ...
+    def track(self, frames: list[Frame], asyncEstimate: Literal[False] = False) -> List[TrackingResult]: ...
 
     @overload
-    def track(self, frames: list[Frame], asyncEstimate: Literal[True]) -> AsyncTask[List[TrackingResult]]:
-        ...
+    def track(self, frames: list[Frame], asyncEstimate: Literal[True]) -> AsyncTask[List[TrackingResult]]: ...
 
     def track(self, frames: list[Frame], asyncEstimate: bool = False):
         """

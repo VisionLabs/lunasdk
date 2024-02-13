@@ -3,6 +3,7 @@ Module realize simple examples following features:
     * face landmarks estimation
     * async face landmarks estimation
 """
+
 import asyncio
 
 from resources import EXAMPLE_SEVERAL_FACES

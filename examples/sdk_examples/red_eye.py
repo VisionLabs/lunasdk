@@ -1,6 +1,7 @@
 """
 Red-eye estimation example
 """
+
 import pprint
 
 from resources import EXAMPLE_1, EXAMPLE_O

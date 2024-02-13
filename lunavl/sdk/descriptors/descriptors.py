@@ -4,6 +4,7 @@ Module contains a face descriptor estimator
 See `face descriptor`_.
 
 """
+
 from typing import Dict, Iterator, List, Optional, Type, Union
 
 from FaceEngine import DescriptorBatchResult, IDescriptorBatchPtr, IDescriptorPtr  # pylint: disable=E0611,E0401

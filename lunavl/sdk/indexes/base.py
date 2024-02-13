@@ -1,6 +1,7 @@
 """
 Module contains base index class and search result.
 """
+
 from __future__ import annotations
 
 from typing import Dict, Union

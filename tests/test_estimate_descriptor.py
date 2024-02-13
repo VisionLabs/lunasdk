@@ -1,6 +1,7 @@
 """
 Test estimate descriptor.
 """
+
 from enum import Enum
 from typing import Callable, ContextManager, Generator, List, NamedTuple, Tuple, Union
 

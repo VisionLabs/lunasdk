@@ -2,6 +2,7 @@
     * build index with descriptors
     * search for descriptors with the shorter distance to passed descriptor
 """
+
 import asyncio
 import pprint
 

@@ -2,6 +2,7 @@
 
 See ags_.
 """
+
 from typing import List, Literal, Optional, Union, overload
 
 from FaceEngine import FSDKErrorResult  # pylint: disable=E0611,E0401
@@ -60,8 +61,7 @@ class AGSEstimator(BaseEstimator):
         detection: Optional[FaceDetection] = None,
         imageWithFaceDetection: ImageWithFaceDetection = None,
         asyncEstimate: Literal[False] = False,
-    ) -> float:
-        ...
+    ) -> float: ...
 
     @overload
     def estimate(
@@ -69,8 +69,7 @@ class AGSEstimator(BaseEstimator):
         detection: Optional[FaceDetection],
         imageWithFaceDetection: ImageWithFaceDetection,
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[float]:
-        ...
+    ) -> AsyncTask[float]: ...
 
     def estimate(
         self,
@@ -111,14 +110,12 @@ class AGSEstimator(BaseEstimator):
         self,
         detections: Union[List[FaceDetection], List[ImageWithFaceDetection]],
         asyncEstimate: Literal[False] = False,
-    ) -> List[float]:
-        ...
+    ) -> List[float]: ...
 
     @overload
     def estimateBatch(
         self, detections: Union[List[FaceDetection], List[ImageWithFaceDetection]], asyncEstimate: Literal[True]
-    ) -> AsyncTask[List[float]]:
-        ...
+    ) -> AsyncTask[List[float]]: ...
 
     def estimateBatch(
         self,

@@ -1,6 +1,7 @@
 """
 Face descriptor estimate example
 """
+
 import asyncio
 import pprint
 

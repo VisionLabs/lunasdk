@@ -1,4 +1,5 @@
 """Common descriptor extractor utils"""
+
 from functools import partial
 from typing import List, Optional, Tuple, TypeVar, Union
 

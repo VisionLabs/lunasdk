@@ -1,6 +1,7 @@
 """
 Dynamic range estimation example
 """
+
 import asyncio
 import pprint
 

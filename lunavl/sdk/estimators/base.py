@@ -1,6 +1,7 @@
 """
 Module with base classes of estimators and estimations
 """
+
 from abc import ABC, abstractmethod
 from typing import NamedTuple
 

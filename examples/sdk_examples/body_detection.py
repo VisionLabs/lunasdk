@@ -4,6 +4,7 @@ Module realize simple examples following features:
     * batch images human detection
     * detect landmarks17
 """
+
 import asyncio
 import pprint
 

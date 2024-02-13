@@ -2,6 +2,7 @@
 
 See eyebrow_expression_.
 """
+
 from enum import Enum
 from typing import List, Union
 

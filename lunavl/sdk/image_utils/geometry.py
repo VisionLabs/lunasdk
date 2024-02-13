@@ -1,6 +1,7 @@
 """
 Module contains geometric structures (Rect, Point, Size)
 """
+
 from typing import Dict, Generic, Tuple, TypeVar, Union
 
 from FaceEngine import (  # pylint: disable=E0611,E0401

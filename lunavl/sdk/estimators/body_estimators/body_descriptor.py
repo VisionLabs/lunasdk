@@ -4,6 +4,7 @@ Module contains a body descriptor estimator
 See `body descriptor`_.
 
 """
+
 from typing import List, Optional, Tuple, Union
 
 from FaceEngine import IDescriptorExtractorPtr  # pylint: disable=E0611,E0401

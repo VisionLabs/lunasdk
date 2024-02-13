@@ -1,6 +1,7 @@
 """
 Human tracking visualization example.
 """
+
 import asyncio
 from asyncio import Queue
 

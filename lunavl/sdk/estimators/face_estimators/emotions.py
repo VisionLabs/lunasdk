@@ -2,6 +2,7 @@
 
 See emotions_.
 """
+
 from enum import Enum
 from typing import List, Literal, Union, overload
 
@@ -189,12 +190,10 @@ class EmotionsEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     @overload  # type: ignore
-    def estimate(self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[False] = False) -> Emotions:
-        ...
+    def estimate(self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[False] = False) -> Emotions: ...
 
     @overload
-    def estimate(self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[True]) -> AsyncTask[Emotions]:
-        ...
+    def estimate(self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[True]) -> AsyncTask[Emotions]: ...
 
     def estimate(
         self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: bool = False
