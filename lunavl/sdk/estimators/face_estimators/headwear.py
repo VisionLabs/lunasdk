@@ -2,6 +2,7 @@
 
 See headwear_.
 """
+
 from enum import Enum
 from typing import List, Union
 

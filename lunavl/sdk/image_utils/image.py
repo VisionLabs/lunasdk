@@ -1,6 +1,7 @@
 """
 Module realize VLImage - structure for storing image in special format.
 """
+
 from copy import copy
 from enum import Enum
 from pathlib import Path

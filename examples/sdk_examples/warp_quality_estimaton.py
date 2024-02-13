@@ -1,6 +1,7 @@
 """
 Warp quality estimation example
 """
+
 import pprint
 
 from resources import EXAMPLE_O

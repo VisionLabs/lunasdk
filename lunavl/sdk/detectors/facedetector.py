@@ -1,6 +1,7 @@
 """
 Module contains function for detection faces on images.
 """
+
 from enum import Enum
 from functools import partial
 from typing import Any, Dict, List, Literal, Optional, Union, overload
@@ -341,8 +342,7 @@ class FaceDetector:
         detect5Landmarks: bool = True,
         detect68Landmarks: bool = False,
         asyncEstimate: Literal[False] = False,
-    ) -> FaceRedetectResult:
-        ...
+    ) -> FaceRedetectResult: ...
 
     @overload
     def detectOne(
@@ -352,8 +352,7 @@ class FaceDetector:
         detect5Landmarks: bool,
         detect68Landmarks: bool,
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[FaceRedetectResult]:
-        ...
+    ) -> AsyncTask[FaceRedetectResult]: ...
 
     def detectOne(
         self,
@@ -401,8 +400,7 @@ class FaceDetector:
         detect5Landmarks: bool = True,
         detect68Landmarks: bool = False,
         asyncEstimate: Literal[False] = False,
-    ) -> FacesDetectResult:
-        ...
+    ) -> FacesDetectResult: ...
 
     @overload
     def detect(
@@ -412,8 +410,7 @@ class FaceDetector:
         detect5Landmarks: bool,
         detect68Landmarks: bool,
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[FacesDetectResult]:
-        ...
+    ) -> AsyncTask[FacesDetectResult]: ...
 
     def detect(
         self,
@@ -456,8 +453,7 @@ class FaceDetector:
         detect5Landmarks: bool = True,
         detect68Landmarks: bool = False,
         asyncEstimate: Literal[False] = False,
-    ) -> FaceRedetectResult:
-        ...
+    ) -> FaceRedetectResult: ...
 
     @overload
     def redetectOne(
@@ -467,8 +463,7 @@ class FaceDetector:
         detect5Landmarks: bool,
         detect68Landmarks: bool,
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[FaceRedetectResult]:
-        ...
+    ) -> AsyncTask[FaceRedetectResult]: ...
 
     def redetectOne(  # noqa: F811
         self,
@@ -554,8 +549,7 @@ class FaceDetector:
         detect5Landmarks: bool = True,
         detect68Landmarks: bool = False,
         asyncEstimate: Literal[False] = False,
-    ) -> FacesRedetectResult:
-        ...
+    ) -> FacesRedetectResult: ...
 
     @overload
     def redetect(
@@ -564,8 +558,7 @@ class FaceDetector:
         detect5Landmarks: bool,
         detect68Landmarks: bool,
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[FacesRedetectResult]:
-        ...
+    ) -> AsyncTask[FacesRedetectResult]: ...
 
     def redetect(
         self,

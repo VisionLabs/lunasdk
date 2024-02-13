@@ -3,6 +3,7 @@ Module contains a head pose estimator.
 
 See `head pose`_.
 """
+
 from enum import Enum
 from typing import Dict, List, Literal, Union, overload
 
@@ -154,14 +155,12 @@ class HeadPoseEstimator(BaseEstimator):
     @overload
     def estimateByBoundingBox(
         self, imageWithFaceDetection: ImageWithFaceDetection, asyncEstimate: Literal[False] = False
-    ) -> HeadPose:
-        ...
+    ) -> HeadPose: ...
 
     @overload
     def estimateByBoundingBox(
         self, imageWithFaceDetection: ImageWithFaceDetection, asyncEstimate: Literal[True]
-    ) -> AsyncTask[HeadPose]:
-        ...
+    ) -> AsyncTask[HeadPose]: ...
 
     def estimateByBoundingBox(
         self, imageWithFaceDetection: ImageWithFaceDetection, asyncEstimate: bool = False

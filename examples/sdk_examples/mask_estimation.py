@@ -1,6 +1,7 @@
 """
 Medical mask estimation example
 """
+
 import asyncio
 import pprint
 

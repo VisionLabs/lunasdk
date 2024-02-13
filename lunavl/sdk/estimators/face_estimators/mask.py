@@ -2,6 +2,7 @@
 
 See `warp quality`_.
 """
+
 from enum import Enum
 from typing import Dict, List, Literal, Union, overload
 
@@ -274,8 +275,7 @@ class MaskEstimator(BaseEstimator):
     @overload
     def estimate(
         self, faceObject: Union[FaceWarpedImage, FaceWarp, FaceDetection], asyncEstimate: Literal[True]
-    ) -> AsyncTask[Mask]:
-        ...
+    ) -> AsyncTask[Mask]: ...
 
     def estimate(
         self, faceObject: Union[FaceWarpedImage, FaceWarp, FaceDetection], asyncEstimate: bool = False

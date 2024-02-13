@@ -1,6 +1,7 @@
 """
 Module contains function for detection on images.
 """
+
 from functools import partial
 from typing import Any, Dict, List, Literal, Optional, Union, overload
 
@@ -173,16 +174,14 @@ class HumanDetector:
         self,
         images: List[Union[VLImage, ImageForDetection]],
         asyncEstimate: Literal[False] = False,
-    ) -> HumanDetectResult:
-        ...
+    ) -> HumanDetectResult: ...
 
     @overload
     def detect(
         self,
         images: List[Union[VLImage, ImageForDetection]],
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[HumanDetectResult]:
-        ...
+    ) -> AsyncTask[HumanDetectResult]: ...
 
     def detect(
         self,

@@ -10,8 +10,7 @@ class TResult(Protocol):
     """Common task result protocol"""
 
     @abstractmethod
-    def __init__(self, result: Any):
-        ...
+    def __init__(self, result: Any): ...
 
 
 CommonTaskResult = TypeVar("CommonTaskResult", bound="TResult")

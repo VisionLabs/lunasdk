@@ -2,6 +2,7 @@
 
 See `warp quality`_.
 """
+
 from typing import Dict, List, Literal, Union, overload
 
 from FaceEngine import SubjectiveQuality as CoreQuality  # pylint: disable=E0611,E0401
@@ -120,8 +121,7 @@ class WarpQualityEstimator(BaseEstimator):
         ...
 
     @overload
-    def estimate(self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[True]) -> AsyncTask[Quality]:
-        ...
+    def estimate(self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[True]) -> AsyncTask[Quality]: ...
 
     def estimate(
         self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: bool = False

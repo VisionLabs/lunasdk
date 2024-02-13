@@ -1,5 +1,6 @@
 """Module for creating warped images
 """
+
 from typing import Optional, Union
 
 from FaceEngine import IHumanWarperPtr  # pylint: disable=E0611,E0401

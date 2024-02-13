@@ -3,6 +3,7 @@ Module contains an image color type estimator.
 
 See `image color type`_.
 """
+
 from enum import Enum
 from typing import Dict, List, Union
 

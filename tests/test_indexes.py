@@ -1,6 +1,7 @@
 """
 Test build an index with descriptors.
 """
+
 import os
 from typing import Union
 

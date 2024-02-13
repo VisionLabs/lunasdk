@@ -1,6 +1,7 @@
 """
 Patch env for load binary library
 """
+
 import os
 import platform
 import sys

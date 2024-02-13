@@ -1,6 +1,7 @@
 """
 An emotion estimation example
 """
+
 import asyncio
 import pprint
 

@@ -88,16 +88,14 @@ class PeopleCountEstimator(BaseEstimator):
         self,
         image: Union[VLImage, ImageForPeopleEstimation],
         asyncEstimate: Literal[False] = False,
-    ) -> int:
-        ...
+    ) -> int: ...
 
     @overload
     def estimate(
         self,
         image: Union[VLImage, ImageForPeopleEstimation],
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[int]:
-        ...
+    ) -> AsyncTask[int]: ...
 
     def estimate(
         self,
@@ -133,16 +131,14 @@ class PeopleCountEstimator(BaseEstimator):
         self,
         images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]],
         asyncEstimate: Literal[False] = False,
-    ) -> List[int]:
-        ...
+    ) -> List[int]: ...
 
     @overload
     def estimateBatch(
         self,
         images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]],
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[List[int]]:
-        ...
+    ) -> AsyncTask[List[int]]: ...
 
     def estimateBatch(
         self,

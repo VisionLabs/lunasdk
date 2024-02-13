@@ -4,6 +4,7 @@ Module contains a mouth state estimator
 See `eyes`_ and `gaze direction`_.
 
 """
+
 from enum import Enum
 from typing import List, Literal, NamedTuple, Union, overload
 
@@ -198,12 +199,14 @@ class EyeEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     @overload  # type: ignore
-    def estimate(self, warpWithLandmarks: WarpWithLandmarks, asyncEstimate: Literal[False] = False) -> EyesEstimation:
-        ...
+    def estimate(
+        self, warpWithLandmarks: WarpWithLandmarks, asyncEstimate: Literal[False] = False
+    ) -> EyesEstimation: ...
 
     @overload
-    def estimate(self, warpWithLandmarks: WarpWithLandmarks, asyncEstimate: Literal[True]) -> AsyncTask[EyesEstimation]:
-        ...
+    def estimate(
+        self, warpWithLandmarks: WarpWithLandmarks, asyncEstimate: Literal[True]
+    ) -> AsyncTask[EyesEstimation]: ...
 
     def estimate(  # type: ignore
         self,
@@ -366,14 +369,14 @@ class GazeEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     @overload  # type: ignore
-    def estimate(self, warpWithLandmarks5: WarpWithLandmarks5, asyncEstimate: Literal[False] = False) -> GazeDirection:
-        ...
+    def estimate(
+        self, warpWithLandmarks5: WarpWithLandmarks5, asyncEstimate: Literal[False] = False
+    ) -> GazeDirection: ...
 
     @overload
     def estimate(
         self, warpWithLandmarks5: WarpWithLandmarks5, asyncEstimate: Literal[True]
-    ) -> AsyncTask[GazeDirection]:
-        ...
+    ) -> AsyncTask[GazeDirection]: ...
 
     def estimate(  # type: ignore
         self, warpWithLandmarks5: WarpWithLandmarks5, asyncEstimate: bool = False

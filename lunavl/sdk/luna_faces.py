@@ -1,6 +1,7 @@
 """
 High-level api for estimating face attributes
 """
+
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Union
 
@@ -474,14 +475,16 @@ class VLFaceDetector:
         for imageDetections in detectRes:
             res.append(
                 [
-                    VLFaceDetection(
-                        detection.coreEstimation,
-                        detection.image,
-                        self.estimatorsCollection,
-                        self._estimationSettings,
+                    (
+                        VLFaceDetection(
+                            detection.coreEstimation,
+                            detection.image,
+                            self.estimatorsCollection,
+                            self._estimationSettings,
+                        )
+                        if detection
+                        else None
                     )
-                    if detection
-                    else None
                     for detection in imageDetections
                 ]
             )

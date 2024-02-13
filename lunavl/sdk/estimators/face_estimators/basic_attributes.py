@@ -2,6 +2,7 @@
 
 See `basic attributes`_.
 """
+
 from enum import Enum
 from functools import partial
 from typing import Any, Dict, List, Literal, Tuple, Union, overload
@@ -223,8 +224,7 @@ class BasicAttributesEstimator(BaseEstimator):
         estimateGender: bool,
         estimateEthnicity: bool,
         asyncEstimate: Literal[False] = False,
-    ) -> BasicAttributes:
-        ...
+    ) -> BasicAttributes: ...
 
     @overload
     def estimate(
@@ -234,8 +234,7 @@ class BasicAttributesEstimator(BaseEstimator):
         estimateGender: bool,
         estimateEthnicity: bool,
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[BasicAttributes]:
-        ...
+    ) -> AsyncTask[BasicAttributes]: ...
 
     def estimate(  # type: ignore
         self,
