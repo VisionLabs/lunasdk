@@ -1,6 +1,7 @@
 """
 Module contains pillow-simd workaround for the issue https://github.com/python-pillow/Pillow/issues/3690 (pickle tiff).
 """
+
 from PIL.Image import register_open
 from PIL.ImageFile import ImageFile
 from PIL.TiffImagePlugin import TiffImageFile, _accept

@@ -1,6 +1,7 @@
 """
 An approximate garbage score estimation example
 """
+
 import asyncio
 import pprint
 

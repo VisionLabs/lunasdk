@@ -2,6 +2,7 @@
 
 See `warp quality`_.
 """
+
 from enum import Enum
 from typing import Dict, List, Literal, Union, overload
 
@@ -90,12 +91,10 @@ class GlassesEstimator(BaseEstimator):
     """
 
     @overload  # type: ignore
-    def estimate(self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[False] = False) -> Glasses:
-        ...
+    def estimate(self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[False] = False) -> Glasses: ...
 
     @overload
-    def estimate(self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[True]) -> AsyncTask[Glasses]:
-        ...
+    def estimate(self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[True]) -> AsyncTask[Glasses]: ...
 
     def estimate(  # type: ignore
         self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: bool = False

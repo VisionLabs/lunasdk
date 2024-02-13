@@ -44,8 +44,7 @@ def _postProcessingBatch(
     batchSize: int,
     preparedBatch: PreparedBatch,
     landmarksType: Literal[FaceLandmarks.Landmarks5],
-) -> List[Landmarks5]:
-    ...
+) -> List[Landmarks5]: ...
 
 
 @overload
@@ -55,8 +54,7 @@ def _postProcessingBatch(
     batchSize: int,
     preparedBatch: PreparedBatch,
     landmarksType: Literal[FaceLandmarks.Landmarks68],
-) -> List[Landmarks68]:
-    ...
+) -> List[Landmarks68]: ...
 
 
 def _postProcessingBatch(
@@ -103,8 +101,7 @@ def _postProcessing(
     error,
     estimatedBatch,
     landmarksType: Literal[FaceLandmarks.Landmarks5],
-) -> Landmarks5:
-    ...
+) -> Landmarks5: ...
 
 
 @overload
@@ -112,8 +109,7 @@ def _postProcessing(
     error,
     estimatedBatch,
     landmarksType: Literal[FaceLandmarks.Landmarks68],
-) -> Landmarks68:
-    ...
+) -> Landmarks68: ...
 
 
 def _postProcessing(
@@ -149,8 +145,7 @@ class FaceLandmarksEstimator(BaseEstimator):
         detection: FaceDetection,
         landmarksType: Literal[FaceLandmarks.Landmarks5],
         asyncEstimate: Literal[False] = False,
-    ) -> Landmarks5:
-        ...
+    ) -> Landmarks5: ...
 
     @overload
     def estimate(
@@ -158,8 +153,7 @@ class FaceLandmarksEstimator(BaseEstimator):
         detection: FaceDetection,
         landmarksType: Literal[FaceLandmarks.Landmarks5],
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[Landmarks5]:
-        ...
+    ) -> AsyncTask[Landmarks5]: ...
 
     @overload
     def estimate(  # type: ignore
@@ -167,8 +161,7 @@ class FaceLandmarksEstimator(BaseEstimator):
         detection: FaceDetection,
         landmarksType: Literal[FaceLandmarks.Landmarks68],
         asyncEstimate: Literal[False],
-    ) -> Landmarks68:
-        ...
+    ) -> Landmarks68: ...
 
     @overload
     def estimate(
@@ -176,8 +169,7 @@ class FaceLandmarksEstimator(BaseEstimator):
         detection: FaceDetection,
         landmarksType: Literal[FaceLandmarks.Landmarks68],
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[Landmarks68]:
-        ...
+    ) -> AsyncTask[Landmarks68]: ...
 
     def estimate(
         self,
@@ -221,8 +213,7 @@ class FaceLandmarksEstimator(BaseEstimator):
         detections: list[FaceDetection],
         landmarksType: Literal[FaceLandmarks.Landmarks5],
         asyncEstimate: Literal[False] = False,
-    ) -> List[Landmarks5]:
-        ...
+    ) -> List[Landmarks5]: ...
 
     @overload
     def estimateBatch(
@@ -230,8 +221,7 @@ class FaceLandmarksEstimator(BaseEstimator):
         detections: list[FaceDetection],
         landmarksType: Literal[FaceLandmarks.Landmarks5],
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[List[Landmarks5]]:
-        ...
+    ) -> AsyncTask[List[Landmarks5]]: ...
 
     @overload
     def estimateBatch(
@@ -239,8 +229,7 @@ class FaceLandmarksEstimator(BaseEstimator):
         detections: list[FaceDetection],
         landmarksType: Literal[FaceLandmarks.Landmarks68],
         asyncEstimate: Literal[False],
-    ) -> List[Landmarks68]:
-        ...
+    ) -> List[Landmarks68]: ...
 
     @overload
     def estimateBatch(
@@ -248,8 +237,7 @@ class FaceLandmarksEstimator(BaseEstimator):
         detections: list[FaceDetection],
         landmarksType: Literal[FaceLandmarks.Landmarks68],
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[List[Landmarks68]]:
-        ...
+    ) -> AsyncTask[List[Landmarks68]]: ...
 
     def estimateBatch(
         self,

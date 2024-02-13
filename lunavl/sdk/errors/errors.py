@@ -1,6 +1,7 @@
 """
 Module contains class ErrorInfo. Structure for errors.
 """
+
 import inspect
 from typing import Dict, Union
 

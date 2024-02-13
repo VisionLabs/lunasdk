@@ -3,6 +3,7 @@ Module contains a fisheye estimator.
 
 See `fisheye`_.
 """
+
 import warnings
 from typing import Dict, List, Union
 

@@ -3,6 +3,7 @@ Module realize face descriptor match.
 
 see `face descriptors matching`_.
 """
+
 from typing import List, Union
 
 from FaceEngine import IDescriptorMatcherPtr  # pylint: disable=E0611,E0401

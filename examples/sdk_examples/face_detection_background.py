@@ -1,6 +1,7 @@
 """
 Module realize simple face detection background estimation examples.
 """
+
 import asyncio
 import pprint
 

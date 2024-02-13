@@ -3,6 +3,7 @@ Module contains a  livenessv1 estimator.
 
 See `livenessv1`_.
 """
+
 from enum import Enum
 from typing import List, Literal, Optional, Union, overload
 
@@ -143,8 +144,7 @@ class LivenessV1Estimator(BaseEstimator):
         faceDetection: FaceDetection,
         qualityThreshold: Optional[float] = None,
         asyncEstimate: Literal[False] = False,
-    ) -> LivenessV1:
-        ...
+    ) -> LivenessV1: ...
 
     @overload
     def estimate(
@@ -152,8 +152,7 @@ class LivenessV1Estimator(BaseEstimator):
         faceDetection: FaceDetection,
         qualityThreshold: Optional[float],
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[LivenessV1]:
-        ...
+    ) -> AsyncTask[LivenessV1]: ...
 
     def estimate(  # type: ignore
         self,

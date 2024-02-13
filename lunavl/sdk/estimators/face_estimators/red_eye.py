@@ -2,6 +2,7 @@
 
 See face_natural_light_.
 """
+
 from typing import List, Union
 
 from FaceEngine import (  # pylint: disable=E0611,E0401

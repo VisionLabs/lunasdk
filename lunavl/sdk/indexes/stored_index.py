@@ -1,4 +1,5 @@
 """Module realize dynamic and dense index."""
+
 import os
 from enum import Enum
 from pathlib import Path
@@ -65,14 +66,12 @@ class DynamicIndex(CoreIndex):
     @overload
     def search(  # type: ignore
         self, descriptor: FaceDescriptor, maxCount: int, asyncSearch: Literal[False] = False
-    ) -> List[IndexResult]:
-        ...
+    ) -> List[IndexResult]: ...
 
     @overload
     def search(
         self, descriptor: FaceDescriptor, maxCount: int, asyncSearch: Literal[True] = True
-    ) -> AsyncTask[List[IndexResult]]:
-        ...
+    ) -> AsyncTask[List[IndexResult]]: ...
 
     def search(
         self, descriptor: FaceDescriptor, maxCount: int = 1, asyncSearch: bool = False
@@ -134,14 +133,12 @@ class DenseIndex(CoreIndex):
     @overload
     def search(  # type: ignore
         self, descriptor: FaceDescriptor, maxCount: int, asyncSearch: Literal[False] = False
-    ) -> List[IndexResult]:
-        ...
+    ) -> List[IndexResult]: ...
 
     @overload
     def search(
         self, descriptor: FaceDescriptor, maxCount: int, asyncSearch: Literal[True] = True
-    ) -> AsyncTask[List[IndexResult]]:
-        ...
+    ) -> AsyncTask[List[IndexResult]]: ...
 
     def search(
         self, descriptor: FaceDescriptor, maxCount: int = 1, asyncSearch: bool = False

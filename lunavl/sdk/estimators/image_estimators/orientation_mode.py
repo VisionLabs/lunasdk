@@ -3,6 +3,7 @@ Module contains an orientation mode estimator.
 
 See `orientation mode`_.
 """
+
 from enum import Enum
 from typing import List, Union
 

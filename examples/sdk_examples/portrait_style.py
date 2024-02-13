@@ -1,6 +1,7 @@
 """
 Module realize simple portraitStyle estimation examples.
 """
+
 import pprint
 
 from resources import EXAMPLE_1, EXAMPLE_O

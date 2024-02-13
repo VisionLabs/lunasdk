@@ -1,6 +1,7 @@
 """
 Example of using VLFaceDetector
 """
+
 import pprint
 
 from resources import EXAMPLE_O

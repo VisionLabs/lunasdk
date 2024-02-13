@@ -3,6 +3,7 @@ Module realize simple examples following features:
     * detect humans
     * async detect humans
 """
+
 import asyncio
 import pprint
 

@@ -1,6 +1,7 @@
 """
 Module contains core index builder.
 """
+
 from pathlib import Path
 from typing import Union
 

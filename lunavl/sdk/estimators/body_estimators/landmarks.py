@@ -90,12 +90,10 @@ class BodyLandmarksEstimator(BaseEstimator):
     """
 
     @overload  # type: ignore
-    def estimate(self, detection: BodyDetection, asyncEstimate: Literal[False] = False) -> Landmarks17:
-        ...
+    def estimate(self, detection: BodyDetection, asyncEstimate: Literal[False] = False) -> Landmarks17: ...
 
     @overload
-    def estimate(self, detection: BodyDetection, asyncEstimate: Literal[True]) -> AsyncTask[Landmarks17]:
-        ...
+    def estimate(self, detection: BodyDetection, asyncEstimate: Literal[True]) -> AsyncTask[Landmarks17]: ...
 
     def estimate(
         self, detection: BodyDetection, asyncEstimate: bool = False
@@ -123,14 +121,12 @@ class BodyLandmarksEstimator(BaseEstimator):
     @overload
     def estimateBatch(
         self, detections: list[BodyDetection], asyncEstimate: Literal[False] = False
-    ) -> list[Landmarks17]:
-        ...
+    ) -> list[Landmarks17]: ...
 
     @overload
     def estimateBatch(
         self, detections: list[BodyDetection], asyncEstimate: Literal[True]
-    ) -> AsyncTask[list[Landmarks17]]:
-        ...
+    ) -> AsyncTask[list[Landmarks17]]: ...
 
     def estimateBatch(
         self,

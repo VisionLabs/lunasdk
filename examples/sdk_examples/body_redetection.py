@@ -3,6 +3,7 @@ Module realize simple examples following features:
     * redetect one human detection
     * redetect several humans
 """
+
 import asyncio
 import pprint
 

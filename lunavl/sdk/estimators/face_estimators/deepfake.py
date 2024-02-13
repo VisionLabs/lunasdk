@@ -3,6 +3,7 @@ Module contains a  deepfake estimator.
 
 See `deepfake`_.
 """
+
 from enum import Enum
 from typing import List, Literal, Union, overload
 
@@ -123,16 +124,14 @@ class DeepfakeEstimator(BaseEstimator):
         self,
         faceDetection: FaceDetection,
         asyncEstimate: Literal[False] = False,
-    ) -> Deepfake:
-        ...
+    ) -> Deepfake: ...
 
     @overload
     def estimate(
         self,
         faceDetection: FaceDetection,
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[Deepfake]:
-        ...
+    ) -> AsyncTask[Deepfake]: ...
 
     def estimate(  # type: ignore
         self,

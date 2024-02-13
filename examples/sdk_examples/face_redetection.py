@@ -3,6 +3,7 @@ Module realize simple examples following features:
     * redetect one face detection
     * redetect several faces
 """
+
 import asyncio
 import pprint
 

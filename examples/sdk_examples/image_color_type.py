@@ -1,6 +1,7 @@
 """
 An image color type estimation example
 """
+
 import pprint
 
 from resources import EXAMPLE_O
