@@ -1,7 +1,7 @@
 from typing import List, Literal, NamedTuple, Tuple, Union, overload
 
 import FaceEngine
-from FaceEngine import CrowdEstimation, FSDKErrorResult, CrowdEstimatorType
+from FaceEngine import CrowdEstimation, CrowdEstimatorType, FSDKErrorResult
 
 from lunavl.sdk.async_task import AsyncTask
 from lunavl.sdk.errors.exceptions import assertError
