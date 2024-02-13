@@ -1,6 +1,7 @@
 from typing import List, Literal, NamedTuple, Tuple, Union, overload
 
-from FaceEngine import CrowdEstimation, FSDKErrorResult
+import FaceEngine
+from FaceEngine import CrowdEstimation, FSDKErrorResult, CrowdEstimatorType
 
 from lunavl.sdk.async_task import AsyncTask
 from lunavl.sdk.errors.exceptions import assertError
@@ -88,16 +89,14 @@ class PeopleCountEstimator(BaseEstimator):
         self,
         image: Union[VLImage, ImageForPeopleEstimation],
         asyncEstimate: Literal[False] = False,
-    ) -> int:
-        ...
+    ) -> int: ...
 
     @overload
     def estimate(
         self,
         image: Union[VLImage, ImageForPeopleEstimation],
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[int]:
-        ...
+    ) -> AsyncTask[int]: ...
 
     def estimate(
         self,
@@ -121,11 +120,17 @@ class PeopleCountEstimator(BaseEstimator):
         else:
             detectArea = image[1].coreRectI
             image = image[0]
-        validateInputByBatchEstimator(self._coreEstimator, [image.coreImage], [detectArea])
+        validateInputByBatchEstimator(
+            self._coreEstimator, [image.coreImage], [detectArea], FaceEngine.CrowdRequest.estimateHeadCountAndCoords
+        )
         if asyncEstimate:
-            task = self._coreEstimator.asyncEstimate([image.coreImage], [detectArea])
+            task = self._coreEstimator.asyncEstimate(
+                [image.coreImage], [detectArea], FaceEngine.CrowdRequest.estimateHeadCountAndCoords
+            )
             return AsyncTask(task, postProcessing)
-        error, crowdEstimation = self._coreEstimator.estimate([image.coreImage], [detectArea])
+        error, crowdEstimation = self._coreEstimator.estimate(
+            [image.coreImage], [detectArea], FaceEngine.CrowdRequest.estimateHeadCountAndCoords
+        )
         return postProcessing(error, crowdEstimation)
 
     @overload  # type: ignore
@@ -133,16 +138,14 @@ class PeopleCountEstimator(BaseEstimator):
         self,
         images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]],
         asyncEstimate: Literal[False] = False,
-    ) -> List[int]:
-        ...
+    ) -> List[int]: ...
 
     @overload
     def estimateBatch(
         self,
         images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]],
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[List[int]]:
-        ...
+    ) -> AsyncTask[List[int]]: ...
 
     def estimateBatch(
         self,
@@ -162,9 +165,15 @@ class PeopleCountEstimator(BaseEstimator):
             LunaSDKException: if estimation is failed
         """
         coreImages, detectAreas = getEstimatorArgsFromImages(images)
-        validateInputByBatchEstimator(self._coreEstimator, coreImages, detectAreas)
+        validateInputByBatchEstimator(
+            self._coreEstimator, coreImages, detectAreas, FaceEngine.CrowdRequest.estimateHeadCountAndCoords
+        )
         if asyncEstimate:
-            task = self._coreEstimator.asyncEstimate(coreImages, detectAreas)
+            task = self._coreEstimator.asyncEstimate(
+                coreImages, detectAreas, FaceEngine.CrowdRequest.estimateHeadCountAndCoords
+            )
             return AsyncTask(task, postProcessingBatch)
-        error, crowdEstimations = self._coreEstimator.estimate(coreImages, detectAreas)
+        error, crowdEstimations = self._coreEstimator.estimate(
+            coreImages, detectAreas, FaceEngine.CrowdRequest.estimateHeadCountAndCoords
+        )
         return postProcessingBatch(error, crowdEstimations)
