@@ -18,7 +18,7 @@ class TestPeopleCount(BaseTestClass):
     @classmethod
     def setup_class(cls):
         super().setup_class()
-        cls.peopleCountEstimator = cls.faceEngine.createPeopleCountEstimator(PeopleCountEstimatorType.PEOPLE_COUNT_V2)
+        cls.peopleCountEstimator = cls.faceEngine.createPeopleCountEstimatorV2(PeopleCountEstimatorType.PEOPLE_COUNT_V2)
         cls.crowd9People = VLImage.load(filename=CROWD_9_PEOPLE)
         cls.crowd7People = VLImage.load(filename=CROWD_7_PEOPLE)
         cls.badFormatImage = VLImage.load(filename=CROWD_7_PEOPLE, colorFormat=ColorFormat.B8G8R8)
@@ -43,7 +43,7 @@ class TestPeopleCount(BaseTestClass):
         Test single image async estimation
         """
         peopleCount = self.peopleCountEstimator.estimate(self.crowd9People, asyncEstimate=True).get()
-        assert peopleCount == 10
+        assert peopleCount.count == 10
 
     def test_people_count_batch_async(self):  # todo: change asserted values LUNA-6049
         """
@@ -52,14 +52,14 @@ class TestPeopleCount(BaseTestClass):
         peopleCount = self.peopleCountEstimator.estimateBatch(
             [self.crowd9People, self.crowd7People], asyncEstimate=True
         ).get()
-        assert peopleCount == [10, 8]
+        assert [estimation.count for estimation in peopleCount] == [10, 8]
 
     def test_people_count(self):  # todo: change asserted values LUNA-6049
         """
         Test single image estimation
         """
         peopleCount = self.peopleCountEstimator.estimate(self.crowd7People)
-        assert peopleCount == 8
+        assert peopleCount.count == 8
 
     def test_people_count_batch(self):  # todo: change asserted values LUNA-6049
         """
@@ -67,7 +67,7 @@ class TestPeopleCount(BaseTestClass):
         """
         images = [self.crowd9People, VLImage.load(filename=IMAGE_WITH_TWO_FACES), self.crowd7People]
         peopleCount = self.peopleCountEstimator.estimateBatch(images)
-        assert peopleCount == [10, 2, 8]
+        assert [estimation.count for estimation in peopleCount] == [10, 2, 8]
 
     def test_people_count_with_batch_invalid_input(self):
         """
@@ -165,7 +165,7 @@ class TestPeopleCount(BaseTestClass):
         """
         areaWithoutPeople = ImageForPeopleEstimation(self.crowd9People, Rect(10, 10, 100, 100))
         peopleCount = self.peopleCountEstimator.estimateBatch([areaWithoutPeople, self.crowd7People])
-        assert peopleCount == [0, 8]
+        assert [estimation.count for estimation in peopleCount] == [0, 8]
 
     def test_people_count_with_invalid_area(self):
         """

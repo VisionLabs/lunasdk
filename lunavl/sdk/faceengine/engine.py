@@ -41,7 +41,11 @@ from ..estimators.face_estimators.portrait_style import PortraitStyleEstimator
 from ..estimators.face_estimators.red_eye import RedEyesEstimator
 from ..estimators.face_estimators.warp_quality import WarpQualityEstimator
 from ..estimators.image_estimators.orientation_mode import OrientationModeEstimator
-from ..estimators.image_estimators.people_count import PeopleCountEstimator
+from ..estimators.image_estimators.people_count import (
+    PeopleCountEstimator,
+    PeopleCountEstimatorV1,
+    PeopleCountEstimatorV2,
+)
 from ..faceengine.setting_provider import (
     DetectorType,
     FaceEngineSettingsProvider,
@@ -484,8 +488,10 @@ class VLFaceEngine:
         )
 
     def createPeopleCountEstimator(
-        self, estimatorType: PeopleCountEstimatorType, launchOptions: Optional[LaunchOptions] = None
-    ) -> PeopleCountEstimator:
+        self,
+        estimatorType: PeopleCountEstimatorType,
+        launchOptions: Optional[LaunchOptions] = None,
+    ) -> PeopleCountEstimatorV1:
         """
         Create an people count estimator
 
@@ -497,7 +503,30 @@ class VLFaceEngine:
             estimator
         """
         launchOptions = self.getLaunchOptions(launchOptions)
-        return PeopleCountEstimator(
+        return PeopleCountEstimatorV1(
+            self._faceEngine.createCrowdEstimator(
+                estimatorType.coreEstimatorType, launchOptions=launchOptions.coreLaunchOptions
+            ),
+            launchOptions,
+        )
+
+    def createPeopleCountEstimatorV2(
+        self,
+        estimatorType: PeopleCountEstimatorType,
+        launchOptions: Optional[LaunchOptions] = None,
+    ) -> PeopleCountEstimatorV2:
+        """
+        Create an people count estimator
+
+        Args:
+            estimatorType: type of the estimator
+            launchOptions: estimator launch options
+
+        Retruns:
+            estimator
+        """
+        launchOptions = self.getLaunchOptions(launchOptions)
+        return PeopleCountEstimatorV2(
             self._faceEngine.createCrowdEstimator(
                 estimatorType.coreEstimatorType, launchOptions=launchOptions.coreLaunchOptions
             ),
