@@ -4,7 +4,7 @@ from lunavl.sdk.errors.errors import LunaVLError
 from lunavl.sdk.errors.exceptions import LunaSDKException
 from lunavl.sdk.estimators.image_estimators.people_count import EstimationTargets, ImageForPeopleEstimation
 from lunavl.sdk.faceengine.setting_provider import PeopleCountEstimatorType
-from lunavl.sdk.image_utils.geometry import Point, Rect
+from lunavl.sdk.image_utils.geometry import Rect, Vec2D
 from lunavl.sdk.image_utils.image import ColorFormat, VLImage
 from tests.base import BaseTestClass
 from tests.resources import CROWD_7_PEOPLE, CROWD_9_PEOPLE, IMAGE_WITH_TWO_FACES
@@ -198,7 +198,7 @@ class TestPeopleCount(BaseTestClass):
         peopleCount = self.peopleCountEstimator.estimate(self.crowd7People)
         assert len(peopleCount.coordinates) == 8
         for point in peopleCount.coordinates:
-            assert isinstance(point, Point)
+            assert isinstance(point, Vec2D)
             assert isinstance(point.x, int)
             assert isinstance(point.y, int)
 

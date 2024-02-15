@@ -68,7 +68,7 @@ class Size(Generic[COORDINATE_TYPE]):
         return {"width": self.width, "height": self.height}
 
 
-class Point(NamedTuple, Generic[COORDINATE_TYPE]):
+class Point(Generic[COORDINATE_TYPE]):
     """
     Point.
 
@@ -77,11 +77,21 @@ class Point(NamedTuple, Generic[COORDINATE_TYPE]):
         y (CoordinateType): y-coordinate
     """
 
-    x: COORDINATE_TYPE
-    y: COORDINATE_TYPE
+    __slots__ = ["x", "y"]
+
+    def __init__(self, x: COORDINATE_TYPE, y: COORDINATE_TYPE):  # pylint: disable=C0103
+        """
+        Init
+
+        Args:
+            x: x
+            y: y
+        """
+        self.x: COORDINATE_TYPE = x  # pylint: disable=C0103
+        self.y: COORDINATE_TYPE = y  # pylint: disable=C0103
 
     @classmethod
-    def fromVector2(cls, vec2: Union[Vector2f, Vector2i]) -> "Point":  # type: ignore
+    def fromVector2(cls, vec2: Union[Vector2f, Vector2i]) -> "Point":
         """
         Create Point from Core Vector2i and Vector2f
 
@@ -91,10 +101,12 @@ class Point(NamedTuple, Generic[COORDINATE_TYPE]):
         Returns:
             point
         """
-        point = Point(vec2.x, vec2.y)
+        point = Point(0, 0)
+        point.x = vec2.x
+        point.y = vec2.y
         return point
 
-    def toVector2(self) -> Union[Vector2i, Vector2f]:  # type: ignore
+    def toVector2(self) -> Union[Vector2i, Vector2f]:
         """
         Create Vector2i or Vector2f from point
 
@@ -107,13 +119,11 @@ class Point(NamedTuple, Generic[COORDINATE_TYPE]):
         >>> isinstance(vec2, Vector2f)
         True
         """
-        x = self[0]
-        y = self[1]
-        if isinstance(x, int) and isinstance(y, int):
-            return Vector2i(x, y)
-        return Vector2f(x, y)
+        if isinstance(self.x, int) and isinstance(self.y, int):
+            return Vector2i(self.x, self.y)
+        return Vector2f(self.x, self.y)
 
-    def asDict(self) -> Tuple[int, int]:  # type: ignore
+    def asDict(self) -> Tuple[int, int]:
         """
         Convert point to list
 
@@ -127,8 +137,17 @@ class Point(NamedTuple, Generic[COORDINATE_TYPE]):
         """
         return int(self.x), int(self.y)
 
-    def __repr__(self) -> str:  # type: ignore
+    def __repr__(self):
         return "x = {}, y = {}".format(self.x, self.y)
+
+
+class Vec2D(NamedTuple):
+    """Point on image"""
+
+    # x pixel coordinate
+    x: int
+    # y pixel coordinate
+    y: int
 
 
 class Rect(Generic[COORDINATE_TYPE]):

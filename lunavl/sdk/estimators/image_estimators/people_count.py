@@ -9,7 +9,7 @@ from lunavl.sdk.base import BaseEstimation, Landmarks
 from lunavl.sdk.errors.exceptions import assertError
 from lunavl.sdk.estimators.base import BaseEstimator
 from lunavl.sdk.estimators.estimators_utils.extractor_utils import validateInputByBatchEstimator
-from lunavl.sdk.image_utils.geometry import CoreRectI, Point, Rect
+from lunavl.sdk.image_utils.geometry import CoreRectI, Point, Rect, Vec2D
 from lunavl.sdk.image_utils.image import CoreImage, VLImage
 
 
@@ -29,8 +29,8 @@ class PeopleCountEstimation(BaseEstimation):
         return self._coreEstimation.count
 
     @property
-    def coordinates(self) -> Tuple[Point[int], ...]:
-        return tuple(Point.fromVector2(point) for point in self._coreEstimation.points.getPoints())
+    def coordinates(self) -> Tuple[Vec2D, ...]:
+        return tuple(Vec2D(point.x, point.y) for point in self._coreEstimation.points.getPoints())
 
     def asDict(self) -> dict:
         return {"count": self.count, "coordinates": self.coordinates}
