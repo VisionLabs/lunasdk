@@ -2,9 +2,9 @@ import pytest
 
 from lunavl.sdk.errors.errors import LunaVLError
 from lunavl.sdk.errors.exceptions import LunaSDKException
-from lunavl.sdk.estimators.image_estimators.people_count import ImageForPeopleEstimation
+from lunavl.sdk.estimators.image_estimators.people_count import EstimationTargets, ImageForPeopleEstimation
 from lunavl.sdk.faceengine.setting_provider import PeopleCountEstimatorType
-from lunavl.sdk.image_utils.geometry import Rect
+from lunavl.sdk.image_utils.geometry import Point, Rect
 from lunavl.sdk.image_utils.image import ColorFormat, VLImage
 from tests.base import BaseTestClass
 from tests.resources import CROWD_7_PEOPLE, CROWD_9_PEOPLE, IMAGE_WITH_TWO_FACES
@@ -190,3 +190,40 @@ class TestPeopleCount(BaseTestClass):
         self.assertReceivedAndRawExpectedErrors(
             exceptionInfo.value.context[0], LunaVLError.InvalidRect.format("Invalid rectangle")
         )
+
+    def test_people_coordinates(self):
+        """
+        Test coordinates
+        """
+        peopleCount = self.peopleCountEstimator.estimate(self.crowd7People)
+        assert len(peopleCount.coordinates) == 8
+        for point in peopleCount.coordinates:
+            assert isinstance(point, Point)
+            assert isinstance(point.x, int)
+            assert isinstance(point.y, int)
+
+    def test_targets(self):
+        """
+        Test targets param
+        """
+        peopleCount = self.peopleCountEstimator.estimate(self.crowd7People, estimationTargets=EstimationTargets.T1)
+        assert len(peopleCount.coordinates) == 8
+        peopleCount = self.peopleCountEstimator.estimate(self.crowd7People, estimationTargets=EstimationTargets.T2)
+        assert len(peopleCount.coordinates) == 0
+
+    def test_V1(self):
+        """
+        Test old people estimated api
+        """
+        peopleCountEstimator = self.faceEngine.createPeopleCountEstimator(PeopleCountEstimatorType.PEOPLE_COUNT_V2)
+        peopleCount = peopleCountEstimator.estimate(self.crowd7People)
+        assert peopleCount == 8
+        peopleCount = peopleCountEstimator.estimateBatch([self.crowd7People])
+        assert peopleCount[0] == 8
+
+    def test_asDict(self):
+        """
+        Test asDict method
+        """
+        peopleCount = self.peopleCountEstimator.estimate(self.crowd7People, estimationTargets=EstimationTargets.T1)
+        assert {"count": peopleCount.count, "coordinates": peopleCount.coordinates} == peopleCount.asDict()

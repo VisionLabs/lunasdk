@@ -9,7 +9,7 @@ from lunavl.sdk.base import BaseEstimation, Landmarks
 from lunavl.sdk.errors.exceptions import assertError
 from lunavl.sdk.estimators.base import BaseEstimator
 from lunavl.sdk.estimators.estimators_utils.extractor_utils import validateInputByBatchEstimator
-from lunavl.sdk.image_utils.geometry import CoreRectI, Rect
+from lunavl.sdk.image_utils.geometry import CoreRectI, Point, Rect
 from lunavl.sdk.image_utils.image import CoreImage, VLImage
 
 
@@ -29,11 +29,11 @@ class PeopleCountEstimation(BaseEstimation):
         return self._coreEstimation.count
 
     @property
-    def coordinates(self):
-        return Landmarks(self.coreEstimation.points.getPoints())
+    def coordinates(self) -> Tuple[Point[int], ...]:
+        return tuple(Point.fromVector2(point) for point in self._coreEstimation.points.getPoints())
 
     def asDict(self) -> dict:
-        return {"count": self.count, "coordinates": self.coordinates.asDict()}
+        return {"count": self.count, "coordinates": self.coordinates}
 
 
 class ImageForPeopleEstimation(NamedTuple):
@@ -160,7 +160,7 @@ class PeopleCountEstimatorV2(BaseEstimator):
     def estimate(
         self,
         image: Union[VLImage, ImageForPeopleEstimation],
-        estimationTargets: EstimationTargets = EstimationTargets.T2,
+        estimationTargets: EstimationTargets = EstimationTargets.T1,
         asyncEstimate: bool = False,
     ):
         """
@@ -180,17 +180,12 @@ class PeopleCountEstimatorV2(BaseEstimator):
         else:
             detectArea = image[1].coreRectI
             image = image[0]
-        validateInputByBatchEstimator(
-            self._coreEstimator, [image.coreImage], [detectArea], FaceEngine.CrowdRequest.estimateHeadCountAndCoords
-        )
+        targets = estimationTargets.value
+        validateInputByBatchEstimator(self._coreEstimator, [image.coreImage], [detectArea], targets)
         if asyncEstimate:
-            task = self._coreEstimator.asyncEstimate(
-                [image.coreImage], [detectArea], FaceEngine.CrowdRequest.estimateHeadCountAndCoords
-            )
+            task = self._coreEstimator.asyncEstimate([image.coreImage], [detectArea], targets)
             return AsyncTask(task, postProcessingV2)
-        error, crowdEstimation = self._coreEstimator.estimate(
-            [image.coreImage], [detectArea], FaceEngine.CrowdRequest.estimateHeadCountAndCoords
-        )
+        error, crowdEstimation = self._coreEstimator.estimate([image.coreImage], [detectArea], targets)
         return postProcessingV2(error, crowdEstimation)
 
     @overload  # type: ignore
@@ -275,7 +270,7 @@ class PeopleCountEstimatorV1(BaseEstimator):
         estimator = PeopleCountEstimatorV2(self._coreEstimator, launchOptions=self.launchOptions)
         if asyncEstimate:
             task = estimator.estimate(image, EstimationTargets.T2, True)
-            task.postProcessing = postProcessingV1
+            task.postProcessing = postProcessingV1  # type: ignore
             return task
         else:
             return estimator.estimate(image, EstimationTargets.T2, False).count
@@ -314,7 +309,7 @@ class PeopleCountEstimatorV1(BaseEstimator):
         estimator = PeopleCountEstimatorV2(self._coreEstimator, launchOptions=self.launchOptions)
         if asyncEstimate:
             task = estimator.estimateBatch(images, EstimationTargets.T2, True)
-            task.postProcessing = postProcessingBatchV1
+            task.postProcessing = postProcessingBatchV1  # type: ignore
             return task
         else:
             res = estimator.estimateBatch(images, EstimationTargets.T2, False)

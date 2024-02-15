@@ -59,7 +59,7 @@ class AGSEstimator(BaseEstimator):
     def estimate(
         self,
         detection: Optional[FaceDetection] = None,
-        imageWithFaceDetection: ImageWithFaceDetection = None,
+        imageWithFaceDetection: None = None,
         asyncEstimate: Literal[False] = False,
     ) -> float: ...
 

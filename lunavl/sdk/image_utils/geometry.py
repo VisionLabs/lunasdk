@@ -2,7 +2,7 @@
 Module contains geometric structures (Rect, Point, Size)
 """
 
-from typing import Dict, Generic, Tuple, TypeVar, Union
+from typing import Dict, Generic, NamedTuple, Tuple, TypeVar, Union
 
 from FaceEngine import (  # pylint: disable=E0611,E0401
     EyelidLandmarks,
@@ -68,7 +68,7 @@ class Size(Generic[COORDINATE_TYPE]):
         return {"width": self.width, "height": self.height}
 
 
-class Point(Generic[COORDINATE_TYPE]):
+class Point(NamedTuple, Generic[COORDINATE_TYPE]):
     """
     Point.
 
@@ -77,21 +77,11 @@ class Point(Generic[COORDINATE_TYPE]):
         y (CoordinateType): y-coordinate
     """
 
-    __slots__ = ["x", "y"]
-
-    def __init__(self, x: COORDINATE_TYPE, y: COORDINATE_TYPE):  # pylint: disable=C0103
-        """
-        Init
-
-        Args:
-            x: x
-            y: y
-        """
-        self.x: COORDINATE_TYPE = x  # pylint: disable=C0103
-        self.y: COORDINATE_TYPE = y  # pylint: disable=C0103
+    x: COORDINATE_TYPE
+    y: COORDINATE_TYPE
 
     @classmethod
-    def fromVector2(cls, vec2: Union[Vector2f, Vector2i]) -> "Point":
+    def fromVector2(cls, vec2: Union[Vector2f, Vector2i]) -> "Point":  # type: ignore
         """
         Create Point from Core Vector2i and Vector2f
 
@@ -101,12 +91,10 @@ class Point(Generic[COORDINATE_TYPE]):
         Returns:
             point
         """
-        point = Point(0, 0)
-        point.x = vec2.x
-        point.y = vec2.y
+        point = Point(vec2.x, vec2.y)
         return point
 
-    def toVector2(self) -> Union[Vector2i, Vector2f]:
+    def toVector2(self) -> Union[Vector2i, Vector2f]:  # type: ignore
         """
         Create Vector2i or Vector2f from point
 
@@ -119,11 +107,13 @@ class Point(Generic[COORDINATE_TYPE]):
         >>> isinstance(vec2, Vector2f)
         True
         """
-        if isinstance(self.x, int) and isinstance(self.y, int):
-            return Vector2i(self.x, self.y)
-        return Vector2f(self.x, self.y)
+        x = self[0]
+        y = self[1]
+        if isinstance(x, int) and isinstance(y, int):
+            return Vector2i(x, y)
+        return Vector2f(x, y)
 
-    def asDict(self) -> Tuple[int, int]:
+    def asDict(self) -> Tuple[int, int]:  # type: ignore
         """
         Convert point to list
 
@@ -137,7 +127,7 @@ class Point(Generic[COORDINATE_TYPE]):
         """
         return int(self.x), int(self.y)
 
-    def __repr__(self):
+    def __repr__(self) -> str:  # type: ignore
         return "x = {}, y = {}".format(self.x, self.y)
 
 

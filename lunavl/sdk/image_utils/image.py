@@ -506,7 +506,7 @@ class VLImage:
         Returns:
             bytes
         """
-        pass
+        raise NotImplemented
 
     def isValid(self) -> bool:
         """
