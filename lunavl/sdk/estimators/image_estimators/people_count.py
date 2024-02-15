@@ -275,7 +275,7 @@ class PeopleCountEstimatorV1(BaseEstimator):
         estimator = PeopleCountEstimatorV2(self._coreEstimator, launchOptions=self.launchOptions)
         if asyncEstimate:
             task = estimator.estimate(image, EstimationTargets.T2, True)
-            task.postProcessing = postProcessingV1
+            task.postProcessing = postProcessingV1  # type: ignore
             return task
         else:
             return estimator.estimate(image, EstimationTargets.T2, False).count
@@ -314,7 +314,7 @@ class PeopleCountEstimatorV1(BaseEstimator):
         estimator = PeopleCountEstimatorV2(self._coreEstimator, launchOptions=self.launchOptions)
         if asyncEstimate:
             task = estimator.estimateBatch(images, EstimationTargets.T2, True)
-            task.postProcessing = postProcessingBatchV1
+            task.postProcessing = postProcessingBatchV1  # type: ignore
             return task
         else:
             res = estimator.estimateBatch(images, EstimationTargets.T2, False)
