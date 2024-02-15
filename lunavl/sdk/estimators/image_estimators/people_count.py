@@ -106,9 +106,7 @@ def postProcessingV1(error: FSDKErrorResult, crowdEstimation: CrowdEstimation) -
     return crowdEstimation[0].count
 
 
-def postProcessingBatchV2(
-    error: FSDKErrorResult, crowdEstimations: List[CrowdEstimation]
-) -> List[PeopleCount]:
+def postProcessingBatchV2(error: FSDKErrorResult, crowdEstimations: List[CrowdEstimation]) -> List[PeopleCount]:
     """
     Post processing batch people count estimation
 
