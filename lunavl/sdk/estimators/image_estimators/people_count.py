@@ -22,7 +22,7 @@ class EstimationTargets(Enum):
     T2 = FaceEngine.CrowdRequest.estimateHeadCount
 
 
-class PeopleCountEstimation(BaseEstimation):
+class PeopleCount(BaseEstimation):
 
     @property
     def count(self):
@@ -108,7 +108,7 @@ def postProcessingV1(error: FSDKErrorResult, crowdEstimation: CrowdEstimation) -
 
 def postProcessingBatchV2(
     error: FSDKErrorResult, crowdEstimations: List[CrowdEstimation]
-) -> List[PeopleCountEstimation]:
+) -> List[PeopleCount]:
     """
     Post processing batch people count estimation
 
@@ -120,10 +120,10 @@ def postProcessingBatchV2(
         list of people quantities
     """
     assertError(error)
-    return [PeopleCountEstimation(estimation) for estimation in crowdEstimations]
+    return [PeopleCount(estimation) for estimation in crowdEstimations]
 
 
-def postProcessingV2(error: FSDKErrorResult, crowdEstimation: CrowdEstimation) -> PeopleCountEstimation:
+def postProcessingV2(error: FSDKErrorResult, crowdEstimation: CrowdEstimation) -> PeopleCount:
     """
     Post processing single people count estimation
 
@@ -135,7 +135,7 @@ def postProcessingV2(error: FSDKErrorResult, crowdEstimation: CrowdEstimation) -
         people count
     """
     assertError(error)
-    return PeopleCountEstimation(crowdEstimation[0])
+    return PeopleCount(crowdEstimation[0])
 
 
 class PeopleCountEstimatorV2(BaseEstimator):
@@ -147,7 +147,7 @@ class PeopleCountEstimatorV2(BaseEstimator):
         image: Union[VLImage, ImageForPeopleEstimation],
         estimationTargets: EstimationTargets,
         asyncEstimate: Literal[False] = False,
-    ) -> PeopleCountEstimation: ...
+    ) -> PeopleCount: ...
 
     @overload
     def estimate(
@@ -155,7 +155,7 @@ class PeopleCountEstimatorV2(BaseEstimator):
         image: Union[VLImage, ImageForPeopleEstimation],
         estimationTargets: EstimationTargets,
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[PeopleCountEstimation]: ...
+    ) -> AsyncTask[PeopleCount]: ...
 
     def estimate(
         self,
@@ -194,7 +194,7 @@ class PeopleCountEstimatorV2(BaseEstimator):
         images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]],
         estimationTargets: EstimationTargets,
         asyncEstimate: Literal[False] = False,
-    ) -> List[PeopleCountEstimation]: ...
+    ) -> List[PeopleCount]: ...
 
     @overload
     def estimateBatch(
@@ -202,7 +202,7 @@ class PeopleCountEstimatorV2(BaseEstimator):
         images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]],
         estimationTargets: EstimationTargets,
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[List[PeopleCountEstimation]]: ...
+    ) -> AsyncTask[List[PeopleCount]]: ...
 
     def estimateBatch(
         self,
