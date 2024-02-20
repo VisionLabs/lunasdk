@@ -2,7 +2,7 @@
 Module contains geometric structures (Rect, Point, Size)
 """
 
-from typing import Dict, Generic, Tuple, TypeVar, Union
+from typing import Dict, Generic, NamedTuple, Tuple, TypeVar, Union
 
 from FaceEngine import (  # pylint: disable=E0611,E0401
     EyelidLandmarks,
@@ -139,6 +139,15 @@ class Point(Generic[COORDINATE_TYPE]):
 
     def __repr__(self):
         return "x = {}, y = {}".format(self.x, self.y)
+
+
+class Vec2D(NamedTuple):
+    """Point on image"""
+
+    # x pixel coordinate
+    x: int
+    # y pixel coordinate
+    y: int
 
 
 class Rect(Generic[COORDINATE_TYPE]):
