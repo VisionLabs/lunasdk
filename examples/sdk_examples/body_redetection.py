@@ -23,12 +23,12 @@ def detectBodies():
     detector = faceEngine.createBodyDetector()
 
     imageWithOneBody = VLImage.load(filename=EXAMPLE_O)
-    detection = detector.detectOne(imageWithOneBody, detectLandmarks=False)
+    detection = detector.detectOne(imageWithOneBody)
     pprint.pprint(detector.redetectOne(image=imageWithOneBody, bBox=detection))
     pprint.pprint(detector.redetectOne(image=imageWithOneBody, bBox=detection.boundingBox.rect))
 
     imageWithSeveralBodies = VLImage.load(filename=EXAMPLE_SEVERAL_FACES)
-    severalBodies = detector.detect([imageWithSeveralBodies], detectLandmarks=False)
+    severalBodies = detector.detect([imageWithSeveralBodies])
 
     pprint.pprint(
         detector.redetect(
@@ -49,10 +49,10 @@ async def asyncRedetectBodies():
     detector = faceEngine.createBodyDetector()
 
     imageWithOneBody = VLImage.load(filename=EXAMPLE_O)
-    detection = detector.detectOne(imageWithOneBody, detectLandmarks=False)
+    detection = detector.detectOne(imageWithOneBody)
     detection = await detector.redetectOne(image=imageWithOneBody, bBox=detection, asyncEstimate=True)
     imageWithSeveralBodies = VLImage.load(filename=EXAMPLE_SEVERAL_FACES)
-    severalBodies = detector.detect([imageWithSeveralBodies], detectLandmarks=False)
+    severalBodies = detector.detect([imageWithSeveralBodies])
 
     task1 = detector.redetect(
         images=[

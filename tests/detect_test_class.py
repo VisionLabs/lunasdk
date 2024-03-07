@@ -4,7 +4,7 @@ from typing import List, Type, Union
 
 from lunavl.sdk.base import BoundingBox, LandmarkWithScore
 from lunavl.sdk.detectors.base import BaseDetection
-from lunavl.sdk.detectors.bodydetector import BodyDetection, BodyDetector, Landmarks17
+from lunavl.sdk.detectors.bodydetector import BodyDetection, BodyDetector
 from lunavl.sdk.detectors.facedetector import FaceDetection, FaceDetector, Landmarks5, Landmarks68
 from lunavl.sdk.faceengine.engine import DetectorType
 from lunavl.sdk.image_utils.geometry import Point, Rect
@@ -117,22 +117,6 @@ class BodyDetectTestClass(BaseDetectorTestClass):
             imageVl: class image
         """
         self.assertDetection(detection, imageVl)
-
-    @staticmethod
-    def assertDetectionLandmarks(detection: BodyDetection, landmarksIsExpected: bool = False):
-        """
-        Assert human detection landmarks
-        Args:
-            detection: detection
-            landmarksIsExpected: landmarks is expected or not
-
-        """
-        if landmarksIsExpected:
-            assert isinstance(
-                detection.landmarks17, Landmarks17
-            ), f"{detection.landmarks17.__class__} is not {Landmarks17}"
-        else:
-            assert detection.landmarks17 is None, detection.landmarks17
 
     @staticmethod
     def assertLandmarksPoints(landmarksPoints: tuple):

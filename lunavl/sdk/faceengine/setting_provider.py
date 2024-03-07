@@ -1015,7 +1015,6 @@ class BodyDetectorSettings(BaseSettingsSection):
         - imageSize (int): Target image size for down scaling by load side;
         - nms (NMS): type of NMS: mean or best
         - redetectNMS: type of NMS: mean or best
-        - landmarks17Threshold (float): body landmarks threshold in [0..1] range;
     """
 
     sectionName = "HumanDetector::Settings"
@@ -1158,25 +1157,6 @@ class BodyDetectorSettings(BaseSettingsSection):
             value: redetectNMS value
         """
         self.setValue("RedetectNMS", value.value)
-
-    @property
-    def landmarks17Threshold(self) -> Optional[float]:
-        """
-        Getter for landmarks17Threshold
-
-        Returns:
-            scoreThreshold
-        """
-        return self.getValue("landmarks17Threshold")
-
-    @landmarks17Threshold.setter
-    def landmarks17Threshold(self, value: float) -> None:
-        """
-        Setter for landmarks17Threshold
-        Args:
-            value: new value
-        """
-        self.setValue("landmarks17Threshold", value)
 
 
 class HumanDetectorSettings(BaseSettingsSection):

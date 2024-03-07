@@ -132,7 +132,7 @@ class BodyWarper:
         Create warp from detection.
 
         Args:
-            humanDetection: human body detection with landmarks17
+            humanDetection: human body detection
 
         Returns:
             Warp

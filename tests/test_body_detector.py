@@ -17,7 +17,7 @@ from tests.detect_test_class import (
     BodyDetectTestClass,
 )
 from tests.resources import MANY_FACES, NO_FACES, ONE_FACE
-from tests.schemas import LANDMARKS17, REQUIRED_HUMAN_BODY_DETECTION, jsonValidator
+from tests.schemas import REQUIRED_HUMAN_BODY_DETECTION, jsonValidator
 
 
 class TestBodyDetector(BodyDetectTestClass):
@@ -39,18 +39,6 @@ class TestBodyDetector(BodyDetectTestClass):
         """
         detection = self.detector.detectOne(image=VLIMAGE_ONE_FACE, detectLandmarks=True)
         self.assertBodyDetection(detection, VLIMAGE_ONE_FACE)
-
-        self.assertLandmarksPoints(detection.landmarks17.points)
-
-    def test_landmarks_as_dict(self):
-        """
-        Test conversion landmarks to dictionary
-        """
-        currentLandmarks17 = self.detector.detectOne(image=VLIMAGE_ONE_FACE).landmarks17.asDict()
-
-        assert (
-            jsonValidator(schema=LANDMARKS17).validate(currentLandmarks17) is None
-        ), f"{currentLandmarks17} does not match with schema {LANDMARKS17}"
 
     def test_valid_bounding_box(self):
         """
@@ -311,8 +299,6 @@ class TestBodyDetector(BodyDetectTestClass):
             for detection in batchDetect:
                 for human in detection:
                     assert human.boundingBox.asDict() == detectOne.boundingBox.asDict()
-                    # unstable
-                    # assert human.landmarks17.asDict() == detectOne.landmarks17.asDict()
 
     def test_async_detect_human(self):
         """

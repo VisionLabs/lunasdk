@@ -9,7 +9,7 @@ from FaceEngine.TrackEngine import (
     PyTrackingResult,
 )
 
-from lunavl.sdk.detectors.bodydetector import BodyDetection, Landmarks17
+from lunavl.sdk.detectors.bodydetector import BodyDetection
 from lunavl.sdk.detectors.facedetector import FaceDetection, Landmarks5
 from lunavl.sdk.image_utils.geometry import Rect
 from lunavl.sdk.image_utils.image import VLImage
@@ -423,12 +423,6 @@ class BodyTrack(BaseTrackObject[BodyTrackData, BodyDetection]):
             coreBody.img = self.image.coreImage
             coreBody.detection = self.coreEstimation.detection
             self._detection = BodyDetection(coreBody, self.image)
-            coreLandmarks = self.coreEstimation.landmarks
-            if coreLandmarks and not all(
-                (landmark.point.x == 0 and landmark.point.y == 0 for landmark in coreLandmarks)
-            ):
-                coreBody.landmarks17_opt.set(coreLandmarks)
-                self._detection.landmarks17 = Landmarks17(coreLandmarks)
         return self._detection
 
 

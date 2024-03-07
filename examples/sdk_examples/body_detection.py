@@ -2,7 +2,6 @@
 Module realize simple examples following features:
     * one human detection
     * batch images human detection
-    * detect landmarks17
 """
 
 import asyncio
