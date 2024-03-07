@@ -236,7 +236,7 @@ def test_return_face_landmarks(detectFace, detectBody):
 
     if detectBody and detectFace:
         assert track.face.detection.landmarks5 is None
-    else:
+    elif detectFace:
         assert track.face.detection.landmarks5 is not None
 
 
