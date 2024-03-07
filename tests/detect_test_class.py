@@ -105,8 +105,6 @@ class BodyDetectTestClass(BaseDetectorTestClass):
         """
         super().setup_class()
         cls.detector = cls.faceEngine.createBodyDetector()
-        CaseLandmarks = namedtuple("CaseLandmarks", ("detectLandmarks"))
-        cls.landmarksCases = [CaseLandmarks(True), CaseLandmarks(False)]
 
     def assertBodyDetection(self, detection: Union[BodyDetection, List[BodyDetection]], imageVl: VLImage):
         """

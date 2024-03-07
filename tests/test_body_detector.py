@@ -33,13 +33,6 @@ class TestBodyDetector(BodyDetectTestClass):
         self.assertBodyDetection(detection[0], VLIMAGE_ONE_FACE)
         assert 1 == len(detection)
 
-    def test_check_landmarks_points(self):
-        """
-        Test validation landmarks points
-        """
-        detection = self.detector.detectOne(image=VLIMAGE_ONE_FACE, detectLandmarks=True)
-        self.assertBodyDetection(detection, VLIMAGE_ONE_FACE)
-
     def test_valid_bounding_box(self):
         """
         Test validate bounding box (rect and score)
@@ -63,14 +56,12 @@ class TestBodyDetector(BodyDetectTestClass):
         """
         Test conversion result human detection to dictionary
         """
-        for case in self.landmarksCases:
-            with self.subTest(landmarks5=case.detectLandmarks):
-                detectAsDict = self.detector.detectOne(
-                    image=VLIMAGE_ONE_FACE, detectLandmarks=case.detectLandmarks
-                ).asDict()
-                assert (
-                    jsonValidator(schema=REQUIRED_HUMAN_BODY_DETECTION).validate(detectAsDict) is None
-                ), f"{detectAsDict} does not match with schema {REQUIRED_HUMAN_BODY_DETECTION}"
+        detectAsDict = self.detector.detectOne(
+            image=VLIMAGE_ONE_FACE
+        ).asDict()
+        assert (
+            jsonValidator(schema=REQUIRED_HUMAN_BODY_DETECTION).validate(detectAsDict) is None
+        ), f"{detectAsDict} does not match with schema {REQUIRED_HUMAN_BODY_DETECTION}"
 
     def test_detection_with_default_detector_type(self):
         """
@@ -159,24 +150,6 @@ class TestBodyDetector(BodyDetectTestClass):
         assert 2 == len(detection)
         assert 5 == len(detection[0])
         assert 1 == len(detection[1])
-
-    def test_get_landmarks_for_detect_one(self):
-        """
-        Test get and check landmark instances for detection of one human
-        """
-        for case in self.landmarksCases:
-            with self.subTest(detect=case.detectLandmarks):
-                detection = self.detector.detectOne(image=VLIMAGE_ONE_FACE, detectLandmarks=case.detectLandmarks)
-                self.assertDetectionLandmarks(detection=detection, landmarksIsExpected=case.detectLandmarks)
-
-    def test_get_landmarks_for_batch_detect(self):
-        """
-        Test get and check landmark instances for batch detect
-        """
-        for case in self.landmarksCases:
-            with self.subTest(detect=case.detectLandmarks):
-                detection = self.detector.detect(images=[VLIMAGE_ONE_FACE], detectLandmarks=case.detectLandmarks)[0][0]
-                self.assertDetectionLandmarks(detection=detection, landmarksIsExpected=case.detectLandmarks)
 
     def test_batch_detect_limit(self):
         """
@@ -294,8 +267,8 @@ class TestBodyDetector(BodyDetectTestClass):
         Test match of values at different detections (detectOne and detect) with one image
         """
         for image in (VLIMAGE_ONE_FACE, VLIMAGE_SMALL):
-            detectOne = self.detector.detectOne(image=image, detectLandmarks=True)
-            batchDetect = self.detector.detect(images=[image] * 3, detectLandmarks=True)
+            detectOne = self.detector.detectOne(image=image)
+            batchDetect = self.detector.detect(images=[image] * 3)
             for detection in batchDetect:
                 for human in detection:
                     assert human.boundingBox.asDict() == detectOne.boundingBox.asDict()
