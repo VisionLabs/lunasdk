@@ -94,57 +94,6 @@ class Landmarks(BaseEstimation):
         return tuple(((int(points[index].x), int(points[index].y)) for index in range(pointCount)))
 
 
-class LandmarkWithScore(BaseEstimation):
-    """
-    Point with score.
-    """
-
-    def __init__(self, landmark: HumanLandmark):  # pylint: disable=C0103
-        """
-        Init
-
-        Args:
-            landmark: core landmark
-        """
-        super().__init__(landmark)
-
-    @property
-    def point(self) -> Point[float]:
-        """
-        Coordinate of landmark
-        Returns:
-            point
-        """
-        return Point.fromVector2(self._coreEstimation.point)
-
-    @property
-    def score(self) -> float:
-        """
-        Landmark score
-        Returns:
-            float[0,1]
-        """
-        return self._coreEstimation.score
-
-    def asDict(self) -> dict:
-        """
-        Convert point to list (json),  coordinates will be cast from float to int
-
-        Returns:
-            dict with keys: score and point
-        """
-        return {"score": self._coreEstimation.score, "point": (int(self.point.x), int(self.point.y))}
-
-    def __repr__(self) -> str:
-        """
-        Representation.
-
-        Returns:
-            "x = {self.point.x}, y = {self.point.y}, score = {self.score}"
-        """
-        return "x = {}, y = {}, score = {}".format(self.point.x, self.point.y, self.score)
-
-
 class BoundingBox(BaseEstimation):
     """
     Detection bounding box, it is characterized of rect and score:

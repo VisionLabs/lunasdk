@@ -2,7 +2,7 @@ import itertools
 from collections import namedtuple
 from typing import List, Type, Union
 
-from lunavl.sdk.base import BoundingBox, LandmarkWithScore
+from lunavl.sdk.base import BoundingBox
 from lunavl.sdk.detectors.base import BaseDetection
 from lunavl.sdk.detectors.bodydetector import BodyDetection, BodyDetector
 from lunavl.sdk.detectors.facedetector import FaceDetection, FaceDetector, Landmarks5, Landmarks68
@@ -117,19 +117,6 @@ class BodyDetectTestClass(BaseDetectorTestClass):
             imageVl: class image
         """
         self.assertDetection(detection, imageVl)
-
-    @staticmethod
-    def assertLandmarksPoints(landmarksPoints: tuple):
-        """
-        Assert landmarks points
-
-        Args:
-            landmarksPoints: tuple of landmarks points
-        """
-        assert isinstance(landmarksPoints, tuple), f"{landmarksPoints} points is not tuple"
-        for point in landmarksPoints:
-            assert isinstance(point, LandmarkWithScore), "Landmarks does not contains Point"
-            BaseDetectorTestClass.assertPoint(point.point)
 
 
 class FaceDetectTestClass(BaseDetectorTestClass):
