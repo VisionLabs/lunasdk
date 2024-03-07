@@ -56,9 +56,7 @@ class TestBodyDetector(BodyDetectTestClass):
         """
         Test conversion result human detection to dictionary
         """
-        detectAsDict = self.detector.detectOne(
-            image=VLIMAGE_ONE_FACE
-        ).asDict()
+        detectAsDict = self.detector.detectOne(image=VLIMAGE_ONE_FACE).asDict()
         assert (
             jsonValidator(schema=REQUIRED_HUMAN_BODY_DETECTION).validate(detectAsDict) is None
         ), f"{detectAsDict} does not match with schema {REQUIRED_HUMAN_BODY_DETECTION}"
