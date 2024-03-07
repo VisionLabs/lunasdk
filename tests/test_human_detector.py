@@ -73,7 +73,6 @@ class TestBodyDetector(BaseTestClass):
                 assert isinstance(body, BodyDetection)
                 assert body.coreEstimation.isValid()
                 self.assertBoundingBox(body.boundingBox)
-                assert body.landmarks17 is None
             face = detection.face
             if face:
                 assert isinstance(face, FaceDetection)

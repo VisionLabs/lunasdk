@@ -28,8 +28,6 @@ LANDMARKS5 = {"type": "array", "maxItems": 5, "minItems": 5, "items": LANDMARKS_
 
 LANDMARKS68 = {"type": "array", "maxItems": 68, "minItems": 68, "items": LANDMARKS_ITEM}
 
-LANDMARKS17 = {"type": "array", "maxItems": 17, "minItems": 17, "items": LANDMARK_WITH_SCORE_ITEM}
-
 REQUIRED_FACE_DETECTION = {
     "type": "object",
     "properties": {"rect": TYPE_RECT, "score": TYPE_SCORE, "landmarks5": LANDMARKS5, "landmarks68": LANDMARKS68},
@@ -39,7 +37,7 @@ REQUIRED_FACE_DETECTION = {
 
 REQUIRED_HUMAN_BODY_DETECTION = {
     "type": "object",
-    "properties": {"rect": TYPE_RECT, "score": TYPE_SCORE, "landmarks17": LANDMARKS17},
+    "properties": {"rect": TYPE_RECT, "score": TYPE_SCORE},
     "additionalProperties": False,
     "required": ["rect", "score"],
 }

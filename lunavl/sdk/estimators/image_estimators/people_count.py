@@ -23,7 +23,6 @@ class EstimationTargets(Enum):
 
 
 class PeopleCount(BaseEstimation):
-
     @property
     def count(self):
         return self._coreEstimation.count

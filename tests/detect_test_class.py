@@ -2,9 +2,9 @@ import itertools
 from collections import namedtuple
 from typing import List, Type, Union
 
-from lunavl.sdk.base import BoundingBox, LandmarkWithScore
+from lunavl.sdk.base import BoundingBox
 from lunavl.sdk.detectors.base import BaseDetection
-from lunavl.sdk.detectors.bodydetector import BodyDetection, BodyDetector, Landmarks17
+from lunavl.sdk.detectors.bodydetector import BodyDetection, BodyDetector
 from lunavl.sdk.detectors.facedetector import FaceDetection, FaceDetector, Landmarks5, Landmarks68
 from lunavl.sdk.faceengine.engine import DetectorType
 from lunavl.sdk.image_utils.geometry import Point, Rect
@@ -105,8 +105,6 @@ class BodyDetectTestClass(BaseDetectorTestClass):
         """
         super().setup_class()
         cls.detector = cls.faceEngine.createBodyDetector()
-        CaseLandmarks = namedtuple("CaseLandmarks", ("detectLandmarks"))
-        cls.landmarksCases = [CaseLandmarks(True), CaseLandmarks(False)]
 
     def assertBodyDetection(self, detection: Union[BodyDetection, List[BodyDetection]], imageVl: VLImage):
         """
@@ -117,35 +115,6 @@ class BodyDetectTestClass(BaseDetectorTestClass):
             imageVl: class image
         """
         self.assertDetection(detection, imageVl)
-
-    @staticmethod
-    def assertDetectionLandmarks(detection: BodyDetection, landmarksIsExpected: bool = False):
-        """
-        Assert human detection landmarks
-        Args:
-            detection: detection
-            landmarksIsExpected: landmarks is expected or not
-
-        """
-        if landmarksIsExpected:
-            assert isinstance(
-                detection.landmarks17, Landmarks17
-            ), f"{detection.landmarks17.__class__} is not {Landmarks17}"
-        else:
-            assert detection.landmarks17 is None, detection.landmarks17
-
-    @staticmethod
-    def assertLandmarksPoints(landmarksPoints: tuple):
-        """
-        Assert landmarks points
-
-        Args:
-            landmarksPoints: tuple of landmarks points
-        """
-        assert isinstance(landmarksPoints, tuple), f"{landmarksPoints} points is not tuple"
-        for point in landmarksPoints:
-            assert isinstance(point, LandmarkWithScore), "Landmarks does not contains Point"
-            BaseDetectorTestClass.assertPoint(point.point)
 
 
 class FaceDetectTestClass(BaseDetectorTestClass):
