@@ -5,16 +5,9 @@ Module contains function for detection human bodies on images.
 from functools import partial
 from typing import Any, Dict, List, Literal, Optional, Union, overload
 
-from FaceEngine import (  # pylint: disable=E0611,E0401
-    Detection,
-    FSDKErrorResult,
-    Human,
-    HumanDetectionType,
-    HumanLandmarks17 as CoreLandmarks17,
-)
+from FaceEngine import Detection, FSDKErrorResult, Human, HumanDetectionType  # pylint: disable=E0611,E0401
 
 from ..async_task import AsyncTask
-from ..base import LandmarksWithScore
 from ..errors.exceptions import assertError
 from ..image_utils.geometry import Rect
 from ..image_utils.image import VLImage
@@ -48,65 +41,17 @@ def _createCoreBodies(image: ImageForRedetection) -> List[Human]:
     return humans
 
 
-class Landmarks17(LandmarksWithScore):
-    """
-    Landmarks17
-    """
-
-    #  pylint: disable=W0235
-    def __init__(self, coreLandmark17: CoreLandmarks17):
-        """
-        Init
-
-        Args:
-            coreLandmark17: core landmarks
-        """
-        super().__init__(coreLandmark17)
-
-
 class BodyDetection(BaseDetection):
-    """
-    Attributes:
-        landmarks17 (Optional[Landmarks17]): optional landmarks17
-    """
-
-    __slots__ = ("landmarks17",)
-
-    def __init__(self, coreDetection: Human, image: VLImage):
-        """
-        Init.
-
-        Args:
-            coreDetection: core detection
-        """
-        super().__init__(coreDetection, image)
-
-        if coreDetection.landmarks17_opt.isValid():
-            self.landmarks17: Optional[Landmarks17] = Landmarks17(coreDetection.landmarks17_opt.value())
-        else:
-            self.landmarks17 = None
-
-    def asDict(self) -> Dict[str, Any]:
-        """
-        Convert human detection to dict (json).
-
-        Returns:
-            dict. required keys: 'rect', 'score'. optional keys: 'landmarks5', 'landmarks68'
-        """
-        res = super().asDict()
-        if self.landmarks17 is not None:
-            res["landmarks17"] = self.landmarks17.asDict()
-        return res
+    """Body detection class"""
 
 
-def createHumanDetection(image: VLImage, detection: Detection, landmarks17: Optional[CoreLandmarks17]):
+def createHumanDetection(image: VLImage, detection: Detection):
     """
     Create human detection structure from core detection result.
 
     Args:
         image: origin image
         detection: sdk human detection
-        landmarks17: estimated landsmarks17
 
     Returns:
         HumanDetection structure
@@ -114,15 +59,12 @@ def createHumanDetection(image: VLImage, detection: Detection, landmarks17: Opti
     human = Human()
     human.img = image.coreImage
     human.detection = detection
-    if landmarks17:
-        human.landmarks17_opt.set(landmarks17)
     return BodyDetection(human, image)
 
 
 def collectDetectionsResult(
     fsdkDetectRes,
     images: Union[List[Union[VLImage, ImageForDetection]], List[ImageForRedetection]],
-    detectLandmarks: bool = True,
     isRedectResult: bool = False,
 ) -> Union[List[List[BodyDetection]], List[List[Optional[BodyDetection]]]]:
     """
@@ -130,7 +72,6 @@ def collectDetectionsResult(
     Args:
         fsdkDetectRes: fsdk (re)detect results
         images: incoming images
-        detectLandmarks: detect body landmarks or not
         isRedectResult: is redetect result or not
     Returns:
         return list of lists detection, order of detection lists is corresponding to order input images
@@ -141,13 +82,11 @@ def collectDetectionsResult(
     for imageIdx in range(fsdkDetectRes.getSize()):
         imagesDetections = []
         detections = fsdkDetectRes.getDetections(imageIdx)
-        landmarks17Array = fsdkDetectRes.getLandmarks17(imageIdx)
         image = images[imageIdx]
         vlImage = image if isinstance(image, VLImage) else image.image
         for detectionIdx, detection in enumerate(detections):
-            landMarks = landmarks17Array[detectionIdx] if detectLandmarks else None
             if detection.isValid():
-                humanDetection = createHumanDetection(vlImage, detection, landMarks)
+                humanDetection = createHumanDetection(vlImage, detection)
             else:
                 if not isRedectResult:
                     raise RuntimeError("invalid detection")
@@ -183,12 +122,7 @@ def postProcessingOne(error: FSDKErrorResult, detectRes, image: VLImage) -> Opti
         # human body not found
         return None
     detection = detections[0]
-    landmarks17Array = detectRes.getLandmarks17(0)
-    if not detection.isValid():
-        raise RuntimeError("invalid detection")
-
-    landmarks17 = landmarks17Array[0] if landmarks17Array else None
-    humanDetection = createHumanDetection(image, detection, landmarks17)
+    humanDetection = createHumanDetection(image, detection)
     return humanDetection
 
 
@@ -213,7 +147,7 @@ def postProcessingRedetectOne(error: FSDKErrorResult, detectRes, image: VLImage)
 
 
 def postProcessing(
-    error: FSDKErrorResult, fsdkDetectRes, images: List[Union[VLImage, ImageForDetection]], detectLandmarks: bool
+    error: FSDKErrorResult, fsdkDetectRes, images: List[Union[VLImage, ImageForDetection]]
 ) -> List[List[BodyDetection]]:
     """
     Convert core human detections from detector results to `HumanDetection` and error check.
@@ -227,13 +161,11 @@ def postProcessing(
         list, each item is face detections on corresponding image
     """
     assertError(error)
-    return collectDetectionsResult(
-        fsdkDetectRes, images=images, detectLandmarks=detectLandmarks, isRedectResult=False  # type: ignore
-    )
+    return collectDetectionsResult(fsdkDetectRes, images=images, isRedectResult=False)  # type: ignore
 
 
 def postProcessingRedect(
-    error: FSDKErrorResult, fsdkDetectRes, images: List[ImageForRedetection], detectLandmarks: bool
+    error: FSDKErrorResult, fsdkDetectRes, images: List[ImageForRedetection]
 ) -> List[List[Optional[BodyDetection]]]:
     """
     Convert core human redetections from detector results to `HumanDetection` and error check.
@@ -247,9 +179,7 @@ def postProcessingRedect(
         list, each item is face detections on corresponding image
     """
     assertError(error)
-    return collectDetectionsResult(
-        fsdkDetectRes, images=images, detectLandmarks=detectLandmarks, isRedectResult=True  # type: ignore
-    )
+    return collectDetectionsResult(fsdkDetectRes, images=images, isRedectResult=True)  # type: ignore
 
 
 # alias for detect one result
@@ -281,20 +211,14 @@ class BodyDetector:
         self._launchOptions = launchOptions
 
     @staticmethod
-    def _getDetectionType(detectLandmarks: bool = True) -> HumanDetectionType:
+    def _getDetectionType() -> HumanDetectionType:
         """
         Get  core detection type
 
-        Args:
-            detectLandmarks: detect or not landmarks
         Returns:
             detection type
         """
-        toDetect = HumanDetectionType.HDT_BOX
-
-        if detectLandmarks:
-            toDetect = HumanDetectionType.HDT_ALL
-        return toDetect
+        return HumanDetectionType.HDT_BOX
 
     @overload  # type: ignore
     def detectOne(
@@ -302,7 +226,6 @@ class BodyDetector:
         image: VLImage,
         detectArea: Optional[Rect] = None,
         limit: int = 5,
-        detectLandmarks: bool = True,
         asyncEstimate: Literal[False] = False,
     ) -> DetectOneResult: ...
 
@@ -312,7 +235,6 @@ class BodyDetector:
         image: VLImage,
         detectArea: Optional[Rect],
         limit: int,
-        detectLandmarks: bool,
         asyncEstimate: Literal[True],
     ) -> AsyncTask[DetectOneResult]: ...
 
@@ -321,7 +243,6 @@ class BodyDetector:
         image: VLImage,
         detectArea: Optional[Rect] = None,
         limit: int = 5,
-        detectLandmarks: bool = True,
         asyncEstimate: bool = False,
     ):
         """
@@ -331,7 +252,6 @@ class BodyDetector:
             image: image. Format must be R8G8B8
             detectArea: rectangle area which contains human to detect. If not set will be set image.rect
             limit: max number of detections for input image
-            detectLandmarks: detect or not landmarks
             asyncEstimate: estimate or run estimation in background
         Returns:
             human detection if human is found otherwise None
@@ -339,7 +259,7 @@ class BodyDetector:
             LunaSDKException: if detectOne is failed or image format has wrong the format
         """
         assertImageForDetection(image)
-        detectionType = self._getDetectionType(detectLandmarks)
+        detectionType = self._getDetectionType()
 
         if detectArea is None:
             forDetection = ImageForDetection(image=image, detectArea=image.rect)
@@ -357,7 +277,6 @@ class BodyDetector:
         self,
         images: List[Union[VLImage, ImageForDetection]],
         limit: int = 5,
-        detectLandmarks: bool = True,
         asyncEstimate: Literal[False] = False,
     ) -> Union[DetectResult, AsyncTask[DetectResult]]: ...
 
@@ -366,7 +285,6 @@ class BodyDetector:
         self,
         images: List[Union[VLImage, ImageForDetection]],
         limit: int,
-        detectLandmarks: bool,
         asyncEstimate: Literal[True] = True,
     ) -> Union[DetectResult, AsyncTask[DetectResult]]: ...
 
@@ -374,7 +292,6 @@ class BodyDetector:
         self,
         images: List[Union[VLImage, ImageForDetection]],
         limit: int = 5,
-        detectLandmarks: bool = True,
         asyncEstimate=False,
     ):
         """
@@ -383,7 +300,6 @@ class BodyDetector:
         Args:
             images: input images list. Format must be R8G8B8
             limit: max number of detections per input image
-            detectLandmarks: detect or not landmarks
             asyncEstimate: estimate or run estimation in background
         Returns:
             asyncEstimate is False: return list of lists detection, order of detection lists is corresponding
@@ -391,19 +307,18 @@ class BodyDetector:
             asyncEstimate isTrue:  async task
         """
         coreImages, detectAreas = getArgsForCoreDetectorForImages(images)
-        detectionType = self._getDetectionType(detectLandmarks)
+        detectionType = self._getDetectionType()
         validateBatchDetectInput(self._detector, coreImages, detectAreas)
         if asyncEstimate:
             task = self._detector.asyncDetect(coreImages, detectAreas, limit, detectionType)
-            return AsyncTask(task, partial(postProcessing, images=images, detectLandmarks=detectLandmarks))
+            return AsyncTask(task, partial(postProcessing, images=images))
         error, fsdkDetectRes = self._detector.detect(coreImages, detectAreas, limit, detectionType)
-        return postProcessing(error, fsdkDetectRes, images, detectLandmarks)
+        return postProcessing(error, fsdkDetectRes, images)
 
     def redetectOne(  # noqa: F811
         self,
         image: VLImage,
         bBox: Union[Rect, BodyDetection],
-        detectLandmarks: bool = True,
         asyncEstimate=False,
     ) -> Union[RedetectResult, AsyncTask[RedetectResult]]:
         """
@@ -413,7 +328,6 @@ class BodyDetector:
             image: image with a bounding box, or just VLImage. If VLImage provided, one of bBox or detection
                 should be defined.
             bBox: detection bounding box
-            detectLandmarks: detect or not landmarks
 
         Returns:
             detection if human body found otherwise None if asyncEstimate is false otherwise async task
@@ -426,17 +340,14 @@ class BodyDetector:
         else:
             coreBBox = bBox.coreEstimation.detection
         if asyncEstimate:
-            task = self._detector.asyncRedetectOne(image.coreImage, coreBBox, self._getDetectionType(detectLandmarks))
+            task = self._detector.asyncRedetectOne(image.coreImage, coreBBox, self._getDetectionType())
             return AsyncTask(task, partial(postProcessingRedetectOne, image=image))
-        error, detectRes = self._detector.redetectOne(
-            image.coreImage, coreBBox, self._getDetectionType(detectLandmarks)
-        )
+        error, detectRes = self._detector.redetectOne(image.coreImage, coreBBox, self._getDetectionType())
         return postProcessingRedetectOne(error, detectRes, image)
 
     def redetect(
         self,
         images: List[ImageForRedetection],
-        detectLandmarks: bool = True,
         asyncEstimate=False,
     ) -> Union[RedetectBatchResult, AsyncTask[RedetectBatchResult]]:
         """
@@ -445,7 +356,6 @@ class BodyDetector:
         Args:
             images: images with a bounding boxes,
             asyncEstimate: estimate or run estimation in background
-            detectLandmarks: detect or not landmarks
 
         Returns:
             detections if asyncEstimate is false otherwise async task
@@ -455,8 +365,8 @@ class BodyDetector:
         coreImages, detectAreas = getArgsForCoreRedetect(images)
         validateReDetectInput(self._detector, coreImages, detectAreas)
         if asyncEstimate:
-            task = self._detector.asyncRedetect(coreImages, detectAreas, self._getDetectionType(detectLandmarks))
-            pProcessing = partial(postProcessingRedect, images=images, detectLandmarks=detectLandmarks)
+            task = self._detector.asyncRedetect(coreImages, detectAreas, self._getDetectionType())
+            pProcessing = partial(postProcessingRedect, images=images)
             return AsyncTask(task, pProcessing)
-        error, fsdkDetectRes = self._detector.redetect(coreImages, detectAreas, self._getDetectionType(detectLandmarks))
-        return postProcessingRedect(error, fsdkDetectRes, images=images, detectLandmarks=detectLandmarks)
+        error, fsdkDetectRes = self._detector.redetect(coreImages, detectAreas, self._getDetectionType())
+        return postProcessingRedect(error, fsdkDetectRes, images=images)
