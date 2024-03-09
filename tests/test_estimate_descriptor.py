@@ -469,4 +469,4 @@ class TestEstimateDescriptor(BaseTestClass):
                     [faceWarp], aggregate=1,
                 )
                 assert descriptorBatch[0].garbageScore < 1, "Expected low gs"
-                assert descriptor.garbageScore < 1, "Expected low gs"
+                assert aggregateDescriptor.garbageScore < 1, "Expected low gs"
