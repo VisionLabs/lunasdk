@@ -456,7 +456,6 @@ class TestEstimateDescriptor(BaseTestClass):
                 task = extractor.estimateDescriptorsBatch([case.warps[0]] * 2, asyncEstimate=True, aggregate=True)
                 self.assertAsyncBatchEstimationWithAggregation(task, descriptorClass)
 
-
     def test_descriptor_batch_low_threshold_aggregation(self):
         """
         Test descriptor batch with low threshold warps with aggregation
@@ -466,7 +465,8 @@ class TestEstimateDescriptor(BaseTestClass):
             with self.subTest(planVersion=descriptorVersion):
                 extractor = self.faceEngine.createFaceDescriptorEstimator(descriptorVersion)
                 descriptorBatch, aggregateDescriptor = extractor.estimateDescriptorsBatch(
-                    [faceWarp], aggregate=1,
+                    [faceWarp],
+                    aggregate=1,
                 )
                 assert descriptorBatch[0].garbageScore < 1, "Expected low gs"
                 assert aggregateDescriptor.garbageScore < 1, "Expected low gs"
