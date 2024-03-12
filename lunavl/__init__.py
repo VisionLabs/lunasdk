@@ -15,7 +15,7 @@ def _patchLoadLib():
         return
     if platform.system() == "Windows":
         # path to .dll
-        pathToBinary = os.path.join(os.getenv("FSDK_ROOT"), "bin", "vs2015", "x64")
+        pathToBinary = os.path.join(os.getenv("FSDK_ROOT"), "bin", "vs2022", "x64")
     else:
         # path to .so
         pathToBinary = os.path.join(os.getenv("FSDK_ROOT"), "lib", "gcc4", "x64")
