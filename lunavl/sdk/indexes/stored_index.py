@@ -123,7 +123,7 @@ class DynamicIndex(CoreIndex):
         Raises:
             LunaSDKException: if an error occurs while removing descriptors
         """
-        error = self._coreIndex.eraseRemovedDescriptors()
+        error, _ = self._coreIndex.eraseRemovedDescriptors()
 
         assertError(error)
 
