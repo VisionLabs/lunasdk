@@ -35,7 +35,7 @@ stages:
     expire_in: "30 min"
     paths:
       - ${CI_PROJECT_DIR}/tests/test_benchmark/logs
-      -
+
 .use_cpusdk: &use_cpusdk
   sed -i 's/name = "lunavl"/name = "lunavlcpu"/' pyproject.toml;
   sed -i 's/FaceEngine =/FaceEngineCPU =/' pyproject.toml;
