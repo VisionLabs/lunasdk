@@ -50,7 +50,7 @@ class TestIndexFunctionality(BaseTestClass):
 
     def setUp(self) -> None:
         super().setUp()
-        self.indexBuilder = self.faceEngine.createIndexBuilder(descriptorVersion=self.descriptorVersion)
+        self.indexBuilder = self.faceEngine.createIndexBuilder(descriptorVersion=62)
         self.faceDescriptor = self.defaultFaceEstimator.estimate(faceWarp)
         self.faceDescriptorBatch, _ = self.defaultFaceEstimator.estimateDescriptorsBatch(faceWarps)
 
@@ -337,3 +337,21 @@ class TestIndexFunctionality(BaseTestClass):
         self.assertAsyncBatchEstimation(task, IndexResult)
         result = task.get()
         assert 2 == len(result), result
+
+    def test_erase_removed_descriptors_before_save_required(self):
+        """Test erasing removed descriptors required."""
+        self.indexBuilder.appendBatch(self.faceDescriptorBatch)
+        dynamicIndex = self.indexBuilder.buildIndex()
+        dynamicIndex.remove(2)
+        with pytest.raises(LunaSDKException, match="Removed descriptors were not erased 2, call eraseRemovedDescriptors first"):
+            dynamicIndex.save(pathToStoredIndex)
+
+    def test_refresh_index_after_descriptor_deletion(self):
+        """Test index refresh works on descriptor deletion"""
+        self.indexBuilder.appendBatch(self.faceDescriptorBatch)
+        dynamicIndex = self.indexBuilder.buildIndex()
+        dynamicIndex.remove(1)
+        dynamicIndex.eraseRemovedDescriptors()
+        dynamicIndex.save(pathToStoredIndex)
+        index = self.indexBuilder.loadIndex(pathToStoredIndex, IndexType.dynamic)
+        self.assertDynamicIndex(index, expectedDescriptorCount=1, expectedBufSize=1)
