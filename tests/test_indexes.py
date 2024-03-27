@@ -344,7 +344,7 @@ class TestIndexFunctionality(BaseTestClass):
         dynamicIndex = self.indexBuilder.buildIndex()
         dynamicIndex.remove(1)
         with pytest.raises(
-            LunaSDKException, match="Removed descriptors were not erased 2, call eraseRemovedDescriptors first"
+            LunaSDKException, match="Invalid serialized object"
         ):
             dynamicIndex.save(pathToStoredIndex)
 
