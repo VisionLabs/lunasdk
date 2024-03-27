@@ -50,7 +50,7 @@ class TestIndexFunctionality(BaseTestClass):
 
     def setUp(self) -> None:
         super().setUp()
-        self.indexBuilder = self.faceEngine.createIndexBuilder(descriptorVersion=62)
+        self.indexBuilder = self.faceEngine.createIndexBuilder(descriptorVersion=self.descriptorVersion)
         self.faceDescriptor = self.defaultFaceEstimator.estimate(faceWarp)
         self.faceDescriptorBatch, _ = self.defaultFaceEstimator.estimateDescriptorsBatch(faceWarps)
 
