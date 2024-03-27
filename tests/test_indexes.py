@@ -342,8 +342,10 @@ class TestIndexFunctionality(BaseTestClass):
         """Test erasing removed descriptors required."""
         self.indexBuilder.appendBatch(self.faceDescriptorBatch)
         dynamicIndex = self.indexBuilder.buildIndex()
-        dynamicIndex.remove(2)
-        with pytest.raises(LunaSDKException, match="Removed descriptors were not erased 2, call eraseRemovedDescriptors first"):
+        dynamicIndex.remove(1)
+        with pytest.raises(
+            LunaSDKException, match="Removed descriptors were not erased 2, call eraseRemovedDescriptors first"
+        ):
             dynamicIndex.save(pathToStoredIndex)
 
     def test_refresh_index_after_descriptor_deletion(self):
