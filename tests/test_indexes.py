@@ -343,9 +343,7 @@ class TestIndexFunctionality(BaseTestClass):
         self.indexBuilder.appendBatch(self.faceDescriptorBatch)
         dynamicIndex = self.indexBuilder.buildIndex()
         dynamicIndex.remove(1)
-        with pytest.raises(
-            LunaSDKException, match="Invalid serialized object"
-        ):
+        with pytest.raises(LunaSDKException, match="Invalid serialized object"):
             dynamicIndex.save(pathToStoredIndex)
 
     def test_refresh_index_after_descriptor_deletion(self):
