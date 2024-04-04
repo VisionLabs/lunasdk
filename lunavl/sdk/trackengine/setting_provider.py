@@ -15,12 +15,90 @@ class TrackerType(BiDirectionEnum):
     NONE = "none"
 
 
+class LoggingMode(BiDirectionEnum):
+    """Logger mode enum"""
+
+    L2C = "l2c"
+    L2F = "l2f"
+    L2B = "l2b"
+
+
 class OverlapRemovingType(BiDirectionEnum):
     """Tracker type enum"""
 
     BOTH = "both"
     SCORE = "score"
     NONE = "none"
+
+
+class LoggerSettings(BaseSettingsSection):
+    """
+    Logging section settings.
+
+    See details https://docs.visionlabs.ai/sdk/v.5.16.0/sdk/trackengine-handbook/settings/#logging-section
+    """
+
+    sectionName = "logging"
+
+    @property
+    def mode(self) -> Optional[LoggingMode]:
+        """
+        Getter for logging mode
+
+        Returns:
+            0, 1
+        """
+        logMode = self.getValue("mode")
+        if logMode:
+            return LoggingMode(logMode)
+        return None
+
+    @mode.setter
+    def mode(self, value: LoggingMode) -> None:
+        """
+        Setter for logging mode
+        Args:
+            value: new value
+        """
+        self.setValue("mode", value.value)
+
+    @property
+    def logFilePath(self) -> Optional[str]:
+        """
+        Getter for log file path
+
+        Returns:
+            0, 1
+        """
+        return self.getValue("log-file-path")
+
+    @logFilePath.setter
+    def logFilePath(self, value: str) -> None:
+        """
+        Setter for log file path
+        Args:
+            value: new value
+        """
+        self.setValue("log-file-path", value)
+
+    @property
+    def severity(self) -> Optional[str]:
+        """
+        Getter for logging severity level
+
+        Returns:
+            0, 1
+        """
+        return self.getValue("severity")
+
+    @severity.setter
+    def severity(self, value: str) -> None:
+        """
+        Setter for logging severity level
+        Args:
+            value: new value
+        """
+        self.setValue("log-file-path", value)
 
 
 class OtherSettings(BaseSettingsSection):
@@ -721,6 +799,11 @@ class TrackEngineSettingsProvider(BaseSettingsProvider):
 
     # default configuration filename.
     defaultConfName = "trackengine.conf"
+
+    @property
+    def logging(self) -> LoggerSettings:
+        """Get logging section"""
+        return LoggerSettings(self._coreSettingProvider)
 
     @property
     def other(self) -> OtherSettings:
