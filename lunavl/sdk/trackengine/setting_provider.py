@@ -18,8 +18,11 @@ class TrackerType(BiDirectionEnum):
 class LoggingMode(BiDirectionEnum):
     """Logger mode enum"""
 
+    # log to console
     L2C = "l2c"
+    # log to file
     L2F = "l2f"
+    # log to console and file
     L2B = "l2b"
 
 
