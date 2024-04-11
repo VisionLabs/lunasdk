@@ -13,7 +13,7 @@ from PIL import Image
 from lunavl.sdk.errors.errors import LunaVLError
 from lunavl.sdk.errors.exceptions import LunaSDKException
 from lunavl.sdk.image_utils.geometry import Rect
-from lunavl.sdk.image_utils.image import ColorFormat, ImageFormat, VLImage
+from lunavl.sdk.image_utils.image import ColorFormat, ImageFormat, MemoryResidence, VLImage
 from tests.base import BaseTestClass
 from tests.resources import ONE_FACE, PALETTE_MODE
 
@@ -293,3 +293,33 @@ class TestImage(BaseTestClass):
         """
         image = VLImage(IMAGE.convert("CMYK"))
         assert image.format == ColorFormat.R8G8B8
+
+    def test_memory_residence(self):
+        """test memory residence param"""
+        for memoryResidence in MemoryResidence:
+            with self.subTest(memoryResidence):
+                image = VLImage.load(filename=ONE_FACE, memoryResidence=memoryResidence)
+                assert memoryResidence == image.getMemoryResidence()
+        binaryBody = Path(ONE_FACE).read_bytes()
+        bytearrayBody = bytearray(binaryBody)
+        imageWithOneFace = Image.open(ONE_FACE)
+        coreBody = fe.Image()
+        coreBody.load(ONE_FACE)
+        coreBodyGPU = fe.Image()
+        coreBodyGPU.create(coreBody, fe.MemoryResidence.MemoryGPU)
+
+        InitCase = namedtuple("InitCase", ("initType", "body"))
+        cases = (
+            InitCase("bytes", binaryBody),
+            InitCase("byte array", bytearrayBody),
+            InitCase("core", coreBody),
+            InitCase("coreGpu", coreBodyGPU),
+            InitCase("pillow img", imageWithOneFace),
+            InitCase("numpy array", np.asarray(imageWithOneFace)),
+        )
+        for memoryResidence in MemoryResidence:
+            with self.subTest(memoryResidence):
+                for case in cases:
+                    with self.subTest(initType=case.initType, memoryResidence=memoryResidence):
+                        image = VLImage(body=case.body, memoryResidence=memoryResidence)
+                        assert memoryResidence == image.getMemoryResidence()

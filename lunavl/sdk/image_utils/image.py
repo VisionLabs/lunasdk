@@ -9,7 +9,11 @@ from typing import Optional, Union
 
 import numpy as np
 import requests
-from FaceEngine import FormatType, Image as CoreImage  # pylint: disable=E0611,E0401
+from FaceEngine import (  # pylint: disable=E0611,E0401
+    FormatType,
+    Image as CoreImage,
+    MemoryResidence as CoreMemoryResidence,
+)
 from PIL import Image as pilImage
 from PIL.Image import Image as PilImage
 
@@ -140,6 +144,22 @@ class ColorFormat(Enum):
         raise ValueError(f"Cannot load '{colorFormat}' color format.")
 
 
+class MemoryResidence(Enum):
+    """Image in Host device memory"""
+
+    GPU = "MemoryGPU"
+    CPU = "MemoryCPU"
+
+    def toCoreMemoryResidence(self) -> CoreMemoryResidence:
+        if self == MemoryResidence.CPU:
+            return CoreMemoryResidence.MemoryCPU
+        return CoreMemoryResidence.MemoryGPU
+
+    @classmethod
+    def fromCoreMemoryResidence(cls, coreMemoryResidence: CoreMemoryResidence) -> "MemoryResidence":
+        return cls(coreMemoryResidence.name)
+
+
 class VLImage:
     """
     Class image.
@@ -157,6 +177,7 @@ class VLImage:
         body: Union[bytes, bytearray, PilImage, CoreImage, np.ndarray],
         colorFormat: Optional[ColorFormat] = None,
         filename: str = "",
+        memoryResidence: Optional[MemoryResidence] = None,
     ):
         """
         Init.
@@ -165,6 +186,7 @@ class VLImage:
             body: body of image - bytes numpy array or core image
             colorFormat: img format to cast into
             filename: user mark a source of image
+            memoryResidence: memory residence of loaded image
         Raises:
             TypeError: if body has incorrect type
             LunaSDKException: if failed to load image to sdk Image
@@ -174,20 +196,20 @@ class VLImage:
 
         if isinstance(body, CoreImage):
             if colorFormat is None or colorFormat.coreFormat == body.getFormat():
-                self.coreImage = body
+                coreImage = body
             else:
-                error, self.coreImage = body.convert(colorFormat.coreFormat)
+                error, coreImage = body.convert(colorFormat.coreFormat)
                 assertError(error)
 
         elif isinstance(body, bytes):
-            self.coreImage = CoreImage()
+            coreImage = CoreImage()
             imgFormat = (colorFormat or ColorFormat.R8G8B8).coreFormat
-            error = self.coreImage.loadFromMemory(body, len(body), imgFormat)
+            error = coreImage.loadFromMemory(body, len(body), imgFormat)
             assertError(error)
 
         elif isinstance(body, np.ndarray):
             mode = getNPImageType(body)
-            self.coreImage = self._coreImageFromNumpyArray(
+            coreImage = self._coreImageFromNumpyArray(
                 ndarray=body, inputColorFormat=ColorFormat.load(mode), colorFormat=colorFormat or ColorFormat.R8G8B8
             )
         elif isinstance(body, PilImage):
@@ -201,14 +223,28 @@ class VLImage:
                 body = body.convert("RGB")
             array = pilToNumpy(body)
             inputColorFormat = ColorFormat.load(body.mode)
-            self.coreImage = self._coreImageFromNumpyArray(
+            coreImage = self._coreImageFromNumpyArray(
                 ndarray=array, inputColorFormat=inputColorFormat, colorFormat=colorFormat or ColorFormat.R8G8B8
             )
         else:
             raise TypeError(f"Bad image type: {type(body)}")
 
+        if memoryResidence == MemoryResidence.GPU and coreImage.getMemoryResidence() != CoreMemoryResidence.MemoryGPU:
+            self.coreImage = CoreImage()
+            error = self.coreImage.create(coreImage, CoreMemoryResidence.MemoryGPU)
+            assertError(error)
+        elif memoryResidence == MemoryResidence.CPU and coreImage.getMemoryResidence() != CoreMemoryResidence.MemoryCPU:
+            self.coreImage = CoreImage()
+            error = self.coreImage.create(coreImage, CoreMemoryResidence.MemoryCPU)
+            assertError(error)
+        else:
+            self.coreImage = coreImage
+
         self.source = body
         self.filename = filename
+
+    def getMemoryResidence(self) -> MemoryResidence:
+        return MemoryResidence.fromCoreMemoryResidence(self.coreImage.getMemoryResidence())
 
     @classmethod
     def rotate(cls, image: "VLImage", angle: RotationAngle):
@@ -237,7 +273,12 @@ class VLImage:
 
     @classmethod
     def load(
-        cls, *, filename: Optional[str] = None, url: Optional[str] = None, colorFormat: Optional[ColorFormat] = None
+        cls,
+        *,
+        filename: Optional[str] = None,
+        url: Optional[str] = None,
+        colorFormat: Optional[ColorFormat] = None,
+        memoryResidence: MemoryResidence = MemoryResidence.CPU,
     ) -> "VLImage":
         """
         Load image from numpy array or file or url.
@@ -247,6 +288,7 @@ class VLImage:
             filename: filename
             url: url
             colorFormat: img format to cast into
+            memoryResidence: memory residence of loaded image
 
         Returns:
             vl image
@@ -262,14 +304,14 @@ class VLImage:
             path = Path(filename)
             with path.open("rb") as file:
                 body = file.read()
-                img = cls(body, colorFormat)
+                img = cls(body, colorFormat, memoryResidence=memoryResidence)
                 img.filename = path.name
                 return img
 
         if url is not None:
             response = requests.get(url=url)
             if response.status_code == 200:
-                img = cls(response.content, colorFormat)
+                img = cls(response.content, colorFormat, memoryResidence=memoryResidence)
                 img.filename = url
                 return img
         raise ValueError
@@ -306,6 +348,7 @@ class VLImage:
         inputColorFormat: Optional[Union[str, ColorFormat]] = None,
         colorFormat: Optional[ColorFormat] = None,
         filename: str = "",
+        memoryResidence: Optional[MemoryResidence] = None,
     ) -> "VLImage":
         """
         Load VLImage from numpy array.
@@ -315,6 +358,7 @@ class VLImage:
             inputColorFormat: input numpy pixel array format
             colorFormat: pixel format to cast into
             filename: optional filename
+            memoryResidence: memory residence of loaded image
 
         Returns:
             vl image
@@ -329,7 +373,7 @@ class VLImage:
         coreImage = cls._coreImageFromNumpyArray(
             ndarray=arr, inputColorFormat=inputColorFormat, colorFormat=colorFormat
         )
-        img = cls(coreImage, filename=filename)
+        img = cls(coreImage, filename=filename, memoryResidence=memoryResidence)
         img.source = arr
         return img
 
