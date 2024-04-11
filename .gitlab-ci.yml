@@ -36,6 +36,11 @@ stages:
     paths:
       - ${CI_PROJECT_DIR}/tests/test_benchmark/logs
 
+.use_cpusdk: &use_cpusdk
+  sed -i 's/name = "lunavl"/name = "lunavlcpu"/' pyproject.toml;
+  sed -i 's/FaceEngine =/FaceEngineCPU =/' pyproject.toml;
+  echo $'\n[[tool.poetry.packages]] \ninclude = "lunavl"' >> pyproject.toml;
+
 .run_tests: &run_tests
   cd tests/test_benchmark;
   wget -O ./benchmark_settings.toml http://git.visionlabs.ru/configs/sdkloop-benchmark-config/raw/master/benchmark_settings_sdk_5_12_0.toml;
@@ -50,6 +55,13 @@ build:pypi:
   image: ${BUILDER_IMAGE}
   extends: .build_python_package
 
+build_cpu:pypi:
+  stage: build
+  tags: ['k8s-python']
+  image: ${BUILDER_IMAGE}
+  before_script:
+    - *use_cpusdk
+  extends: .build_python_package
 
 mypy:storages:
   stage: build

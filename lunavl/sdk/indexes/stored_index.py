@@ -117,6 +117,16 @@ class DynamicIndex(CoreIndex):
 
         assertError(error)
 
+    def eraseRemovedDescriptors(self) -> None:
+        """
+        Erases removed descriptors from index. Ids of other descriptors will be recalculated (moved up)
+        Raises:
+            LunaSDKException: if an error occurs while removing descriptors
+        """
+        error, _ = self._coreIndex.eraseRemovedDescriptors()
+
+        assertError(error)
+
 
 class DenseIndex(CoreIndex):
     """
