@@ -6,7 +6,7 @@ from lunavl.sdk.estimators.face_estimators.deepfake import Deepfake, DeepfakeEst
 from lunavl.sdk.faceengine.setting_provider import DetectorType
 from lunavl.sdk.image_utils.image import VLImage
 from tests.base import BaseTestClass
-from tests.resources import DEEPFAKE, ONE_FACE
+from tests.resources import DEEPFAKE, PORTRAIT, RED
 
 
 class TestDeepfake(BaseTestClass):
@@ -26,7 +26,7 @@ class TestDeepfake(BaseTestClass):
         """
         images = {
             DeepfakePrediction.Fake: DEEPFAKE,
-            DeepfakePrediction.Real: ONE_FACE,
+            DeepfakePrediction.Real: RED,
         }
         for deepfakeState, image in images.items():
             with self.subTest(deepfakeState):
@@ -34,7 +34,7 @@ class TestDeepfake(BaseTestClass):
                 assert deepfakeState == estimation.prediction
                 assert estimation.asDict()["prediction"] == deepfakeState.name.lower()
 
-    def estimate(self, image: str = ONE_FACE) -> Deepfake:
+    def estimate(self, image: str = RED) -> Deepfake:
         """Estimate deepfake on image"""
         faceDetection = self.detector.detectOne(VLImage.load(filename=image))
         estimation = self.deepfakeEstimator.estimate(faceDetection)
@@ -45,21 +45,22 @@ class TestDeepfake(BaseTestClass):
         """
         Simple deepfake estimation
         """
-        estimation = self.estimate(ONE_FACE)
+
+        estimation = self.estimate(RED)
         assert estimation.prediction == DeepfakePrediction.Real
 
     def test_estimate_as_dict(self):
         """
         Test method DeepFae.asDict
         """
-        estimation = self.estimate(ONE_FACE)
+        estimation = self.estimate(RED)
         assert {"prediction": "real", "score": estimation.score} == estimation.asDict()
 
     def test_estimate_deepfake_batch(self):
         """
         Batch deepfake estimation test
         """
-        faceDetections = self.detector.detect([VLImage.load(filename=ONE_FACE), VLImage.load(filename=DEEPFAKE)])
+        faceDetections = self.detector.detect([VLImage.load(filename=RED), VLImage.load(filename=DEEPFAKE)])
 
         estimations = self.deepfakeEstimator.estimateBatch(faceDetections[0] + faceDetections[1])
         assert DeepfakePrediction.Real == estimations[0].prediction
@@ -72,7 +73,7 @@ class TestDeepfake(BaseTestClass):
 
         deepFakeEstimator1 = self.faceEngine.createDeepfakeEstimator(mode=DeepfakeEstimationMode.M1)
         deepFakeEstimator2 = self.faceEngine.createDeepfakeEstimator(mode=DeepfakeEstimationMode.M2)
-        faceDetection = self.detector.detectOne(VLImage.load(filename=DEEPFAKE))
+        faceDetection = self.detector.detectOne(VLImage.load(filename=PORTRAIT))
         defaultEstimation = self.deepfakeEstimator.estimate(faceDetection)
         estimation1 = deepFakeEstimator1.estimate(faceDetection)
         estimation2 = deepFakeEstimator2.estimate(faceDetection)
@@ -83,7 +84,7 @@ class TestDeepfake(BaseTestClass):
         """
         Test async estimate deep fake feature
         """
-        faceDetections = self.detector.detect([VLImage.load(filename=ONE_FACE), VLImage.load(filename=DEEPFAKE)])
+        faceDetections = self.detector.detect([VLImage.load(filename=RED), VLImage.load(filename=DEEPFAKE)])
 
         task = self.deepfakeEstimator.estimateBatch(faceDetections[0] + faceDetections[1], asyncEstimate=True)
         self.assertAsyncBatchEstimation(task, Deepfake)
