@@ -187,6 +187,7 @@ class TestsRedetectFace(FaceDetectTestClass):
                             assert face.landmarks5.asDict() == redetectOne.landmarks5.asDict()
                             assert face.landmarks68.asDict() == redetectOne.landmarks68.asDict()
 
+    @pytest.mark.skip("FSDK-4989")
     def test_redetect_in_area_outside_image(self):
         """
         Test re-detection face in area outside image

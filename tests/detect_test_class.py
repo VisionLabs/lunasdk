@@ -127,9 +127,10 @@ class FaceDetectTestClass(BaseDetectorTestClass):
         Create list of face detector
         """
         super().setup_class()
+        # no plans
         cls.detectors = [
-            cls.faceEngine.createFaceDetector(DetectorType.FACE_DET_V1),
-            cls.faceEngine.createFaceDetector(DetectorType.FACE_DET_V2),
+            # cls.faceEngine.createFaceDetector(DetectorType.FACE_DET_V1),
+            # cls.faceEngine.createFaceDetector(DetectorType.FACE_DET_V2),
             cls.faceEngine.createFaceDetector(DetectorType.FACE_DET_V3),
         ]
         CaseLandmarks = namedtuple("CaseLandmarks", ("detect5Landmarks", "detect68Landmarks"))

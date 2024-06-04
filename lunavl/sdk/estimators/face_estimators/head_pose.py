@@ -129,7 +129,7 @@ class HeadPoseEstimator(BaseEstimator):
         """
         Realize interface of abstract  estimator. Call estimateByBoundingBox
         """
-        return self.estimateByBoundingBox(detection, asyncEstimate=asyncEstimate)
+        return self.estimateByBoundingBox(detection, asyncEstimate=asyncEstimate)  # type: ignore
 
     @overload
     def estimateByBoundingBox(
