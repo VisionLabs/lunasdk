@@ -77,13 +77,6 @@ class TestHeadPose(BaseTestClass):
             estimator, HeadPoseEstimator
         ), f"bad estimator instance, type of estimator  is {type(HeadPoseEstimator)}"
 
-    def test_estimate_head_pose_by_68landmarks(self):
-        """
-        Estimating head pose by 68 landmarks test.
-        """
-        angles = self.headPoseEstimator.estimateBy68Landmarks(self.detection.landmarks68)
-        self.assertHeadPose(angles)
-
     def test_estimate_head_pose_by_bounding_box(self):
         """
         Estimating head pose by bounding box test.
@@ -122,21 +115,11 @@ class TestHeadPose(BaseTestClass):
             self.headPoseEstimator.estimateByBoundingBox(ImageWithFaceDetection(self.image, bBox))
         self.assertLunaVlError(exceptionInfo, LunaVLError.InvalidDetection.format("Invalid detection"))
 
-    def test_default_estimation(self):
-        """
-        Default estimating head pose test.
-        """
-        angles1 = self.headPoseEstimator.estimateBy68Landmarks(self.detection.landmarks68)
-        angles2 = self.headPoseEstimator.estimate(self.detection.landmarks68)
-        assert angles1.pitch == angles2.pitch
-        assert angles1.roll == angles2.roll
-        assert angles1.yaw == angles2.yaw
-
     def test_head_pose_as_dict(self):
         """
         Test for a method asDict.
         """
-        angles = TestHeadPose.headPoseEstimator.estimateBy68Landmarks(self.detection.landmarks68)
+        angles = TestHeadPose.headPoseEstimator.estimate(self.detection)
         self.assertHeadPose(angles)
         assert {"pitch": angles.pitch, "roll": angles.roll, "yaw": angles.yaw} == angles.asDict()
 
@@ -153,7 +136,7 @@ class TestHeadPose(BaseTestClass):
         for case in cases:
             with self.subTest(type=case.type):
                 detection = self.detector.detectOne(case.image, detect5Landmarks=True, detect68Landmarks=True)
-                angles = self.headPoseEstimator.estimateBy68Landmarks(detection.landmarks68)
+                angles = self.headPoseEstimator.estimate(detection)
                 self.assertHeadPose(angles)
                 assert angles.getFrontalType() == case.type
 
@@ -185,13 +168,9 @@ class TestHeadPose(BaseTestClass):
         """
         Test async estimate head pose
         """
-        task = self.headPoseEstimator.estimate(self.detection.landmarks68, asyncEstimate=True)
-        self.assertAsyncEstimation(task, HeadPose)
         task = self.headPoseEstimator.estimateBatch([self.detection] * 2, asyncEstimate=True)
         self.assertAsyncBatchEstimation(task, HeadPose)
         task = self.headPoseEstimator.estimateByBoundingBox(
             ImageWithFaceDetection(self.image, self.detection.boundingBox), asyncEstimate=True
         )
-        self.assertAsyncEstimation(task, HeadPose)
-        task = self.headPoseEstimator.estimateBy68Landmarks(self.detection.landmarks68, asyncEstimate=True)
         self.assertAsyncEstimation(task, HeadPose)
