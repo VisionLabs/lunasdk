@@ -490,7 +490,7 @@ class FaceDetector:
             LunaSDKException if an error occurs
         """
         if isinstance(bBox, Rect):
-            coreBBox = Detection(bBox.coreRectF, 1.0)
+            coreBBox = Detection(bBox.coreRectF, image.coreImage.getRect(), 1.0)
         else:
             coreBBox = bBox.coreEstimation.detection
         self._validateReDetectInput(image.coreImage, coreBBox)

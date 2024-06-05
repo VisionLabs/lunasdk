@@ -138,8 +138,9 @@ def getArgsForCoreRedetect(images: List[ImageForRedetection]) -> Tuple[List[Core
     coreImages, detectAreas = [], []
 
     for image in images:
-        coreImages.append(image.image.coreImage)
-        detectAreas.append([Detection(bbox.coreRect, 1.0) for bbox in image.bBoxes])
+        coreImage = image.image.coreImage
+        coreImages.append(coreImage)
+        detectAreas.append([Detection(bbox.coreRect, coreImage.getRect(), 1.0) for bbox in image.bBoxes])
 
     return coreImages, detectAreas
 
