@@ -124,7 +124,6 @@ class TestsRedetectBody(BodyDetectTestClass):
                 for human in redetect:
                     assert human.boundingBox.asDict() == redetectOne.boundingBox.asDict()
 
-    @pytest.mark.skip("FSDK-4989")
     def test_redetect_one_in_area_outside_image(self):
         """
         Test re-detection of one human in area outside image
