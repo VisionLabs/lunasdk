@@ -330,7 +330,9 @@ class VLFaceEngine:
         Returns:
             face matcher
         """
-        return FaceMatcher(self._faceEngine.createMatcher(descriptorVersion), self.createFaceDescriptorFactory())
+        return FaceMatcher(
+            self._faceEngine.createMatcher(descriptorVersion), self.createFaceDescriptorFactory(descriptorVersion)
+        )
 
     @property
     def coreFaceEngine(self) -> CoreFE.PyIFaceEngine:

@@ -336,9 +336,11 @@ class BodyDetector:
         """
         assertImageForDetection(image)
         if isinstance(bBox, Rect):
-            coreBBox = Detection(bBox.coreRectF, 1.0)
+            coreBBox = Detection(bBox.coreRectF, image.coreImage.getRect(), 1.0)
         else:
             coreBBox = bBox.coreEstimation.detection
+
+        validateReDetectInput(self._detector, image.coreImage, coreBBox)
         if asyncEstimate:
             task = self._detector.asyncRedetectOne(image.coreImage, coreBBox, self._getDetectionType())
             return AsyncTask(task, partial(postProcessingRedetectOne, image=image))

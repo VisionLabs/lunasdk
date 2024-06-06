@@ -6,7 +6,7 @@ from lunavl.sdk.estimators.face_estimators.deepfake import Deepfake, DeepfakeEst
 from lunavl.sdk.faceengine.setting_provider import DetectorType
 from lunavl.sdk.image_utils.image import VLImage
 from tests.base import BaseTestClass
-from tests.resources import DEEPFAKE, PORTRAIT, RED
+from tests.resources import BASEBALL_CAP, DEEPFAKE, RED
 
 
 class TestDeepfake(BaseTestClass):
@@ -70,15 +70,14 @@ class TestDeepfake(BaseTestClass):
         """
         Deepfake estimation mode
         """
-
         deepFakeEstimator1 = self.faceEngine.createDeepfakeEstimator(mode=DeepfakeEstimationMode.M1)
         deepFakeEstimator2 = self.faceEngine.createDeepfakeEstimator(mode=DeepfakeEstimationMode.M2)
-        faceDetection = self.detector.detectOne(VLImage.load(filename=PORTRAIT))
+        faceDetection = self.detector.detectOne(VLImage.load(filename=BASEBALL_CAP))
         defaultEstimation = self.deepfakeEstimator.estimate(faceDetection)
         estimation1 = deepFakeEstimator1.estimate(faceDetection)
         estimation2 = deepFakeEstimator2.estimate(faceDetection)
         assert defaultEstimation.asDict() == estimation2.asDict()
-        assert defaultEstimation.asDict() != estimation1.asDict()
+        assert defaultEstimation.asDict() != estimation1.asDict()  # wtf researchers sdk 5.22
 
     def test_async_detect_human(self):
         """

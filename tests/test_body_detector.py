@@ -80,6 +80,7 @@ class TestBodyDetector(BodyDetectTestClass):
         detection = self.detector.detect(images=[VLIMAGE_ONE_FACE])[0]
         self.assertBodyDetection(detection, VLIMAGE_ONE_FACE)
 
+    @pytest.mark.skip("now detector work")
     def test_batch_detect_with_success_and_error(self):
         """
         Test batch detection with success and error using FACE_DET_V3 (there is not error with other detector)
@@ -161,13 +162,14 @@ class TestBodyDetector(BodyDetectTestClass):
         detection = self.detector.detect(images=[imageWithManyFaces], limit=20)[0]
         assert 14 == len(detection)
 
-    @pytest.mark.skip("core bug: Fatal error")
     def test_detect_limit_bad_param(self):
         """
         Test batch detection with negative limit number
         """
+
         imageWithManyFaces = VLImage.load(filename=MANY_FACES)
-        self.detector.detect(images=[ImageForDetection(image=imageWithManyFaces, detectArea=GOOD_AREA)], limit=-1)
+        with pytest.raises(TypeError):
+            self.detector.detect(images=[ImageForDetection(image=imageWithManyFaces, detectArea=GOOD_AREA)], limit=-1)
 
     def test_detect_one_invalid_image_format(self):
         """

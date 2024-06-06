@@ -122,48 +122,29 @@ class HeadPoseEstimator(BaseEstimator):
     HeadPoseEstimator.
     """
 
-    def estimateBy68Landmarks(
-        self, landmarks68: Landmarks68, asyncEstimate: bool = False
-    ) -> Union[HeadPose, AsyncTask[HeadPose]]:
-        """
-        Estimate head pose by 68 landmarks.
-
-        Args:
-            landmarks68: landmarks68
-            asyncEstimate: estimate or run estimation in background
-
-        Returns:
-            estimate head pose if asyncExecute is False otherwise async task
-        Raises:
-            LunaSDKException: if estimation is failed
-        """
-        if not asyncEstimate:
-            error, headPoseEstimation = self._coreEstimator.estimate(landmarks68.coreEstimation)
-            return POST_PROCESSING.postProcessing(error, headPoseEstimation)
-        task = self._coreEstimator.asyncEstimate(landmarks68.coreEstimation)
-        return AsyncTask(task, POST_PROCESSING.postProcessing)
-
     #  pylint: disable=W0221
     def estimate(  # type: ignore
-        self, landmarks68: Landmarks68, asyncEstimate: bool = False
+        self, detection: Union[ImageWithFaceDetection, FaceDetection], asyncEstimate: bool = False
     ) -> Union[HeadPose, AsyncTask[HeadPose]]:
         """
-        Realize interface of a abstract  estimator. Call estimateBy68Landmarks
+        Realize interface of abstract  estimator. Call estimateByBoundingBox
         """
-        return self.estimateBy68Landmarks(landmarks68, asyncEstimate=asyncEstimate)
+        return self.estimateByBoundingBox(detection, asyncEstimate=asyncEstimate)  # type: ignore
 
     @overload
     def estimateByBoundingBox(
-        self, imageWithFaceDetection: ImageWithFaceDetection, asyncEstimate: Literal[False] = False
+        self,
+        imageWithFaceDetection: Union[ImageWithFaceDetection, FaceDetection],
+        asyncEstimate: Literal[False] = False,
     ) -> HeadPose: ...
 
     @overload
     def estimateByBoundingBox(
-        self, imageWithFaceDetection: ImageWithFaceDetection, asyncEstimate: Literal[True]
+        self, imageWithFaceDetection: Union[ImageWithFaceDetection, FaceDetection], asyncEstimate: Literal[True]
     ) -> AsyncTask[HeadPose]: ...
 
     def estimateByBoundingBox(
-        self, imageWithFaceDetection: ImageWithFaceDetection, asyncEstimate: bool = False
+        self, imageWithFaceDetection: Union[ImageWithFaceDetection, FaceDetection], asyncEstimate: bool = False
     ) -> Union[HeadPose, AsyncTask[HeadPose]]:
         """
         Estimate head pose by detection.

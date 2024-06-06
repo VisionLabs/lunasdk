@@ -86,7 +86,10 @@ class TestsRedetectBody(BodyDetectTestClass):
         with pytest.raises(LunaSDKException) as exceptionInfo:
             self.detector.redetectOne(image=VLIMAGE_ONE_FACE, bBox=INVALID_RECT)
         receivedError = exceptionInfo.value.error
-        self.assertReceivedAndRawExpectedErrors(receivedError, LunaVLError.InvalidRect)
+        expectedError = LunaVLError.ValidationFailed
+        expectedError = expectedError.format("Invalid rectangle")
+        assert expectedError.errorCode == receivedError.errorCode
+        assert expectedError.description == receivedError.description
 
     def test_redetect_invalid_rectangle(self):
         """
