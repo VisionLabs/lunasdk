@@ -560,7 +560,7 @@ class FaceDetV3Settings(BaseSettingsSection):
         - scoreThreshold (float): detection threshold in [0..1] range;
         - redetectScoreThreshold (float): redetect face threshold in [0..1] range;
         - NMSThreshold (float): overlap threshold for NMS [0..1] range;
-        - strictMinSize (bool): Whether minFaceSize must be taken as a strict rule;
+        - strictlyMinSize (bool): Whether minFaceSize must be taken as a strict rule;
         - minFaceSize (int): Minimum face size in pixels;
         - maxFaceSize (int): Maximum face size in pixels;
         - nms (NMS): type of NMS: mean or best;
@@ -632,23 +632,23 @@ class FaceDetV3Settings(BaseSettingsSection):
         self.setValue("NMSThreshold", value)
 
     @property
-    def strictMinSize(self) -> Optional[bool]:
+    def strictlyMinSize(self) -> Optional[bool]:
         """
-        Getter for strictMinSize
+        Getter for strictlyMinSize
 
         Returns:
-            strictMinSize
+            strictlyMinSize
         """
-        return self.getValue("strictMinSize")
+        return self.getValue("strictlyMinSize")
 
-    @strictMinSize.setter
-    def strictMinSize(self, value: bool) -> None:
+    @strictlyMinSize.setter
+    def strictlyMinSize(self, value: bool) -> None:
         """
-        Setter for strictMinSize
+        Setter for strictlyMinSize
         Args:
             value: new value
         """
-        self.setValue("strictMinSize", value)
+        self.setValue("strictlyMinSize", value)
 
     @property
     def minFaceSize(self) -> Optional[int]:
@@ -843,7 +843,7 @@ class FaceDetV12Settings(BaseSettingsSection):
         - firstThreshold (float): 1-st threshold in [0..1] range;
         - secondThreshold (float): 2-st threshold in [0..1] range;
         - thirdTThreshold (float): 3-st threshold in [0..1] range;
-        - strictMinSize (bool): Whether minFaceSize must be taken as a strict rule;
+        - strictlyMinSize (bool): Whether minFaceSize must be taken as a strict rule;
         - minFaceSize (int): minimum face size in pixels;
         - scaleFactor (float): image scale factor;
         - paddings (Point4): paddings;
@@ -908,23 +908,23 @@ class FaceDetV12Settings(BaseSettingsSection):
         self.setValue("ThirdThreshold", value)
 
     @property
-    def strictMinSize(self) -> Optional[bool]:
+    def strictlyMinSize(self) -> Optional[bool]:
         """
-        Getter for strictMinSize
+        Getter for strictlyMinSize
 
         Returns:
-            strictMinSize
+            strictlyMinSize
         """
-        return self.getValue("strictMinSize")
+        return self.getValue("strictlyMinSize")
 
-    @strictMinSize.setter
-    def strictMinSize(self, value: bool) -> None:
+    @strictlyMinSize.setter
+    def strictlyMinSize(self, value: bool) -> None:
         """
-        Setter for strictMinSize
+        Setter for strictlyMinSize
         Args:
             value: new value
         """
-        self.setValue("strictMinSize", value)
+        self.setValue("strictlyMinSize", value)
 
     @property
     def minFaceSize(self) -> Optional[int]:
@@ -1208,7 +1208,7 @@ class HumanDetectorSettings(BaseSettingsSection):
         - faceThreshold (float): face detection threshold in [0..1] range;
         - bodyThreshold (float): face detection threshold in [0..1] range;
         - associationThreshold (float): body and face association threshold in [0..1] range;
-        - strictMinSize (bool): Whether minFaceSize must be taken as a strict rule;
+        - strictlyMinSize (bool): Whether minFaceSize must be taken as a strict rule;
         - minFaceSize (int): Minimum face size in pixels;
         - nmsFaceThreshold (float): overlap threshold for face NMS [0..1] range;
         - nmsBodyThreshold (float): overlap threshold for face NMS [0..1] range;
@@ -1274,23 +1274,23 @@ class HumanDetectorSettings(BaseSettingsSection):
         self.setValue("associationThreshold", value)
 
     @property
-    def strictMinSize(self) -> Optional[bool]:
+    def strictlyMinSize(self) -> Optional[bool]:
         """
-        Getter for strictMinSize
+        Getter for strictlyMinSize
 
         Returns:
-            strictMinSize
+            strictlyMinSize
         """
-        return self.getValue("strictMinSize")
+        return self.getValue("strictlyMinSize")
 
-    @strictMinSize.setter
-    def strictMinSize(self, value: bool) -> None:
+    @strictlyMinSize.setter
+    def strictlyMinSize(self, value: bool) -> None:
         """
-        Setter for strictMinSize
+        Setter for strictlyMinSize
         Args:
             value: new value
         """
-        self.setValue("strictMinSize", value)
+        self.setValue("strictlyMinSize", value)
 
     @property
     def minFaceSize(self) -> Optional[int]:
