@@ -632,7 +632,7 @@ class FaceDetV3Settings(BaseSettingsSection):
         self.setValue("NMSThreshold", value)
 
     @property
-    def strictMinSize(self) -> bool:
+    def strictMinSize(self) -> Optional[bool]:
         """
         Getter for strictMinSize
 
@@ -908,7 +908,7 @@ class FaceDetV12Settings(BaseSettingsSection):
         self.setValue("ThirdThreshold", value)
 
     @property
-    def strictMinSize(self) -> bool:
+    def strictMinSize(self) -> Optional[bool]:
         """
         Getter for strictMinSize
 
@@ -1274,7 +1274,7 @@ class HumanDetectorSettings(BaseSettingsSection):
         self.setValue("associationThreshold", value)
 
     @property
-    def strictMinSize(self) -> bool:
+    def strictMinSize(self) -> Optional[bool]:
         """
         Getter for strictMinSize
 
