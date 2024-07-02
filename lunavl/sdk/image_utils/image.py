@@ -483,7 +483,6 @@ class VLImage:
 
         Returns:
             numpy array
-        todo: doctest
         """
         if self.coreImage.getMemoryResidence() == CoreMemoryResidence.MemoryGPU:
             # copy image to RAM
