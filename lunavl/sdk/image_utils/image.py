@@ -483,11 +483,17 @@ class VLImage:
 
         Returns:
             numpy array
-        todo: doctest
         """
+        if self.coreImage.getMemoryResidence() == CoreMemoryResidence.MemoryGPU:
+            # copy image to RAM
+            coreImage = CoreImage()
+            error = coreImage.create(self.coreImage, CoreMemoryResidence.MemoryCPU)
+            assertError(error)
+        else:
+            coreImage = self.coreImage
         if self.format == ColorFormat.R16:
-            return self.coreImage.getDataR16()
-        return self.coreImage.getData()
+            return coreImage.getDataR16()
+        return coreImage.getData()
 
     def asPillow(self) -> PilImage:
         """
