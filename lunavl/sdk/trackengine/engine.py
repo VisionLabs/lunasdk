@@ -4,6 +4,7 @@ import TrackEngine as te
 
 from ..async_task import AsyncTask, DefaultPostprocessingFactory
 from ..faceengine.engine import VLFaceEngine
+from ..launch_options import DeviceClass, LaunchOptions
 from .setting_provider import TrackEngineSettingsProvider
 from .structures import Frame, StreamParams, TrackingResult
 
@@ -26,6 +27,7 @@ class VLTrackEngine:
         self,
         faceEngine: VLFaceEngine,
         trackEngineConf: Optional[Union[str, TrackEngineSettingsProvider]] = None,
+        launchOptions: Optional[LaunchOptions] = None,
     ):
         """
 
@@ -34,6 +36,7 @@ class VLTrackEngine:
             trackEngineConf: trackEngine conf
 
         """
+        launchOptions = faceEngine.getLaunchOptions(launchOptions)
         if trackEngineConf is None:
             self.trackEngineProvider = TrackEngineSettingsProvider()
         elif isinstance(trackEngineConf, str):
@@ -43,7 +46,7 @@ class VLTrackEngine:
         self.trackEngineProvider.other.callbackMode = 0
         self._faceEngine = faceEngine
         self._trackEngine = te.createTrackEngineBySettingsProvider(
-            faceEngine._faceEngine, self.trackEngineProvider.coreProvider
+            faceEngine._faceEngine, self.trackEngineProvider.coreProvider, launchOptions=launchOptions.coreLaunchOptions
         )
 
         self._streamIdToStream: Dict[int, te.PyIStream] = {}
