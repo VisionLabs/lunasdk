@@ -4,9 +4,9 @@ import TrackEngine as te
 
 from ..async_task import AsyncTask, DefaultPostprocessingFactory
 from ..faceengine.engine import VLFaceEngine
+from ..launch_options import DeviceClass, LaunchOptions
 from .setting_provider import TrackEngineSettingsProvider
 from .structures import Frame, StreamParams, TrackingResult
-from ..launch_options import LaunchOptions, DeviceClass
 
 TrackedObject = TypeVar("TrackedObject")
 
