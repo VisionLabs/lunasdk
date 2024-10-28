@@ -9,6 +9,7 @@ from tests.schemas import CREDIBILITY_SCHEMA, jsonValidator
 
 pytest.skip("no plans", allow_module_level=True)
 
+
 class TestCredibility(BaseTestClass):
     """
     Test estimate credibility.
