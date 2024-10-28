@@ -83,9 +83,7 @@ test:unittests:
   script:
     # poetry bug https://github.com/python-poetry/poetry/issues/2921
     - rm -rf /home/gitlab-runner/.cache/pypoetry
-    - export LUNA_SDK_ARCH=linux_rel
     - !reference [.download_fsdk]
-    - cp -r ${DOWNLOAD_PATH}/luna-sdk_${LUNA_SDK_ARCH}_${LUNA_SDK_TAG}/data/* ${FSDK_ROOT}/data
     - !reference [.prepare_poetry]
     - source $(poetry env info -p)/bin/activate
     - *run_unittests
