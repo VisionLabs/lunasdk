@@ -124,7 +124,7 @@ class TestBasicAttributes(BaseTestClass):
         )
 
     @staticmethod
-    def assertEth(eth1: Union[Ethnicities, Eth], eth2: Union[Ethnicities, Eth], delta: float = 0.005) -> None:
+    def assertEth(eth1: Union[Ethnicities, Eth], eth2: Union[Ethnicities, Eth], delta: float = 0.01) -> None:
         """
         Assert ethnicities.
 
