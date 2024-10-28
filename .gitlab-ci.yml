@@ -65,7 +65,7 @@ build_cpu:pypi:
 
 mypy:storages:
   stage: build
-  tags: [ 'python-bench' ]
+  tags: ['k8s-python']
   image: ${BUILDER_IMAGE}
   script:
     - !reference [.download_fsdk]
