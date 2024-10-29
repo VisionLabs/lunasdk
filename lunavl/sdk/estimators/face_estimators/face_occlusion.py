@@ -1,5 +1,7 @@
-from typing import NamedTuple, Literal, overload, Union, List
+from typing import List, Literal, NamedTuple, Union, overload
+
 from FaceEngine import FaceOcclusionEstimation, FaceOcclusionState, FaceOcclusionType  # pylint: disable=E0611,E0401
+
 from lunavl.sdk.async_task import AsyncTask, DefaultPostprocessingFactory
 from lunavl.sdk.base import BaseEstimation
 from lunavl.sdk.detectors.facedetector import FaceDetection, Landmarks5
@@ -49,7 +51,7 @@ class FaceOcclusion(BaseEstimation):
     def overall(self, overall: OcclusionEstimation):
         occlusion = getOcclusionState(overall)
         self._coreEstimation.overallOcclusionScore = overall[1]
-        self._coreEstimation.overallOcclusionState =  occlusion
+        self._coreEstimation.overallOcclusionState = occlusion
 
     @property
     def hairScore(self) -> float:

@@ -1,13 +1,13 @@
 """
-Eyes estimation example
+Face occlusion estimation example
 """
 
 import asyncio
 import pprint
 
-from resources import EXAMPLE_1, EXAMPLE_O, EXAMPLE_3
+from resources import EXAMPLE_1, EXAMPLE_3
 
-from lunavl.sdk.estimators.face_estimators.eyes import WarpWithLandmarks
+from lunavl.sdk.estimators.face_estimators.face_occlusion import WarpWithLandmarks
 from lunavl.sdk.faceengine.engine import VLFaceEngine
 from lunavl.sdk.faceengine.setting_provider import DetectorType
 from lunavl.sdk.image_utils.image import VLImage
@@ -15,7 +15,7 @@ from lunavl.sdk.image_utils.image import VLImage
 
 def estimateFaceOcclusion():
     """
-    Face Occlusion estimation example.
+    Face occlusion estimation example.
     """
     image = VLImage.load(filename=EXAMPLE_3)
     faceEngine = VLFaceEngine()
@@ -30,7 +30,7 @@ def estimateFaceOcclusion():
     warpWithLandmarks = WarpWithLandmarks(warp, landMarks5Transformation)
     pprint.pprint(faceOcclusionEstimator.estimate(warpWithLandmarks).asDict())
 
-    image2 = VLImage.load(filename=EXAMPLE_1)
+    image2 = VLImage.load(filename=EXAMPLE_3)
     faceDetection2 = detector.detectOne(image2)
     warp2 = warper.warp(faceDetection2)
     landMarks5Transformation2 = warper.makeWarpTransformationWithLandmarks(faceDetection2, "L5")
@@ -44,9 +44,9 @@ def estimateFaceOcclusion():
     pprint.pprint([estimation.asDict() for estimation in estimations])
 
 
-async def asyncEstimateEyes():
+async def asyncEstimateFaceOcclusion():
     """
-    Async eyes estimation example.
+    Async face occlusion estimation example.
     """
     image = VLImage.load(filename=EXAMPLE_3)
     faceEngine = VLFaceEngine()
@@ -56,19 +56,23 @@ async def asyncEstimateEyes():
     warp = warper.warp(faceDetection)
     landMarks5Transformation = warper.makeWarpTransformationWithLandmarks(faceDetection, "L5")
 
-    eyesEstimator = faceEngine.createEyeEstimator()
+    faceOcclusionEstimator = faceEngine.createFaceOcclusionEstimator()
 
     warpWithLandmarks = WarpWithLandmarks(warp, landMarks5Transformation)
-    eyes = await eyesEstimator.estimate(warpWithLandmarks, asyncEstimate=True)
-    pprint.pprint(eyes.asDict())
+    faceOcclusion = await faceOcclusionEstimator.estimate(warpWithLandmarks, asyncEstimate=True)
+    pprint.pprint(faceOcclusion.asDict())
 
-    image2 = VLImage.load(filename=EXAMPLE_1)
+    image2 = VLImage.load(filename=EXAMPLE_3)
     faceDetection2 = detector.detectOne(image2)
     warp2 = warper.warp(faceDetection2)
     landMarks5Transformation2 = warper.makeWarpTransformationWithLandmarks(faceDetection2, "L5")
 
-    task1 = eyesEstimator.estimateBatch([WarpWithLandmarks(warp, landMarks5Transformation)], asyncEstimate=True)
-    task2 = eyesEstimator.estimateBatch([WarpWithLandmarks(warp2, landMarks5Transformation2)], asyncEstimate=True)
+    task1 = faceOcclusionEstimator.estimateBatch(
+        [WarpWithLandmarks(warp, landMarks5Transformation)], asyncEstimate=True
+    )
+    task2 = faceOcclusionEstimator.estimateBatch(
+        [WarpWithLandmarks(warp2, landMarks5Transformation2)], asyncEstimate=True
+    )
 
     for task in (task1, task2):
         estimations = task.get()
@@ -77,4 +81,4 @@ async def asyncEstimateEyes():
 
 if __name__ == "__main__":
     estimateFaceOcclusion()
-    # asyncio.run(asyncEstimateEyes())
+    asyncio.run(asyncEstimateFaceOcclusion())

@@ -1,24 +1,21 @@
 import pytest
-from select import select
 
 from lunavl.sdk.errors.errors import LunaVLError
 from lunavl.sdk.errors.exceptions import LunaSDKException
-from lunavl.sdk.estimators.face_estimators.eyes import WarpWithLandmarks
-from lunavl.sdk.estimators.face_estimators.face_occlusion import FaceOcclusion, OcclusionEstimation
+from lunavl.sdk.estimators.face_estimators.face_occlusion import FaceOcclusion, OcclusionEstimation, WarpWithLandmarks
 from lunavl.sdk.faceengine.engine import VLFaceEngine
 from lunavl.sdk.faceengine.setting_provider import DetectorType, FaceEngineSettingsProvider
 from lunavl.sdk.image_utils.image import VLImage
 from tests.base import BaseTestClass
-from tests.resources import CLOSED_EYES, MIXED_EYES, OPEN_EYES, MASK_FULL
+from tests.resources import CLEAN_ONE_FACE, MASK_FULL
 
-OPEN_EYES_IMAGE = VLImage.load(filename=OPEN_EYES)
-MIXED_EYES_IMAGE = VLImage.load(filename=MIXED_EYES)
-CLOSED_EYES_IMAGE = VLImage.load(filename=CLOSED_EYES)
+CLEAN_ONE_FACE_IMAGE = VLImage.load(filename=CLEAN_ONE_FACE)
 MASK_FULL_IMAGE = VLImage.load(filename=MASK_FULL)
 
-class TestEstimateEyes(BaseTestClass):
+
+class TestEstimateFaceOcclusion(BaseTestClass):
     """
-    Test estimate eyes.
+    Test estimate face occlusion.
     """
 
     @classmethod
@@ -29,6 +26,7 @@ class TestEstimateEyes(BaseTestClass):
         cls.faceOcclusionEstimator = cls.faceEngine.createFaceOcclusionEstimator()
 
     def create_data(self, image: VLImage) -> WarpWithLandmarks:
+        """Helper, create input data for face occlusion estimator"""
         faceDetection = self.detector.detectOne(image)
         warp = self.warper.warp(faceDetection)
         landMarks5Transformation = self.warper.makeWarpTransformationWithLandmarks(faceDetection, "L5")
@@ -75,18 +73,15 @@ class TestEstimateEyes(BaseTestClass):
         """
         Test occlusion estimator 'asDict' method
         """
-        warpWithLandmarks = self.create_data(OPEN_EYES_IMAGE)
+        warpWithLandmarks = self.create_data(MASK_FULL_IMAGE)
         occlusionDict = self.faceOcclusionEstimator.estimate(warpWithLandmarks).asDict()
         self.assert_occlusion_reply(occlusionDict)
 
     def test_estimate_batch(self):
         """
-        Test eye estimator with two faces
+        Test face occlusion estimator with two faces
         """
-        warpWithLandmarksList = [
-            self.create_data(img)
-            for img in (OPEN_EYES_IMAGE, MIXED_EYES_IMAGE, CLOSED_EYES_IMAGE)
-        ]
+        warpWithLandmarksList = [self.create_data(img) for img in (MASK_FULL_IMAGE, CLEAN_ONE_FACE_IMAGE)]
         occlusionList = self.faceOcclusionEstimator.estimateBatch(warpWithLandmarksList)
         assert isinstance(occlusionList, list)
         assert len(occlusionList) == len(warpWithLandmarksList)
@@ -105,18 +100,19 @@ class TestEstimateEyes(BaseTestClass):
         """
         Test async estimate face occlusion
         """
-        warpWithLandmarks = self.create_data(OPEN_EYES_IMAGE)
+        warpWithLandmarks = self.create_data(MASK_FULL_IMAGE)
         task = self.faceOcclusionEstimator.estimate(warpWithLandmarks, asyncEstimate=True)
         self.assertAsyncEstimation(task, FaceOcclusion)
         task = self.faceOcclusionEstimator.estimateBatch([warpWithLandmarks] * 2, asyncEstimate=True)
         self.assertAsyncBatchEstimation(task, FaceOcclusion)
 
     def test_some_face_occlusion_settings(self):
+        """Face occlusion settings test."""
         settings = FaceEngineSettingsProvider()
         settings.faceOcclusionEstimatorSettings.overallOcclusionThreshold = 0.001
         faceEngine = VLFaceEngine(faceEngineConf=settings)
         faceOcclusionEstimator = faceEngine.createFaceOcclusionEstimator()
-        warpWithLandmarks = self.create_data(OPEN_EYES_IMAGE)
+        warpWithLandmarks = self.create_data(CLEAN_ONE_FACE_IMAGE)
         estimation = faceOcclusionEstimator.estimate(warpWithLandmarks)
         assert estimation.overall.state == 0
         assert estimation.overall.score == 0
@@ -129,30 +125,38 @@ class TestEstimateEyes(BaseTestClass):
         assert estimation.overall.score > 0.1
         assert estimation.hairScore > 0.1
 
-
     def test_face_occlusion_estimation_correctness(self):
+        """Test mutable field of FaceOcclusion structure"""
         warpWithLandmarks = self.create_data(MASK_FULL_IMAGE)
         estimation = self.faceOcclusionEstimator.estimate(warpWithLandmarks)
         estimation.overall = OcclusionEstimation(0, 0.1)
+        estimation.forehead = OcclusionEstimation(0, 0.2)
+        estimation.rightEye = OcclusionEstimation(1, 0.3)
+        estimation.leftEye = OcclusionEstimation(1, 0.4)
+        estimation.nose = OcclusionEstimation(0, 0.5)
+        estimation.mouth = OcclusionEstimation(0, 0.6)
+        estimation.lowerFace = OcclusionEstimation(0, 0.7)
+        estimation.hair = 0.8
+
         assert estimation.overall.state == 0
         assert 0.1 == pytest.approx(estimation.overall.score, 0.001)
-        estimation.forehead = OcclusionEstimation(0, 0.2)
+
         assert estimation.forehead.state == 0
         assert 0.2 == pytest.approx(estimation.forehead.score, 0.001)
-        estimation.rightEye = OcclusionEstimation(1, 0.3)
+
         assert estimation.rightEye.state == 1
         assert 0.3 == pytest.approx(estimation.rightEye.score, 0.001)
-        estimation.leftEye = OcclusionEstimation(1, 0.4)
+
         assert estimation.leftEye.state == 1
         assert 0.4 == pytest.approx(estimation.leftEye.score, 0.001)
-        estimation.nose = OcclusionEstimation(0, 0.5)
+
         assert estimation.nose.state == 0
         assert 0.5 == pytest.approx(estimation.nose.score, 0.001)
-        estimation.mouth = OcclusionEstimation(0, 0.6)
+
         assert estimation.mouth.state == 0
         assert 0.6 == pytest.approx(estimation.mouth.score, 0.001)
-        estimation.lowerFace = OcclusionEstimation(0, 0.7)
+
         assert estimation.lowerFace.state == 0
         assert 0.7 == pytest.approx(estimation.lowerFace.score, 0.001)
-        estimation.hair = 0.8
+
         assert 0.8 == pytest.approx(estimation.hair, 0.001)

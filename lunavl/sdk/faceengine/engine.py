@@ -749,7 +749,7 @@ class VLFaceEngine:
 
     def createFaceOcclusionEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> FaceOcclusionEstimator:
         """
-        Create face landmarks estimator.
+        Create face occlusion estimator.
 
         Args:
             launchOptions: estimator launch options
