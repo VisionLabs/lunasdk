@@ -25,6 +25,7 @@ from ..estimators.face_estimators.emotions import EmotionsEstimator
 from ..estimators.face_estimators.eyebrow_expressions import EyebrowExpressionEstimator
 from ..estimators.face_estimators.eyes import EyeEstimator, GazeEstimator
 from ..estimators.face_estimators.face_descriptor import FaceDescriptorEstimator
+from ..estimators.face_estimators.face_occlusion import FaceOcclusionEstimator
 from ..estimators.face_estimators.facewarper import FaceWarper
 from ..estimators.face_estimators.fisheye import FisheyeEstimator
 from ..estimators.face_estimators.glasses import GlassesEstimator
@@ -743,5 +744,21 @@ class VLFaceEngine:
         launchOptions = self.getLaunchOptions(launchOptions)
         return FaceLandmarksEstimator(
             self._faceEngine.createFaceLandmarksDetector(launchOptions=launchOptions.coreLaunchOptions),
+            launchOptions,
+        )
+
+    def createFaceOcclusionEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> FaceOcclusionEstimator:
+        """
+        Create face landmarks estimator.
+
+        Args:
+            launchOptions: estimator launch options
+
+        Returns:
+            estimator
+        """
+        launchOptions = self.getLaunchOptions(launchOptions)
+        return FaceOcclusionEstimator(
+            self._faceEngine.createFaceOcclusionEstimator(launchOptions=launchOptions.coreLaunchOptions),
             launchOptions,
         )

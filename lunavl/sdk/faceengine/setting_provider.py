@@ -1464,6 +1464,157 @@ class SLNetSettings(LNetBaseSettings):
     sectionName = "SLNet::Settings"
 
 
+class FaceOcclusionEstimatorSettings(BaseSettingsSection):
+    """
+    Face occlusion estimator settings section.
+
+    Properties:
+
+        - normalHairCoeff (float): normal hair occlusion coeff
+        - overallOcclusionThreshold (float): overall occlusion threshold
+        - foreheadThreshold (float): forehead occlusion threshold
+        - eyeThreshold (float): eye occlusion threshold
+        - noseThreshold (float): nose occlusion threshold
+        - mouthThreshold (float): mouth occlusion threshold
+        - lowerFaceThreshold (float): lower occlusion threshold
+    """
+
+    sectionName = "FaceOcclusionEstimator::Settings"
+
+    @property
+    def normalHairCoeff(self) -> Optional[float]:
+        """
+        Getter for normalHairCoeff
+
+        Returns:
+            normalHairCoeff
+        """
+        return self.getValue("normalHairCoeff")
+
+    @normalHairCoeff.setter
+    def normalHairCoeff(self, value: float) -> None:
+        """
+        Setter for normalHairCoeff
+        Args:
+            value: new value
+        """
+        self.setValue("normalHairCoeff", value)
+
+    @property
+    def overallOcclusionThreshold(self) -> Optional[float]:
+        """
+        Getter for overallOcclusionThreshold
+
+        Returns:
+            overallOcclusionThreshold
+        """
+        return self.getValue("overallOcclusionThreshold")
+
+    @overallOcclusionThreshold.setter
+    def overallOcclusionThreshold(self, value: float) -> None:
+        """
+        Setter for overallOcclusionThreshold
+        Args:
+            value: new value
+        """
+        self.setValue("overallOcclusionThreshold", value)
+
+    @property
+    def foreheadThreshold(self) -> Optional[float]:
+        """
+        Getter for foreheadThreshold
+
+        Returns:
+            foreheadThreshold
+        """
+        return self.getValue("foreheadThreshold")
+
+    @foreheadThreshold.setter
+    def foreheadThreshold(self, value: float) -> None:
+        """
+        Setter for foreheadThreshold
+        Args:
+            value: new value
+        """
+        self.setValue("foreheadThreshold", value)
+
+    @property
+    def eyeThreshold(self) -> Optional[float]:
+        """
+        Getter for eyeThreshold
+
+        Returns:
+            eyeThreshold
+        """
+        return self.getValue("eyeThreshold")
+
+    @eyeThreshold.setter
+    def eyeThreshold(self, value: float) -> None:
+        """
+        Setter for eyeThreshold
+        Args:
+            value: new value
+        """
+        self.setValue("eyeThreshold", value)
+
+    @property
+    def noseThreshold(self) -> Optional[float]:
+        """
+        Getter for noseThreshold
+
+        Returns:
+            noseThreshold
+        """
+        return self.getValue("noseThreshold")
+
+    @noseThreshold.setter
+    def noseThreshold(self, value: float) -> None:
+        """
+        Setter for noseThreshold
+        Args:
+            value: new value
+        """
+        self.setValue("noseThreshold", value)
+
+    @property
+    def mouthThreshold(self) -> Optional[float]:
+        """
+        Getter for normalHairCoeff
+
+        Returns:
+            normalHairCoeff
+        """
+        return self.getValue("mouthThreshold")
+
+    @mouthThreshold.setter
+    def mouthThreshold(self, value: float) -> None:
+        """
+        Setter for mouthThreshold
+        Args:
+            value: new value
+        """
+        self.setValue("mouthThreshold", value)
+
+    @property
+    def lowerFaceThreshold(self) -> Optional[float]:
+        """
+        Getter for lowerFaceThreshold
+
+        Returns:
+            lowerFaceThreshold
+        """
+        return self.getValue("lowerFaceThreshold")
+
+    @lowerFaceThreshold.setter
+    def lowerFaceThreshold(self, value: float) -> None:
+        """
+        Setter for lowerFaceThreshold
+        Args:
+            value: new value
+        """
+        self.setValue("lowerFaceThreshold", value)
+
+
 class QualityEstimatorSettings(BaseSettingsSection):
     """
     Quality estimator settings section.
@@ -2496,6 +2647,16 @@ class FaceEngineSettingsProvider(BaseSettingsProvider):
             Mutable SLNet section
         """
         return SLNetSettings(self._coreSettingProvider)
+
+    @property
+    def faceOcclusionEstimatorSettings(self) -> FaceOcclusionEstimatorSettings:
+        """
+        Getter for  FaceOcclusionEstimator settings section.
+
+        Returns:
+            Mutable FaceOcclusionEstimator section
+        """
+        return FaceOcclusionEstimatorSettings(self._coreSettingProvider)
 
     @property
     def qualityEstimatorSettings(self) -> QualityEstimatorSettings:
