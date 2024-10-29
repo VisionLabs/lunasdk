@@ -15,9 +15,11 @@ def convertOccludedState(estimation) -> int:
 
 
 class OcclusionEstimation(NamedTuple):
-    """ """
+    """Occlusion estimation container"""
 
+    # occlusion state, 1 - occluded, 0 -not
     state: int
+    # percent of occluded area
     score: float
 
 
@@ -30,10 +32,11 @@ def getOcclusionState(value: OcclusionEstimation):
 
 
 class FaceOcclusion(BaseEstimation):
+    """Face occlusion container"""
 
     def __init__(self, coreFaceOcclusion: FaceOcclusionEstimation):
         """
-        Init.
+        Init of face occlusion
 
         Args:
             coreFaceOcclusion: core occlusion estimation.
@@ -43,85 +46,111 @@ class FaceOcclusion(BaseEstimation):
 
     @property
     def overall(self) -> OcclusionEstimation:
+        """Occlusion prediction for overall face"""
         return OcclusionEstimation(
             convertOccludedState(self._coreEstimation.overallOcclusionState), self._coreEstimation.overallOcclusionScore
         )
 
     @overall.setter
     def overall(self, overall: OcclusionEstimation):
+        """Setter for overall"""
         occlusion = getOcclusionState(overall)
         self._coreEstimation.overallOcclusionScore = overall[1]
         self._coreEstimation.overallOcclusionState = occlusion
 
     @property
     def hairScore(self) -> float:
+        """Score of area which hair occluded"""
         return self._coreEstimation.hairOcclusionScore
 
     @hairScore.setter
     def hairScore(self, value: float):
+        """Setter for hairScore"""
         self._coreEstimation.hairOcclusionScore = value
 
     @property
     def forehead(self) -> OcclusionEstimation:
+        """Occlusion prediction for forehead area. Score is calculated relativity of forehead area"""
         coreEstimation = self._coreEstimation[FaceOcclusionType.Forehead]
         return OcclusionEstimation(convertOccludedState(coreEstimation[0]), coreEstimation[1])
 
     @forehead.setter
     def forehead(self, value: OcclusionEstimation):
+        """Setter for forehead"""
         occlusion = getOcclusionState(value)
         self._coreEstimation[FaceOcclusionType.Forehead] = (occlusion, value[1])
 
     @property
     def rightEye(self) -> OcclusionEstimation:
+        """Occlusion prediction for right eye area. Score is calculated relativity of right eye area"""
         coreEstimation = self._coreEstimation[FaceOcclusionType.RightEye]
         return OcclusionEstimation(convertOccludedState(coreEstimation[0]), coreEstimation[1])
 
     @rightEye.setter
     def rightEye(self, value: OcclusionEstimation):
+        """Setter for rightEye"""
         occlusion = getOcclusionState(value)
         self._coreEstimation[FaceOcclusionType.RightEye] = (occlusion, value[1])
 
     @property
     def leftEye(self) -> OcclusionEstimation:
+        """Occlusion prediction for left eye area. Score is calculated relativity of left eye area"""
         coreEstimation = self._coreEstimation[FaceOcclusionType.LeftEye]
         return OcclusionEstimation(convertOccludedState(coreEstimation[0]), coreEstimation[1])
 
     @leftEye.setter
     def leftEye(self, value: OcclusionEstimation):
+        """Setter for leftEye"""
         occlusion = getOcclusionState(value)
         self._coreEstimation[FaceOcclusionType.LeftEye] = (occlusion, value[1])
 
     @property
     def nose(self) -> OcclusionEstimation:
+        """Occlusion prediction for nose area. Score is calculated relativity of nose area"""
         coreEstimation = self._coreEstimation[FaceOcclusionType.Nose]
         return OcclusionEstimation(convertOccludedState(coreEstimation[0]), coreEstimation[1])
 
     @nose.setter
     def nose(self, value: OcclusionEstimation):
+        """Setter for nose"""
         occlusion = getOcclusionState(value)
         self._coreEstimation[FaceOcclusionType.Nose] = (occlusion, value[1])
 
     @property
     def mouth(self) -> OcclusionEstimation:
+        """Occlusion prediction for mouth area. Score is calculated relativity of mouth area"""
         coreEstimation = self._coreEstimation[FaceOcclusionType.Mouth]
         return OcclusionEstimation(convertOccludedState(coreEstimation[0]), coreEstimation[1])
 
     @mouth.setter
     def mouth(self, value: OcclusionEstimation):
+        """Setter for mouth"""
         occlusion = getOcclusionState(value)
         self._coreEstimation[FaceOcclusionType.Mouth] = (occlusion, value[1])
 
     @property
     def lowerFace(self) -> OcclusionEstimation:
+        """Occlusion prediction for lower face area. Score is calculated relativity of lower face area"""
         coreEstimation = self._coreEstimation[FaceOcclusionType.LowerFace]
         return OcclusionEstimation(convertOccludedState(coreEstimation[0]), coreEstimation[1])
 
     @lowerFace.setter
     def lowerFace(self, value: OcclusionEstimation):
+        """Setter for lowerFace"""
         occlusion = getOcclusionState(value)
         self._coreEstimation[FaceOcclusionType.LowerFace] = (occlusion, value[1])
 
-    def asDict(self):
+    def asDict(self) -> dict:
+        """
+        Convert estimation to dict.
+
+        Returns:
+            dict with keys:
+            prediction - common prediction face occluded or not
+            estimations - all scores
+            face_occlusion - occlusion prediction by each face areas separately
+
+        """
         overall = self.overall
         lowerFace = self.lowerFace
         mouth = self.mouth
@@ -189,7 +218,7 @@ class FaceOcclusionEstimator(BaseEstimator):
         asyncEstimate: bool = False,
     ) -> Union[FaceOcclusion, AsyncTask[FaceOcclusion]]:
         """
-        Estimate mouth state on warp.
+        Estimate face occlusion.
 
         Args:
             warpWithLandmarks: core warp with transformed landmarks
