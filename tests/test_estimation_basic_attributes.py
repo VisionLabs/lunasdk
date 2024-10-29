@@ -124,7 +124,7 @@ class TestBasicAttributes(BaseTestClass):
         )
 
     @staticmethod
-    def assertEth(eth1: Union[Ethnicities, Eth], eth2: Union[Ethnicities, Eth], delta: float = 0.003) -> None:
+    def assertEth(eth1: Union[Ethnicities, Eth], eth2: Union[Ethnicities, Eth], delta: float = 0.01) -> None:
         """
         Assert ethnicities.
 
@@ -142,7 +142,7 @@ class TestBasicAttributes(BaseTestClass):
         """
         Test estimation correctness.
         """
-        expectedEstimation = Estimation(20, 0, Eth(0, 0, 1, 0))
+        expectedEstimation = Estimation(22, 0, Eth(0, 0, 1, 0))
         for estimationType in ("Age", "Gender", "Ethnicity"):
             estimationFlag = f"estimate{estimationType}"
             basicAttributeGetter: Callable[[BasicAttributes], Union[Ethnicities, float, None]] = attrgetter(

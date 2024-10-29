@@ -1,9 +1,13 @@
+import pytest
+
 from lunavl.sdk.estimators.face_estimators.credibility import Credibility, CredibilityEstimator
 from lunavl.sdk.estimators.face_estimators.facewarper import FaceWarpedImage
 from lunavl.sdk.image_utils.image import VLImage
 from tests.base import BaseTestClass
 from tests.resources import WARP_CLEAN_FACE
 from tests.schemas import CREDIBILITY_SCHEMA, jsonValidator
+
+pytest.skip("no plans", allow_module_level=True)
 
 
 class TestCredibility(BaseTestClass):

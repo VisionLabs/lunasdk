@@ -5,7 +5,7 @@ variables:
   ROOT_DIR: ${CI_PROJECT_DIR}
   LUNA_SDK_ARCH: linux_no_hasp
   FSDK_ROOT: /opt/sdk/luna-sdk-ci
-  LUNA_SDK_TAG: v.5.22.1
+  LUNA_SDK_TAG: v.5.23.0
   RELEASE_PORTAL: http://release-portal.vlabs
   DOWNLOAD_PATH: '/opt/sdk'
   SYMLINK_FSDK: ${FSDK_ROOT}
@@ -66,7 +66,6 @@ build_cpu:pypi:
 mypy:storages:
   stage: build
   tags: [ 'python-bench' ]
-  image: ${BUILDER_IMAGE}
   script:
     - !reference [.download_fsdk]
     - !reference [.prepare_poetry]
@@ -84,10 +83,6 @@ test:unittests:
     # poetry bug https://github.com/python-poetry/poetry/issues/2921
     - rm -rf /home/gitlab-runner/.cache/pypoetry
     - !reference [.download_fsdk]
-    - export SYMLINK_FSDK=/opt/sdk/luna-sdk-ci-complete-edition
-    - export LUNA_SDK_ARCH=linux_rel
-    - !reference [.download_fsdk]
-    - cp -r ${DOWNLOAD_PATH}/luna-sdk_${LUNA_SDK_ARCH}_${LUNA_SDK_TAG}/data/* ${FSDK_ROOT}/data
     - !reference [.prepare_poetry]
     - source $(poetry env info -p)/bin/activate
     - *run_unittests
