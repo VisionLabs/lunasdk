@@ -168,7 +168,7 @@ class FaceOcclusion(BaseEstimation):
                 "nose_score": nose.score,
                 "left_eye_score": leftEye.score,
                 "right_eye_score": rightEye.score,
-                "forehead": forehead.score,
+                "forehead_score": forehead.score,
             },
             "face_occlusion": {
                 "lower_face_occluded": lowerFace.state,

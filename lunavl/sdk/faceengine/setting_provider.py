@@ -1579,10 +1579,10 @@ class FaceOcclusionEstimatorSettings(BaseSettingsSection):
     @property
     def mouthThreshold(self) -> Optional[float]:
         """
-        Getter for normalHairCoeff
+        Getter for mouthThreshold
 
         Returns:
-            normalHairCoeff
+            mouthThreshold
         """
         return self.getValue("mouthThreshold")
 

@@ -50,7 +50,7 @@ class TestEstimateFaceOcclusion(BaseTestClass):
             "nose_score",
             "left_eye_score",
             "right_eye_score",
-            "forehead",
+            "forehead_score",
         }
         assert occlusionDict["face_occlusion"].keys() == {
             "lower_face_occluded",
