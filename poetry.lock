@@ -313,13 +313,13 @@ test = ["pytest (>=6)"]
 
 [[package]]
 name = "faceengine"
-version = "5.23.0.0"
+version = "5.23.3.0"
 description = "Python bindings of FaceEngine using pybind11 and CMake"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "FaceEngine-5.23.0.0-cp312-cp312-linux_x86_64.whl", hash = "sha256:94042560d52430fbd92dd7b82130a2456bebef69d8c0b1bca160d54d20f02ff3"},
-    {file = "FaceEngine-5.23.0.0-cp312-cp312-win_amd64.whl", hash = "sha256:584e71b65bb52f9dc03e51b2dcf3c153146af7fee0425241d53ac1c228c510bc"},
+    {file = "FaceEngine-5.23.3.0-cp312-cp312-linux_x86_64.whl", hash = "sha256:b8a0bd08748edf4ff35f137869540f8550e704ed58e1ef856d09f65c76ea04f3"},
+    {file = "FaceEngine-5.23.3.0-cp312-cp312-win_amd64.whl", hash = "sha256:5a18ab6f93dd027228b4c0491e1604d60fc567249b03c7d2e7bb69c78aad6c9e"},
 ]
 
 [package.source]
@@ -1429,4 +1429,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9"
-content-hash = "30e04fd8fcf860e98e69affb25bee809e3303e1ee4979a37aa16a68f82abb2c2"
+content-hash = "6dd073f41d51ea4e82fef92db0087fffda0de1669fc17f300563f29cb663466d"
