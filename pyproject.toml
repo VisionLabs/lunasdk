@@ -11,7 +11,7 @@ line_length = 120
 
 [tool.poetry]
 name = "lunavl"
-version = "2.2.2"
+version = "2.3.0"
 description = "Python interface for VisionLabs Luna platform"
 authors = ["VisionLabs <m.limonov@visionlabs.ru>"]
 repository = "https://github.com/VisionLabs/lunasdk"
@@ -26,10 +26,7 @@ numpy = "*"
 requests = "*"
 Pillow = {version = "*", markers = "sys_platform == 'win32' or sys_platform == 'darwin'"}
 pillow-simd = {version = "*", markers = "sys_platform != 'win32' and sys_platform != 'darwin'"}
-#[tool.poetry.dev-dependencies.FaceEngine]
-#git = "ssh://git@git.visionlabs.ru/face-recognition/FaceEnginePythonBindings.git"
-#tag = "async_multitrack"
-FaceEngine = ">=5.19.1.0"
+FaceEngine = ">=5.23.3.0"
 
 [tool.poetry.dev-dependencies]
 sphinx = ">=2.0.0"

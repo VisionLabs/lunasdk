@@ -111,8 +111,6 @@ def collectDetectionsResult(
             bodyIdx = association.humanId
             facesWithBody.add(faceIdx)
             bodiesWithFace.add(bodyIdx)
-            if (faceIdx >= len(faces)) or (bodyIdx >= len(bodies)):
-                continue
             humanDetection = HumanDetection(faces[faceIdx], bodies[bodyIdx], score=association.score, image=vlImage)
             humanDetections.append(humanDetection)
 
