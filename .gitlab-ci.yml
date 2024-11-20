@@ -5,7 +5,7 @@ variables:
   ROOT_DIR: ${CI_PROJECT_DIR}
   LUNA_SDK_ARCH: linux_no_hasp
   FSDK_ROOT: /opt/sdk/luna-sdk-ci
-  LUNA_SDK_TAG: v.5.23.3
+  LUNA_SDK_TAG: v.5.24.0
   RELEASE_PORTAL: http://release-portal.vlabs
   DOWNLOAD_PATH: '/opt/sdk'
   SYMLINK_FSDK: ${FSDK_ROOT}
