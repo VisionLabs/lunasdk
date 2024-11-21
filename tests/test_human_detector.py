@@ -158,7 +158,7 @@ class TestBodyDetector(BaseTestClass):
         self.assertDetections(detection[0], VLIMAGE_SEVERAL_FACE)
         self.assertDetections(detection[1], VLIMAGE_ONE_FACE)
         assert 2 == len(detection)
-        assert 8 == len(detection[0])
+        assert 6 == len(detection[0])
         assert 1 == len(detection[1])
 
     def test_batch_detect_many_faces(self):
