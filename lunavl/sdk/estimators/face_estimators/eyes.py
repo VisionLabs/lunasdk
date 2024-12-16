@@ -40,9 +40,9 @@ class EyeState(Enum):
     Closed = 3
 
     @staticmethod
-    def fromCoreEmotion(coreEyeState: CoreEyeState) -> "EyeState":
+    def fromCoreEye(coreEyeState: CoreEyeState) -> "EyeState":
         """
-        Get enum element by core emotion.
+        Get enum element by core eyes.
 
         Args:
             coreEyeState: an eye state form core
