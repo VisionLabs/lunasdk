@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import List, Literal, Union, overload
 
-from FaceEngine import FacialHairEstimation, FacialHair as CoreFacialHairState  # pylint: disable=E0611,E0401
+from FaceEngine import FacialHair as CoreFacialHairState, FacialHairEstimation  # pylint: disable=E0611,E0401
 
 from lunavl.sdk.async_task import AsyncTask, DefaultPostprocessingFactory
 from lunavl.sdk.base import BaseEstimation
@@ -37,6 +37,9 @@ class FacialHairState(Enum):
         """
         return getattr(FacialHairState, coreFacialHairState.name)
 
+    def __str__(self):
+        return self.name.lower() if self.name != "NoHair" else "no_hair"
+
 
 class FacialHair(BaseEstimation):
     """
@@ -65,52 +68,72 @@ class FacialHair(BaseEstimation):
 
         Returns:
             dict with keys:
-            beard - estimation of a beard on a face
-            mustache - estimation of a mustache on a face
-            noHair - estimation of no hair on a face
-            stubble - estimation of a stubble on a face
+            beardScore - estimation of a beard on a face
+            mustacheScore - estimation of a mustache on a face
+            noHairScore - estimation of no hair on a face
+            stubbleScore - estimation of a stubble on a face
         """
-        return {"beard": self.beard, "mustache": self.mustache, "noHair": self.noHair, "stubble": self.stubble}
+        print(self._coreEstimation.result)
+        return {
+            "predominant_facial_hair": self.predominateFacialHair,
+            "estimations": {
+                "beard": self.beardScore,
+                "mustache": self.mustacheScore,
+                "no_hair": self.noHairScore,
+                "stubble": self.stubbleScore,
+            },
+        }
 
     @property
-    def beard(self) -> float:
+    def beardScore(self) -> float:
         """
         Get beard estimation value.
 
         Returns:
             value in range [0, 1]
         """
-        return self._coreEstimation.beard
+        return self._coreEstimation.beardScore
 
     @property
-    def mustache(self) -> float:
+    def mustacheScore(self) -> float:
         """
         Get mustache estimation value.
 
         Returns:
             value in range [0, 1]
         """
-        return self._coreEstimation.mustache
+        return self._coreEstimation.mustacheScore
 
     @property
-    def noHair(self) -> float:
+    def noHairScore(self) -> float:
         """
         Get hairless estimation value.
 
         Returns:
             value in range [0, 1]
         """
-        return self._coreEstimation.noHair
+        return self._coreEstimation.noHairScore
 
     @property
-    def stubble(self) -> float:
+    def stubbleScore(self) -> float:
         """
         Get stubble estimation value.
 
         Returns:
             value in range [0, 1]
         """
-        return self._coreEstimation.stubble
+        return self._coreEstimation.stubbleScore
+
+    @property
+    def predominateFacialHair(self) -> str:
+        """
+        Get predominate eyebrow expression (expression with max score value).
+
+        Returns:
+            eyebrow expression with max score value
+        """
+        result = FacialHairState.fromCoreFacialHairState(self._coreEstimation.result)
+        return result.name.lower() if result.name != "NoHair" else "no_hair"
 
 
 POST_PROCESSING = DefaultPostprocessingFactory(FacialHair)
