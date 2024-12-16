@@ -40,7 +40,7 @@ class DeepfakePrediction(Enum):
     Fake = "fake"  # spoof
 
     @staticmethod
-    def fromCoreEmotion(coreState: DeepFakeEstimationState) -> "DeepfakePrediction":
+    def fromCoreDeepfake(coreState: DeepFakeEstimationState) -> "DeepfakePrediction":
         """
         Get enum element by core deepfake state.
 
@@ -79,7 +79,7 @@ class Deepfake(BaseEstimation):
             coreEstimation: core estimation
         """
         super().__init__(coreEstimation)
-        self.prediction = DeepfakePrediction.fromCoreEmotion(coreEstimation.State)
+        self.prediction = DeepfakePrediction.fromCoreDeepfake(coreEstimation.State)
 
     def asDict(self) -> dict:
         """

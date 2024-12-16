@@ -108,7 +108,7 @@ class Eye(BaseEstimation):
         super().__init__(coreEstimation)
         self.irisLandmarks = IrisLandmarks(self._coreEstimation.iris)
         self.eyelidLandMarks = EyelidLandmarks(self._coreEstimation.eyelid)
-        self.state = EyeState.fromCoreEmotion(self._coreEstimation.state)
+        self.state = EyeState.fromCoreEye(self._coreEstimation.state)
 
     @property
     def eyelid(self) -> EyelidLandmarks:

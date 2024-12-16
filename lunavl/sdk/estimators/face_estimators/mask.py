@@ -40,7 +40,7 @@ class FaceOcclusionState(Enum):
     Full = "full"
 
     @staticmethod
-    def fromCoreEmotion(coreFaceOcclusion: DetailedMaskType) -> "FaceOcclusionState":
+    def fromCoreFaceOcclusion(coreFaceOcclusion: DetailedMaskType) -> "FaceOcclusionState":
         """
         Get enum element by core detailed mask type.
 
@@ -89,7 +89,7 @@ class _FaceOcclusion(BaseEstimation):
         Args:
             mask: estimated mask
         """
-        self.predominantOcclusion = FaceOcclusionState.fromCoreEmotion(predominantOcclusion)
+        self.predominantOcclusion = FaceOcclusionState.fromCoreFaceOcclusion(predominantOcclusion)
         super().__init__(scores)
 
     @property
@@ -150,7 +150,7 @@ class MaskState(Enum):
     Occluded = 3
 
     @staticmethod
-    def fromCoreEmotion(coreMask: CoreMask) -> "MaskState":
+    def fromCoreMask(coreMask: CoreMask) -> "MaskState":
         """
         Get enum element by core mask.
 
@@ -226,7 +226,7 @@ class Mask(BaseEstimation):
         Returns:
             emotion with max score value
         """
-        return MaskState.fromCoreEmotion(self._coreEstimation.result)
+        return MaskState.fromCoreMask(self._coreEstimation.result)
 
     def asDict(self) -> Dict[str, Union[str, Dict[str, float]]]:
         """
