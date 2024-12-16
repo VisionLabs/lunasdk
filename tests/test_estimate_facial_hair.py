@@ -1,5 +1,4 @@
 import unittest
-from typing import Dict
 
 from lunavl.sdk.estimators.face_estimators.facial_hair import FacialHair, FacialHairEstimator
 from lunavl.sdk.faceengine.setting_provider import DetectorType
@@ -28,7 +27,7 @@ class TestFacialHair(BaseTestClass):
         Validate facial hair dict
         """
         assert {"predominant_facial_hair", "estimations"} == receivedDict.keys()
-        assert set(["beard", "mustache", "no_hair", "stubble"]) == receivedDict["estimations"].keys()
+        assert {"beard", "mustache", "no_hair", "stubble"} == receivedDict["estimations"].keys()
         for estimation, estimationValue in receivedDict["estimations"].items():
             assert 0 <= estimationValue <= 1
         self.assertEqual(receivedDict["predominant_facial_hair"], expectedResults)
