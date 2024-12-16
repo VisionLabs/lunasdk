@@ -4,7 +4,7 @@ from lunavl.sdk.estimators.face_estimators.facial_hair import FacialHair, Facial
 from lunavl.sdk.faceengine.setting_provider import DetectorType
 from lunavl.sdk.image_utils.image import VLImage
 from tests.base import BaseTestClass
-from tests.resources import WARP_FACE_WITH_BEARD, WARP_FACE_WITH_MUSTACHE, WARP_FACE_WITH_STUBBLE, WARP_NO_FACIAL_HAIR
+from tests.resources import FACE_WITH_BEARD, FACE_WITH_MUSTACHE, FACE_WITH_STUBBLE, NO_FACIAL_HAIR
 
 
 @unittest.skip("No plan in sources")
@@ -47,7 +47,7 @@ class TestFacialHair(BaseTestClass):
         Test facial hair estimations without facial hair on the face
         """
         expectedResult = "no_hair"
-        faceDetection = self.detector.detectOne(VLImage.load(filename=WARP_NO_FACIAL_HAIR))
+        faceDetection = self.detector.detectOne(VLImage.load(filename=NO_FACIAL_HAIR))
         warp = self.warper.warp(faceDetection)
         facialHair = self.facialHairEstimator.estimate(warp).asDict()
         self.validate_facial_dict(facialHair, expectedResult)
@@ -57,7 +57,7 @@ class TestFacialHair(BaseTestClass):
         Test facial hair estimation with beard on the face
         """
         expectedResult = "beard"
-        faceDetection = self.detector.detectOne(VLImage.load(filename=WARP_FACE_WITH_BEARD))
+        faceDetection = self.detector.detectOne(VLImage.load(filename=FACE_WITH_BEARD))
         warp = self.warper.warp(faceDetection)
         facialHair = self.facialHairEstimator.estimate(warp).asDict()
         self.validate_facial_dict(facialHair, expectedResult)
@@ -67,7 +67,7 @@ class TestFacialHair(BaseTestClass):
         Test facial hair estimations with stubble on the face
         """
         expectedResult = "stubble"
-        faceDetection = self.detector.detectOne(VLImage.load(filename=WARP_FACE_WITH_STUBBLE))
+        faceDetection = self.detector.detectOne(VLImage.load(filename=FACE_WITH_STUBBLE))
         warp = self.warper.warp(faceDetection)
         facialHair = self.facialHairEstimator.estimate(warp).asDict()
         self.validate_facial_dict(facialHair, expectedResult)
@@ -77,7 +77,7 @@ class TestFacialHair(BaseTestClass):
         Test facial hair estimations with mustache on the face
         """
         expectedResult = "mustache"
-        faceDetection = self.detector.detectOne(VLImage.load(filename=WARP_FACE_WITH_MUSTACHE))
+        faceDetection = self.detector.detectOne(VLImage.load(filename=FACE_WITH_MUSTACHE))
         warp = self.warper.warp(faceDetection)
         facialHair = self.facialHairEstimator.estimate(warp).asDict()
         self.validate_facial_dict(facialHair, expectedResult)
@@ -86,7 +86,7 @@ class TestFacialHair(BaseTestClass):
         """
         Test async estimate facial hair
         """
-        faceDetection = self.detector.detectOne(VLImage.load(filename=WARP_NO_FACIAL_HAIR))
+        faceDetection = self.detector.detectOne(VLImage.load(filename=NO_FACIAL_HAIR))
         warp = self.warper.warp(faceDetection)
         task = self.facialHairEstimator.estimate(warp.warpedImage, asyncEstimate=True)
         self.assertAsyncEstimation(task, FacialHair)
