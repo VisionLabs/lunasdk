@@ -25,9 +25,9 @@ from ..estimators.face_estimators.emotions import EmotionsEstimator
 from ..estimators.face_estimators.eyebrow_expressions import EyebrowExpressionEstimator
 from ..estimators.face_estimators.eyes import EyeEstimator, GazeEstimator
 from ..estimators.face_estimators.face_descriptor import FaceDescriptorEstimator
-from ..estimators.face_estimators.facial_hair import FacialHairEstimator
 from ..estimators.face_estimators.face_occlusion import FaceOcclusionEstimator
 from ..estimators.face_estimators.facewarper import FaceWarper
+from ..estimators.face_estimators.facial_hair import FacialHairEstimator
 from ..estimators.face_estimators.fisheye import FisheyeEstimator
 from ..estimators.face_estimators.glasses import GlassesEstimator
 from ..estimators.face_estimators.head_pose import HeadPoseEstimator

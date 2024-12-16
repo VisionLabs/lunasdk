@@ -38,6 +38,11 @@ OCCLUDED_FACE = getPathToImage("occluded_warp_face.jpg")
 MASK_NOT_IN_PLACE = getPathToImage("mask_not_in_place.jpg")
 WARP_CLEAN_FACE = getPathToImage("warp_clean_face.jpg")
 
+WARP_NO_FACIAL_HAIR = getPathToImage("face_with_no_hair.jpg")
+WARP_FACE_WITH_STUBBLE = getPathToImage("face_with_stubble.jpg")
+WARP_FACE_WITH_MUSTACHE = getPathToImage("face_with_mustache.jpg")
+WARP_FACE_WITH_BEARD = getPathToImage("face_with_beard.jpg")
+
 CROWD_9_PEOPLE = getPathToImage("crowd1.jpg")
 # https://www.imdb.com/title/tt0412142/mediaviewer/rm2879755264/
 CROWD_7_PEOPLE = getPathToImage("crowd2.jpg")

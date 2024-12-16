@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import List, Literal, Union, overload
 
-from FaceEngine import FaceOcclusionEstimation, FaceOcclusionState, FaceOcclusionType, State as CoreHairState  # pylint: disable=E0611,E0401
+from FaceEngine import FacialHairEstimation, FacialHair as CoreFacialHairState  # pylint: disable=E0611,E0401
 
 from lunavl.sdk.async_task import AsyncTask, DefaultPostprocessingFactory
 from lunavl.sdk.base import BaseEstimation
@@ -14,6 +14,7 @@ class FacialHairState(Enum):
     """
     Enum for eye states.
     """
+
     #: No hair on face
     NoHair = 0
     #: Stubble on face
@@ -24,7 +25,7 @@ class FacialHairState(Enum):
     Beard = 3
 
     @staticmethod
-    def fromCoreFacialHairState(coreFacialHairState: CoreHairState) -> "FacialHairState":
+    def fromCoreFacialHairState(coreFacialHairState: CoreFacialHairState) -> "FacialHairState":
         """
         Get enum element by core emotion.
 
@@ -48,7 +49,7 @@ class FacialHair(BaseEstimation):
         - stubble
     """
 
-    def __init__(self, coreFacialHair):
+    def __init__(self, coreFacialHair: FacialHairEstimation):
         """
         Init of facial hair
 
@@ -64,17 +65,12 @@ class FacialHair(BaseEstimation):
 
         Returns:
             dict with keys:
-            prediction - common prediction face occluded or not
-            estimations - all scores
-            face_occlusion - occlusion prediction by each face areas separately
-
+            beard - estimation of a beard on a face
+            mustache - estimation of a mustache on a face
+            noHair - estimation of no hair on a face
+            stubble - estimation of a stubble on a face
         """
-        return {
-            "beard": self.beard,
-            "mustache": self.mustache,
-            "noHair": self.noHair,
-            "stubble": self.stubble
-        }
+        return {"beard": self.beard, "mustache": self.mustache, "noHair": self.noHair, "stubble": self.stubble}
 
     @property
     def beard(self) -> float:
@@ -122,14 +118,12 @@ POST_PROCESSING = DefaultPostprocessingFactory(FacialHair)
 
 class FacialHairEstimator(BaseEstimator):
     """
-    Face occlusion estimator.
+    Facial hair estimator.
     """
 
     #  pylint: disable=W0221
     @overload  # type: ignore
-    def estimate(
-        self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[False] = False
-    ) -> FacialHair: ...
+    def estimate(self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[False] = False) -> FacialHair: ...
 
     @overload
     def estimate(
@@ -142,7 +136,7 @@ class FacialHairEstimator(BaseEstimator):
         asyncEstimate: bool = False,
     ) -> Union[FacialHair, AsyncTask[FacialHair]]:
         """
-        Estimate face occlusion.
+        Estimate facial hair.
 
         Args:
             warp: warped image
