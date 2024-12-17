@@ -32,16 +32,6 @@ class TestFacialHair(BaseTestClass):
             assert 0 <= estimationValue <= 1
         self.assertEqual(receivedDict["predominant_facial_hair"], expectedResults)
 
-    def assertEstimation(self, facialHair: FacialHair, expectedEstimation: str):
-        """
-        Function checks if the instance belongs to the FacialHair class and compares the result with what is expected.
-
-        Args:
-            facialHair: facial hair estimation object
-            expectedEstimationResults: dictionary with result
-        """
-        assert isinstance(facialHair, FacialHair), f"{facialHair.__class__} is not {FacialHair}"
-
     def test_estimate_no_hair(self):
         """
         Test facial hair estimations without facial hair on the face

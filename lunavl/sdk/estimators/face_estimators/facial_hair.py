@@ -37,9 +37,6 @@ class FacialHairState(Enum):
         """
         return getattr(FacialHairState, coreFacialHairState.name)
 
-    def __str__(self):
-        return self.name.lower() if self.name != "NoHair" else "no_hair"
-
 
 class FacialHair(BaseEstimation):
     """
@@ -73,9 +70,11 @@ class FacialHair(BaseEstimation):
             noHairScore - estimation of no hair on a face
             stubbleScore - estimation of a stubble on a face
         """
-        print(self._coreEstimation.result)
+        predominantHairState = (
+            self.predominateFacialHair.name.lower() if self.predominateFacialHair.name != "NoHair" else "no_hair"
+        )
         return {
-            "predominant_facial_hair": self.predominateFacialHair,
+            "predominant_facial_hair": predominantHairState,
             "estimations": {
                 "beard": self.beardScore,
                 "mustache": self.mustacheScore,
@@ -125,15 +124,14 @@ class FacialHair(BaseEstimation):
         return self._coreEstimation.stubbleScore
 
     @property
-    def predominateFacialHair(self) -> str:
+    def predominateFacialHair(self) -> FacialHairState:
         """
         Get predominate eyebrow expression (expression with max score value).
 
         Returns:
             eyebrow expression with max score value
         """
-        result = FacialHairState.fromCoreFacialHairState(self._coreEstimation.result)
-        return result.name.lower() if result.name != "NoHair" else "no_hair"
+        return FacialHairState.fromCoreFacialHairState(self._coreEstimation.result)
 
 
 POST_PROCESSING = DefaultPostprocessingFactory(FacialHair)
