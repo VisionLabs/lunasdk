@@ -12,7 +12,7 @@ from lunavl.sdk.estimators.face_estimators.facewarper import FaceWarp, FaceWarpe
 
 class FacialHairState(Enum):
     """
-    Enum for eye states.
+    Enum for facial hair states.
     """
 
     #: No hair on face
@@ -27,13 +27,13 @@ class FacialHairState(Enum):
     @staticmethod
     def fromCoreFacialHairState(coreFacialHairState: CoreFacialHairState) -> "FacialHairState":
         """
-        Get enum element by core emotion.
+        Get enum element by core facial hair.
 
         Args:
-            coreFacialHairState: an eye state form core
+            coreFacialHairState: facial hair state form core
 
         Returns:
-            corresponding eye state
+            corresponding facial hair state
         """
         return getattr(FacialHairState, coreFacialHairState.name)
 
@@ -43,10 +43,10 @@ class FacialHair(BaseEstimation):
     Facial hair estimation container
 
     Facial hair states:
-        - beard
-        - mustache
-        - noFace
-        - stubble
+        - beardScore
+        - mustacheScore
+        - noFaceScore
+        - stubbleScore
     """
 
     def __init__(self, coreFacialHair: FacialHairEstimation):
@@ -64,17 +64,13 @@ class FacialHair(BaseEstimation):
         Convert estimation to dict.
 
         Returns:
-            dict with keys:
-            beardScore - estimation of a beard on a face
-            mustacheScore - estimation of a mustache on a face
-            noHairScore - estimation of no hair on a face
-            stubbleScore - estimation of a stubble on a face
+            dict with keys 'predominant_facial_hair' and 'estimations'
         """
-        predominantHairState = (
+        predominateFacialHair = (
             self.predominateFacialHair.name.lower() if self.predominateFacialHair.name != "NoHair" else "no_hair"
         )
         return {
-            "predominant_facial_hair": predominantHairState,
+            "predominant_facial_hair": predominateFacialHair,
             "estimations": {
                 "beard": self.beardScore,
                 "mustache": self.mustacheScore,
@@ -126,10 +122,10 @@ class FacialHair(BaseEstimation):
     @property
     def predominateFacialHair(self) -> FacialHairState:
         """
-        Get predominate eyebrow expression (expression with max score value).
+        Get predominate facial hair expression (expression with max score value).
 
         Returns:
-            eyebrow expression with max score value
+            facial hair expression with max score value
         """
         return FacialHairState.fromCoreFacialHairState(self._coreEstimation.result)
 
