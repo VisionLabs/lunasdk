@@ -40,9 +40,9 @@ class EyeState(Enum):
     Closed = 3
 
     @staticmethod
-    def fromCoreEmotion(coreEyeState: CoreEyeState) -> "EyeState":
+    def fromCoreEye(coreEyeState: CoreEyeState) -> "EyeState":
         """
-        Get enum element by core emotion.
+        Get enum element by core eyes.
 
         Args:
             coreEyeState: an eye state form core
@@ -108,7 +108,7 @@ class Eye(BaseEstimation):
         super().__init__(coreEstimation)
         self.irisLandmarks = IrisLandmarks(self._coreEstimation.iris)
         self.eyelidLandMarks = EyelidLandmarks(self._coreEstimation.eyelid)
-        self.state = EyeState.fromCoreEmotion(self._coreEstimation.state)
+        self.state = EyeState.fromCoreEye(self._coreEstimation.state)
 
     @property
     def eyelid(self) -> EyelidLandmarks:

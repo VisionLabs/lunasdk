@@ -28,7 +28,7 @@ class LivenessPrediction(Enum):
     Unknown = "unknown"  # unknown
 
     @staticmethod
-    def fromCoreEmotion(coreState: LivenessOneShotState) -> "LivenessPrediction":
+    def fromCoreLiveness(coreState: LivenessOneShotState) -> "LivenessPrediction":
         """
         Get enum element by core liveness.
 
@@ -114,7 +114,7 @@ def postProcessing(error: FSDKErrorResult, estimation: LivenessOneShotRGBEstimat
         livenessv1
     """
     assertError(error)
-    return LivenessV1(estimation, LivenessPrediction.fromCoreEmotion(estimation.State))
+    return LivenessV1(estimation, LivenessPrediction.fromCoreLiveness(estimation.State))
 
 
 def postProcessingBatch(error: FSDKErrorResult, estimations: List[LivenessOneShotRGBEstimation]) -> List[LivenessV1]:
@@ -129,7 +129,7 @@ def postProcessingBatch(error: FSDKErrorResult, estimations: List[LivenessOneSho
     """
     assertError(error)
 
-    return [LivenessV1(estimation, LivenessPrediction.fromCoreEmotion(estimation.State)) for estimation in estimations]
+    return [LivenessV1(estimation, LivenessPrediction.fromCoreLiveness(estimation.State)) for estimation in estimations]
 
 
 class LivenessV1Estimator(BaseEstimator):

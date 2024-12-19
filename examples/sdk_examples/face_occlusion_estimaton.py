@@ -17,7 +17,7 @@ def estimateFaceOcclusion():
     """
     Face occlusion estimation example.
     """
-    image = VLImage.load(filename=EXAMPLE_3)
+    image = VLImage.load(filename=EXAMPLE_1)
     faceEngine = VLFaceEngine()
     detector = faceEngine.createFaceDetector(DetectorType.FACE_DET_V3)
     faceDetection = detector.detectOne(image)

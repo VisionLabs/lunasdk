@@ -22,7 +22,7 @@ class CredibilityPrediction(Enum):
     NonReliable = "non_reliable"  # human is not reliable
 
     @staticmethod
-    def fromCoreEmotion(coreStatus: CredibilityStatus) -> "CredibilityPrediction":
+    def fromCoreCredibility(coreStatus: CredibilityStatus) -> "CredibilityPrediction":
         """
         Get enum element by core credibility status.
 
@@ -70,7 +70,7 @@ class Credibility(BaseEstimation):
         Returns:
             get credibility prediction.
         """
-        return CredibilityPrediction.fromCoreEmotion(self._coreEstimation.credibilityStatus)
+        return CredibilityPrediction.fromCoreCredibility(self._coreEstimation.credibilityStatus)
 
     def asDict(self) -> dict:
         """

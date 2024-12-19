@@ -38,6 +38,15 @@ OCCLUDED_FACE = getPathToImage("occluded_warp_face.jpg")
 MASK_NOT_IN_PLACE = getPathToImage("mask_not_in_place.jpg")
 WARP_CLEAN_FACE = getPathToImage("warp_clean_face.jpg")
 
+# https://media.istockphoto.com/id/535479651/photo/confidence-unlocks-every-opportunity-in-life.jpg?s=612x612&w=0&k=20&c=UrQ36tCwVSD2Vv8YuCDTAL87yZ-j1YAvEQI_QtUY9BM=
+NO_FACIAL_HAIR = getPathToImage("face_with_no_hair.jpg")
+# https://www.lorealparisusa.com/-/media/project/loreal/brand-sites/oap/americas/us/beauty-magazine/articles-2/stubble-beard/loreal-paris-article-your-guide-to-perfecting-beard-stubble-d.jpg
+FACE_WITH_STUBBLE = getPathToImage("face_with_stubble.jpg")
+# https://cdn11.bigcommerce.com/s-61qnoipi5/product_images/uploaded_images/braun-how-to-stage-moustache2-desktop.jpg
+FACE_WITH_MUSTACHE = getPathToImage("face_with_mustache.jpg")
+# https://i.pinimg.com/564x/38/f8/08/38f808ea1a59e32888b9df4357ce31df.jpg
+FACE_WITH_BEARD = getPathToImage("face_with_beard.jpg")
+
 CROWD_9_PEOPLE = getPathToImage("crowd1.jpg")
 # https://www.imdb.com/title/tt0412142/mediaviewer/rm2879755264/
 CROWD_7_PEOPLE = getPathToImage("crowd2.jpg")

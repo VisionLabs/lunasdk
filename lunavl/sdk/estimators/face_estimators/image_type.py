@@ -33,7 +33,7 @@ class ImageColorSchema(Enum):
     Infrared = 3
 
     @staticmethod
-    def fromCoreEmotion(coreColorType: CoreImageColorType) -> "ImageColorSchema":
+    def fromCoreColorType(coreColorType: CoreImageColorType) -> "ImageColorSchema":
         """
         Get enum element by core image color type.
 
@@ -81,7 +81,7 @@ class ImageColorType(BaseEstimation):
     @property
     def type(self) -> ImageColorSchema:
         """Prediction of image type."""
-        return ImageColorSchema.fromCoreEmotion(self._coreEstimation.colorType)
+        return ImageColorSchema.fromCoreColorType(self._coreEstimation.colorType)
 
     def asDict(self) -> Dict[str, Union[float, str]]:
         """Convert estimation to dict."""

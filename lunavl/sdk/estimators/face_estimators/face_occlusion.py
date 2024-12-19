@@ -4,7 +4,7 @@ from FaceEngine import FaceOcclusionEstimation, FaceOcclusionState, FaceOcclusio
 
 from lunavl.sdk.async_task import AsyncTask, DefaultPostprocessingFactory
 from lunavl.sdk.base import BaseEstimation
-from lunavl.sdk.detectors.facedetector import FaceDetection, Landmarks5
+from lunavl.sdk.detectors.facedetector import Landmarks5
 from lunavl.sdk.estimators.base import BaseEstimator
 from lunavl.sdk.estimators.estimators_utils.extractor_utils import validateInputByBatchEstimator
 from lunavl.sdk.estimators.face_estimators.facewarper import FaceWarp, FaceWarpedImage
