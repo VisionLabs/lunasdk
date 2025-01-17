@@ -67,7 +67,6 @@ mypy:storages:
   stage: build
   tags: [ 'python-bench' ]
   script:
-    - !reference [.download_fsdk]
     - !reference [.prepare_poetry]
     - poetry run mypy ${CI_PROJECT_DIR}/lunavl/
   allow_failure: true
@@ -82,7 +81,7 @@ test:unittests:
   script:
     # poetry bug https://github.com/python-poetry/poetry/issues/2921
     - rm -rf /home/gitlab-runner/.cache/pypoetry
-    - !reference [.download_fsdk]
+    - !reference [.download_plans]
     - !reference [.prepare_poetry]
     - source $(poetry env info -p)/bin/activate
     - *run_unittests
