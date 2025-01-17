@@ -17,7 +17,7 @@ include:
     ref: master
     file: 'public_pypi.yml'
   - project: 'luna/ci-templates'
-    ref: master
+    ref: python312
     file:
       - '/.python-builder-image.yml'
       - '/.formatters.yml'
