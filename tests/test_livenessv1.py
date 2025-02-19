@@ -122,7 +122,7 @@ class TestEstimateLivenessV1(BaseTestClass):
         """
         Test estimate liveness batch with threshold
         """
-        qualityThreshold = 0.9
+        qualityThreshold = 0.85
         detection = self.detector.detectOne(VLImage.load(filename=SPOOF))
         estimations = self.livenessEstimator.estimateBatch(
             [self.detection, detection],
