@@ -101,7 +101,7 @@ class LoggerSettings(BaseSettingsSection):
         Args:
             value: new value
         """
-        self.setValue("log-file-path", value)
+        self.setValue("severity", value)
 
 
 class OtherSettings(BaseSettingsSection):
