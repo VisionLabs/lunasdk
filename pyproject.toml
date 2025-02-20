@@ -18,7 +18,7 @@ repository = "https://github.com/VisionLabs/lunasdk"
 [[tool.poetry.source]]
 name = "vlabspypi"
 url = "http://pypi.vlabs/root/public/+simple"
-secondary = true
+priority = "supplemental"
 
 [tool.poetry.dependencies]
 python = ">=3.9"
