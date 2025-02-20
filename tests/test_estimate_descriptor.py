@@ -260,6 +260,7 @@ class TestEstimateDescriptor(BaseTestClass):
             59: 512,
             60: 512,
             62: 512,
+            65: 512,
             102: 2048,
             103: 2048,
             104: 2048,
