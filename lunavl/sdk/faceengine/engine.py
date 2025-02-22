@@ -1,5 +1,4 @@
-"""Module realize wraps on facengine objects
-"""
+"""Module realize wraps on facengine objects"""
 
 import os
 from pathlib import Path

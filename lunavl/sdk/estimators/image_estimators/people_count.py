@@ -49,7 +49,7 @@ class ImageForPeopleEstimation(NamedTuple):
 
 
 def getEstimatorArgsFromImages(
-    images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]]
+    images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]],
 ) -> Tuple[List[CoreImage], List[CoreRectI]]:
     """
     Create args for people estimation from image list
