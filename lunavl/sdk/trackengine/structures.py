@@ -361,7 +361,7 @@ class BaseTrackObject(Generic[TrackedObject, TrackedDetectionObject]):
 
     @property
     def detection(self) -> TrackedObject | None:
-        raise NotImplemented
+        raise NotImplementedError
 
     def asDict(self) -> dict:
         return {
