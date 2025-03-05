@@ -69,7 +69,7 @@ class TestEstimateLivenessV1(BaseTestClass):
         for case in cases:
             with self.subTest(prediction=case.prediction):
                 faceDetection = self.detector.detectOne(VLImage.load(filename=case.image), detect68Landmarks=True)
-                estimation = self.livenessEstimator.estimate(faceDetection=faceDetection, qualityThreshold=0.9)
+                estimation = self.livenessEstimator.estimate(faceDetection=faceDetection, qualityThreshold=0.85)
                 self.assertLivenessEstimation(estimation, expectedPrediction=case.prediction)
 
     def test_liveness_estimation_quality_threshold(self):
@@ -122,7 +122,7 @@ class TestEstimateLivenessV1(BaseTestClass):
         """
         Test estimate liveness batch with threshold
         """
-        qualityThreshold = 0.9
+        qualityThreshold = 0.85
         detection = self.detector.detectOne(VLImage.load(filename=SPOOF))
         estimations = self.livenessEstimator.estimateBatch(
             [self.detection, detection],

@@ -99,7 +99,7 @@ def assertImageForDetection(image: VLImage) -> None:
 
 
 def getArgsForCoreDetectorForImages(
-    images: List[Union[VLImage, ImageForDetection]]
+    images: List[Union[VLImage, ImageForDetection]],
 ) -> Tuple[List[CoreImage], List[CoreRectI]]:
     """
     Create args for detect for image list

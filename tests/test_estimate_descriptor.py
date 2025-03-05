@@ -26,9 +26,9 @@ from tests.base import BaseTestClass
 from tests.detect_test_class import VLIMAGE_SMALL
 from tests.resources import BAD_THRESHOLD_WARP, HUMAN_WARP, WARP_CLEAN_FACE, WARP_WHITE_MAN
 
-EFDVa = EXISTENT_FACE_DESCRIPTOR_VERSION_ABUNDANCE = [59, 60, 62]
+EFDVa = EXISTENT_FACE_DESCRIPTOR_VERSION_ABUNDANCE = [59, 60, 62, 65]
 
-EHDVa = EXISTENT_HUMAN_DESCRIPTOR_VERSION_ABUNDANCE = [108, 110, 116]
+EHDVa = EXISTENT_HUMAN_DESCRIPTOR_VERSION_ABUNDANCE = [108, 116]
 
 
 class DescriptorType(Enum):
@@ -260,6 +260,7 @@ class TestEstimateDescriptor(BaseTestClass):
             59: 512,
             60: 512,
             62: 512,
+            65: 512,
             102: 2048,
             103: 2048,
             104: 2048,

@@ -1,5 +1,4 @@
-"""Module contains face estimator collections.
-"""
+"""Module contains face estimator collections."""
 
 from dataclasses import dataclass, field
 from enum import Enum

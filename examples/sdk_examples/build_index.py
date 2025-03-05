@@ -1,6 +1,6 @@
 """Module realize simple examples following features:
-    * build index with descriptors
-    * search for descriptors with the shorter distance to passed descriptor
+* build index with descriptors
+* search for descriptors with the shorter distance to passed descriptor
 """
 
 import asyncio
