@@ -18,7 +18,7 @@ from lunavl.sdk.indexes.stored_index import DenseIndex, DynamicIndex, IndexType
 from tests.base import BaseTestClass
 from tests.resources import WARP_CLEAN_FACE, WARP_ONE_FACE, WARP_WHITE_MAN
 
-EFDVa = EXISTENT_FACE_DESCRIPTOR_VERSION_ABUNDANCE = [59, 60, 62]
+EFDVa = EXISTENT_FACE_DESCRIPTOR_VERSION_ABUNDANCE = [59, 62, 65]
 
 faceWarp = FaceWarpedImage.load(filename=WARP_WHITE_MAN)
 faceWarps = [FaceWarpedImage.load(filename=WARP_CLEAN_FACE), FaceWarpedImage.load(filename=WARP_ONE_FACE)]
