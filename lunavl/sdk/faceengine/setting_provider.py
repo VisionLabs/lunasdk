@@ -560,9 +560,10 @@ class FaceDetV3Settings(BaseSettingsSection):
         - scoreThreshold (float): detection threshold in [0..1] range;
         - redetectScoreThreshold (float): redetect face threshold in [0..1] range;
         - NMSThreshold (float): overlap threshold for NMS [0..1] range;
-        - strictMinSize (bool): Whether minFaceSize must be taken as a strict rule;
-        - minFaceSize (int): Minimum face size in pixels;
-        - maxFaceSize (int): Maximum face size in pixels;
+        - strictMinSize (int): Enforced minimum face size
+        - minFaceSize (int): suggested minimum face size in pixels. It is not guaranteed that the size of detected faces
+            will satisfy this limitation.;
+        - maxFaceSize (int): suggested maximum face size in pixels;
         - nms (NMS): type of NMS: mean or best;
         - redetectTensorSize (int): target face after preprocessing for redetect;
         - redetectFaceTargetSize (int): target face size for redetect;
@@ -632,7 +633,7 @@ class FaceDetV3Settings(BaseSettingsSection):
         self.setValue("NMSThreshold", float(value))
 
     @property
-    def strictMinSize(self) -> Optional[bool]:
+    def strictMinSize(self) -> Optional[int]:
         """
         Getter for strictMinSize
 
@@ -642,7 +643,7 @@ class FaceDetV3Settings(BaseSettingsSection):
         return self.getValue("strictlyMinSize")
 
     @strictMinSize.setter
-    def strictMinSize(self, value: bool) -> None:
+    def strictMinSize(self, value: int) -> None:
         """
         Setter for strictMinSize
         Args:
