@@ -124,8 +124,8 @@ class ImageModificationEstimator(BaseEstimator):
         if asyncEstimate:
             task = self._coreEstimator.asyncEstimate(coreImage)
             return AsyncTask(task, postProcessing)
-        error, coreOrientationType = self._coreEstimator.estimate(coreImage)
-        return postProcessing(error, coreOrientationType)
+        error, coreModification = self._coreEstimator.estimate(coreImage)
+        return postProcessing(error, coreModification)
 
     def estimateBatch(
         self, images: List[VLImage], asyncEstimate: bool = False
