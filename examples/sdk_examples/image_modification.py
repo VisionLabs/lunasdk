@@ -29,7 +29,7 @@ def estimateImageModification():
 
 async def asyncEstimateImageModificationTrack():
     """
-    Async estimate human track
+    Async estimate image modification
     """
     faceEngine = VLFaceEngine()
     modificationEstimator = faceEngine.createImageModificationEstimator()
