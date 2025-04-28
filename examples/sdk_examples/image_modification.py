@@ -2,6 +2,7 @@
 Module realize simple examples following features:
     * image modification estimation
 """
+
 import asyncio
 import pprint
 
@@ -25,6 +26,7 @@ def estimateImageModification():
     #: estimate batch
     pprint.pprint(imageModificationEstimator.estimateBatch([image, image2]))
 
+
 async def asyncEstimateImageModificationTrack():
     """
     Async estimate human track
@@ -38,6 +40,7 @@ async def asyncEstimateImageModificationTrack():
     task2 = modificationEstimator.estimate(image, asyncEstimate=True)
     for task in (task1, task2):
         pprint.pprint(task.get())
+
 
 if __name__ == "__main__":
     estimateImageModification()
