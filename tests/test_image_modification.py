@@ -4,9 +4,9 @@ from lunavl.sdk.errors.errors import LunaVLError
 from lunavl.sdk.errors.exceptions import LunaSDKException
 from lunavl.sdk.estimators.image_estimators.image_modification import ModificationStatus
 from lunavl.sdk.estimators.image_estimators.people_count import EstimationTargets
-from lunavl.sdk.image_utils.image import VLImage, ColorFormat
+from lunavl.sdk.image_utils.image import ColorFormat, VLImage
 from tests.base import BaseTestClass
-from tests.resources import STATUE, IMAGE_WITH_TWO_FACES
+from tests.resources import IMAGE_WITH_TWO_FACES, STATUE
 
 
 class TestPeopleCount(BaseTestClass):
