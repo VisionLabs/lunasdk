@@ -40,6 +40,7 @@ from ..estimators.face_estimators.natural_light import FaceNaturalLightEstimator
 from ..estimators.face_estimators.portrait_style import PortraitStyleEstimator
 from ..estimators.face_estimators.red_eye import RedEyesEstimator
 from ..estimators.face_estimators.warp_quality import WarpQualityEstimator
+from ..estimators.image_estimators.image_modification import ImageModificationEstimator
 from ..estimators.image_estimators.orientation_mode import OrientationModeEstimator
 from ..estimators.image_estimators.people_count import (
     PeopleCountEstimator,
@@ -776,5 +777,23 @@ class VLFaceEngine:
         launchOptions = self.getLaunchOptions(launchOptions)
         return FacialHairEstimator(
             self._faceEngine.createFacialHairEstimator(launchOptions=launchOptions.coreLaunchOptions),
+            launchOptions,
+        )
+
+    def createImageModificationEstimator(
+        self, launchOptions: Optional[LaunchOptions] = None
+    ) -> ImageModificationEstimator:
+        """
+        Create image modification estimator.
+
+        Args:
+            launchOptions: estimator launch options
+
+        Returns:
+            estimator
+        """
+        launchOptions = self.getLaunchOptions(launchOptions)
+        return ImageModificationEstimator(
+            self._faceEngine.createImageModificationEstimator(launchOptions=launchOptions.coreLaunchOptions),
             launchOptions,
         )
