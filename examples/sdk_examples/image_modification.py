@@ -16,7 +16,7 @@ def estimateImageModification():
     """
     Example of an image modification estimation.
     """
-    image = VLImage.load(filename="c:/projects/luna-admin/tests/world_of_tests/data/several_faces.jpg")
+    image = VLImage.load(filename=EXAMPLE_O)
     faceEngine = VLFaceEngine()
     imageModificationEstimator = faceEngine.createImageModificationEstimator()
     #: estimate
