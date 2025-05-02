@@ -3,13 +3,12 @@ import pytest
 from lunavl.sdk.errors.errors import LunaVLError
 from lunavl.sdk.errors.exceptions import LunaSDKException
 from lunavl.sdk.estimators.image_estimators.image_modification import ModificationStatus
-from lunavl.sdk.estimators.image_estimators.people_count import EstimationTargets
 from lunavl.sdk.image_utils.image import ColorFormat, VLImage
 from tests.base import BaseTestClass
-from tests.resources import IMAGE_WITH_TWO_FACES, STATUE
+from tests.resources import ROTATED0, STATUE
 
 
-class TestPeopleCount(BaseTestClass):
+class TestImageModification(BaseTestClass):
     """
     Test estimate image modification
     """
@@ -19,7 +18,7 @@ class TestPeopleCount(BaseTestClass):
         super().setup_class()
         cls.imageModificationEstimator = cls.faceEngine.createImageModificationEstimator()
         cls.image1 = VLImage.load(filename=STATUE)
-        cls.image2 = VLImage.load(filename=IMAGE_WITH_TWO_FACES)
+        cls.image2 = VLImage.load(filename=ROTATED0)
 
     def test_modification_async(self):
         """
