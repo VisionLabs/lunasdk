@@ -14,9 +14,9 @@ from lunavl.sdk.image_utils.image import VLImage
 
 def estimateImageModification():
     """
-    Example of a image modification estimation.
+    Example of an image modification estimation.
     """
-    image = VLImage.load(filename=EXAMPLE_O)
+    image = VLImage.load(filename="c:/projects/luna-admin/tests/world_of_tests/data/several_faces.jpg")
     faceEngine = VLFaceEngine()
     imageModificationEstimator = faceEngine.createImageModificationEstimator()
     #: estimate
