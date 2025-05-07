@@ -23,6 +23,7 @@ include:
       - '/.formatters.yml'
       - '/.download_fsdk.yml'
       - '/.additions.yml'
+      - template.gitlab-ci.yml
 
 stages:
   - build
@@ -54,6 +55,12 @@ build:pypi:
   tags: ['k8s-python']
   image: ${BUILDER_IMAGE}
   extends: .build_python_package
+
+build:to_public_pypi:
+  stage: build
+  tags: ['k8s-python']
+  image: ${BUILDER_IMAGE}
+  extends: [.publish_to_public_pypi, .run_tag]
 
 build_cpu:pypi:
   stage: build
