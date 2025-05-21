@@ -17,7 +17,7 @@ include:
     ref: master
     file: 'public_pypi.yml'
   - project: 'luna/ci-templates'
-    ref: python312
+    ref: LUNA-7590_sdk_tag_extraction
     file:
       - '/.python-builder-image.yml'
       - '/.formatters.yml'
@@ -88,6 +88,7 @@ test:unittests:
   script:
     # poetry bug https://github.com/python-poetry/poetry/issues/2921
     - rm -rf /home/gitlab-runner/.cache/pypoetry
+    - !reference [.extract_luna_sdk_tag]
     - !reference [.download_plans]
     - !reference [.prepare_poetry]
     - source $(poetry env info -p)/bin/activate
