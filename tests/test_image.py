@@ -13,9 +13,9 @@ from PIL import Image
 from lunavl.sdk.errors.errors import LunaVLError
 from lunavl.sdk.errors.exceptions import LunaSDKException
 from lunavl.sdk.image_utils.geometry import Rect
-from lunavl.sdk.image_utils.image import ColorFormat, ImageFormat, MemoryResidence, VLImage
+from lunavl.sdk.image_utils.image import ColorFormat, ImageFormat, MemoryResidence, RotationAngle, VLImage
 from tests.base import BaseTestClass
-from tests.resources import ONE_FACE, PALETTE_MODE
+from tests.resources import ONE_FACE, PALETTE_MODE, ROTATED0, ROTATED90, ROTATED180, ROTATED270
 
 SINGLE_CHANNEL_IMAGE: Image.Image = Image.open(ONE_FACE).convert("L")
 IMAGE = Image.open(ONE_FACE)
@@ -323,3 +323,50 @@ class TestImage(BaseTestClass):
                     with self.subTest(initType=case.initType, memoryResidence=memoryResidence):
                         image = VLImage(body=case.body, memoryResidence=memoryResidence)
                         assert memoryResidence == image.getMemoryResidence()
+
+    def test_rotate(self):
+        """Test rotate image"""
+        for memoryResidence in MemoryResidence:
+            with self.subTest(memoryResidence):
+                image = VLImage.load(filename=ROTATED0, memoryResidence=memoryResidence)
+                images = {
+                    RotationAngle.ANGLE_0: image,
+                    RotationAngle.ANGLE_90: VLImage.load(filename=ROTATED270, memoryResidence=memoryResidence),
+                    RotationAngle.ANGLE_270: VLImage.load(filename=ROTATED90, memoryResidence=memoryResidence),
+                    RotationAngle.ANGLE_180: VLImage.load(filename=ROTATED180, memoryResidence=memoryResidence),
+                }
+                for rotation in RotationAngle:
+                    with self.subTest(rotation=rotation):
+                        img = images[rotation]
+                        rotatedImage = VLImage.rotate(img, rotation)
+                        assert np.array_equal(image.asNPArray(), rotatedImage.asNPArray())
+                        assert memoryResidence == rotatedImage.getMemoryResidence()
+
+    def test_rescale(self):
+        """Test rescale image"""
+        for memoryResidence in MemoryResidence:
+            with self.subTest(memoryResidence):
+                image = VLImage.load(filename=ROTATED0, memoryResidence=memoryResidence)
+                width = image.rect.width
+                height = image.rect.height
+                scale = 100 / width
+
+                vlResImage = image.rescale(scale)
+                assert memoryResidence == vlResImage.getMemoryResidence()
+                assert width, int(height * scale) == (vlResImage.rect.width, vlResImage.rect.height)
+
+    def test_crop(self):
+        """Test crop image"""
+        for memoryResidence in MemoryResidence:
+            with self.subTest(memoryResidence):
+                image = VLImage.load(filename=ROTATED0, memoryResidence=memoryResidence)
+
+                vlResImage = image.crop(Rect(100, 100, 900, 600))
+                assert memoryResidence == vlResImage.getMemoryResidence()
+                assert 125, 216 == (vlResImage.rect.width, vlResImage.rect.height)
+
+    def test_bad_crop_rect(self):
+        """Test crop image with invalid region"""
+        with pytest.raises(LunaSDKException) as exceptionInfo:
+            VLImage.load(filename=ROTATED0, memoryResidence=MemoryResidence.GPU).crop(Rect(100, 100, 1000, 1000))
+        self.assertLunaVlError(exceptionInfo, LunaVLError.InvalidImage.format("invalid image or region"))

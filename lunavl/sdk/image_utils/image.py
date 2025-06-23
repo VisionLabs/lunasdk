@@ -17,9 +17,9 @@ from FaceEngine import (  # pylint: disable=E0611,E0401
 )
 from PIL import Image as pilImage
 from PIL.Image import Image as PilImage
-from docutils.nodes import image
 
-from ..errors.exceptions import assertError
+from ..errors.errors import LunaVLError
+from ..errors.exceptions import LunaSDKException, assertError
 from .geometry import Rect
 from .pil.np import getNPImageType, pilToNumpy
 
@@ -594,12 +594,33 @@ class VLImage:
 
         return self.__class__(body=coreImage, filename=self.filename)
 
-    def resize(self, width: int, height: int) -> "VLImage":
-        error, coreImage = self.coreImage.resize(dsize=(width, height))
+    def rescale(self, scale: float) -> "VLImage":
+        """
+        Rescale image.
+
+        Args:
+            scale: rescale coew
+        Returns:
+             new image
+        Raises:
+            LunaSDKException: if failed to rescale image
+        """
+        error, coreImage = self.coreImage.rescale(scale)
         assertError(error)
         return self.__class__(body=coreImage, filename=self.filename)
 
-    def rescale(self, scale: float) -> "VLImage":
-        error, coreImage = self.coreImage.rescale(scale)
-        assertError(error)
+    def crop(self, rect: Rect) -> "VLImage":
+        """
+        Crop image by rectangle
+
+        Args:
+            rect: rectangle coordinates must lie entirely within the image boundaries, with all edges fully contained.
+        Returns:
+             new image
+        Raises:
+            LunaSDKException: if failed to crop image
+        """
+        coreImage = self.coreImage.extract(rect.coreRectI)
+        if not coreImage.isValid():
+            raise LunaSDKException(LunaVLError.InvalidImage.format("invalid image or region"))
         return self.__class__(body=coreImage, filename=self.filename)
