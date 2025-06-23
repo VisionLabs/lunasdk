@@ -584,3 +584,13 @@ class VLImage:
         assertError(error)
 
         return self.__class__(body=coreImage, filename=self.filename)
+
+    def resize(self, width: int, height: int) -> "VLImage":
+        error, coreImage = self.coreImage.resize(dsize=(width, height))
+        assertError(error)
+        return self.__class__(body=coreImage, filename=self.filename)
+
+    def rescale(self, scale: float) -> "VLImage":
+        error, coreImage = self.coreImage.rescale(scale)
+        assertError(error)
+        return self.__class__(body=coreImage, filename=self.filename)
