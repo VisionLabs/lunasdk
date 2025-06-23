@@ -544,10 +544,17 @@ class VLImage:
         Raises:
             LunaSDKException: if failed to save image to sdk Image
         """
-        if colorFormat is None:
-            error = self.coreImage.save(filename)
+        if self.coreImage.getMemoryResidence() == CoreMemoryResidence.MemoryGPU:
+            # copy image to RAM
+            coreImage = CoreImage()
+            error = coreImage.create(self.coreImage, CoreMemoryResidence.MemoryCPU)
+            assertError(error)
         else:
-            error = self.coreImage.save(filename, colorFormat.coreFormat)
+            coreImage = self.coreImage
+        if colorFormat is None:
+            error = coreImage.save(filename)
+        else:
+            error = coreImage.save(filename, colorFormat.coreFormat)
         assertError(error)
 
     def convertToBinaryImg(self, imageFormat: ImageFormat = ImageFormat.PPM) -> bytes:
