@@ -13,9 +13,11 @@ from FaceEngine import (  # pylint: disable=E0611,E0401
     FormatType,
     Image as CoreImage,
     MemoryResidence as CoreMemoryResidence,
+    RotationType as RotationType,
 )
 from PIL import Image as pilImage
 from PIL.Image import Image as PilImage
+from docutils.nodes import image
 
 from ..errors.exceptions import assertError
 from .geometry import Rect
@@ -259,17 +261,17 @@ class VLImage:
             rotated vl image
         """
         if angle == RotationAngle.ANGLE_90:
-            angleForRotation = pilImage.ROTATE_90
+            angleForRotation = RotationType.Left
         elif angle == RotationAngle.ANGLE_270:
-            angleForRotation = pilImage.ROTATE_270
+            angleForRotation = RotationType.Right
         elif angle == RotationAngle.ANGLE_180:
-            angleForRotation = pilImage.ROTATE_180
+            angleForRotation = RotationType.Upside_Down
         else:
             return copy(image)
 
-        newPilImage = image.asPillow().transpose(angleForRotation)
-
-        return cls(newPilImage, filename=image.filename)
+        error, coreImage = image.coreImage.rotate(angleForRotation)
+        assertError(error)
+        return cls(body=coreImage, filename=image.filename)
 
     @classmethod
     def load(
