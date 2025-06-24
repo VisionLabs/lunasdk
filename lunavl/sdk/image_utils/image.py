@@ -13,11 +13,13 @@ from FaceEngine import (  # pylint: disable=E0611,E0401
     FormatType,
     Image as CoreImage,
     MemoryResidence as CoreMemoryResidence,
+    RotationType as RotationType,
 )
 from PIL import Image as pilImage
 from PIL.Image import Image as PilImage
 
-from ..errors.exceptions import assertError
+from ..errors.errors import LunaVLError
+from ..errors.exceptions import LunaSDKException, assertError
 from .geometry import Rect
 from .pil.np import getNPImageType, pilToNumpy
 
@@ -259,17 +261,17 @@ class VLImage:
             rotated vl image
         """
         if angle == RotationAngle.ANGLE_90:
-            angleForRotation = pilImage.ROTATE_90
+            angleForRotation = RotationType.Left
         elif angle == RotationAngle.ANGLE_270:
-            angleForRotation = pilImage.ROTATE_270
+            angleForRotation = RotationType.Right
         elif angle == RotationAngle.ANGLE_180:
-            angleForRotation = pilImage.ROTATE_180
+            angleForRotation = RotationType.Upside_Down
         else:
             return copy(image)
 
-        newPilImage = image.asPillow().transpose(angleForRotation)
-
-        return cls(newPilImage, filename=image.filename)
+        error, coreImage = image.coreImage.rotate(angleForRotation)
+        assertError(error)
+        return cls(body=coreImage, filename=image.filename)
 
     @classmethod
     def load(
@@ -542,10 +544,17 @@ class VLImage:
         Raises:
             LunaSDKException: if failed to save image to sdk Image
         """
-        if colorFormat is None:
-            error = self.coreImage.save(filename)
+        if self.coreImage.getMemoryResidence() == CoreMemoryResidence.MemoryGPU:
+            # copy image to RAM
+            coreImage = CoreImage()
+            error = coreImage.create(self.coreImage, CoreMemoryResidence.MemoryCPU)
+            assertError(error)
         else:
-            error = self.coreImage.save(filename, colorFormat.coreFormat)
+            coreImage = self.coreImage
+        if colorFormat is None:
+            error = coreImage.save(filename)
+        else:
+            error = coreImage.save(filename, colorFormat.coreFormat)
         assertError(error)
 
     def convertToBinaryImg(self, imageFormat: ImageFormat = ImageFormat.PPM) -> bytes:
@@ -583,4 +592,35 @@ class VLImage:
         error, coreImage = self.coreImage.convert(colorFormat.coreFormat)
         assertError(error)
 
+        return self.__class__(body=coreImage, filename=self.filename)
+
+    def rescale(self, scale: float) -> "VLImage":
+        """
+        Rescale image.
+
+        Args:
+            scale: rescale coew
+        Returns:
+             new image
+        Raises:
+            LunaSDKException: if failed to rescale image
+        """
+        error, coreImage = self.coreImage.rescale(scale)
+        assertError(error)
+        return self.__class__(body=coreImage, filename=self.filename)
+
+    def crop(self, rect: Rect) -> "VLImage":
+        """
+        Crop image by rectangle
+
+        Args:
+            rect: rectangle coordinates must lie entirely within the image boundaries, with all edges fully contained.
+        Returns:
+             new image
+        Raises:
+            LunaSDKException: if failed to crop image
+        """
+        coreImage = self.coreImage.extract(rect.coreRectI)
+        if not coreImage.isValid():
+            raise LunaSDKException(LunaVLError.InvalidImage.format("invalid image or region"))
         return self.__class__(body=coreImage, filename=self.filename)
