@@ -542,7 +542,7 @@ class RuntimeSettings(BaseSettingsSection):
         return bool(value)
 
     @pinThreads.setter
-    def pinThreads(self, value: int) -> None:
+    def pinThreads(self, value: bool) -> None:
         """
         Setter for pinThreads
         Args:
