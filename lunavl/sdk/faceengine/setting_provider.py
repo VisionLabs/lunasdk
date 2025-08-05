@@ -342,7 +342,7 @@ class RuntimeSettings(BaseSettingsSection):
         defaultGpuDevice (int): default GPU device number.
         cpuHighWatermark (int): CPU high-watermark options for runtime.
         gpuHighWatermark (int): GPU high-watermark options for runtime.
-        pinThreads (int): number of pinning threads.
+        pinThreads (bool): pin threads to OS cores or not
     """
 
     sectionName = "Runtime"
@@ -465,7 +465,7 @@ class RuntimeSettings(BaseSettingsSection):
     @programCacheSize.setter
     def programCacheSize(self, value: int) -> None:
         """
-        Setter for numComputeStreams
+        Setter for programCacheSize
         Args:
             value: new value
         """
@@ -503,7 +503,7 @@ class RuntimeSettings(BaseSettingsSection):
     @cpuHighWatermark.setter
     def cpuHighWatermark(self, value: int) -> None:
         """
-        Setter for numComputeStreams
+        Setter for cpuHighWatermark
         Args:
             value: new value
         """
@@ -529,14 +529,17 @@ class RuntimeSettings(BaseSettingsSection):
         self.setValue("gpuHighWatermark", value)
 
     @property
-    def pinThreads(self) -> Optional[int]:
+    def pinThreads(self) -> Optional[bool]:
         """
-        Getter for gpuHighWatermark
+        Getter for pinThreads
 
         Returns:
-            gpuHighWatermark
+            pinThreads
         """
-        return self.getValue("gpuHighWatermark")
+        value = self.getValue("gpuHighWatermark")
+        if value is None:
+            return None
+        return bool(value)
 
     @pinThreads.setter
     def pinThreads(self, value: int) -> None:
@@ -545,7 +548,7 @@ class RuntimeSettings(BaseSettingsSection):
         Args:
             value: new value
         """
-        self.setValue("pinThreads", value)
+        self.setValue("pinThreads", int(value))
 
 
 class DescriptorFactorySettings(BaseSettingsSection):
