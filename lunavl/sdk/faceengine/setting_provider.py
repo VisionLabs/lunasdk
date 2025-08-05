@@ -330,18 +330,19 @@ class SystemSettings(BaseSettingsSection):
 class RuntimeSettings(BaseSettingsSection):
     """
     Flower library is the default neural network inference engine.
-    The library is used for:
 
-        - face detectors;
-        - estimators(attributes, quality);
-        - face descriptors
-
+    See https://docs.visionlabs.ai/sdk/server/v.5.29.0/configurationguide/runtime-settings
     Properties:
         cpuClass (CpuClass): class of cpu by supported instructions
         deviceClass (DeviceClass):  execution device type cpu, gpu.
         numThreads (int): number of worker threads.
         verboseLogging (VerboseLogging): level of verbose logging
         numComputeStreams (int):  increases performance, but works only with new versions of nvidia drivers
+        programCacheSize (int): maximum number of Program objects in cache. Should be less than 10000.
+        defaultGpuDevice (int): default GPU device number.
+        cpuHighWatermark (int): CPU high-watermark options for runtime.
+        gpuHighWatermark (int): GPU high-watermark options for runtime.
+        pinThreads (int): number of pinning threads.
     """
 
     sectionName = "Runtime"
@@ -450,6 +451,101 @@ class RuntimeSettings(BaseSettingsSection):
             value: new value
         """
         self.setValue("numComputeStreams", value)
+
+    @property
+    def programCacheSize(self) -> Optional[int]:
+        """
+        Getter for programCacheSize
+
+        Returns:
+            programCacheSize
+        """
+        return self.getValue("programCacheSize")
+
+    @programCacheSize.setter
+    def programCacheSize(self, value: int) -> None:
+        """
+        Setter for numComputeStreams
+        Args:
+            value: new value
+        """
+        self.setValue("programCacheSize", value)
+
+    @property
+    def defaultGpuDevice(self) -> Optional[int]:
+        """
+        Getter for defaultGpuDevice (0, 1, ...)
+
+        Returns:
+            programCacheSize
+        """
+        return self.getValue("defaultGpuDevice")
+
+    @defaultGpuDevice.setter
+    def defaultGpuDevice(self, value: int) -> None:
+        """
+        Setter for defaultGpuDevice
+        Args:
+            value: new value
+        """
+        self.setValue("defaultGpuDevice", value)
+
+    @property
+    def cpuHighWatermark(self) -> Optional[int]:
+        """
+        Getter for cpuHighWatermark
+
+        Returns:
+            cpuHighWatermark
+        """
+        return self.getValue("cpuHighWatermark")
+
+    @cpuHighWatermark.setter
+    def cpuHighWatermark(self, value: int) -> None:
+        """
+        Setter for numComputeStreams
+        Args:
+            value: new value
+        """
+        self.setValue("cpuHighWatermark", value)
+
+    @property
+    def gpuHighWatermark(self) -> Optional[int]:
+        """
+        Getter for gpuHighWatermark
+
+        Returns:
+            gpuHighWatermark
+        """
+        return self.getValue("gpuHighWatermark")
+
+    @gpuHighWatermark.setter
+    def gpuHighWatermark(self, value: int) -> None:
+        """
+        Setter for gpuHighWatermark
+        Args:
+            value: new value
+        """
+        self.setValue("gpuHighWatermark", value)
+
+    @property
+    def pinThreads(self) -> Optional[int]:
+        """
+        Getter for gpuHighWatermark
+
+        Returns:
+            gpuHighWatermark
+        """
+        return self.getValue("gpuHighWatermark")
+
+    @pinThreads.setter
+    def pinThreads(self, value: int) -> None:
+        """
+        Setter for pinThreads
+        Args:
+            value: new value
+        """
+        self.setValue("pinThreads", value)
 
 
 class DescriptorFactorySettings(BaseSettingsSection):
