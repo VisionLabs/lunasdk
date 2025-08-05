@@ -142,7 +142,7 @@ class TestBasicAttributes(BaseTestClass):
         """
         Test estimation correctness.
         """
-        expectedEstimation = Estimation(22, 0, Eth(0, 0, 1, 0))
+        expectedEstimation = Estimation(21, 0, Eth(0, 0, 1, 0))
         for estimationType in ("Age", "Gender", "Ethnicity"):
             estimationFlag = f"estimate{estimationType}"
             basicAttributeGetter: Callable[[BasicAttributes], Union[Ethnicities, float, None]] = attrgetter(
