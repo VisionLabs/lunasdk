@@ -498,7 +498,10 @@ class RuntimeSettings(BaseSettingsSection):
         Returns:
             cpuHighWatermark
         """
-        return self.getValue("cpuHighWatermark")
+        value = self.getValue("cpuHighWatermark")
+        if value is None:
+            return None
+        return int(value)
 
     @cpuHighWatermark.setter
     def cpuHighWatermark(self, value: int) -> None:
@@ -507,7 +510,7 @@ class RuntimeSettings(BaseSettingsSection):
         Args:
             value: new value
         """
-        self.setValue("cpuHighWatermark", value)
+        self.setValue("cpuHighWatermark", str(value))
 
     @property
     def gpuHighWatermark(self) -> Optional[int]:
@@ -517,7 +520,10 @@ class RuntimeSettings(BaseSettingsSection):
         Returns:
             gpuHighWatermark
         """
-        return self.getValue("gpuHighWatermark")
+        value = self.getValue("gpuHighWatermark")
+        if value is None:
+            return None
+        return int(value)
 
     @gpuHighWatermark.setter
     def gpuHighWatermark(self, value: int) -> None:
@@ -526,7 +532,7 @@ class RuntimeSettings(BaseSettingsSection):
         Args:
             value: new value
         """
-        self.setValue("gpuHighWatermark", value)
+        self.setValue("gpuHighWatermark", str(value))
 
     @property
     def pinThreads(self) -> Optional[bool]:
