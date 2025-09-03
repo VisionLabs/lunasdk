@@ -46,7 +46,8 @@ snakecase = "*"
 jsonschema = "^3.2.0"
 torch = ">=2.7.1"
 onnxruntime-gpu = ">=1.22.0"
-tensorflow = "*"
+tensorflow-cpu = "*"
+types-tensorflow = "*"
 
 
 [tool.black]

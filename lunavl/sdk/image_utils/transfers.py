@@ -1,7 +1,9 @@
 """
 Module realize transfer functions from/to ML framework tensor to/from VLImage without copy
 """
+
 import contextlib
+from typing import Iterator
 
 from FaceEngine import (  # pylint: disable=E0611,E0401
     Image as CoreImage,
@@ -13,23 +15,23 @@ try:
     from torch import Tensor as PytorchTensor
     from torch.utils.dlpack import from_dlpack, to_dlpack
 except ImportError:
-    PytorchTensor = to_dlpack = from_dlpack = None
+    PytorchTensor = to_dlpack = from_dlpack = None  # type: ignore
 
 try:
-    from onnxruntime.capi._pybind_state import OrtValue
+    from onnxruntime.capi._pybind_state import OrtValue  # type: ignore
 except ImportError:
-    OrtValue = None
+    OrtValue = None  # type: ignore
 
 
 try:
     from tensorflow import Tensor as TFTensor
     from tensorflow.experimental.dlpack import from_dlpack as tf_from_dlpack, to_dlpack as tf_to_dlpack
 except ImportError:
-    tf_to_dlpack = tf_from_dlpack = None
+    tf_to_dlpack = tf_from_dlpack = None  # type: ignore
 
 
 @contextlib.contextmanager
-def toPytorch(image: VLImage) -> PytorchTensor:
+def toPytorch(image: VLImage) -> Iterator[PytorchTensor]:
     """
     Transfer VLImage to Pytorch Tensor without copy.
 
@@ -44,7 +46,7 @@ def toPytorch(image: VLImage) -> PytorchTensor:
 
 
 @contextlib.contextmanager
-def fromPytorch(torchTensor: PytorchTensor) -> VLImage:
+def fromPytorch(torchTensor: PytorchTensor) -> Iterator[VLImage]:
     """
     Transfer Pytorch Tensor to VLImage without copy.
 
@@ -58,7 +60,7 @@ def fromPytorch(torchTensor: PytorchTensor) -> VLImage:
 
 
 @contextlib.contextmanager
-def toOnnx(image: VLImage) -> OrtValue:
+def toOnnx(image: VLImage) -> Iterator[OrtValue]:
     """
     Transfer VLImage to ONNX without copy.
 
@@ -73,7 +75,7 @@ def toOnnx(image: VLImage) -> OrtValue:
 
 
 @contextlib.contextmanager
-def fromOnnx(onnxTensor: OrtValue) -> VLImage:
+def fromOnnx(onnxTensor: OrtValue) -> Iterator[VLImage]:
     """
     Transfer ONNX to VLImage without copy.
 
@@ -85,7 +87,7 @@ def fromOnnx(onnxTensor: OrtValue) -> VLImage:
 
 
 @contextlib.contextmanager
-def toTensorFlow(image: VLImage) -> TFTensor:
+def toTensorFlow(image: VLImage) -> Iterator[TFTensor]:
     """
     Transfer VLImage to Tensorflow.
 
@@ -100,7 +102,7 @@ def toTensorFlow(image: VLImage) -> TFTensor:
 
 
 @contextlib.contextmanager
-def fromTensorFlow(tfTensor: TFTensor) -> VLImage:
+def fromTensorFlow(tfTensor: TFTensor) -> Iterator[VLImage]:
     """
     Transfer TensorFlow Tensor to VLImage without copy.
 
