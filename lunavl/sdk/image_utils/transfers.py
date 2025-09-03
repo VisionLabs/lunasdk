@@ -13,9 +13,9 @@ from .image import VLImage
 
 try:
     from torch import Tensor as PytorchTensor
-    from torch.utils.dlpack import from_dlpack, to_dlpack
+    from torch.utils.dlpack import from_dlpack as pt_from_dlpack, to_dlpack as pt_to_dlpack
 except ImportError:
-    PytorchTensor = to_dlpack = from_dlpack = None  # type: ignore
+    PytorchTensor = pt_to_dlpack = pt_from_dlpack = None  # type: ignore
 
 try:
     from onnxruntime.capi._pybind_state import OrtValue  # type: ignore
@@ -38,10 +38,10 @@ def toPytorch(image: VLImage) -> Iterator[PytorchTensor]:
     Warning:
         use tensor in contextmanager lifecycle scope
     """
-    if from_dlpack is None:
+    if pt_from_dlpack is None:
         raise RuntimeError("pytorch is not installed, minimal required version see in FSDK")
     coreImage = image.coreImage
-    torchTensor = from_dlpack(coreImage)
+    torchTensor = pt_from_dlpack(coreImage)
     yield torchTensor
 
 
@@ -53,9 +53,9 @@ def fromPytorch(torchTensor: PytorchTensor) -> Iterator[VLImage]:
     Warning:
         use image in contextmanager lifecycle scope
     """
-    if to_dlpack is None:
+    if pt_to_dlpack is None:
         raise RuntimeError("pytorch is not installed, minimal required version see in FSDK")
-    coreImage = CoreImage.from_dlpack(to_dlpack(torchTensor))
+    coreImage = CoreImage.from_dlpack(pt_to_dlpack(torchTensor))
     yield VLImage(coreImage)
 
 

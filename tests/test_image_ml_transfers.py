@@ -90,10 +90,10 @@ class TestImage(BaseTestClass):
         image = VLImage.load(filename=ONE_FACE)
         with toTensorFlow(image) as tensor:
             assert isinstance(tensor, TFTensor)
-            self._assertNP(image, tensor.numpy())
+            self._assertNP(image, tensor._numpy())
             with fromTensorFlow(tensor) as vlImage:
                 assert isinstance(vlImage, VLImage)
-                self._assertNP(vlImage, tensor.numpy())
+                self._assertNP(vlImage, tensor._numpy())
 
     @unittest.skip("need tensorflow[and-cuda]")
     def test_image_to_tf_gpu(self):
