@@ -183,19 +183,6 @@ class DetectorType(BiDirectionEnum):
         return getattr(ObjectDetectorClassType, mapEnumToCoreEnum[self.value])
 
 
-class DeepfakeEstimationMode(BiDirectionEnum):
-    """
-    Deepfake estimation mode
-    """
-
-    M1 = 1
-    M2 = 2
-
-    @property
-    def coreEstimatorType(self) -> DeepFakeMode:
-        return DeepFakeMode(self.value)
-
-
 class PeopleCountEstimatorType(Enum):
     DEFAULT = 0  # type from config file
     PEOPLE_COUNT_V1 = 1  # only Crowd estimator will be used
@@ -2551,28 +2538,6 @@ class DeepfakeEstimator(BaseSettingsSection):
             value: new value
         """
         self.setValue("realThreshold", float(value))
-
-    @property
-    def defaultEstimatorType(self) -> Optional[DeepfakeEstimationMode]:
-        """
-        Getter for defaultEstimatorType
-
-        Returns:
-            realThreshold
-        """
-        value = self.getValue("defaultEstimatorType")
-        if value is None:
-            return value
-        return DeepfakeEstimationMode(value)
-
-    @defaultEstimatorType.setter
-    def defaultEstimatorType(self, value: DeepfakeEstimationMode) -> None:
-        """
-        Setter for defaultEstimatorType
-        Args:
-            value: new value
-        """
-        self.setValue("defaultEstimatorType", value.value)
 
 
 class IndexSettings(BaseSettingsSection):

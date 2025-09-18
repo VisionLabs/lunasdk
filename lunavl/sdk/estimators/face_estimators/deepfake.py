@@ -7,26 +7,13 @@ See `deepfake`_.
 from enum import Enum
 from typing import List, Literal, Union, overload
 
-from FaceEngine import DeepFakeEstimation, DeepFakeEstimationState, DeepFakeMode  # pylint: disable=E0611,E0401
+from FaceEngine import DeepFakeEstimation, DeepFakeEstimationState  # pylint: disable=E0611,E0401
 
 from lunavl.sdk.async_task import AsyncTask, DefaultPostprocessingFactory
 from lunavl.sdk.base import BaseEstimation
 from lunavl.sdk.detectors.facedetector import FaceDetection
 from lunavl.sdk.estimators.base import BaseEstimator
 from lunavl.sdk.estimators.estimators_utils.extractor_utils import validateInputByBatchEstimator
-
-
-class DeepfakeEstimationMode(Enum):
-    """
-    Deepfake estimation mode
-    """
-
-    Default = 0
-    M2 = 2
-
-    @property
-    def coreEstimatorType(self) -> DeepFakeMode:
-        return DeepFakeMode(self.value)
 
 
 class DeepfakePrediction(Enum):
