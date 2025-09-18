@@ -66,18 +66,6 @@ class TestDeepfake(BaseTestClass):
         assert DeepfakePrediction.Real == estimations[0].prediction
         assert DeepfakePrediction.Fake == estimations[1].prediction
 
-    def test_estimate_deepfake_mode(self):
-        """
-        Deepfake estimation mode
-        """
-        deepFakeEstimator1 = self.faceEngine.createDeepfakeEstimator(mode=DeepfakeEstimationMode.M1)
-        deepFakeEstimator2 = self.faceEngine.createDeepfakeEstimator(mode=DeepfakeEstimationMode.M2)
-        faceDetection = self.detector.detectOne(VLImage.load(filename=BASEBALL_CAP))
-        defaultEstimation = self.deepfakeEstimator.estimate(faceDetection)
-        estimation1 = deepFakeEstimator1.estimate(faceDetection)
-        estimation2 = deepFakeEstimator2.estimate(faceDetection)
-        assert defaultEstimation.asDict() == estimation2.asDict()
-        assert defaultEstimation.asDict() != estimation1.asDict()  # wtf researchers sdk 5.22
 
     def test_async_detect_human(self):
         """

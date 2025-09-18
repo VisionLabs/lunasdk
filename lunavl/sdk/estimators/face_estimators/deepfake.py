@@ -22,7 +22,6 @@ class DeepfakeEstimationMode(Enum):
     """
 
     Default = 0
-    M1 = 1
     M2 = 2
 
     @property
