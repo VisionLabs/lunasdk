@@ -18,7 +18,7 @@ from ..estimators.face_estimators.ags import AGSEstimator
 from ..estimators.face_estimators.background import FaceDetectionBackgroundEstimator
 from ..estimators.face_estimators.basic_attributes import BasicAttributesEstimator
 from ..estimators.face_estimators.credibility import CredibilityEstimator
-from ..estimators.face_estimators.deepfake import DeepfakeEstimationMode, DeepfakeEstimator
+from ..estimators.face_estimators.deepfake import DeepfakeEstimator
 from ..estimators.face_estimators.dynamic_range import DynamicRangeEstimator
 from ..estimators.face_estimators.emotions import EmotionsEstimator
 from ..estimators.face_estimators.eyebrow_expressions import EyebrowExpressionEstimator
@@ -43,7 +43,6 @@ from ..estimators.face_estimators.warp_quality import WarpQualityEstimator
 from ..estimators.image_estimators.image_modification import ImageModificationEstimator
 from ..estimators.image_estimators.orientation_mode import OrientationModeEstimator
 from ..estimators.image_estimators.people_count import (
-    PeopleCountEstimator,
     PeopleCountEstimatorV1,
     PeopleCountEstimatorV2,
 )
@@ -454,25 +453,20 @@ class VLFaceEngine:
     def createDeepfakeEstimator(
         self,
         launchOptions: Optional[LaunchOptions] = None,
-        mode: DeepfakeEstimationMode = DeepfakeEstimationMode.Default,
     ) -> DeepfakeEstimator:
         """
         Create deep fake estimator.
 
         Args:
             launchOptions: estimator launch options
-            mode: deep fake estimation mode
 
         Returns:
             estimator
         """
         launchOptions = self.getLaunchOptions(launchOptions)
         return DeepfakeEstimator(
-            self._faceEngine.createDeepFakeEstimator(
-                launchOptions=launchOptions.coreLaunchOptions, mode=mode.coreEstimatorType
-            ),
+            self._faceEngine.createDeepFakeEstimator(launchOptions=launchOptions.coreLaunchOptions),
             launchOptions,
-            mode=mode,
         )
 
     def createOrientationModeEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> OrientationModeEstimator:

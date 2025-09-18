@@ -108,14 +108,8 @@ class DeepfakeEstimator(BaseEstimator):
     Deep fake estimator.
     """
 
-    def __init__(self, *args, mode: DeepfakeEstimationMode, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._mode = mode
-
-    @property
-    def mode(self) -> DeepfakeEstimationMode:
-        """Estimation mode getter"""
-        return self._mode
 
     #  pylint: disable=W0221
     @overload  # type: ignore
