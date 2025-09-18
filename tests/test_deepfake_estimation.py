@@ -6,7 +6,7 @@ from lunavl.sdk.estimators.face_estimators.deepfake import Deepfake, DeepfakePre
 from lunavl.sdk.faceengine.setting_provider import DetectorType
 from lunavl.sdk.image_utils.image import VLImage
 from tests.base import BaseTestClass
-from tests.resources import BASEBALL_CAP, DEEPFAKE, RED
+from tests.resources import DEEPFAKE, RED
 
 
 class TestDeepfake(BaseTestClass):
