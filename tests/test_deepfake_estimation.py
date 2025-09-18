@@ -66,7 +66,6 @@ class TestDeepfake(BaseTestClass):
         assert DeepfakePrediction.Real == estimations[0].prediction
         assert DeepfakePrediction.Fake == estimations[1].prediction
 
-
     def test_async_detect_human(self):
         """
         Test async estimate deep fake feature
