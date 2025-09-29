@@ -10,7 +10,6 @@ from typing import Any, Optional, Tuple, Type, TypeVar, Union
 import FaceEngine as CoreFE
 from FaceEngine import (  # pylint: disable=E0611,E0401
     CrowdEstimatorType,
-    DeepFakeMode,
     ObjectDetectorClassType,
     PyISettingsProvider,
 )
