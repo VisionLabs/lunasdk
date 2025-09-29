@@ -11,7 +11,7 @@ line_length = 120
 
 [tool.poetry]
 name = "lunavl"
-version = "2.9.1"
+version = "2.9.2"
 description = "Python interface for VisionLabs Luna platform"
 authors = ["VisionLabs <m.limonov@visionlabs.ru>"]
 repository = "https://github.com/VisionLabs/lunasdk"
