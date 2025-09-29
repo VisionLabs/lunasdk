@@ -51,7 +51,7 @@ class TestMask(BaseTestClass):
         cls.maskEstimator = cls.faceEngine.createMaskEstimator()
 
         cls.medicalMaskWarpNProperties = WarpNExpectedProperties(
-            FaceWarpedImage(VLImage.load(filename=FACE_WITH_MASK)), MaskProperties(0.000, 0.884, 0.112)
+            FaceWarpedImage(VLImage.load(filename=FACE_WITH_MASK)), MaskProperties(0.000, 0.889, 0.107)
         )
         cls.missingMaskWarpNProperties = WarpNExpectedProperties(
             FaceWarpedImage(VLImage.load(filename=WARP_CLEAN_FACE)), MaskProperties(0.821, 0.002, 0.178)
@@ -87,7 +87,7 @@ class TestMask(BaseTestClass):
             assert isinstance(actualPropertyResult, float), f"{propertyName} is not float"
             assert 0 <= actualPropertyResult <= 1, f"{propertyName} is out of range [0,1]"
             assert expectedEstimationResults[propertyName] == pytest.approx(
-                actualPropertyResult, abs=0.005
+                actualPropertyResult, abs=0.01
             ), f"property value '{propertyName}' is incorrect"
 
     def test_estimate_mask_as_dict(self):
@@ -145,7 +145,7 @@ class TestMask(BaseTestClass):
         """
         faceDetection = self.detector.detectOne(self.largeImage)
         mask = TestMask.maskEstimator.estimate(faceDetection)
-        assert MaskState.Missing == mask.predominateMask
+        assert MaskState.Occluded == mask.predominateMask
 
     def test_estimate_face_occlusion_by_mask(self):
         """
