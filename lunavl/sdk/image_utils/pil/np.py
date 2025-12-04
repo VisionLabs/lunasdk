@@ -24,7 +24,7 @@ def getNPImageType(arr: np.ndarray) -> str:
     except KeyError as e:
         raise TypeError("Cannot handle this data type: %s" % arr.dtype.str) from e
     try:
-        imgType, _ = imageTypeMap[typekey]
+        imgType, _* = imageTypeMap[typekey]
         return imgType
     except KeyError as e:
         raise TypeError("Cannot handle this data type: %s, %s" % typekey) from e
