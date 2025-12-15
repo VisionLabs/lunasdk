@@ -327,20 +327,19 @@ class TestImage(BaseTestClass):
     def test_rotate(self):
         """Test rotate image"""
         for memoryResidence in MemoryResidence:
-            with self.subTest(memoryResidence):
-                image = VLImage.load(filename=ROTATED0, memoryResidence=memoryResidence)
-                images = {
-                    RotationAngle.ANGLE_0: image,
-                    RotationAngle.ANGLE_90: VLImage.load(filename=ROTATED270, memoryResidence=memoryResidence),
-                    RotationAngle.ANGLE_270: VLImage.load(filename=ROTATED90, memoryResidence=memoryResidence),
-                    RotationAngle.ANGLE_180: VLImage.load(filename=ROTATED180, memoryResidence=memoryResidence),
-                }
-                for rotation in RotationAngle:
-                    with self.subTest(rotation=rotation):
-                        img = images[rotation]
-                        rotatedImage = VLImage.rotate(img, rotation)
-                        assert np.array_equal(image.asNPArray(), rotatedImage.asNPArray())
-                        assert memoryResidence == rotatedImage.getMemoryResidence()
+            images = {
+                RotationAngle.ANGLE_0: image,
+                RotationAngle.ANGLE_90: VLImage.load(filename=ROTATED270, memoryResidence=memoryResidence),
+                RotationAngle.ANGLE_270: VLImage.load(filename=ROTATED90, memoryResidence=memoryResidence),
+                RotationAngle.ANGLE_180: VLImage.load(filename=ROTATED180, memoryResidence=memoryResidence),
+            }
+            for rotation in RotationAngle:
+                with self.subTest(rotation=rotation):
+                    img = images[rotation]
+                    rotatedImage = VLImage.rotate(img, rotation)
+                    image = VLImage.load(filename=ROTATED0, memoryResidence=memoryResidence)
+                    assert np.array_equal(image.asNPArray(), rotatedImage.asNPArray())
+                    assert memoryResidence == rotatedImage.getMemoryResidence()
 
     def test_rescale(self):
         """Test rescale image"""
