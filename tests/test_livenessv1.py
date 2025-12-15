@@ -9,7 +9,7 @@ from lunavl.sdk.estimators.face_estimators.livenessv1 import LivenessPrediction,
 from lunavl.sdk.faceengine.setting_provider import DetectorType
 from lunavl.sdk.image_utils.image import VLImage
 from tests.base import BaseTestClass
-from tests.resources import CLEAN_ONE_FACE, LIVENESS_FACE, SPOOF
+from tests.resources import LIVENESS_FACE, SPOOF
 from tests.schemas import LIVENESSV1_SCHEMA, jsonValidator
 
 
@@ -27,7 +27,7 @@ class TestEstimateLivenessV1(BaseTestClass):
         cls.detector = cls.faceEngine.createFaceDetector(DetectorType.FACE_DET_V3)
         cls.headPoseEstimator = cls.faceEngine.createHeadPoseEstimator()
         cls.livenessEstimator = cls.faceEngine.createLivenessV1Estimator()
-        cls.detection = cls.detector.detectOne(VLImage.load(filename=CLEAN_ONE_FACE))
+        cls.detection = cls.detector.detectOne(VLImage.load(filename=LIVENESS_FACE))
 
     def assertLivenessEstimation(self, estimation: LivenessV1, expectedPrediction: Optional[LivenessPrediction] = None):
         """
