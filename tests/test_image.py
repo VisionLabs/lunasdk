@@ -327,6 +327,8 @@ class TestImage(BaseTestClass):
     def test_rotate(self):
         """Test rotate image"""
         for memoryResidence in MemoryResidence:
+            if memoryResidence == MemoryResidence.GPU:
+                self.skipTest("CI GPU not supported")
             image = VLImage.load(filename=ROTATED0, memoryResidence=memoryResidence)
             images = {
                 RotationAngle.ANGLE_0: image,
