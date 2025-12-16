@@ -327,6 +327,9 @@ class TestImage(BaseTestClass):
     def test_rotate(self):
         """Test rotate image"""
         for memoryResidence in MemoryResidence:
+            if memoryResidence == MemoryResidence.GPU:
+                self.skipTest("CI GPU not supported")
+            image = VLImage.load(filename=ROTATED0, memoryResidence=memoryResidence)
             images = {
                 RotationAngle.ANGLE_0: image,
                 RotationAngle.ANGLE_90: VLImage.load(filename=ROTATED270, memoryResidence=memoryResidence),
@@ -334,10 +337,9 @@ class TestImage(BaseTestClass):
                 RotationAngle.ANGLE_180: VLImage.load(filename=ROTATED180, memoryResidence=memoryResidence),
             }
             for rotation in RotationAngle:
-                with self.subTest(rotation=rotation):
+                with self.subTest(rotation=rotation, memoryResidence=memoryResidence):
                     img = images[rotation]
                     rotatedImage = VLImage.rotate(img, rotation)
-                    image = VLImage.load(filename=ROTATED0, memoryResidence=memoryResidence)
                     assert np.array_equal(image.asNPArray(), rotatedImage.asNPArray())
                     assert memoryResidence == rotatedImage.getMemoryResidence()
 

@@ -85,8 +85,6 @@ test:unittests:
   stage: test
   tags: [ 'python-bench' ]
   script:
-    # poetry bug https://github.com/python-poetry/poetry/issues/2921
-    - rm -rf /home/gitlab-runner/.cache/pypoetry
     - !reference [.extract_luna_sdk_tag]
     - !reference [.download_plans]
     - !reference [.prepare_poetry]
