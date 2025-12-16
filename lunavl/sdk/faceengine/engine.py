@@ -194,9 +194,9 @@ class VLFaceEngine:
                 launchOptions,
             )
         return WarpQualityEstimator(
-                self._faceEngine.createQualityEstimator(launchOptions=launchOptions.coreLaunchOptions),
-                launchOptions,
-            )
+            self._faceEngine.createQualityEstimator(launchOptions=launchOptions.coreLaunchOptions),
+            launchOptions,
+        )
 
     def createFaceWarper(self) -> FaceWarper:
         """
