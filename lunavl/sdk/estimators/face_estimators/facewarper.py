@@ -160,7 +160,7 @@ class FaceWarper:
     def warp(self, faceDetection: FaceDetection, asyncEstimate: Literal[False] = False) -> FaceWarp: ...  # type: ignore
     @overload  # type: ignore
     def warp(
-        self, faceDetection: FaceDetection, asyncEstimate: Literal[True] = False
+        self, faceDetection: FaceDetection, asyncEstimate: Literal[True] = True
     ) -> AsyncTask[FaceWarp]: ...  # type: ignore
     def warp(self, faceDetection: FaceDetection, asyncEstimate: bool = False) -> FaceWarp | AsyncTask[FaceWarp]:
         """
