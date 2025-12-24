@@ -1,11 +1,13 @@
 """Module for creating warped images"""
 
-from typing import Optional, Union
+from typing import Literal, Optional, Union, overload
 
+from black.linegen import partial
 from FaceEngine import Image as CoreImage, IWarperPtr, Transformation  # pylint: disable=E0611,E0401
 from numpy import ndarray
 from PIL.Image import Image as PilImage
 
+from lunavl.sdk.async_task import AsyncTask
 from lunavl.sdk.detectors.facedetector import FaceDetection, Landmarks5, Landmarks68
 from lunavl.sdk.errors.exceptions import assertError
 from lunavl.sdk.image_utils.image import ColorFormat, VLImage
@@ -110,6 +112,13 @@ class FaceWarp:
         self.warpedImage = warpedImage
 
 
+def postProcessing(error, warp, faceDetection: FaceDetection):
+    """Warper post-processing"""
+    assertError(error)
+    warpedImage = FaceWarpedImage(body=warp, filename=faceDetection.image.filename)
+    return FaceWarp(warpedImage, faceDetection)
+
+
 class FaceWarper:
     """
     Class warper.
@@ -147,25 +156,31 @@ class FaceWarper:
             faceDetection.coreEstimation.detection, faceDetection.landmarks5.coreEstimation
         )
 
-    def warp(self, faceDetection: FaceDetection) -> FaceWarp:
+    @overload  # type: ignore
+    def warp(self, faceDetection: FaceDetection, asyncEstimate: Literal[False] = False) -> FaceWarp: ...  # type: ignore
+    @overload  # type: ignore
+    def warp(
+        self, faceDetection: FaceDetection, asyncEstimate: Literal[True] = False
+    ) -> AsyncTask[FaceWarp]: ...  # type: ignore
+    def warp(self, faceDetection: FaceDetection, asyncEstimate: bool = False) -> FaceWarp | AsyncTask[FaceWarp]:
         """
         Create warp from detection.
 
         Args:
             faceDetection: face detection with landmarks5
+            asyncEstimate: estimate or run estimation in background
 
         Returns:
-            Warp
+            Warp if asyncEstimate is false otherwise async task
         Raises:
             LunaSDKException: if creation failed
         """
         transformation = self._createWarpTransformation(faceDetection)
-        error, warp = self._coreWarper.warp(faceDetection.coreEstimation.img, transformation)
-        assertError(error)
-
-        warpedImage = FaceWarpedImage(body=warp, filename=faceDetection.image.filename)
-
-        return FaceWarp(warpedImage, faceDetection)
+        if not asyncEstimate:
+            error, warp = self._coreWarper.warp(faceDetection.coreEstimation.img, transformation)
+            return postProcessing(error, warp, faceDetection)
+        task = self._coreWarper.asyncWarp(faceDetection.coreEstimation.img, transformation)
+        return AsyncTask(task, partial(postProcessing, faceDetection=faceDetection))
 
     def makeWarpTransformationWithLandmarks(
         self, faceDetection: FaceDetection, typeLandmarks: str
