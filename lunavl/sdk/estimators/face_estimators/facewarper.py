@@ -1,8 +1,7 @@
 """Module for creating warped images"""
-
+from functools import partial
 from typing import Literal, Optional, Union, overload
 
-from black.linegen import partial
 from FaceEngine import Image as CoreImage, IWarperPtr, Transformation  # pylint: disable=E0611,E0401
 from numpy import ndarray
 from PIL.Image import Image as PilImage
