@@ -41,11 +41,6 @@ stages:
   sed -i 's/FaceEngine =/FaceEngineCPU =/' pyproject.toml;
   echo $'\n[[tool.poetry.packages]] \ninclude = "lunavl"' >> pyproject.toml;
 
-.run_tests: &run_tests
-  cd tests/test_benchmark;
-  wget -O ./benchmark_settings.toml http://git.visionlabs.ru/configs/sdkloop-benchmark-config/raw/master/benchmark_settings_sdk_5_12_0.toml;
-  python test_benchmark.py
-
 .run_unittests: &run_unittests
   python -m pytest;
 
