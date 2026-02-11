@@ -15,6 +15,7 @@ from FaceEngine import (  # pylint: disable=E0611,E0401
 )
 
 from lunavl.sdk.launch_options import DeviceClass
+from lunavl.sdk.version import SDK_VERSION
 
 BI_ENUM = TypeVar("BI_ENUM", bound="BiDirectionEnum")
 
@@ -496,7 +497,10 @@ class RuntimeSettings(BaseSettingsSection):
         Args:
             value: new value
         """
-        self.setValue("cpuHighWatermark", str(value))
+        if int(SDK_VERSION.version.minor) < 34:
+            self.setValue("cpuHighWatermark", str(value))
+        else:
+            self.setValue("cpuHighWatermark", value)
 
     @property
     def gpuHighWatermark(self) -> Optional[int]:
@@ -518,7 +522,10 @@ class RuntimeSettings(BaseSettingsSection):
         Args:
             value: new value
         """
-        self.setValue("gpuHighWatermark", str(value))
+        if int(SDK_VERSION.version.minor) < 34:
+            self.setValue("gpuHighWatermark", str(value))
+        else:
+            self.setValue("gpuHighWatermark", value)
 
     @property
     def pinThreads(self) -> Optional[bool]:
