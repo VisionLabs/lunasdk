@@ -7,7 +7,7 @@ from ...detectors.facedetector import FaceDetection
 from ..base import BaseEstimator
 from ..estimators_utils.extractor_utils import validateInputByBatchEstimator
 
-_MAP_CORE_NAME = {"ShoulderStraps": "duty_clothes", "NoShoulderStraps": "regular_clothes", "Unknown": "unknown"}
+_MAP_CORE_NAME = {"ShoulderStraps": "DutyClothes", "NoShoulderStraps": "RegularClothes", "Unknown": "Unknown"}
 
 
 class DutyUniformEnum(Enum):
@@ -28,7 +28,7 @@ class DutyUniformEnum(Enum):
         Returns:
             corresponding duty uniform
         """
-        return cls[_MAP_CORE_NAME[coreDutyUniform.name].capitalize()]
+        return cls[_MAP_CORE_NAME[coreDutyUniform.name]]
 
 
 class DutyUniform(BaseEstimation):
@@ -86,7 +86,7 @@ class DutyUniform(BaseEstimation):
             dict in platform format
         """
         return {
-            "predominant_state": _MAP_CORE_NAME[self._coreEstimation.result.name],
+            "predominant_state": self.predominant.value,
             "estimations": {
                 "duty_clothes": self.dutyClothes,
                 "regular_clothes": self.regularClothes,

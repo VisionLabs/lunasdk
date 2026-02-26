@@ -7,7 +7,7 @@ from ...detectors.facedetector import FaceDetection
 from ..base import BaseEstimator
 from ..estimators_utils.extractor_utils import validateInputByBatchEstimator
 
-_MAP_CORE_NAME = {"Dark": "dark_clothes ", "Light": "light_clothes", "Unknown": "unknown"}
+_MAP_CORE_NAME = {"Dark": "DarkClothes", "Light": "LightClothes", "Unknown": "Unknown"}
 
 
 class LightColoredClothesEnum(Enum):
@@ -28,7 +28,7 @@ class LightColoredClothesEnum(Enum):
         Returns:
             corresponding light colored clothes
         """
-        return cls[_MAP_CORE_NAME[coreLightColoredClothes.name].capitalize()]
+        return cls[_MAP_CORE_NAME[coreLightColoredClothes.name]]
 
 
 class LightColoredClothes(BaseEstimation):
@@ -86,7 +86,7 @@ class LightColoredClothes(BaseEstimation):
             dict in platform format
         """
         return {
-            "predominant": _MAP_CORE_NAME[self._coreEstimation.result.name],
+            "predominant": self.predominant.value,
             "estimations": {
                 "light_clothes": self.lightClothes,
                 "dark_clothes": self.darkClothes,

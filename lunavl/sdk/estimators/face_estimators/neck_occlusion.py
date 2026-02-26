@@ -7,7 +7,7 @@ from ...detectors.facedetector import FaceDetection
 from ..base import BaseEstimator
 from ..estimators_utils.extractor_utils import validateInputByBatchEstimator
 
-_MAP_CORE_NAME = {"NeckOpen": "open_neck", "NeckCovered": "occluded_neck", "NeckUnknown": "unknown"}
+_MAP_CORE_NAME = {"NeckOpen": "OpenNeck", "NeckCovered": "OccludedNeck", "NeckUnknown": "Unknown"}
 
 
 class NeckOcclusionEnum(Enum):
@@ -28,7 +28,7 @@ class NeckOcclusionEnum(Enum):
         Returns:
             corresponding neck occlusion
         """
-        return cls[_MAP_CORE_NAME[coreNeckOcclusion.name].capitalize()]
+        return cls[_MAP_CORE_NAME[coreNeckOcclusion.name]]
 
 
 class NeckOcclusion(BaseEstimation):
@@ -86,7 +86,7 @@ class NeckOcclusion(BaseEstimation):
             dict in platform format
         """
         return {
-            "predominant_state": _MAP_CORE_NAME[self._coreEstimation.result.name],
+            "predominant_state": NeckOcclusionEnum.fromCoreNeckOcclusion(self._coreEstimation.result).value,
             "estimations": {
                 "open_neck": self.openNeck,
                 "occluded_neck": self.occludedNeck,

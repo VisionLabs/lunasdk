@@ -161,3 +161,7 @@ PURPLE_SHORTS = getPathToImage("purple_shorts.jpg")
 DEEPFAKE = getPathToImage("deepfake.jpg")
 
 HAX = getPathToImage("hax.jpg")
+# https://ru.wikipedia.org/wiki/%D0%94%D0%BE%D0%BD%D0%BD%D0%B0_%D0%92%D0%B5%D0%BB%D0%B0%D1%82%D0%B0
+RAFAEL = getPathToImage("rafael.jpg")
+# https://ru.freepik.com/free-photo/old-general-uniform-front-view_32501337.htm
+DUTY_UNIFORM = getPathToImage("duty_uniform.jpg")

@@ -51,7 +51,7 @@ class PhotorealisticPrediction(BaseEstimation):
     @property
     def status(self) -> bool:
         """Get photorealistic face status"""
-        return True if self._coreEstimation.result == CorePhotorealisticEnum.Drawn else False
+        return True if self._coreEstimation.result == CorePhotorealisticEnum.Real else False
 
     def asDict(self) -> dict:
         """
