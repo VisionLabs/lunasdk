@@ -10,11 +10,11 @@ from lunavl.sdk.estimators.face_estimators.light_colored_clothes import (
 from lunavl.sdk.faceengine.setting_provider import DetectorType
 from lunavl.sdk.image_utils.image import VLImage
 from tests.base import BaseTestClass
-from tests.resources import CLEAN_ONE_FACE, ROTATED0, WARP_ONE_FACE
+from tests.resources import CLEAN_ONE_FACE, CROP_DISGUST, ROTATED0
 
 CLEAN_ONE_FACE_IMAGE = VLImage.load(filename=CLEAN_ONE_FACE)
 ROTATED0_IMAGE = VLImage.load(filename=ROTATED0)
-WARP_FACE_WITH_EYEGLASSES_IMAGE = VLImage.load(filename="data/crop_disgust.jpg")
+WARP_FACE_WITH_EYEGLASSES_IMAGE = VLImage.load(filename=CROP_DISGUST)
 
 
 class TestEstimateLightColoredClothes(BaseTestClass):

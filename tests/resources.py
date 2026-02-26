@@ -165,3 +165,4 @@ HAX = getPathToImage("hax.jpg")
 RAFAEL = getPathToImage("rafael.jpg")
 # https://ru.freepik.com/free-photo/old-general-uniform-front-view_32501337.htm
 DUTY_UNIFORM = getPathToImage("duty_uniform.jpg")
+CROP_DISGUST = getPathToImage("crop_disgust.jpg")
