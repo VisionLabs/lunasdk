@@ -1,0 +1,60 @@
+"""
+Duty uniform estimation example
+"""
+
+import asyncio
+import pprint
+
+from resources import EXAMPLE_1, EXAMPLE_3
+
+from lunavl.sdk.faceengine.engine import VLFaceEngine
+from lunavl.sdk.faceengine.setting_provider import DetectorType
+from lunavl.sdk.image_utils.image import VLImage
+
+
+def estimateDutyUniform():
+    """
+    Duty uniform estimation example.
+    """
+    image = VLImage.load(filename=EXAMPLE_1)
+    faceEngine = VLFaceEngine()
+    detector = faceEngine.createFaceDetector(DetectorType.FACE_DET_V3)
+    faceDetection = detector.detectOne(image)
+    dutyUniformEstimator = faceEngine.createDutyUniformEstimator()
+
+    pprint.pprint(dutyUniformEstimator.estimate(faceDetection).asDict())
+
+    image2 = VLImage.load(filename=EXAMPLE_3)
+    faceDetection2 = detector.detectOne(image2)
+    estimations = dutyUniformEstimator.estimateBatch([faceDetection, faceDetection2])
+    pprint.pprint([estimation.asDict() for estimation in estimations])
+
+
+async def asyncEstimateDutyUniform():
+    """
+    Async duty uniform estimation example.
+    """
+    image = VLImage.load(filename=EXAMPLE_3)
+    faceEngine = VLFaceEngine()
+    detector = faceEngine.createFaceDetector(DetectorType.FACE_DET_V3)
+    faceDetection = detector.detectOne(image)
+
+    dutyUniformEstimator = faceEngine.createDutyUniformEstimator()
+
+    dutyUniform = await dutyUniformEstimator.estimate(faceDetection, asyncEstimate=True)
+    pprint.pprint(dutyUniform.asDict())
+
+    image2 = VLImage.load(filename=EXAMPLE_3)
+    faceDetection2 = detector.detectOne(image2)
+
+    task1 = dutyUniformEstimator.estimateBatch([faceDetection], asyncEstimate=True)
+    task2 = dutyUniformEstimator.estimateBatch([faceDetection2], asyncEstimate=True)
+
+    for task in (task1, task2):
+        estimations = task.get()
+        pprint.pprint([estimation.asDict() for estimation in estimations])
+
+
+if __name__ == "__main__":
+    estimateDutyUniform()
+    asyncio.run(asyncEstimateDutyUniform())

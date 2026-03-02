@@ -19,6 +19,7 @@ from ..estimators.face_estimators.background import FaceDetectionBackgroundEstim
 from ..estimators.face_estimators.basic_attributes import BasicAttributesEstimator
 from ..estimators.face_estimators.credibility import CredibilityEstimator
 from ..estimators.face_estimators.deepfake import DeepfakeEstimator
+from ..estimators.face_estimators.duty_uniform import DutyUniformEstimator
 from ..estimators.face_estimators.dynamic_range import DynamicRangeEstimator
 from ..estimators.face_estimators.emotions import EmotionsEstimator
 from ..estimators.face_estimators.eyebrow_expressions import EyebrowExpressionEstimator
@@ -33,10 +34,13 @@ from ..estimators.face_estimators.head_pose import HeadPoseEstimator
 from ..estimators.face_estimators.headwear import HeadwearEstimator
 from ..estimators.face_estimators.image_type import ImageColorTypeEstimator
 from ..estimators.face_estimators.landmarks import FaceLandmarksEstimator
+from ..estimators.face_estimators.light_colored_clothes import LightColoredClothesEstimator
 from ..estimators.face_estimators.livenessv1 import LivenessV1Estimator
 from ..estimators.face_estimators.mask import MaskEstimator
 from ..estimators.face_estimators.mouth_state import MouthStateEstimator
 from ..estimators.face_estimators.natural_light import FaceNaturalLightEstimator
+from ..estimators.face_estimators.neck_occlusion import NeckOcclusionEstimator
+from ..estimators.face_estimators.photorealistic_face import PhotorealisticFaceEstimator
 from ..estimators.face_estimators.portrait_style import PortraitStyleEstimator
 from ..estimators.face_estimators.red_eye import RedEyesEstimator
 from ..estimators.face_estimators.warp_quality import WarpQualityEstimator
@@ -795,5 +799,73 @@ class VLFaceEngine:
         launchOptions = self.getLaunchOptions(launchOptions)
         return ImageModificationEstimator(
             self._faceEngine.createImageModificationEstimator(launchOptions=launchOptions.coreLaunchOptions),
+            launchOptions,
+        )
+
+    def createDutyUniformEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> DutyUniformEstimator:
+        """
+        Create duty uniform estimator.
+
+        Args:
+            launchOptions: estimator launch options
+
+        Returns:
+            estimator
+        """
+        launchOptions = self.getLaunchOptions(launchOptions)
+        return DutyUniformEstimator(
+            self._faceEngine.createDutyUniformEstimator(launchOptions=launchOptions.coreLaunchOptions),
+            launchOptions,
+        )
+
+    def createNeckOcclusionEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> NeckOcclusionEstimator:
+        """
+        Create neck occlusion estimator.
+
+        Args:
+            launchOptions: estimator launch options
+
+        Returns:
+            estimator
+        """
+        launchOptions = self.getLaunchOptions(launchOptions)
+        return NeckOcclusionEstimator(
+            self._faceEngine.createNeckOcclusionEstimator(launchOptions=launchOptions.coreLaunchOptions),
+            launchOptions,
+        )
+
+    def createLightColoredClothesEstimator(
+        self, launchOptions: Optional[LaunchOptions] = None
+    ) -> LightColoredClothesEstimator:
+        """
+        Create lightness of clothing  estimator.
+
+        Args:
+            launchOptions: estimator launch options
+
+        Returns:
+            estimator
+        """
+        launchOptions = self.getLaunchOptions(launchOptions)
+        return LightColoredClothesEstimator(
+            self._faceEngine.createLightColoredClothesEstimator(launchOptions=launchOptions.coreLaunchOptions),
+            launchOptions,
+        )
+
+    def createPhotorealisticFaceEstimator(
+        self, launchOptions: Optional[LaunchOptions] = None
+    ) -> PhotorealisticFaceEstimator:
+        """
+        Create photorealistic face estimator estimator.
+
+        Args:
+            launchOptions: estimator launch options
+
+        Returns:
+            estimator
+        """
+        launchOptions = self.getLaunchOptions(launchOptions)
+        return PhotorealisticFaceEstimator(
+            self._faceEngine.createPhotorealisticFaceEstimator(launchOptions=launchOptions.coreLaunchOptions),
             launchOptions,
         )

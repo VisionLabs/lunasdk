@@ -2546,6 +2546,36 @@ class DeepfakeEstimator(BaseSettingsSection):
         self.setValue("realThreshold", float(value))
 
 
+class PhotorealisticFaceEstimator(BaseSettingsSection):
+    """
+    PhotorealisticFace estimator settings section.
+
+    Properties:
+        - threshold (float): threshold
+    """
+
+    sectionName = "PhotorealisticFaceEstimator::Settings"
+
+    @property
+    def threshold(self) -> Optional[float]:
+        """
+        Getter for real threshold
+
+        Returns:
+            threshold
+        """
+        return self.getValue("threshold")
+
+    @threshold.setter
+    def threshold(self, value: float) -> None:
+        """
+        Setter for real threshold
+        Args:
+            value: new value
+        """
+        self.setValue("threshold", float(value))
+
+
 class IndexSettings(BaseSettingsSection):
     """
     Index settings.
@@ -2851,9 +2881,19 @@ class FaceEngineSettingsProvider(BaseSettingsProvider):
         Getter for Deepfake estimator settings section.
 
         Returns:
-            Mutable LivenessV1Estimator section
+            Mutable DeepfakeEstimator section
         """
         return DeepfakeEstimator(self._coreSettingProvider)
+
+    @property
+    def photorealisticFaceEstimator(self):
+        """
+        Getter for Deepfake estimator settings section.
+
+        Returns:
+            Mutable PhotorealisticFaceEstimator section
+        """
+        return PhotorealisticFaceEstimator(self._coreSettingProvider)
 
     @property
     def humanDetectorSettings(self) -> HumanDetectorSettings:
