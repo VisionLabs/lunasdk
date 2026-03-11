@@ -27,7 +27,7 @@ try:
     from tensorflow import Tensor as TFTensor
     from tensorflow.experimental.dlpack import from_dlpack as tf_from_dlpack, to_dlpack as tf_to_dlpack
 except ImportError:
-    tf_to_dlpack = tf_from_dlpack = None  # type: ignore
+    tf_to_dlpack = tf_from_dlpack = TFTensor = None  # type: ignore
 
 
 @contextlib.contextmanager
