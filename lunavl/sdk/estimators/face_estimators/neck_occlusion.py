@@ -14,7 +14,7 @@ class NeckOcclusionEnum(Enum):
     """Neck occlusion state enum"""
 
     OpenNeck = "open_neck"  # open neck
-    OccludedNeck = "occluded_neck "  # occluded neck
+    OccludedNeck = "occluded_neck"  # occluded neck
     Unknown = "unknown"  # unknown state
 
     @classmethod
