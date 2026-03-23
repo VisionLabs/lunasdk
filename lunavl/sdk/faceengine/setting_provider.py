@@ -2514,6 +2514,25 @@ class LivenessV1Estimator(BaseSettingsSection):
         """
         self.setValue("qualityThreshold", float(value))
 
+    @property
+    def version(self) -> Optional[int]:
+        """
+        Getter for current LivenessV1 estimator version
+
+        Returns:
+            version
+        """
+        return self.getValue("version")
+
+    @version.setter
+    def version(self, value: int) -> None:
+        """
+        Setter for LivenessV1 estimator version
+        Args:
+            value: new value
+        """
+        self.setValue("version", value)
+
 
 class DeepfakeEstimator(BaseSettingsSection):
     """
@@ -2544,7 +2563,24 @@ class DeepfakeEstimator(BaseSettingsSection):
             value: new value
         """
         self.setValue("realThreshold", float(value))
+    @property
+    def version(self) -> Optional[int]:
+        """
+        Getter for current deepfake estimator version
 
+        Returns:
+            version
+        """
+        return self.getValue("version")
+
+    @version.setter
+    def version(self, value: int) -> None:
+        """
+        Setter for deepfake estimator version
+        Args:
+            value: new value
+        """
+        self.setValue("version", value)
 
 class PhotorealisticFaceEstimator(BaseSettingsSection):
     """

@@ -3,7 +3,10 @@ Test estimate deepfake.
 """
 
 from lunavl.sdk.estimators.face_estimators.deepfake import Deepfake, DeepfakePrediction
-from lunavl.sdk.faceengine.setting_provider import DetectorType
+from lunavl.sdk.faceengine.setting_provider import (
+    DetectorType,
+    FaceEngineSettingsProvider,
+)
 from lunavl.sdk.image_utils.image import VLImage
 from tests.base import BaseTestClass
 from tests.resources import DEEPFAKE, RED
@@ -80,3 +83,7 @@ class TestDeepfake(BaseTestClass):
         task = self.deepfakeEstimator.estimate(faceDetections[0][0], asyncEstimate=True)
         estimation = task.get()
         assert isinstance(estimation, Deepfake)
+
+    def test_deepfake_version_settings_getter(self):
+        """Test deepfake version getter"""
+        assert isinstance(FaceEngineSettingsProvider().deepfakeEstimator.version, int)
