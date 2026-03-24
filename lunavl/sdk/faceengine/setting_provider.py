@@ -2563,6 +2563,7 @@ class DeepfakeEstimator(BaseSettingsSection):
             value: new value
         """
         self.setValue("realThreshold", float(value))
+
     @property
     def version(self) -> Optional[int]:
         """
@@ -2581,6 +2582,7 @@ class DeepfakeEstimator(BaseSettingsSection):
             value: new value
         """
         self.setValue("version", value)
+
 
 class PhotorealisticFaceEstimator(BaseSettingsSection):
     """
