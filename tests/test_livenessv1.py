@@ -6,7 +6,10 @@ import pytest
 from lunavl.sdk.errors.errors import LunaVLError
 from lunavl.sdk.errors.exceptions import LunaSDKException
 from lunavl.sdk.estimators.face_estimators.livenessv1 import LivenessPrediction, LivenessV1
-from lunavl.sdk.faceengine.setting_provider import DetectorType
+from lunavl.sdk.faceengine.setting_provider import (
+    DetectorType,
+    FaceEngineSettingsProvider,
+)
 from lunavl.sdk.image_utils.image import VLImage
 from tests.base import BaseTestClass
 from tests.resources import LIVENESS_FACE, SPOOF
@@ -150,3 +153,7 @@ class TestEstimateLivenessV1(BaseTestClass):
         self.assertAsyncEstimation(task, LivenessV1)
         task = self.livenessEstimator.estimateBatch([detection] * 2, asyncEstimate=True)
         self.assertAsyncBatchEstimation(task, LivenessV1)
+
+    def test_liveness_version_settings_getter(self):
+        """Test liveness version getter"""
+        assert isinstance(FaceEngineSettingsProvider().livenessV1Estimator.version, int)
