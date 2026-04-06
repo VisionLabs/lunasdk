@@ -45,7 +45,7 @@ def pilToNumpy(img: Image) -> np.ndarray:
     img.load()
     # unpack data
     e = PIL.Image._getencoder(img.mode, "raw", img.mode)
-    e.setimage(img.im)
+    e.setimage(img.im, None)
 
     # NumPy buffer for the result
     shape, typestr = PIL.Image._conv_type_shape(img)
