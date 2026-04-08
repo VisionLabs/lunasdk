@@ -1,6 +1,7 @@
 """
 Module contains helper functions for a pillow image conversion into np array
 """
+import sys
 
 import numpy as np
 import PIL.Image
@@ -42,12 +43,14 @@ def pilToNumpy(img: Image) -> np.ndarray:
         RuntimeError: if encoding failed
     References:
         https://habr.com/ru/post/545850/
-        https://github.com/python-pillow/Pillow/pull/9504
+        setimage: https://github.com/python-pillow/Pillow/pull/9504 &
+                  https://github.com/python/cpython/blob/main/Doc/whatsnew/3.13.rst
+                  (more strict for such args in comparison to <=3.12)
     """
     img.load()
     # unpack data
     e = PIL.Image._getencoder(img.mode, "raw", img.mode)
-    if Version(PIL.__version__) < Version("12.2.0"):
+    if sys.version_info.minor <= 12 or Version(PIL.__version__) < Version("12.2.0"):
         e.setimage(img.im)
     else:
         e.setimage(img.im, None)
