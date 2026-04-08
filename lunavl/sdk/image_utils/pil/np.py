@@ -1,6 +1,7 @@
 """
 Module contains helper functions for a pillow image conversion into np array
 """
+
 import sys
 
 import numpy as np
