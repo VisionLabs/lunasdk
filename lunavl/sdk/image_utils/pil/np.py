@@ -41,11 +41,15 @@ def pilToNumpy(img: Image) -> np.ndarray:
         RuntimeError: if encoding failed
     References:
         https://habr.com/ru/post/545850/
+        https://github.com/python-pillow/Pillow/pull/9504
     """
     img.load()
     # unpack data
     e = PIL.Image._getencoder(img.mode, "raw", img.mode)
-    e.setimage(img.im, None)
+    if PIL.__version__ < "12.2.0":
+        e.setimage(img.im)
+    else:
+        e.setimage(img.im, None)
 
     # NumPy buffer for the result
     shape, typestr = PIL.Image._conv_type_shape(img)
