@@ -5,6 +5,7 @@ Module contains helper functions for a pillow image conversion into np array
 import numpy as np
 import PIL.Image
 from PIL.Image import Image, _fromarray_typemap as imageTypeMap
+from packaging.version import Version
 
 
 def getNPImageType(arr: np.ndarray) -> str:
@@ -46,7 +47,7 @@ def pilToNumpy(img: Image) -> np.ndarray:
     img.load()
     # unpack data
     e = PIL.Image._getencoder(img.mode, "raw", img.mode)
-    if PIL.__version__ < "12.2.0":
+    if Version(PIL.__version__) < Version("12.2.0"):
         e.setimage(img.im)
     else:
         e.setimage(img.im, None)
