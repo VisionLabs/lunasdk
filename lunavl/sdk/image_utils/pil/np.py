@@ -9,6 +9,8 @@ import PIL.Image
 from packaging.version import Version
 from PIL.Image import Image, _fromarray_typemap as imageTypeMap
 
+_OLD_STYLE_SETIMAGE_CALL = sys.version_info.minor <= 12 or Version(PIL.__version__) < Version("12.2.0")
+
 
 def getNPImageType(arr: np.ndarray) -> str:
     """
@@ -51,7 +53,7 @@ def pilToNumpy(img: Image) -> np.ndarray:
     img.load()
     # unpack data
     e = PIL.Image._getencoder(img.mode, "raw", img.mode)
-    if sys.version_info.minor <= 12 or Version(PIL.__version__) < Version("12.2.0"):
+    if _OLD_STYLE_SETIMAGE_CALL:
         e.setimage(img.im)
     else:
         e.setimage(img.im, None)
