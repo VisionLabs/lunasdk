@@ -24,7 +24,7 @@ priority = "supplemental"
 python = ">=3.11"
 numpy = ">=2.3.0"
 requests = "*"
-Pillow = {version = ">=12.2.0", markers = "sys_platform == 'win32' or sys_platform == 'darwin'"}
+Pillow = {version = "*", markers = "sys_platform == 'win32' or sys_platform == 'darwin'"}
 pillow-simd = {version = "*", markers = "sys_platform != 'win32' and sys_platform != 'darwin'"}
 FaceEngine = ">=5.30.3.0"
 
