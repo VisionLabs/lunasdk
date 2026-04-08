@@ -5,8 +5,8 @@ import sys
 
 import numpy as np
 import PIL.Image
-from PIL.Image import Image, _fromarray_typemap as imageTypeMap
 from packaging.version import Version
+from PIL.Image import Image, _fromarray_typemap as imageTypeMap
 
 
 def getNPImageType(arr: np.ndarray) -> str:
