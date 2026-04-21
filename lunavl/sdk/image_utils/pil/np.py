@@ -9,7 +9,7 @@ import PIL.Image
 from packaging.version import Version
 from PIL.Image import Image, _fromarray_typemap as imageTypeMap
 
-SETIMAGE_ARGS = [] if sys.version_info.minor <= 12 and Version(PIL.__version__) < Version("12.2.0") else [None]
+SETIMAGE_ARGS = [None] if sys.version_info.minor > 12 and Version(PIL.__version__) >= Version("12.2.0") else []
 
 
 def getNPImageType(arr: np.ndarray) -> str:
