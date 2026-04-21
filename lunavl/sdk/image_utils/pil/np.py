@@ -9,7 +9,7 @@ import PIL.Image
 from packaging.version import Version
 from PIL.Image import Image, _fromarray_typemap as imageTypeMap
 
-SETIMAGE_ARGS = [None] if sys.version_info.minor > 12 and Version(PIL.__version__) >= Version("12.2.0") else []
+SETIMAGE_ARGS = [None] if Version(PIL.__version__) >= Version("12.2.0") else []
 
 
 def getNPImageType(arr: np.ndarray) -> str:
@@ -63,7 +63,7 @@ def pilToNumpy(img: Image) -> np.ndarray:
     bufsize, s, offset = 65536, 0, 0
     while not s:
         l, s, d = e.encode(bufsize)
-        mem[offset : offset + len(d)] = d  # noqa: E203
+        mem[offset: offset + len(d)] = d  # noqa: E203
         offset += len(d)
     if s < 0:
         raise RuntimeError("encoder error %d in tobytes" % s)
