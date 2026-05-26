@@ -12,6 +12,7 @@ class TrackerType(BiDirectionEnum):
     OPENCV = "opencv"
     CARKALMAN = "carkalman"
     VL_TRACKER = "vlTracker"
+    HS = "HS"
     NONE = "none"
 
 
@@ -797,6 +798,254 @@ class ExperimentalSettings(BaseSettingsSection):
         self.setValue("reid-max-batch-size", value)
 
 
+class HSTrackingSettings(BaseSettingsSection):
+    """
+    HS-tracking section settings.
+
+    See details https://docs.visionlabs.ai/sdk/v.5.16.0/sdk/trackengine-handbook/settings/#hs-tracking-section
+    """
+
+    sectionName = "HS-tracking"
+
+    @property
+    def firstStepWeight(self) -> Optional[float]:
+        """Getter for first_step_weight (HSFaceStrategy)"""
+        return self.getValue("first_step_weight")
+
+    @firstStepWeight.setter
+    def firstStepWeight(self, value: float) -> None:
+        """
+        Setter for firstStepWeight
+        Args:
+            value: new value
+        """
+        self.setValue("first_step_weight", value)
+
+    @property
+    def firstStepWeightHuman(self) -> Optional[float]:
+        """Getter for first_step_weight_human (HSHumanStrategy)"""
+        return self.getValue("first_step_weight_human")
+
+    @firstStepWeightHuman.setter
+    def firstStepWeightHuman(self, value: float) -> None:
+        """
+        Setter for firstStepWeightHuman
+        Args:
+            value: new value
+        """
+        self.setValue("first_step_weight_human", value)
+
+    @property
+    def byteStepWeight(self) -> Optional[float]:
+        """Getter for byte_step_weight (HSFaceStrategy)"""
+        return self.getValue("byte_step_weight")
+
+    @byteStepWeight.setter
+    def byteStepWeight(self, value: float) -> None:
+        """
+        Setter for byteStepWeight
+        Args:
+            value: new value
+        """
+        self.setValue("byte_step_weight", value)
+
+    @property
+    def byteStepWeightHuman(self) -> Optional[float]:
+        """Getter for byte_step_weight_human (HSHumanStrategy)"""
+        return self.getValue("byte_step_weight_human")
+
+    @byteStepWeightHuman.setter
+    def byteStepWeightHuman(self, value: float) -> None:
+        """
+        Setter for byteStepWeightHuman
+        Args:
+            value: new value
+        """
+        self.setValue("byte_step_weight_human", value)
+
+    @property
+    def inertia(self) -> Optional[float]:
+        """Getter for inertia (HSFaceStrategy)"""
+        return self.getValue("inertia")
+
+    @inertia.setter
+    def inertia(self, value: float) -> None:
+        """
+        Setter for inertia
+        Args:
+            value: new value
+        """
+        self.setValue("inertia", value)
+
+    @property
+    def inertiaHuman(self) -> Optional[float]:
+        """Getter for inertia_human (HSHumanStrategy)"""
+        return self.getValue("inertia_human")
+
+    @inertiaHuman.setter
+    def inertiaHuman(self, value: float) -> None:
+        """
+        Setter for inertiaHuman
+        Args:
+            value: new value
+        """
+        self.setValue("inertia_human", value)
+
+    @property
+    def detScoreThr(self) -> Optional[float]:
+        """Getter for det_score_thr (HSFaceStrategy)"""
+        return self.getValue("det_score_thr")
+
+    @detScoreThr.setter
+    def detScoreThr(self, value: float) -> None:
+        """
+        Setter for detScoreThr
+        Args:
+            value: new value
+        """
+        self.setValue("det_score_thr", value)
+
+    @property
+    def detScoreThrHuman(self) -> Optional[float]:
+        """Getter for det_score_thr_human (HSHumanStrategy)"""
+        return self.getValue("det_score_thr_human")
+
+    @detScoreThrHuman.setter
+    def detScoreThrHuman(self, value: float) -> None:
+        """
+        Setter for detScoreThrHuman
+        Args:
+            value: new value
+        """
+        self.setValue("det_score_thr_human", value)
+
+    @property
+    def detScoreLowThr(self) -> Optional[float]:
+        """Getter for det_score_low_thr (HSFaceStrategy)"""
+        return self.getValue("det_score_low_thr")
+
+    @detScoreLowThr.setter
+    def detScoreLowThr(self, value: float) -> None:
+        """
+        Setter for detScoreLowThr
+        Args:
+            value: new value
+        """
+        self.setValue("det_score_low_thr", value)
+
+    @property
+    def detScoreLowThrHuman(self) -> Optional[float]:
+        """Getter for det_score_low_thr_human (HSHumanStrategy)"""
+        return self.getValue("det_score_low_thr_human")
+
+    @detScoreLowThrHuman.setter
+    def detScoreLowThrHuman(self, value: float) -> None:
+        """
+        Setter for detScoreLowThrHuman
+        Args:
+            value: new value
+        """
+        self.setValue("det_score_low_thr_human", value)
+
+    @property
+    def redetScoreThr(self) -> Optional[float]:
+        """Getter for redet_score_thr (HSFaceStrategy)"""
+        return self.getValue("redet_score_thr")
+
+    @redetScoreThr.setter
+    def redetScoreThr(self, value: float) -> None:
+        """
+        Setter for redetScoreThr
+        Args:
+            value: new value
+        """
+        self.setValue("redet_score_thr", value)
+
+    @property
+    def redetScoreThrHuman(self) -> Optional[float]:
+        """Getter for redet_score_thr_human (HSHumanStrategy)"""
+        return self.getValue("redet_score_thr_human")
+
+    @redetScoreThrHuman.setter
+    def redetScoreThrHuman(self, value: float) -> None:
+        """
+        Setter for redetScoreThrHuman
+        Args:
+            value: new value
+        """
+        self.setValue("redet_score_thr_human", value)
+
+    @property
+    def iouThr(self) -> Optional[float]:
+        """Getter for iou_thr (HSFaceStrategy)"""
+        return self.getValue("iou_thr")
+
+    @iouThr.setter
+    def iouThr(self, value: float) -> None:
+        """
+        Setter for iouThr
+        Args:
+            value: new value
+        """
+        self.setValue("iou_thr", value)
+
+    @property
+    def iouThrHuman(self) -> Optional[float]:
+        """Getter for iou_thr_human (HSHumanStrategy)"""
+        return self.getValue("iou_thr_human")
+
+    @iouThrHuman.setter
+    def iouThrHuman(self, value: float) -> None:
+        """
+        Setter for iouThrHuman
+        Args:
+            value: new value
+        """
+        self.setValue("iou_thr_human", value)
+
+    @property
+    def sotTrackerScoreThr(self) -> Optional[float]:
+        """Getter for sot_tracker_score_thr"""
+        return self.getValue("sot_tracker_score_thr")
+
+    @sotTrackerScoreThr.setter
+    def sotTrackerScoreThr(self, value: float) -> None:
+        """
+        Setter for sotTrackerScoreThr
+        Args:
+            value: new value
+        """
+        self.setValue("sot_tracker_score_thr", value)
+
+    @property
+    def redetectOnKalman(self) -> Optional[IntO1]:
+        """Getter for redetect_on_kalman"""
+        return self.getValue("redetect_on_kalman")
+
+    @redetectOnKalman.setter
+    def redetectOnKalman(self, value: IntO1) -> None:
+        """
+        Setter for redetectOnKalman
+        Args:
+            value: new value
+        """
+        self.setValue("redetect_on_kalman", value)
+
+    @property
+    def trustLowAssoc(self) -> Optional[IntO1]:
+        """Getter for trust_low_assoc (HSHumanFaceStrategy)"""
+        return self.getValue("trust_low_assoc")
+
+    @trustLowAssoc.setter
+    def trustLowAssoc(self, value: IntO1) -> None:
+        """
+        Setter for trustLowAssoc
+        Args:
+            value: new value
+        """
+        self.setValue("trust_low_assoc", value)
+
+
 class TrackEngineSettingsProvider(BaseSettingsProvider):
     """TrackEngine settings provider"""
 
@@ -837,3 +1086,8 @@ class TrackEngineSettingsProvider(BaseSettingsProvider):
     def experimental(self) -> ExperimentalSettings:
         """Get experimental section"""
         return ExperimentalSettings(self._coreSettingProvider)
+
+    @property
+    def hsTracking(self) -> HSTrackingSettings:
+        """Get HS-tracking section"""
+        return HSTrackingSettings(self._coreSettingProvider)
