@@ -9,6 +9,7 @@ Enum properties and IntO1 properties are covered with parametrize so every
 allowed value gets its own round-trip. All other properties are parametrized
 with two representative values.
 """
+
 import pytest
 
 from lunavl.sdk.trackengine.setting_provider import (
