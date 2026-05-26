@@ -814,6 +814,11 @@ class HSTrackingSettings(BaseSettingsSection):
 
     @firstStepWeight.setter
     def firstStepWeight(self, value: float) -> None:
+        """
+        Setter for firstStepWeight
+        Args:
+            value: new value
+        """
         self.setValue("first_step_weight", value)
 
     @property
@@ -823,6 +828,11 @@ class HSTrackingSettings(BaseSettingsSection):
 
     @firstStepWeightHuman.setter
     def firstStepWeightHuman(self, value: float) -> None:
+        """
+        Setter for firstStepWeightHuman
+        Args:
+            value: new value
+        """
         self.setValue("first_step_weight_human", value)
 
     @property
@@ -832,6 +842,11 @@ class HSTrackingSettings(BaseSettingsSection):
 
     @byteStepWeight.setter
     def byteStepWeight(self, value: float) -> None:
+        """
+        Setter for byteStepWeight
+        Args:
+            value: new value
+        """
         self.setValue("byte_step_weight", value)
 
     @property
@@ -841,6 +856,11 @@ class HSTrackingSettings(BaseSettingsSection):
 
     @byteStepWeightHuman.setter
     def byteStepWeightHuman(self, value: float) -> None:
+        """
+        Setter for byteStepWeightHuman
+        Args:
+            value: new value
+        """
         self.setValue("byte_step_weight_human", value)
 
     @property
@@ -850,6 +870,11 @@ class HSTrackingSettings(BaseSettingsSection):
 
     @inertia.setter
     def inertia(self, value: float) -> None:
+        """
+        Setter for inertia
+        Args:
+            value: new value
+        """
         self.setValue("inertia", value)
 
     @property
@@ -859,6 +884,11 @@ class HSTrackingSettings(BaseSettingsSection):
 
     @inertiaHuman.setter
     def inertiaHuman(self, value: float) -> None:
+        """
+        Setter for inertiaHuman
+        Args:
+            value: new value
+        """
         self.setValue("inertia_human", value)
 
     @property
@@ -868,6 +898,11 @@ class HSTrackingSettings(BaseSettingsSection):
 
     @detScoreThr.setter
     def detScoreThr(self, value: float) -> None:
+        """
+        Setter for detScoreThr
+        Args:
+            value: new value
+        """
         self.setValue("det_score_thr", value)
 
     @property
@@ -877,6 +912,11 @@ class HSTrackingSettings(BaseSettingsSection):
 
     @detScoreThrHuman.setter
     def detScoreThrHuman(self, value: float) -> None:
+        """
+        Setter for detScoreThrHuman
+        Args:
+            value: new value
+        """
         self.setValue("det_score_thr_human", value)
 
     @property
@@ -886,6 +926,11 @@ class HSTrackingSettings(BaseSettingsSection):
 
     @detScoreLowThr.setter
     def detScoreLowThr(self, value: float) -> None:
+        """
+        Setter for detScoreLowThr
+        Args:
+            value: new value
+        """
         self.setValue("det_score_low_thr", value)
 
     @property
@@ -895,6 +940,11 @@ class HSTrackingSettings(BaseSettingsSection):
 
     @detScoreLowThrHuman.setter
     def detScoreLowThrHuman(self, value: float) -> None:
+        """
+        Setter for detScoreLowThrHuman
+        Args:
+            value: new value
+        """
         self.setValue("det_score_low_thr_human", value)
 
     @property
@@ -904,6 +954,11 @@ class HSTrackingSettings(BaseSettingsSection):
 
     @redetScoreThr.setter
     def redetScoreThr(self, value: float) -> None:
+        """
+        Setter for redetScoreThr
+        Args:
+            value: new value
+        """
         self.setValue("redet_score_thr", value)
 
     @property
@@ -913,6 +968,11 @@ class HSTrackingSettings(BaseSettingsSection):
 
     @redetScoreThrHuman.setter
     def redetScoreThrHuman(self, value: float) -> None:
+        """
+        Setter for redetScoreThrHuman
+        Args:
+            value: new value
+        """
         self.setValue("redet_score_thr_human", value)
 
     @property
@@ -922,6 +982,11 @@ class HSTrackingSettings(BaseSettingsSection):
 
     @iouThr.setter
     def iouThr(self, value: float) -> None:
+        """
+        Setter for iouThr
+        Args:
+            value: new value
+        """
         self.setValue("iou_thr", value)
 
     @property
@@ -931,6 +996,11 @@ class HSTrackingSettings(BaseSettingsSection):
 
     @iouThrHuman.setter
     def iouThrHuman(self, value: float) -> None:
+        """
+        Setter for iouThrHuman
+        Args:
+            value: new value
+        """
         self.setValue("iou_thr_human", value)
 
     @property
@@ -940,6 +1010,11 @@ class HSTrackingSettings(BaseSettingsSection):
 
     @sotTrackerScoreThr.setter
     def sotTrackerScoreThr(self, value: float) -> None:
+        """
+        Setter for sotTrackerScoreThr
+        Args:
+            value: new value
+        """
         self.setValue("sot_tracker_score_thr", value)
 
     @property
@@ -949,6 +1024,11 @@ class HSTrackingSettings(BaseSettingsSection):
 
     @redetectOnKalman.setter
     def redetectOnKalman(self, value: IntO1) -> None:
+        """
+        Setter for redetectOnKalman
+        Args:
+            value: new value
+        """
         self.setValue("redetect_on_kalman", value)
 
     @property
@@ -958,6 +1038,11 @@ class HSTrackingSettings(BaseSettingsSection):
 
     @trustLowAssoc.setter
     def trustLowAssoc(self, value: IntO1) -> None:
+        """
+        Setter for trustLowAssoc
+        Args:
+            value: new value
+        """
         self.setValue("trust_low_assoc", value)
 
 
