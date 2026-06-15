@@ -66,7 +66,7 @@ build_cpu:pypi:
 
 mypy:storages:
   stage: build
-  tags: [ 'python-bench' ]
+  tags: [ 'luna-bench' ]
   script:
     - !reference [.prepare_poetry]
     - poetry run mypy ${CI_PROJECT_DIR}/lunavl/
@@ -78,7 +78,7 @@ forrmaters:
 
 test:unittests:
   stage: test
-  tags: [ 'python-bench' ]
+  tags: [ 'luna-bench' ]
   script:
     - !reference [.extract_luna_sdk_tag]
     - !reference [.download_plans]
