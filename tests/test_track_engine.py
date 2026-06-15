@@ -26,10 +26,15 @@ def shiftImage(image: VLImage, x, y):
 def teFabric(detectFace=1, detectBody=0, useBodyReid=0):
     faceEngine = VLFaceEngine()
     trackEngineProvider = TrackEngineSettingsProvider()
+
     trackEngineProvider.other.trackerType = TrackerType.VL_TRACKER
+    trackEngineProvider.other.detectorStep = 7
+    trackEngineProvider.other.killIntersectedDetections = 1
+
     trackEngineProvider.bodyTracking.useBodyReid = useBodyReid
     trackEngineProvider.detectors.useFaceDetector = detectFace
     trackEngineProvider.detectors.useBodyDetector = detectBody
+
     return VLTrackEngine(faceEngine, trackEngineConf=trackEngineProvider)
 
 
@@ -216,7 +221,11 @@ def test_te_multiframe():
 def teFabricLandmarks(detectBody=0, detectFace=0, detectLandmarks5=0):
     faceEngine = VLFaceEngine()
     trackEngineProvider = TrackEngineSettingsProvider()
+
     trackEngineProvider.other.trackerType = TrackerType.VL_TRACKER
+    trackEngineProvider.other.detectorStep = 7
+    trackEngineProvider.other.killIntersectedDetections = 1
+
     trackEngineProvider.detectors.useFaceDetector = detectFace
     trackEngineProvider.detectors.useBodyDetector = detectBody
     trackEngineProvider.faceTracking.faceLandmarksDetection = detectLandmarks5
