@@ -1,3 +1,5 @@
+import re
+
 from lunavl.sdk.estimators.face_estimators.headwear import Headwear, HeadwearType
 from lunavl.sdk.faceengine.setting_provider import DetectorType
 from lunavl.sdk.image_utils.image import VLImage
@@ -6,13 +8,7 @@ from tests.resources import BASEBALL_CAP, BEANIE, HAT, HELMET, HOOD, ONE_FACE, P
 
 
 def camel_to_snake(s):
-    result = ""
-    for char in s:
-        if char.isupper():
-            result += "_" + char.lower()
-        else:
-            result += char
-    return result
+    return re.sub(r'[A-Z]', lambda m: '_' + m.group().lower(), s).lstrip('_')
 
 class TestHeadwear(BaseTestClass):
     """
