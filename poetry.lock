@@ -2225,17 +2225,6 @@ files = [
 ]
 
 [[package]]
-name = "snakecase"
-version = "1.0.1"
-description = "Convert camelCase to snake_case"
-optional = false
-python-versions = "*"
-groups = ["dev"]
-files = [
-    {file = "snakecase-1.0.1.tar.gz", hash = "sha256:450d192b275b89bfdbf5661dd57d92f27ed68e937c10a87d208df0dbec97af24"},
-]
-
-[[package]]
 name = "snowballstemmer"
 version = "3.0.1"
 description = "This package provides 32 stemmers for 30 languages generated from Snowball algorithms."
@@ -2917,4 +2906,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11"
-content-hash = "4c741c835702f758cae153a61a10696ae89858c2cd269dd05ef9f7c6c3aa17d1"
+content-hash = "5dbfb779e119847431371c3600e5dc2620b7c6b3b17d7b5d4204676ed54f5344"
