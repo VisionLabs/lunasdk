@@ -5,7 +5,10 @@ from lunavl.sdk.faceengine.engine import VLFaceEngine
 from lunavl.sdk.image_utils.geometry import Rect
 from lunavl.sdk.image_utils.image import VLImage
 from lunavl.sdk.trackengine.engine import VLTrackEngine
-from lunavl.sdk.trackengine.setting_provider import TrackEngineSettingsProvider
+from lunavl.sdk.trackengine.setting_provider import (
+    TrackEngineSettingsProvider,
+    TrackerType,
+)
 from lunavl.sdk.trackengine.structures import Frame, HumanTrackingParams, StreamParams
 from tests.resources import CLEAN_ONE_FACE, ONE_FACE
 
@@ -23,6 +26,7 @@ def shiftImage(image: VLImage, x, y):
 def teFabric(detectFace=1, detectBody=0, useBodyReid=0):
     faceEngine = VLFaceEngine()
     trackEngineProvider = TrackEngineSettingsProvider()
+    trackEngineProvider.other.trackerType = TrackerType.VL_TRACKER
     trackEngineProvider.bodyTracking.useBodyReid = useBodyReid
     trackEngineProvider.detectors.useFaceDetector = detectFace
     trackEngineProvider.detectors.useBodyDetector = detectBody

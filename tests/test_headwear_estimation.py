@@ -8,7 +8,8 @@ from tests.resources import BASEBALL_CAP, BEANIE, HAT, HELMET, HOOD, ONE_FACE, P
 
 
 def camel_to_snake(s):
-    return re.sub(r'[A-Z]', lambda m: '_' + m.group().lower(), s).lstrip('_')
+    return re.sub(r"[A-Z]", lambda m: "_" + m.group().lower(), s).lstrip("_")
+
 
 class TestHeadwear(BaseTestClass):
     """
