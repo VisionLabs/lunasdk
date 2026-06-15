@@ -10,7 +10,7 @@ from lunavl.sdk.trackengine.setting_provider import (
     TrackerType,
 )
 from lunavl.sdk.trackengine.structures import Frame, HumanTrackingParams, StreamParams
-from tests.resources import CLEAN_ONE_FACE, ONE_FACE
+from tests.resources import CLEAN_ONE_FACE, ONE_FACE, YELLOW
 
 
 def shiftImage(image: VLImage, x, y):
@@ -236,7 +236,7 @@ def teFabricLandmarks(detectBody=0, detectFace=0, detectLandmarks5=0):
 def test_return_face_landmarks(detectFace, detectBody):
     """Return or not landmarks test"""
     te = teFabricLandmarks(detectFace=detectFace, detectBody=detectBody, detectLandmarks5=1)
-    img = VLImage.load(filename=ONE_FACE)
+    img = VLImage.load(filename=YELLOW)
     streamId = te.registerStream()
     frame = Frame(image=img, streamId=streamId, frameNumber=1)
 
@@ -259,7 +259,7 @@ def test_detect_body_landmarks(detectLandmarks):
     """Detect or not body landmarks test"""
 
     te = teFabricLandmarks(detectBody=1)
-    img = VLImage.load(filename=ONE_FACE)
+    img = VLImage.load(filename=YELLOW)
     streamId = te.registerStream()
     frame = Frame(image=img, streamId=streamId, frameNumber=1)
     te.track([frame])
@@ -272,7 +272,7 @@ def test_detect_face_landmarks(detectLandmarks):
     """Detect or not face landmarks test"""
 
     te = teFabricLandmarks(detectFace=1, detectLandmarks5=detectLandmarks)
-    img = VLImage.load(filename=ONE_FACE)
+    img = VLImage.load(filename=YELLOW)
     streamId = te.registerStream()
     frame = Frame(image=img, streamId=streamId, frameNumber=1)
     res = te.track([frame])
