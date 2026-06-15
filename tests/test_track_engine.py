@@ -216,6 +216,7 @@ def test_te_multiframe():
 def teFabricLandmarks(detectBody=0, detectFace=0, detectLandmarks5=0):
     faceEngine = VLFaceEngine()
     trackEngineProvider = TrackEngineSettingsProvider()
+    trackEngineProvider.other.trackerType = TrackerType.VL_TRACKER
     trackEngineProvider.detectors.useFaceDetector = detectFace
     trackEngineProvider.detectors.useBodyDetector = detectBody
     trackEngineProvider.faceTracking.faceLandmarksDetection = detectLandmarks5
