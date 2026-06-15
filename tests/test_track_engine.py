@@ -10,7 +10,7 @@ from lunavl.sdk.trackengine.setting_provider import (
     TrackerType,
 )
 from lunavl.sdk.trackengine.structures import Frame, HumanTrackingParams, StreamParams
-from tests.resources import CLEAN_ONE_FACE, ONE_FACE, YELLOW
+from tests.resources import CLEAN_ONE_FACE, ONE_FACE
 
 
 def shiftImage(image: VLImage, x, y):
@@ -28,8 +28,6 @@ def teFabric(detectFace=1, detectBody=0, useBodyReid=0):
     trackEngineProvider = TrackEngineSettingsProvider()
 
     trackEngineProvider.other.trackerType = TrackerType.VL_TRACKER
-    trackEngineProvider.other.detectorStep = 7
-    trackEngineProvider.other.killIntersectedDetections = 1
 
     trackEngineProvider.bodyTracking.useBodyReid = useBodyReid
     trackEngineProvider.detectors.useFaceDetector = detectFace
@@ -221,11 +219,6 @@ def test_te_multiframe():
 def teFabricLandmarks(detectBody=0, detectFace=0, detectLandmarks5=0):
     faceEngine = VLFaceEngine()
     trackEngineProvider = TrackEngineSettingsProvider()
-
-    trackEngineProvider.other.trackerType = TrackerType.VL_TRACKER
-    trackEngineProvider.other.detectorStep = 7
-    trackEngineProvider.other.killIntersectedDetections = 1
-
     trackEngineProvider.detectors.useFaceDetector = detectFace
     trackEngineProvider.detectors.useBodyDetector = detectBody
     trackEngineProvider.faceTracking.faceLandmarksDetection = detectLandmarks5
@@ -236,13 +229,13 @@ def teFabricLandmarks(detectBody=0, detectFace=0, detectLandmarks5=0):
 def test_return_face_landmarks(detectFace, detectBody):
     """Return or not landmarks test"""
     te = teFabricLandmarks(detectFace=detectFace, detectBody=detectBody, detectLandmarks5=1)
-    img = VLImage.load(filename=YELLOW)
+    img = VLImage.load(filename=ONE_FACE)
     streamId = te.registerStream()
     frame = Frame(image=img, streamId=streamId, frameNumber=1)
 
     if detectBody:
-        te.track([frame])
-        res = te.closeStream(streamId)
+        res = te.track([frame])
+        te.closeStream(streamId)
         track = res[0].humanTracks[0]
     else:
         res = te.track([frame])
@@ -259,11 +252,11 @@ def test_detect_body_landmarks(detectLandmarks):
     """Detect or not body landmarks test"""
 
     te = teFabricLandmarks(detectBody=1)
-    img = VLImage.load(filename=YELLOW)
+    img = VLImage.load(filename=ONE_FACE)
     streamId = te.registerStream()
     frame = Frame(image=img, streamId=streamId, frameNumber=1)
-    te.track([frame])
-    res = te.closeStream(streamId)
+    res = te.track([frame])
+    te.closeStream(streamId)
     track = res[0].humanTracks[0]
 
 
@@ -272,7 +265,7 @@ def test_detect_face_landmarks(detectLandmarks):
     """Detect or not face landmarks test"""
 
     te = teFabricLandmarks(detectFace=1, detectLandmarks5=detectLandmarks)
-    img = VLImage.load(filename=YELLOW)
+    img = VLImage.load(filename=ONE_FACE)
     streamId = te.registerStream()
     frame = Frame(image=img, streamId=streamId, frameNumber=1)
     res = te.track([frame])
