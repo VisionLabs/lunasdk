@@ -1,10 +1,14 @@
-import snakecase
+import re
 
 from lunavl.sdk.estimators.face_estimators.headwear import Headwear, HeadwearType
 from lunavl.sdk.faceengine.setting_provider import DetectorType
 from lunavl.sdk.image_utils.image import VLImage
 from tests.base import BaseTestClass
 from tests.resources import BASEBALL_CAP, BEANIE, HAT, HELMET, HOOD, ONE_FACE, PEAKED_CAP, SHAWL, USHANKA
+
+
+def camel_to_snake(s):
+    return re.sub(r"[A-Z]", lambda m: "_" + m.group().lower(), s).lstrip("_")
 
 
 class TestHeadwear(BaseTestClass):
@@ -27,7 +31,7 @@ class TestHeadwear(BaseTestClass):
             HeadwearType.Hat: HAT,
             HeadwearType.Hood: HOOD,
             HeadwearType.BaseballCap: BASEBALL_CAP,
-            HeadwearType.HatWithEarFlaps: USHANKA,  # FSDK-4088 problems, may be need to skip
+            HeadwearType.HatWithEarFlaps: USHANKA,
             HeadwearType.Shawl: SHAWL,
             HeadwearType.Beanie: BEANIE,
             HeadwearType.PeakedCap: PEAKED_CAP,
@@ -39,7 +43,7 @@ class TestHeadwear(BaseTestClass):
                 estimation = self.estimate(image)
                 assert headwearType == estimation.type
                 if headwearType != HeadwearType.NoHeadWear:
-                    assert estimation.asDict()["type"] == snakecase.convert(headwearType.name)
+                    assert estimation.asDict()["type"] == camel_to_snake(headwearType.name)
                 else:
                     assert estimation.asDict()["type"] == "none"
 
