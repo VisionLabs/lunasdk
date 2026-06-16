@@ -67,7 +67,6 @@ build_cpu:pypi:
 mypy:storages:
   stage: build
   tags: [ 'python-bench' ]
-  image: ${BUILDER_IMAGE}
   script:
     - !reference [.prepare_poetry]
     - poetry run mypy ${CI_PROJECT_DIR}/lunavl/
