@@ -68,6 +68,7 @@ mypy:storages:
   stage: build
   tags: [ 'luna-bench' ]
   script:
+    - poetry env use python3.12
     - !reference [.prepare_poetry]
     - poetry run mypy ${CI_PROJECT_DIR}/lunavl/
   allow_failure: true
@@ -82,6 +83,7 @@ test:unittests:
   script:
     - !reference [.extract_luna_sdk_tag]
     - !reference [.download_plans]
+    - poetry env use python3.12
     - !reference [.prepare_poetry]
     - source $(poetry env info -p)/bin/activate
     - *run_unittests
