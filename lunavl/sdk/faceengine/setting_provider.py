@@ -681,7 +681,7 @@ class FaceDetV3Settings(BaseSettingsSection):
         Returns:
             scoreThreshold
         """
-        return self.getValue("scoreThreshold")
+        return self.getValue("ScoreThreshold")
 
     @scoreThreshold.setter
     def scoreThreshold(self, value: float) -> None:
@@ -1166,7 +1166,7 @@ class BodyDetectorSettings(BaseSettingsSection):
         Returns:
             scoreThreshold
         """
-        return self.getValue("scoreThreshold")
+        return self.getValue("ScoreThreshold")
 
     @scoreThreshold.setter
     def scoreThreshold(self, value: float) -> None:
