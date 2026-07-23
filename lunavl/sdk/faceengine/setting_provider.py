@@ -933,6 +933,244 @@ class FaceDetV3Settings(BaseSettingsSection):
         self.setValue("useOrientationMode", int(value))
 
 
+class FaceDetV5Settings(BaseSettingsSection):
+    """
+    FaceDetV5 detector settings.
+
+    Properties:
+
+        - scoreThreshold (float): detection threshold in [0..1] range;
+        - redetectScoreThreshold (float): redetect face threshold in [0..1] range;
+        - NMSThreshold (float): overlap threshold for NMS [0..1] range;
+        - strictMinSize (int): Enforced minimum face size
+        - minFaceSize (int): suggested minimum face size in pixels. It is not guaranteed that the size of detected faces
+            will satisfy this limitation.;
+        - maxFaceSize (int): suggested maximum face size in pixels;
+        - nms (NMS): type of NMS: mean or best;
+        - redetectTensorSize (int): target face after preprocessing for redetect;
+        - redetectFaceTargetSize (int): target face size for redetect;
+        - paddings (Point4): paddings;
+        - planPrefix (str): planPrefix;
+    """
+
+    sectionName = "FaceDetV5::Settings"
+
+    @property
+    def scoreThreshold(self) -> Optional[float]:
+        """
+        Getter for scoreThreshold
+
+        Returns:
+            scoreThreshold
+        """
+        return self.getValue("ScoreThreshold")
+
+    @scoreThreshold.setter
+    def scoreThreshold(self, value: float) -> None:
+        """
+        Setter for scoreThreshold
+        Args:
+            value: new value
+        """
+        self.setValue("ScoreThreshold", float(value))
+
+    @property
+    def redetectScoreThreshold(self) -> Optional[float]:
+        """
+        Getter for redetectScoreThreshold
+
+        Returns:
+            redetectScoreThreshold
+        """
+        return self.getValue("RedetectScoreThreshold")
+
+    @redetectScoreThreshold.setter
+    def redetectScoreThreshold(self, value: float) -> None:
+        """
+        Setter for redetectScoreThreshold
+        Args:
+            value: new value
+        """
+        self.setValue("RedetectScoreThreshold", float(value))
+
+    @property
+    def NMSThreshold(self) -> Optional[float]:
+        """
+        Getter for NMSThreshold
+
+        Returns:
+            NMSThreshold
+        """
+        return self.getValue("NMSThreshold")
+
+    @NMSThreshold.setter
+    def NMSThreshold(self, value: float) -> None:
+        """
+        Setter for NMSThreshold
+        Args:
+            value: new value
+        """
+        self.setValue("NMSThreshold", float(value))
+
+    @property
+    def strictMinSize(self) -> Optional[int]:
+        """
+        Getter for strictMinSize
+
+        Returns:
+            strictMinSize
+        """
+        return self.getValue("strictlyMinSize")
+
+    @strictMinSize.setter
+    def strictMinSize(self, value: int) -> None:
+        """
+        Setter for strictMinSize
+        Args:
+            value: new value
+        """
+        self.setValue("strictlyMinSize", value)
+
+    @property
+    def minFaceSize(self) -> Optional[int]:
+        """
+        Getter for minFaceSize
+
+        Returns:
+            minFaceSize
+        """
+        return self.getValue("minFaceSize")
+
+    @minFaceSize.setter
+    def minFaceSize(self, value: int) -> None:
+        """
+        Setter for minFaceSize
+        Args:
+            value: new value
+        """
+        self.setValue("minFaceSize", value)
+
+    @property
+    def maxFaceSize(self) -> Optional[int]:
+        """
+        Getter for maxFaceSize
+
+        Returns:
+            maxFaceSize
+        """
+        return self.getValue("maxFaceSize")
+
+    @maxFaceSize.setter
+    def maxFaceSize(self, value: int) -> None:
+        """
+        Setter for maxFaceSize
+        Args:
+            value: new value
+        """
+        self.setValue("maxFaceSize", value)
+
+    @property
+    def nms(self) -> Optional[NMS]:
+        """
+        Getter for nms
+
+        Returns:
+            nms
+        """
+        value = self.getValue("nms")
+        if value is None:
+            return None
+        return NMS[value]
+
+    @nms.setter
+    def nms(self, value: NMS) -> None:
+        """
+        Setter for nms
+        Args:
+            value: new value
+        """
+        self.setValue("nms", value.value)
+
+    @property
+    def redetectTensorSize(self) -> Optional[int]:
+        """
+        Getter for redetectTensorSize
+
+        Returns:
+            redetectTensorSize
+        """
+        return self.getValue("RedetectTensorSize")
+
+    @redetectTensorSize.setter
+    def redetectTensorSize(self, value: int) -> None:
+        """
+        Setter for redetectTensorSize
+        Args:
+            value: new value
+        """
+        self.setValue("RedetectTensorSize", value)
+
+    @property
+    def redetectFaceTargetSize(self) -> Optional[int]:
+        """
+        Getter for redetectFaceTargetSize
+
+        Returns:
+            redetectFaceTargetSize
+        """
+        return self.getValue("RedetectFaceTargetSize")
+
+    @redetectFaceTargetSize.setter
+    def redetectFaceTargetSize(self, value: int) -> None:
+        """
+        Setter for redetectFaceTargetSize
+        Args:
+            value: new value
+        """
+        self.setValue("RedetectFaceTargetSize", value)
+
+    @property
+    def paddings(self) -> Optional[Point4]:
+        """
+        Getter for paddings
+
+        Returns:
+            paddings
+        """
+        value = self.getValue("paddings")
+        if value is None:
+            return None
+        return Point4(*value)
+
+    @paddings.setter
+    def paddings(self, value: Point4) -> None:
+        """
+        Setter for paddings
+        Args:
+            value: new value
+        """
+        self.setValue("paddings", value.asTuple())
+
+    @property
+    def planPrefix(self) -> Optional[str]:
+        """
+        Getter for planPrefix
+
+        Returns:
+            planPrefix
+        """
+        return self.getValue("planPrefix")
+
+    @planPrefix.setter
+    def planPrefix(self, value: str) -> None:
+        """
+        Setter for planPrefix
+        Args:
+            value: new value
+        """
+        self.setValue("planPrefix", value)
+
+
 class FaceDetV12Settings(BaseSettingsSection):
     """
     Common class for FaceDetV1 and FaceDetV2 detector settings.
@@ -2732,6 +2970,16 @@ class FaceEngineSettingsProvider(BaseSettingsProvider):
             Mutable FaceDetV3 section
         """
         return FaceDetV3Settings(self._coreSettingProvider)
+
+    @property
+    def faceDetV5Settings(self) -> FaceDetV5Settings:
+        """
+        Getter for FaceDetV5 settings section.
+
+        Returns:
+            Mutable FaceDetV5 section
+        """
+        return FaceDetV5Settings(self._coreSettingProvider)
 
     @property
     def faceDetV1Settings(self) -> FaceDetV1Settings:
