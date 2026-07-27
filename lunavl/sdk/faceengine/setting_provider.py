@@ -165,6 +165,7 @@ class DetectorType(BiDirectionEnum):
     FACE_DET_V1 = "FaceDetV1"  #: todo description
     FACE_DET_V2 = "FaceDetV2"
     FACE_DET_V3 = "FaceDetV3"
+    FACE_DET_V5 = "FaceDetV5"
 
     @property
     def coreDetectorType(self) -> ObjectDetectorClassType:
@@ -179,6 +180,7 @@ class DetectorType(BiDirectionEnum):
             "FaceDetV1": "FACE_DET_V1",
             "FaceDetV2": "FACE_DET_V2",
             "FaceDetV3": "FACE_DET_V3",
+            "FaceDetV5": "FACE_DET_V5",
         }
         return getattr(ObjectDetectorClassType, mapEnumToCoreEnum[self.value])
 
