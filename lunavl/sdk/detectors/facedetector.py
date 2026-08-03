@@ -24,8 +24,10 @@ from ..async_task import AsyncTask
 from ..base import Landmarks
 from ..detectors.base import (
     BaseDetection,
+    BaseDetector,
     ImageForDetection,
     ImageForRedetection,
+    assertImageForReDetection,
     getArgsForCoreDetectorForImages,
     getArgsForCoreRedetect,
     validateBatchDetectInput,
@@ -286,7 +288,7 @@ def postProcessingRedetect(
     return collectReDetectionsResult(detectionsBatch, images)
 
 
-class FaceDetector:
+class FaceDetector(BaseDetector):
     """
     Face detector.
 
@@ -312,6 +314,15 @@ class FaceDetector:
     def launchOptions(self) -> LaunchOptions:
         """Get detector launch options"""
         return self._launchOptions
+
+    def validateData(self, image: ImageForRedetection) -> None:
+        """
+        Validate image and bounding boxes for redetection.
+
+        Raises:
+            LunaSDKException: if image or bounding boxes are not valid
+        """
+        assertImageForReDetection(self._detector, image)
 
     @staticmethod
     def _getDetectionType(detect5Landmarks: bool = True, detect68Landmarks: bool = False) -> DetectionType:

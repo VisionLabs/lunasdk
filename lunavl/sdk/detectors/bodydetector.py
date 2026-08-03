@@ -14,9 +14,11 @@ from ..image_utils.image import VLImage
 from ..launch_options import LaunchOptions
 from .base import (
     BaseDetection,
+    BaseDetector,
     ImageForDetection,
     ImageForRedetection,
     assertImageForDetection,
+    assertImageForReDetection,
     getArgsForCoreDetectorForImages,
     getArgsForCoreRedetect,
     validateBatchDetectInput,
@@ -192,7 +194,7 @@ RedetectBatchResult = List[List[Union[BodyDetection, None]]]
 RedetectResult = Union[None, BodyDetection]
 
 
-class BodyDetector:
+class BodyDetector(BaseDetector):
     """
     Human body detector.
 
@@ -219,6 +221,15 @@ class BodyDetector:
             detection type
         """
         return HumanDetectionType.HDT_BOX
+
+    def validateData(self, image: ImageForRedetection) -> None:
+        """
+        Validate image and bounding boxes for redetection.
+
+        Raises:
+            LunaSDKException: if image or bounding boxes are not valid
+        """
+        assertImageForReDetection(self._detector, image)
 
     @overload  # type: ignore
     def detectOne(
