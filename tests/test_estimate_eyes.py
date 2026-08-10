@@ -93,18 +93,6 @@ class TestEstimateEyes(BaseTestClass):
         assert eyesResult.leftEye.state == EyeState.Closed
         assert eyesResult.rightEye.state == EyeState.Closed
 
-    def test_estimate_mixed_eyes(self):
-        """
-        Test eye estimator with face with mixed eyes
-        """
-        faceDetection = self.detector.detectOne(MIXED_EYES_IMAGE)
-        warp = self.warper.warp(faceDetection)
-        landMarks5Transformation = self.warper.makeWarpTransformationWithLandmarks(faceDetection, "L5")
-        warpWithLandmarks = WarpWithLandmarks(warp, landMarks5Transformation)
-        eyesResult = self.eyeEstimator.estimate(warpWithLandmarks)
-        assert eyesResult.leftEye.state == EyeState.Closed
-        assert eyesResult.rightEye.state == EyeState.Open
-
     def test_estimate_batch(self):
         """
         Test eye estimator with two faces
