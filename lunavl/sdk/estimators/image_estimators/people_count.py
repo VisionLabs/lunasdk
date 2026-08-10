@@ -75,6 +75,28 @@ def getEstimatorArgsFromImages(
     return coreImages, detectAreas
 
 
+def assertImageForPeopleEstimation(
+    coreEstimator,
+    data: Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]],
+    targets: "FaceEngine.CrowdRequest",
+) -> None:
+    """
+    Assert image for people count estimation. A plain `VLImage` without a detect area is not validated.
+
+    Args:
+        coreEstimator: core people count estimator
+        data: image or image with a detect area
+        targets: estimation targets
+
+    Raises:
+        LunaSDKException: if data is not valid
+    """
+    if isinstance(data, VLImage):
+        return
+    coreImages, detectAreas = getEstimatorArgsFromImages([data])
+    validateInputByBatchEstimator(coreEstimator, coreImages, detectAreas, targets)
+
+
 def postProcessingBatchV1(error: FSDKErrorResult, crowdEstimations: List[CrowdEstimation]) -> List[int]:
     """
     Post processing batch people count estimation
@@ -137,6 +159,15 @@ def postProcessingV2(error: FSDKErrorResult, crowdEstimation: CrowdEstimation) -
 
 class PeopleCountEstimatorV2(BaseEstimator):
     """People count estimator. Estimate people count feature and coordinates"""
+
+    def validateData(self, data: Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]) -> None:
+        """
+        Validate input data for people count estimation.
+
+        Raises:
+            LunaSDKException: if data is not valid
+        """
+        assertImageForPeopleEstimation(self._coreEstimator, data, FaceEngine.CrowdRequest.estimateHeadCountAndCoords)
 
     @overload  # type: ignore
     def estimate(
@@ -232,6 +263,15 @@ class PeopleCountEstimatorV2(BaseEstimator):
 
 class PeopleCountEstimatorV1(BaseEstimator):
     """People count estimator. Estimate only people count feature. Deprecated"""
+
+    def validateData(self, data: Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]) -> None:
+        """
+        Validate input data for people count estimation.
+
+        Raises:
+            LunaSDKException: if data is not valid
+        """
+        assertImageForPeopleEstimation(self._coreEstimator, data, FaceEngine.CrowdRequest.estimateHeadCountAndCoords)
 
     @overload  # type: ignore
     def estimate(

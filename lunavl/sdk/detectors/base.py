@@ -41,6 +41,15 @@ class ImageForRedetection(NamedTuple):
     bBoxes: List[Rect]
 
 
+class BaseDetector:
+    """Base class for detector wrappers. Subclasses override `validateData` where validation is required."""
+
+    __slots__ = ()
+
+    def validateData(self, *args, **kwargs) -> None:
+        """Validate input data before estimation. No-op by default; override where validation is required."""
+
+
 class BaseDetection(BaseEstimation):
     """
     Attributes:
@@ -183,6 +192,19 @@ def validateBatchDetectInput(
     else:
         errors.append(LunaVLError.Ok.format(LunaVLError.Ok.description))
     raise LunaSDKException(LunaVLError.BatchedInternalError.format(LunaVLError.fromSDKError(mainError).detail), errors)
+
+
+def assertImageForReDetection(coreDetector, image: ImageForRedetection) -> None:
+    """
+    Assert image for redetection
+    Args:
+        coreDetector: core face or body detector
+        image: image and bounding boxes for redetection
+
+    Raises:
+        LunaSDKException: if image or bounding boxes are not valid
+    """
+    validateReDetectInput(coreDetector, *getArgsForCoreRedetect([image]))
 
 
 def validateReDetectInput(detector, coreImages: List[CoreImage], detectAreas: List[List[Detection]]):

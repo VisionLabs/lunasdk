@@ -47,6 +47,9 @@ class BaseEstimator(ABC):
         """
         pass
 
+    def validateData(self, *args, **kwargs) -> None:
+        """Validate input data."""
+
 
 class ImageWithFaceDetection(NamedTuple):
     """
