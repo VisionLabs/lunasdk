@@ -38,14 +38,14 @@ class TestPeopleCount(BaseTestClass):
             ),
         )
 
-    def test_people_count_async(self):  # todo: change asserted values LUNA-6049
+    def test_people_count_async(self):
         """
         Test single image async estimation
         """
         peopleCount = self.peopleCountEstimator.estimate(self.crowd9People, asyncEstimate=True).get()
         assert peopleCount.count == 10
 
-    def test_people_count_batch_async(self):  # todo: change asserted values LUNA-6049
+    def test_people_count_batch_async(self):
         """
         Test batch async estimation
         """
@@ -54,14 +54,14 @@ class TestPeopleCount(BaseTestClass):
         ).get()
         assert [estimation.count for estimation in peopleCount] == [10, 8]
 
-    def test_people_count(self):  # todo: change asserted values LUNA-6049
+    def test_people_count(self):
         """
         Test single image estimation
         """
         peopleCount = self.peopleCountEstimator.estimate(self.crowd7People)
         assert peopleCount.count == 8
 
-    def test_people_count_batch(self):  # todo: change asserted values LUNA-6049
+    def test_people_count_batch(self):
         """
         Test batch estimation
         """
