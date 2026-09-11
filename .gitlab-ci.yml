@@ -11,6 +11,33 @@ variables:
 
 # ------------------ DECLARE STAGES ------------------
 
+# LUNA-8410: override of the shared template .extract_luna_sdk_tag. The lock
+# now pins the batch-warp bindings wheel (faceengine-test-8410) instead of the
+# plain faceengine package, which the template awk does not find.
+.extract_luna_sdk_tag: &extract_luna_sdk_tag
+  # Extracts sdk tag from poetry.lock file (faceengine / faceengine-test-*)
+  - |
+    set -x
+    LOCK_PATH="${CI_PROJECT_DIR:-.}/poetry.lock"
+    if [ -n "$LOCK_FILE_DIR" ]; then
+      LOCK_PATH="${LOCK_FILE_DIR}/poetry.lock"
+    fi
+    full_version=$(awk '
+      $1 == "name" && $3 ~ /"faceengine/ { found=1 }
+      found && $1 == "version" {
+        gsub(/"/, "", $3);
+        print $3;
+        exit
+      }
+    ' ${LOCK_PATH})
+
+    if [ -z "$full_version" ]; then
+      echo "SDK version not found in poetry.lock file"
+      exit 1
+    fi
+    version=$(echo "$full_version" | awk -F. '{ if (NF>3) print $1"."$2"."$3; else print $0 }')
+    export LUNA_SDK_TAG="v.${version}"
+
 include:
   - project: 'common/pypi-template'
     ref: master
