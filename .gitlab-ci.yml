@@ -38,7 +38,7 @@ stages:
 
 .use_cpusdk: &use_cpusdk
   sed -i 's/name = "lunavl"/name = "lunavlcpu"/' pyproject.toml;
-  sed -i 's/FaceEngine =/FaceEngineCPU =/' pyproject.toml;
+  sed -i 's/FaceEngine_test_8410 =/FaceEngineCPU_test_8410 =/' pyproject.toml;
   echo $'\n[[tool.poetry.packages]] \ninclude = "lunavl"' >> pyproject.toml;
 
 .run_unittests: &run_unittests
