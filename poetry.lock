@@ -332,16 +332,17 @@ files = [
 ]
 
 [[package]]
-name = "faceengine-test-8410"
-version = "5.39.1.0"
+name = "faceengine"
+version = "5.40.0.1"
 description = "Python bindings of FaceEngine using pybind11 and CMake"
 optional = false
 python-versions = ">=3.7"
 groups = ["main"]
 files = [
-    {file = "faceengine_test_8410-5.39.1.0-cp312-cp312-linux_x86_64.whl", hash = "sha256:c6c5b27ae83eefcb16070b42020ae4140a7cefc2ad024bab45256ae39dbbb8c2"},
-    {file = "faceengine_test_8410-5.39.1.0-cp313-cp313-linux_x86_64.whl", hash = "sha256:2188c9d7caab02a30e47b729faa8631dfac15ca3eda6fcf2fcb0e0b39f097d7a"},
-    {file = "faceengine_test_8410-5.39.1.0-cp314-cp314-linux_x86_64.whl", hash = "sha256:42e16c2d5a42ac30631a009cb41d58cfc5f5ab7ac76dd3c3a27bb161abee6d4c"},
+    {file = "faceengine-5.40.0.1-cp312-cp312-linux_x86_64.whl", hash = "sha256:ba0fd868121f23ed44882449e508d35c02147656eb6a25631f1522e123de7cc6"},
+    {file = "faceengine-5.40.0.1-cp313-cp313-linux_x86_64.whl", hash = "sha256:b073031bd29a252df363e69ef9dbf2faedee5bebfbe345b8bec02ee5b45cf66e"},
+    {file = "faceengine-5.40.0.1-cp314-cp314-linux_x86_64.whl", hash = "sha256:b59708faf749ff355845453bfa754b9bcd8d96b80bf8302793b3831a0e80644f"},
+    {file = "faceengine-5.40.0.1-cp314-cp314-win_amd64.whl", hash = "sha256:21f419de78eb17fd7f03ad635f5b4c84710404b49fd5a8fdae4fb3194d19c76e"},
 ]
 
 [package.extras]
@@ -2903,4 +2904,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11"
-content-hash = "a5becc1e9d51d54aac98021099a4d92268c5f35776865707e7a10e1f8c52a57c"
+content-hash = "ccdb09558ce115391fa01d8c44a81ad5f14283ae52cea70cf7ab6e0be21cefa1"
