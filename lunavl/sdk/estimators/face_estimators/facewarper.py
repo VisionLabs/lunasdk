@@ -1,7 +1,7 @@
 """Module for creating warped images"""
 
 from functools import partial
-from typing import Literal, Optional, Union, overload
+from typing import List, Literal, Optional, Union, overload
 
 from FaceEngine import Image as CoreImage, IWarperPtr, Transformation  # pylint: disable=E0611,E0401
 from numpy import ndarray
@@ -119,6 +119,12 @@ def postProcessing(error, warp, faceDetection: FaceDetection):
     return FaceWarp(warpedImage, faceDetection)
 
 
+def postProcessingBatch(error, warps, faceDetections: List[FaceDetection]):
+    """Warper batch post-processing"""
+    assertError(error)
+    return [postProcessing(error, warp, faceDetection) for warp, faceDetection in zip(warps, faceDetections)]
+
+
 class FaceWarper:
     """
     Class warper.
@@ -181,6 +187,40 @@ class FaceWarper:
             return postProcessing(error, warp, faceDetection)
         task = self._coreWarper.asyncWarp(faceDetection.coreEstimation.img, transformation)
         return AsyncTask(task, partial(postProcessing, faceDetection=faceDetection))
+
+    @overload  # type: ignore
+    def warp_batch(
+        self, faceDetections: List[FaceDetection], asyncEstimate: Literal[False] = False
+    ) -> List[FaceWarp]: ...  # type: ignore
+    @overload  # type: ignore
+    def warp_batch(
+        self, faceDetections: List[FaceDetection], asyncEstimate: Literal[True] = True
+    ) -> AsyncTask[List[FaceWarp]]: ...  # type: ignore
+    def warp_batch(
+        self, faceDetections: List[FaceDetection], asyncEstimate: bool = False
+    ) -> Union[List[FaceWarp], AsyncTask[List[FaceWarp]]]:
+        """
+        Create warps from detections batch.
+
+        Args:
+            faceDetections: face detections batch with landmarks5
+            asyncEstimate: estimate or run estimation in background
+
+        Returns:
+            List of Warps if asyncEstimate is false otherwise async task
+        Raises:
+            ValueError: if faceDetections is empty or detection does not contain a landmarks5
+            LunaSDKException: if creation failed
+        """
+        if not faceDetections:
+            raise ValueError("faceDetections must not be empty")
+        transformations = [self._createWarpTransformation(faceDetection) for faceDetection in faceDetections]
+        images = [faceDetection.coreEstimation.img for faceDetection in faceDetections]
+        if not asyncEstimate:
+            error, warps = self._coreWarper.warpBatch(images, transformations)
+            return postProcessingBatch(error, warps, faceDetections)
+        task = self._coreWarper.asyncWarpBatch(images, transformations)
+        return AsyncTask(task, partial(postProcessingBatch, faceDetections=faceDetections))
 
     def makeWarpTransformationWithLandmarks(
         self, faceDetection: FaceDetection, typeLandmarks: str
