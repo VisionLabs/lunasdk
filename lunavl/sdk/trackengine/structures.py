@@ -456,8 +456,8 @@ class HumanTrack:
     def __init__(self, coreEstimation: HumanTrackInfo, image: VLImage):
         self.coreEstimation = coreEstimation
         self.image = image
-        self._face = self._UNSET
-        self._body = self._UNSET
+        self._face: object = self._UNSET
+        self._body: object = self._UNSET
 
     @property
     def face(self) -> Optional[FaceTrack]:
@@ -468,7 +468,7 @@ class HumanTrack:
             else:
                 face = self.coreEstimation.faceOpt.value()
                 self._face = FaceTrack(face, self.image) if face else None
-        return self._face
+        return self._face  # type: ignore[return-value]
 
     @property
     def body(self) -> Optional[BodyTrack]:
@@ -479,7 +479,7 @@ class HumanTrack:
             else:
                 body = self.coreEstimation.bodyOpt.value()
                 self._body = BodyTrack(body, self.image) if body else None
-        return self._body
+        return self._body  # type: ignore[return-value]
 
     @property
     def trackId(self) -> int:
