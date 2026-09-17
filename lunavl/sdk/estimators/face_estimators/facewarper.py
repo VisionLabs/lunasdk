@@ -189,14 +189,14 @@ class FaceWarper:
         return AsyncTask(task, partial(postProcessing, faceDetection=faceDetection))
 
     @overload  # type: ignore
-    def warp_batch(
+    def warpBatch(
         self, faceDetections: List[FaceDetection], asyncEstimate: Literal[False] = False
     ) -> List[FaceWarp]: ...  # type: ignore
     @overload  # type: ignore
-    def warp_batch(
+    def warpBatch(
         self, faceDetections: List[FaceDetection], asyncEstimate: Literal[True] = True
     ) -> AsyncTask[List[FaceWarp]]: ...  # type: ignore
-    def warp_batch(
+    def warpBatch(
         self, faceDetections: List[FaceDetection], asyncEstimate: bool = False
     ) -> Union[List[FaceWarp], AsyncTask[List[FaceWarp]]]:
         """
