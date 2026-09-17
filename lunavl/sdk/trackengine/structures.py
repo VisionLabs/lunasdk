@@ -382,24 +382,34 @@ class FaceTrack(BaseTrackObject[FaceTrackData, FaceDetection]):
 
     __slots__ = ["_detection"]
 
+    # cached "no detection" marker: a non-detector track re-evaluating
+    # coreEstimation.isDetector (a pybind11 C++ fetch) on every property
+    # access costs thousands of redundant calls per second under load
+    _NO_DETECTION = object()
+
     def __init__(self, coreEstimation, image):
         super().__init__(coreEstimation, image)
-        self._detection: FaceDetection | None = None
+        self._detection: object = None
 
     @property
     def detection(self) -> Optional[FaceDetection]:
         """Get honest face detection. This detection is a result of detector work (not tracker)"""
-        if self._detection is None:
+        detection = self._detection
+        if detection is None:
             if not self.coreEstimation.isDetector:
+                self._detection = self._NO_DETECTION
                 return None
             coreFace = Face(self.image.coreImage, self.coreEstimation.detection)
             face = FaceDetection(coreFace, self.image)
             coreLandmarks = self.coreEstimation.landmarks
-            if coreLandmarks and not all((landmark.x == 0 and landmark.y == 0 for landmark in coreLandmarks)):
+            if coreLandmarks and any((landmark.x != 0 or landmark.y != 0) for landmark in coreLandmarks):
                 coreFace.landmarks5_opt.set(coreLandmarks)
                 face.landmarks5 = Landmarks5(coreLandmarks)
             self._detection = face
-        return self._detection
+            return face
+        if detection is self._NO_DETECTION:
+            return None
+        return detection  # type: ignore[return-value]
 
 
 class BodyTrack(BaseTrackObject[BodyTrackData, BodyDetection]):
@@ -434,29 +444,38 @@ class HumanTrack:
 
     """
 
+    # face/body wrapper cache sentinel: the wrappers are built from immutable
+    # per-frame C++ results, and every .face/.body access used to construct a
+    # fresh FaceTrack/BodyTrack plus a couple of pybind11 round-trips
+    _UNSET = object()
+
     def __init__(self, coreEstimation: HumanTrackInfo, image: VLImage):
         self.coreEstimation = coreEstimation
         self.image = image
+        self._face = self._UNSET
+        self._body = self._UNSET
 
     @property
     def face(self) -> Optional[FaceTrack]:
         """Face detection"""
-        if not self.coreEstimation.faceOpt.isValid():
-            return None
-        face = self.coreEstimation.faceOpt.value()
-        if face:
-            return FaceTrack(face, self.image)
-        return None
+        if self._face is self._UNSET:
+            if not self.coreEstimation.faceOpt.isValid():
+                self._face = None
+            else:
+                face = self.coreEstimation.faceOpt.value()
+                self._face = FaceTrack(face, self.image) if face else None
+        return self._face
 
     @property
     def body(self) -> Optional[BodyTrack]:
         """Body detection"""
-        if not self.coreEstimation.bodyOpt.isValid():
-            return None
-        body = self.coreEstimation.bodyOpt.value()
-        if body:
-            return BodyTrack(body, self.image)
-        return None
+        if self._body is self._UNSET:
+            if not self.coreEstimation.bodyOpt.isValid():
+                self._body = None
+            else:
+                body = self.coreEstimation.bodyOpt.value()
+                self._body = BodyTrack(body, self.image) if body else None
+        return self._body
 
     @property
     def trackId(self) -> int:
