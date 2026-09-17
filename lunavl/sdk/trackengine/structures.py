@@ -377,14 +377,16 @@ class BaseTrackObject(Generic[TrackedObject, TrackedDetectionObject]):
 
 class FaceTrack(BaseTrackObject[FaceTrackData, FaceDetection]):
     """
-    Containers for track body detection
+    Containers for face track detection
+
+    Attributes:
+        _detection: cached honest face detection; a non-detector track is cached
+            as _NO_DETECTION, so the C++ isDetector flag is not re-fetched (a
+            pybind11 round-trip) on every property access under load
     """
 
     __slots__ = ["_detection"]
 
-    # cached "no detection" marker: a non-detector track re-evaluating
-    # coreEstimation.isDetector (a pybind11 C++ fetch) on every property
-    # access costs thousands of redundant calls per second under load
     _NO_DETECTION = object()
 
     def __init__(self, coreEstimation, image):
@@ -441,12 +443,14 @@ class HumanTrack:
     Human track estimation on a frame
 
     Attributes:
-
+        coreEstimation: core human track info for the frame
+        image: frame image
+        _face: cached face track wrapper; the wrappers are built once from the
+            immutable per-frame C++ results instead of re-running the pybind11
+            round-trips on every .face/.body access
+        _body: cached body track wrapper, see _face
     """
 
-    # face/body wrapper cache sentinel: the wrappers are built from immutable
-    # per-frame C++ results, and every .face/.body access used to construct a
-    # fresh FaceTrack/BodyTrack plus a couple of pybind11 round-trips
     _UNSET = object()
 
     def __init__(self, coreEstimation: HumanTrackInfo, image: VLImage):
