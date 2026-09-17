@@ -38,7 +38,7 @@ class TestFaceWarper(BaseTestClass):
 
     def test_warp_batch(self):
         """Test warp batch estimation"""
-        warps = self.warper.warp_batch(self.detections)
+        warps = self.warper.warpBatch(self.detections)
         assert len(warps) == len(self.detections)
         for warp, detection in zip(warps, self.detections):
             assert isinstance(warp, FaceWarp)
@@ -50,7 +50,7 @@ class TestFaceWarper(BaseTestClass):
 
     def test_warp_batch_async(self):
         """Test async warp batch estimation"""
-        warps = self.warper.warp_batch(self.detections, asyncEstimate=True).get()
+        warps = self.warper.warpBatch(self.detections, asyncEstimate=True).get()
         assert len(warps) == len(self.detections)
         for warp, detection in zip(warps, self.detections):
             assert isinstance(warp, FaceWarp)
@@ -60,4 +60,4 @@ class TestFaceWarper(BaseTestClass):
     def test_warp_batch_validation(self):
         """Test warp batch with empty detections"""
         with self.assertRaises(ValueError):
-            self.warper.warp_batch([])
+            self.warper.warpBatch([])
