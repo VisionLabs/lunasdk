@@ -402,6 +402,25 @@ class OtherSettings(BaseSettingsSection):
         """
         self.setValue("kill-intersection-value", value)
 
+    @property
+    def framesBufferSize(self) -> Optional[int]:
+        """
+        Getter for framesBufferSize (internal per-stream frame buffer size of the track engine)
+
+        Returns:
+            framesBufferSize
+        """
+        return self.getValue("frames-buffer-size")
+
+    @framesBufferSize.setter
+    def framesBufferSize(self, value: int) -> None:
+        """
+        Setter for framesBufferSize
+        Args:
+            value: new value
+        """
+        self.setValue("frames-buffer-size", value)
+
 
 class FRGSettings(BaseSettingsSection):
     """
