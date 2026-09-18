@@ -375,6 +375,24 @@ class BaseTrackObject(Generic[TrackedObject, TrackedDetectionObject]):
         return str(self.asDict())
 
 
+class _NoDetection:
+    """Placeholder for the cached honest detection that is absent (the track is made by the tracker, not the detector)."""
+
+    __slots__ = ()
+
+
+_NO_DETECTION = _NoDetection()
+
+
+class _UnsetValue:
+    """Placeholder for a cache slot that is not evaluated yet."""
+
+    __slots__ = ()
+
+
+_UNSET = _UnsetValue()
+
+
 class FaceTrack(BaseTrackObject[FaceTrackData, FaceDetection]):
     """
     Containers for face track detection
@@ -387,11 +405,9 @@ class FaceTrack(BaseTrackObject[FaceTrackData, FaceDetection]):
 
     __slots__ = ["_detection"]
 
-    _NO_DETECTION = object()
-
     def __init__(self, coreEstimation, image):
         super().__init__(coreEstimation, image)
-        self._detection: object = None
+        self._detection: FaceDetection | _NoDetection | None = None
 
     @property
     def detection(self) -> Optional[FaceDetection]:
@@ -399,7 +415,7 @@ class FaceTrack(BaseTrackObject[FaceTrackData, FaceDetection]):
         detection = self._detection
         if detection is None:
             if not self.coreEstimation.isDetector:
-                self._detection = self._NO_DETECTION
+                self._detection = _NO_DETECTION
                 return None
             coreFace = Face(self.image.coreImage, self.coreEstimation.detection)
             face = FaceDetection(coreFace, self.image)
@@ -409,9 +425,9 @@ class FaceTrack(BaseTrackObject[FaceTrackData, FaceDetection]):
                 face.landmarks5 = Landmarks5(coreLandmarks)
             self._detection = face
             return face
-        if detection is self._NO_DETECTION:
+        if isinstance(detection, _NoDetection):
             return None
-        return detection  # type: ignore[return-value]
+        return detection
 
 
 class BodyTrack(BaseTrackObject[BodyTrackData, BodyDetection]):
@@ -451,35 +467,37 @@ class HumanTrack:
         _body: cached body track wrapper, see _face
     """
 
-    _UNSET = object()
-
     def __init__(self, coreEstimation: HumanTrackInfo, image: VLImage):
         self.coreEstimation = coreEstimation
         self.image = image
-        self._face: object = self._UNSET
-        self._body: object = self._UNSET
+        self._face: FaceTrack | _UnsetValue | None = _UNSET
+        self._body: BodyTrack | _UnsetValue | None = _UNSET
 
     @property
     def face(self) -> Optional[FaceTrack]:
         """Face detection"""
-        if self._face is self._UNSET:
+        face = self._face
+        if isinstance(face, _UnsetValue):
             if not self.coreEstimation.faceOpt.isValid():
-                self._face = None
+                face = None
             else:
-                face = self.coreEstimation.faceOpt.value()
-                self._face = FaceTrack(face, self.image) if face else None
-        return self._face  # type: ignore[return-value]
+                coreFace = self.coreEstimation.faceOpt.value()
+                face = FaceTrack(coreFace, self.image) if coreFace else None
+            self._face = face
+        return face
 
     @property
     def body(self) -> Optional[BodyTrack]:
         """Body detection"""
-        if self._body is self._UNSET:
+        body = self._body
+        if isinstance(body, _UnsetValue):
             if not self.coreEstimation.bodyOpt.isValid():
-                self._body = None
+                body = None
             else:
-                body = self.coreEstimation.bodyOpt.value()
-                self._body = BodyTrack(body, self.image) if body else None
-        return self._body  # type: ignore[return-value]
+                coreBody = self.coreEstimation.bodyOpt.value()
+                body = BodyTrack(coreBody, self.image) if coreBody else None
+            self._body = body
+        return body
 
     @property
     def trackId(self) -> int:
