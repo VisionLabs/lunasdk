@@ -23,11 +23,16 @@ include:
       - '/.download_fsdk.yml'
       - '/.additions.yml'
       - template.gitlab-ci.yml
+      - '/.artifacts.yml'
+      - '/.stages.yml'
+
 
 stages:
   - build
   - test
   - validate
+  - autorelease
+  - changelog
 
 .build:artifact: &build_artifact
   artifacts:
@@ -88,3 +93,25 @@ test:unittests:
     - source $(poetry env info -p)/bin/activate
     - *run_unittests
 
+autorelease-ci:
+  extends: .autorelease-ci
+
+autotag:
+  extends: .autotag
+
+generate_release:
+  stage: changelog
+  needs: [autotag]
+  tags: ['k8s-python']
+  image: ${BUILDER_IMAGE}
+  script:
+    - !reference [.prepare_poetry]
+    - poetry install --no-cache --only changelog
+    - poetry run python scripts/generate_release.py
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web"
+      when: never
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_MESSAGE =~ /skip_tag/
+      when: never
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_MESSAGE =~ /automatic_update_version/  # regular merge with merge-commit
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_MESSAGE =~ /auto_release/  # fast-forward merge without merge-commit

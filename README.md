@@ -42,3 +42,5 @@ Attributes estimation example:
 >>> detection.emotions.predominateEmotion.name
 'Happiness'
 ```
+
+# Changelog
