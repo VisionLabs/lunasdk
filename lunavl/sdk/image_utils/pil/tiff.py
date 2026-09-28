@@ -20,7 +20,10 @@ class TiffImageFileUseLibtiff(TiffImageFile):  # pylint: disable-msg=W0223
     """
 
     def load(self):
-        if getattr(self, "use_load_libtiff", False):
+        # ``self.tile`` is empty once the image is decoded. Without this check a nested ``load()`` call
+        # (recent Pillow calls it from ``load_end`` via ``ImageOps.exif_transpose``) re-enters
+        # ``_load_libtiff`` and fails with "Not exactly one tile".
+        if self.tile and getattr(self, "use_load_libtiff", False):
             return self._load_libtiff()
         return ImageFile.load(self)
 
