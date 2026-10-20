@@ -420,38 +420,50 @@ class FaceTrack(BaseTrackObject[FaceTrackData, FaceDetection]):
             coreFace = Face(self.image.coreImage, self.coreEstimation.detection)
             face = FaceDetection(coreFace, self.image)
             coreLandmarks = self.coreEstimation.landmarks
-            if coreLandmarks and any((landmark.x != 0 or landmark.y != 0) for landmark in coreLandmarks):
+            # all-zero landmarks mean "not estimated"; isValid() checks it in C++ instead of reading
+            # every point through pybind11 (the tracker returns all-zero landmarks unless landmarks are enabled)
+            if coreLandmarks.isValid():
                 coreFace.landmarks5_opt.set(coreLandmarks)
                 face.landmarks5 = Landmarks5(coreLandmarks)
             self._detection = face
             return face
-        if isinstance(detection, _NoDetection):
+        if detection is _NO_DETECTION:
             return None
-        return detection
+        return detection  # type: ignore[return-value]
 
 
 class BodyTrack(BaseTrackObject[BodyTrackData, BodyDetection]):
     """
     Containers for track body detection
+
+    Attributes:
+        _detection: cached honest body detection; a non-detector track is cached
+            as _NO_DETECTION, same as in FaceTrack
     """
 
     __slots__ = ["_detection"]
 
     def __init__(self, coreEstimation, image):
         super().__init__(coreEstimation, image)
-        self._detection: BodyDetection | None = None
+        self._detection: BodyDetection | _NoDetection | None = None
 
     @property
     def detection(self) -> Optional[BodyDetection]:
         """Get honest body detection. This detection is a result of detector work (not tracker)"""
-        if self._detection is None:
+        detection = self._detection
+        if detection is None:
             if not self.coreEstimation.isDetector:
+                self._detection = _NO_DETECTION
                 return None
             coreBody = Human()
             coreBody.img = self.image.coreImage
             coreBody.detection = self.coreEstimation.detection
-            self._detection = BodyDetection(coreBody, self.image)
-        return self._detection
+            body = BodyDetection(coreBody, self.image)
+            self._detection = body
+            return body
+        if detection is _NO_DETECTION:
+            return None
+        return detection  # type: ignore[return-value]
 
 
 class HumanTrack:
