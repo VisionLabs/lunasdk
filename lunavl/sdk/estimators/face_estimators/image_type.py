@@ -5,7 +5,6 @@ See `image color type`_.
 """
 
 from enum import Enum
-from typing import Dict, List, Union
 
 from FaceEngine import (  # pylint: disable=E0611,E0401
     ImageColorEstimation as CoreImageColorEstimation,
@@ -83,7 +82,7 @@ class ImageColorType(BaseEstimation):
         """Prediction of image type."""
         return ImageColorSchema.fromCoreColorType(self._coreEstimation.colorType)
 
-    def asDict(self) -> Dict[str, Union[float, str]]:
+    def asDict(self) -> dict[str, float | str]:
         """Convert estimation to dict."""
         return {"grayscale": self.grayscale, "infrared": self.infrared, "type": self.type.name.lower()}
 
@@ -98,8 +97,8 @@ class ImageColorTypeEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     def estimate(  # type: ignore
-        self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: bool = False
-    ) -> Union[ImageColorType, AsyncTask[ImageColorType]]:
+        self, warp: FaceWarp | FaceWarpedImage, asyncEstimate: bool = False
+    ) -> ImageColorType | AsyncTask[ImageColorType]:
         """
         Estimate image color type on warp.
 
@@ -120,8 +119,8 @@ class ImageColorTypeEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     def estimateBatch(
-        self, warps: List[Union[FaceWarp, FaceWarpedImage]], asyncEstimate: bool = False
-    ) -> Union[List[ImageColorType], AsyncTask[List[ImageColorType]]]:
+        self, warps: list[FaceWarp | FaceWarpedImage], asyncEstimate: bool = False
+    ) -> list[ImageColorType] | AsyncTask[list[ImageColorType]]:
         """
         Estimate image color type batch
 

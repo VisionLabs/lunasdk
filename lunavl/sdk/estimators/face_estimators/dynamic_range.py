@@ -1,5 +1,3 @@
-from typing import List, Union
-
 from FaceEngine import DynamicRangeEstimation, FSDKErrorResult
 
 from lunavl.sdk.async_task import AsyncTask
@@ -9,7 +7,7 @@ from lunavl.sdk.estimators.base import BaseEstimator, ImageWithFaceDetection
 from lunavl.sdk.estimators.estimators_utils.extractor_utils import validateInputByBatchEstimator
 
 
-def postProcessingBatch(error: FSDKErrorResult, dynamicRangeEstimations: List[DynamicRangeEstimation]) -> List[float]:
+def postProcessingBatch(error: FSDKErrorResult, dynamicRangeEstimations: list[DynamicRangeEstimation]) -> list[float]:
     """
     Post processing batch dynamic range estimation
 
@@ -44,7 +42,7 @@ class DynamicRangeEstimator(BaseEstimator):
 
     def estimate(  # type: ignore
         self,
-        imageWithFaceDetection: Union[ImageWithFaceDetection, FaceDetection],
+        imageWithFaceDetection: ImageWithFaceDetection | FaceDetection,
         asyncEstimate: bool = False,
     ):
         """
@@ -73,7 +71,7 @@ class DynamicRangeEstimator(BaseEstimator):
 
     def estimateBatch(
         self,
-        batch: List[Union[ImageWithFaceDetection, FaceDetection]],
+        batch: list[ImageWithFaceDetection | FaceDetection],
         asyncEstimate: bool = False,
     ):
         """

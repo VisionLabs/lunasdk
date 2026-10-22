@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, NamedTuple, Tuple, Union
+from typing import Any, NamedTuple
 
 from FaceEngine import (  # pylint: disable=E0611,E0401
     Detection,
@@ -38,7 +38,7 @@ class ImageForRedetection(NamedTuple):
     """
 
     image: VLImage
-    bBoxes: List[Rect]
+    bBoxes: list[Rect]
 
 
 class BaseDetector:
@@ -83,7 +83,7 @@ class BaseDetection(BaseEstimation):
         """
         return self._image
 
-    def asDict(self) -> Dict[str, Any]:
+    def asDict(self) -> dict[str, Any]:
         """
         Convert face detection to dict (json).
 
@@ -103,13 +103,13 @@ def assertImageForDetection(image: VLImage) -> None:
         LunaSDKException: if image format is not R8G8B8
     """
     if image.format != ColorFormat.R8G8B8:
-        details = "Bad image format for detection, format: {}, image: {}".format(image.format.value, image.filename)
+        details = f"Bad image format for detection, format: {image.format.value}, image: {image.filename}"
         raise LunaSDKException(LunaVLError.InvalidImageFormat.format(details))
 
 
 def getArgsForCoreDetectorForImages(
-    images: List[Union[VLImage, ImageForDetection]],
-) -> Tuple[List[CoreImage], List[CoreRectI]]:
+    images: list[VLImage | ImageForDetection],
+) -> tuple[list[CoreImage], list[CoreRectI]]:
     """
     Create args for detect for image list
     Args:
@@ -134,7 +134,7 @@ def getArgsForCoreDetectorForImages(
     return coreImages, detectAreas
 
 
-def getArgsForCoreRedetect(images: List[ImageForRedetection]) -> Tuple[List[CoreImage], List[List[Detection]]]:
+def getArgsForCoreRedetect(images: list[ImageForRedetection]) -> tuple[list[CoreImage], list[list[Detection]]]:
     """
     Create args for redetect for image list
     Args:
@@ -154,9 +154,7 @@ def getArgsForCoreRedetect(images: List[ImageForRedetection]) -> Tuple[List[Core
     return coreImages, detectAreas
 
 
-def validateBatchDetectInput(
-    detector, coreImages: Union[List[CoreImage]], detectAreas: Union[CoreRectI, List[CoreRectI]]
-) -> None:
+def validateBatchDetectInput(detector, coreImages: list[CoreImage], detectAreas: CoreRectI | list[CoreRectI]) -> None:
     """
     Collect errors from single operations and raise complex exception
     Args:
@@ -207,7 +205,7 @@ def assertImageForReDetection(coreDetector, image: ImageForRedetection) -> None:
     validateReDetectInput(coreDetector, *getArgsForCoreRedetect([image]))
 
 
-def validateReDetectInput(detector, coreImages: List[CoreImage], detectAreas: List[List[Detection]]):
+def validateReDetectInput(detector, coreImages: list[CoreImage], detectAreas: list[list[Detection]]):
     """
     Validate input data for face re-detect
     Args:

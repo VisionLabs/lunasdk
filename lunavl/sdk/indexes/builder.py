@@ -3,7 +3,6 @@ Module contains core index builder.
 """
 
 from pathlib import Path
-from typing import Union
 
 from FaceEngine import PyIFaceEngine
 
@@ -95,7 +94,7 @@ class IndexBuilder(CoreIndex):
         super().__delitem__(index)
         self._bufSize -= 1
 
-    def loadIndex(self, path: str, indexType: IndexType) -> Union[DynamicIndex, DenseIndex]:
+    def loadIndex(self, path: str, indexType: IndexType) -> DynamicIndex | DenseIndex:
         """
         Load 'dynamic' or 'dense' index from file.
         Args:

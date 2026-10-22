@@ -3,8 +3,6 @@
 See face_natural_light_.
 """
 
-from typing import List, Union
-
 from FaceEngine import (  # pylint: disable=E0611,E0401
     RedEyeAttributes as RedEyeCore,
     RedEyeEstimation as RedEyeEstimationCore,
@@ -112,7 +110,7 @@ class RedEyesEstimator(BaseEstimator):
     #  pylint: disable=W0221
     def estimate(  # type: ignore
         self, warpWithLandmarks5: WarpWithLandmarks5, asyncEstimate: bool = False
-    ) -> Union[RedEyes, AsyncTask[RedEyes]]:
+    ) -> RedEyes | AsyncTask[RedEyes]:
         """
         Estimate red-eye on warp.
 
@@ -135,8 +133,8 @@ class RedEyesEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     def estimateBatch(
-        self, warpWithLandmarks5List: List[WarpWithLandmarks5], asyncEstimate: bool = False
-    ) -> Union[List[RedEyes], AsyncTask[List[RedEyes]]]:
+        self, warpWithLandmarks5List: list[WarpWithLandmarks5], asyncEstimate: bool = False
+    ) -> list[RedEyes] | AsyncTask[list[RedEyes]]:
         """
         Estimate batch of red-eye.
 

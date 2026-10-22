@@ -3,7 +3,7 @@ Module for estimate a credibility person by face.
 """
 
 from enum import Enum
-from typing import Literal, Union, overload
+from typing import Literal, overload
 
 from FaceEngine import CredibilityCheckEstimation, CredibilityStatus
 
@@ -91,18 +91,14 @@ class CredibilityEstimator(BaseEstimator):
     """
 
     @overload  # type: ignore
-    def estimate(
-        self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[False] = False
-    ) -> Credibility: ...
+    def estimate(self, warp: FaceWarp | FaceWarpedImage, asyncEstimate: Literal[False] = False) -> Credibility: ...
 
     @overload
-    def estimate(
-        self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[True]
-    ) -> AsyncTask[Credibility]: ...
+    def estimate(self, warp: FaceWarp | FaceWarpedImage, asyncEstimate: Literal[True]) -> AsyncTask[Credibility]: ...
 
     def estimate(  # type: ignore
-        self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: bool = False
-    ) -> Union[Credibility, AsyncTask[Credibility]]:
+        self, warp: FaceWarp | FaceWarpedImage, asyncEstimate: bool = False
+    ) -> Credibility | AsyncTask[Credibility]:
         """
         Estimate credibility from a warp.
 

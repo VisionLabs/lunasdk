@@ -3,7 +3,6 @@ Test build an index with descriptors.
 """
 
 import os
-from typing import Union
 
 import pytest
 
@@ -81,7 +80,7 @@ class TestIndexFunctionality(BaseTestClass):
         ), "wrong size of internal storage"
 
     @staticmethod
-    def getCountOfDescriptorsInStorage(indexObject: Union[IndexBuilder, DynamicIndex, DenseIndex]) -> int:
+    def getCountOfDescriptorsInStorage(indexObject: IndexBuilder | DynamicIndex | DenseIndex) -> int:
         """
         Get actual count of descriptor in internal storage.
         Args:

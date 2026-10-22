@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any, Dict, Optional, Tuple, Union
+from typing import Any
 
 from FaceEngine import Detection  # pylint: disable=E0611,E0401
 
@@ -29,7 +29,7 @@ class BaseEstimation(ABC):
         return self._coreEstimation
 
     @abstractmethod
-    def asDict(self) -> Union[dict, list]:
+    def asDict(self) -> dict | list:
         """
         Convert to a dict.
 
@@ -66,10 +66,10 @@ class Landmarks(BaseEstimation):
             coreLandmarks (LANDMARKS): core landmarks
         """
         super().__init__(coreLandmarks)
-        self._points: Optional[Tuple[Point[float], ...]] = None
+        self._points: tuple[Point[float], ...] | None = None
 
     @property
-    def points(self) -> Tuple[Point[float], ...]:
+    def points(self) -> tuple[Point[float], ...]:
         """
         Lazy points loader.
 
@@ -82,7 +82,7 @@ class Landmarks(BaseEstimation):
             )
         return self._points
 
-    def asDict(self) -> Tuple[Tuple[int, int], ...]:  # type: ignore
+    def asDict(self) -> tuple[tuple[int, int], ...]:  # type: ignore
         """
         Convert to dict
 
@@ -91,7 +91,7 @@ class Landmarks(BaseEstimation):
         """
         pointCount = len(self._coreEstimation)
         points = self._coreEstimation
-        return tuple(((int(points[index].x), int(points[index].y)) for index in range(pointCount)))
+        return tuple((int(points[index].x), int(points[index].y)) for index in range(pointCount))
 
 
 class BoundingBox(BaseEstimation):
@@ -133,7 +133,7 @@ class BoundingBox(BaseEstimation):
         """
         return Rect.fromCoreRect(self._coreEstimation.getRect())
 
-    def asDict(self) -> Dict[str, Union[Dict[str, float], float]]:
+    def asDict(self) -> dict[str, dict[str, float] | float]:
         """
         Convert to  dict.
 

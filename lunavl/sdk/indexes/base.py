@@ -4,8 +4,6 @@ Module contains base index class and search result.
 
 from __future__ import annotations
 
-from typing import Dict, Union
-
 from FaceEngine import IDenseIndexPtr, IDynamicIndexPtr, IIndexBuilderPtr, PyIFaceEngine, SearchResult
 
 from lunavl.sdk.base import BaseEstimation
@@ -55,7 +53,7 @@ class IndexResult(BaseEstimation):
         """
         return self._coreEstimation.index
 
-    def asDict(self) -> Dict[str, Union[float, int]]:
+    def asDict(self) -> dict[str, float | int]:
         """
         Convert index search result to dict
         Returns:
@@ -71,7 +69,7 @@ class CoreIndex:
 
     __slots__ = ("_coreIndex", "_faceEngine")
 
-    def __init__(self, coreIndex: Union[IIndexBuilderPtr, IDenseIndexPtr, IDynamicIndexPtr], faceEngine: PyIFaceEngine):
+    def __init__(self, coreIndex: IIndexBuilderPtr | IDenseIndexPtr | IDynamicIndexPtr, faceEngine: PyIFaceEngine):
         """
         Init index.
 

@@ -5,7 +5,7 @@ See `face descriptor`_.
 
 """
 
-from typing import Dict, Iterator, List, Optional, Type, Union
+from collections.abc import Iterator
 
 from FaceEngine import DescriptorBatchResult, IDescriptorBatchPtr, IDescriptorPtr  # pylint: disable=E0611,E0401
 
@@ -27,7 +27,7 @@ class BaseDescriptor(BaseEstimation):
         super().__init__(coreEstimation)
         self.garbageScore = garbageScore
 
-    def asDict(self) -> Dict[str, Union[float, bytes]]:
+    def asDict(self) -> dict[str, float | bytes]:
         """
         Convert to dict
 
@@ -48,7 +48,7 @@ class BaseDescriptor(BaseEstimation):
         return descBytes
 
     @property
-    def asVector(self) -> List[int]:
+    def asVector(self) -> list[int]:
         """
         Convert descriptor to list of ints
         Returns:
@@ -99,10 +99,10 @@ class BaseDescriptorBatch(BaseEstimation):
         scores (List[float]):  list of garbage scores
     """
 
-    _descriptorFactory: Type[BaseDescriptor]
+    _descriptorFactory: type[BaseDescriptor]
 
     #  pylint: disable=W0235
-    def __init__(self, coreEstimation: IDescriptorBatchPtr, scores: Optional[List[float]] = None):
+    def __init__(self, coreEstimation: IDescriptorBatchPtr, scores: list[float] | None = None):
         super().__init__(coreEstimation)
         if scores is None:
             self.scores = [0.0 for _ in range(coreEstimation.getMaxCount())]
@@ -127,7 +127,7 @@ class BaseDescriptorBatch(BaseEstimation):
         """
         return self._coreEstimation.getMaxCount()
 
-    def asDict(self) -> List[Dict]:
+    def asDict(self) -> list[dict]:
         """
         Get batch in json like object.
 
@@ -198,8 +198,8 @@ class BaseDescriptorFactory:
         _descriptorVersion (int): descriptor version or zero for use default descriptor version
     """
 
-    _descriptorFactory: Type[BaseDescriptor]
-    _descriptorBatchFactory: Type[BaseDescriptorBatch]
+    _descriptorFactory: type[BaseDescriptor]
+    _descriptorBatchFactory: type[BaseDescriptorBatch]
 
     def __init__(self, faceEngine: "VLFaceEngine", descriptorVersion: int = 0):  # type: ignore # noqa: F821
         self._faceEngine = faceEngine
@@ -215,7 +215,7 @@ class BaseDescriptorFactory:
         return self._descriptorVersion
 
     def generateDescriptor(
-        self, descriptor: Optional[bytes] = None, garbageScore: Optional[float] = None, descriptorVersion=0
+        self, descriptor: bytes | None = None, garbageScore: float | None = None, descriptorVersion=0
     ) -> BaseDescriptor:
         """
         Generate core descriptor.

@@ -76,8 +76,8 @@ class TestsRedetectBody(BodyDetectTestClass):
         redetect = self.detector.redetect(
             images=[ImageForRedetection(image=VLIMAGE_ONE_FACE, bBoxes=[Rect(0, 0, 100, 100)])]
         )[0][0]
-        assert redetectOne is None, "excepted None but found {}".format(redetectOne)
-        assert redetect is None, "excepted None but found {}".format(redetectOne)
+        assert redetectOne is None, f"excepted None but found {redetectOne}"
+        assert redetect is None, f"excepted None but found {redetectOne}"
 
     def test_redetect_one_invalid_rectangle(self):
         """

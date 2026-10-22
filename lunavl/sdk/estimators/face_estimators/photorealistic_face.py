@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List, Literal, Union, overload
+from typing import Literal, overload
 
 from FaceEngine import PhotorealisticFaceEstimationType as CorePhotorealisticEnum  # pylint: disable=E0611,E0401
 
@@ -92,7 +92,7 @@ class PhotorealisticFaceEstimator(BaseEstimator):
         self,
         faceDetection: FaceDetection,
         asyncEstimate: bool = False,
-    ) -> Union[PhotorealisticPrediction, AsyncTask[PhotorealisticPrediction]]:
+    ) -> PhotorealisticPrediction | AsyncTask[PhotorealisticPrediction]:
         """
         Estimate photorealistic face status
 
@@ -119,9 +119,9 @@ class PhotorealisticFaceEstimator(BaseEstimator):
     #  pylint: disable=W0221
     def estimateBatch(  # type: ignore
         self,
-        faceDetections: List[FaceDetection],
+        faceDetections: list[FaceDetection],
         asyncEstimate: bool = False,
-    ) -> Union[List[PhotorealisticPrediction], AsyncTask[List[PhotorealisticPrediction]]]:
+    ) -> list[PhotorealisticPrediction] | AsyncTask[list[PhotorealisticPrediction]]:
         """
         Batch estimate photorealistic face status
 

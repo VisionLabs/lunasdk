@@ -5,7 +5,6 @@ See `portrait_style`_.
 """
 
 from enum import Enum
-from typing import Dict, List, Union
 
 import FaceEngine
 
@@ -13,7 +12,7 @@ from lunavl.sdk.base import BaseEstimation
 from lunavl.sdk.detectors.facedetector import FaceDetection
 
 from ...async_task import AsyncTask, DefaultPostprocessingFactory
-from ..base import BaseEstimator, ImageWithFaceDetection
+from ..base import BaseEstimator
 from ..estimators_utils.extractor_utils import validateInputByBatchEstimator
 
 
@@ -74,7 +73,7 @@ class PortraitStyle(BaseEstimation):
         """
         return getattr(PortraitStyleCode, self._coreEstimation.status.name)
 
-    def asDict(self) -> Dict[str, Union[PortraitStyleCode, Dict[str, float]]]:
+    def asDict(self) -> dict[str, PortraitStyleCode | dict[str, float]]:
         """Convert estimation to dict."""
         return {
             "estimations": {
@@ -98,7 +97,7 @@ class PortraitStyleEstimator(BaseEstimator):
         self,
         faceDetection: FaceDetection,
         asyncEstimate: bool = False,
-    ) -> Union[PortraitStyle, AsyncTask[PortraitStyle]]:
+    ) -> PortraitStyle | AsyncTask[PortraitStyle]:
         """
         Estimate portrait style from single image
 
@@ -121,9 +120,9 @@ class PortraitStyleEstimator(BaseEstimator):
 
     def estimateBatch(  # type: ignore
         self,
-        faceDetections: List[FaceDetection],
+        faceDetections: list[FaceDetection],
         asyncEstimate: bool = False,
-    ) -> Union[List[PortraitStyle], AsyncTask[List[PortraitStyle]]]:
+    ) -> list[PortraitStyle] | AsyncTask[list[PortraitStyle]]:
         """
         Estimate portrait style from chunk of images.
 

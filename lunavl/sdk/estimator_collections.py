@@ -2,7 +2,6 @@
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import List, Optional, Union
 
 from .estimators.face_estimators.ags import AGSEstimator
 from .estimators.face_estimators.basic_attributes import BasicAttributesEstimator
@@ -153,9 +152,9 @@ class FaceEstimatorsCollection:
 
     def __init__(
         self,
-        startEstimators: Optional[List[FaceEstimator]] = None,
-        faceEngine: Optional[VLFaceEngine] = None,
-        estimatorsSettings: Optional[EstimatorsSettings] = None,
+        startEstimators: list[FaceEstimator] | None = None,
+        faceEngine: VLFaceEngine | None = None,
+        estimatorsSettings: EstimatorsSettings | None = None,
     ):
         """
         Init.
@@ -175,20 +174,20 @@ class FaceEstimatorsCollection:
         else:
             self._estimatorsSettings = estimatorsSettings
 
-        self._basicAttributesEstimator: Union[None, BasicAttributesEstimator] = None
-        self._eyeEstimator: Union[None, EyeEstimator] = None
-        self._emotionsEstimator: Union[None, EmotionsEstimator] = None
-        self._gazeDirectionEstimator: Union[None, GazeEstimator] = None
-        self._mouthStateEstimator: Union[None, MouthStateEstimator] = None
-        self._warpQualityEstimator: Union[None, WarpQualityEstimator] = None
-        self._headPoseEstimator: Union[None, HeadPoseEstimator] = None
-        self._AGSEstimator: Union[None, AGSEstimator] = None
-        self._descriptorEstimator: Union[None, FaceDescriptorEstimator] = None
-        self._maskEstimator: Union[None, MaskEstimator] = None
-        self._glassesEstimator: Union[None, GlassesEstimator] = None
-        self._livenessV1Estimator: Union[None, LivenessV1Estimator] = None
-        self._orientationModeEstimator: Union[None, OrientationModeEstimator] = None
-        self._credibilityEstimator: Union[None, CredibilityEstimator] = None
+        self._basicAttributesEstimator: None | BasicAttributesEstimator = None
+        self._eyeEstimator: None | EyeEstimator = None
+        self._emotionsEstimator: None | EmotionsEstimator = None
+        self._gazeDirectionEstimator: None | GazeEstimator = None
+        self._mouthStateEstimator: None | MouthStateEstimator = None
+        self._warpQualityEstimator: None | WarpQualityEstimator = None
+        self._headPoseEstimator: None | HeadPoseEstimator = None
+        self._AGSEstimator: None | AGSEstimator = None
+        self._descriptorEstimator: None | FaceDescriptorEstimator = None
+        self._maskEstimator: None | MaskEstimator = None
+        self._glassesEstimator: None | GlassesEstimator = None
+        self._livenessV1Estimator: None | LivenessV1Estimator = None
+        self._orientationModeEstimator: None | OrientationModeEstimator = None
+        self._credibilityEstimator: None | CredibilityEstimator = None
         self.warper: FaceWarper = self._faceEngine.createFaceWarper()
 
         if startEstimators:

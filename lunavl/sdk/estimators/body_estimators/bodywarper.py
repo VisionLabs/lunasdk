@@ -1,7 +1,5 @@
 """Module for creating warped images"""
 
-from typing import Optional, Union
-
 from FaceEngine import IHumanWarperPtr  # pylint: disable=E0611,E0401
 from FaceEngine import Image as CoreImage  # pylint: disable=E0611,E0401
 from numpy import ndarray
@@ -23,9 +21,9 @@ class BodyWarpedImage(VLImage):
 
     def __init__(
         self,
-        body: Union[bytes, bytearray, ndarray, PilImage, CoreImage, VLImage],
+        body: bytes | bytearray | ndarray | PilImage | CoreImage | VLImage,
         filename: str = "",
-        colorFormat: Optional[ColorFormat] = None,
+        colorFormat: ColorFormat | None = None,
     ):
         """
         Init.
@@ -59,7 +57,7 @@ class BodyWarpedImage(VLImage):
 
     #  pylint: disable=W0221
     @classmethod
-    def load(cls, *, filename: Optional[str] = None, url: Optional[str] = None) -> "BodyWarpedImage":  # type: ignore
+    def load(cls, *, filename: str | None = None, url: str | None = None) -> "BodyWarpedImage":  # type: ignore
         """
         Load image from numpy array or file or url.
 

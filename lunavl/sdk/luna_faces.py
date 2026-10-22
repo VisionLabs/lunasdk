@@ -3,7 +3,6 @@ High-level api for estimating face attributes
 """
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Union
 
 from FaceEngine import Face  # pylint: disable=E0611,E0401
 from FaceEngine import Image as CoreImage  # pylint: disable=E0611,E0401
@@ -89,7 +88,7 @@ class VLFaceDetection(FaceDetection):
         coreDetection: Face,
         image: VLImage,
         estimatorCollection: FaceEstimatorsCollection,
-        estimationSettings: Optional[VLFaceDetectionSettings] = None,
+        estimationSettings: VLFaceDetectionSettings | None = None,
     ):
         """
         Init.
@@ -99,21 +98,21 @@ class VLFaceDetection(FaceDetection):
         """
         super().__init__(coreDetection, image)
         self._estimationSettings: VLFaceDetectionSettings = estimationSettings or VLFaceDetectionSettings()
-        self._emotions: Optional[Emotions] = None
-        self._eyes: Optional[EyesEstimation] = None
-        self._warp: Optional[FaceWarp] = None
-        self._mouthState: Optional[MouthStates] = None
-        self._basicAttributes: Optional[BasicAttributes] = None
-        self._gaze: Optional[GazeDirection] = None
-        self._warpQuality: Optional[Quality] = None
-        self._headPose: Optional[HeadPose] = None
-        self._transformedLandmarks5: Optional[Landmarks5] = None
-        self._ags: Optional[float] = None
-        self._descriptor: Optional[FaceDescriptor] = None
-        self._mask: Optional[Mask] = None
-        self._glasses: Optional[Glasses] = None
-        self._credibility: Optional[Credibility] = None
-        self._liveness: Optional[LivenessV1] = None
+        self._emotions: Emotions | None = None
+        self._eyes: EyesEstimation | None = None
+        self._warp: FaceWarp | None = None
+        self._mouthState: MouthStates | None = None
+        self._basicAttributes: BasicAttributes | None = None
+        self._gaze: GazeDirection | None = None
+        self._warpQuality: Quality | None = None
+        self._headPose: HeadPose | None = None
+        self._transformedLandmarks5: Landmarks5 | None = None
+        self._ags: float | None = None
+        self._descriptor: FaceDescriptor | None = None
+        self._mask: Mask | None = None
+        self._glasses: Glasses | None = None
+        self._credibility: Credibility | None = None
+        self._liveness: LivenessV1 | None = None
         self.estimatorCollection: FaceEstimatorsCollection = estimatorCollection
 
     @property
@@ -310,14 +309,14 @@ class VLFaceDetection(FaceDetection):
             self._liveness = self.estimatorCollection.livenessV1Estimator.estimate(self)
         return self._liveness
 
-    def asDict(self) -> Dict[str, Union[str, dict, list, float, tuple]]:
+    def asDict(self) -> dict[str, str | dict | list | float | tuple]:
         """
         Convert to dict.
 
         Returns:
             All estimated attributes will be added to dict
         """
-        res: Dict[str, Union[str, dict, list, float, tuple]] = {
+        res: dict[str, str | dict | list | float | tuple] = {
             "rect": {
                 "x": int(self.boundingBox.rect.x),
                 "y": int(self.boundingBox.rect.y),
@@ -394,10 +393,10 @@ class VLFaceDetector:
 
     def __init__(
         self,
-        detectorSettings: Optional[FaceDetectorSettings] = None,
-        faceEngine: Optional[VLFaceEngine] = None,
-        estimationSettings: Optional[VLFaceDetectionSettings] = None,
-        estimatorsSettings: Optional[EstimatorsSettings] = None,
+        detectorSettings: FaceDetectorSettings | None = None,
+        faceEngine: VLFaceEngine | None = None,
+        estimationSettings: VLFaceDetectionSettings | None = None,
+        estimatorsSettings: EstimatorsSettings | None = None,
     ):
         """
         Init.
@@ -423,11 +422,11 @@ class VLFaceDetector:
         self._faceDetector: FaceDetector = self.faceEngine.createFaceDetector(
             detectorSettings.detectorType, launchOptions=detectorSettings.launchOptions
         )
-        self._estimationSettings: Optional[VLFaceDetectionSettings] = estimationSettings
+        self._estimationSettings: VLFaceDetectionSettings | None = estimationSettings
 
     @classmethod
     def initialize(
-        cls, faceEngine: Optional[VLFaceEngine] = None, estimatorsSettings: Optional[EstimatorsSettings] = None
+        cls, faceEngine: VLFaceEngine | None = None, estimatorsSettings: EstimatorsSettings | None = None
     ) -> None:
         """
         Initialize class attributes.
@@ -443,7 +442,7 @@ class VLFaceDetector:
             faceEngine=cls.faceEngine, estimatorsSettings=estimatorsSettings
         )
 
-    def detectOne(self, image: VLImage, detectArea: Optional[Rect] = None) -> Union[None, VLFaceDetection]:
+    def detectOne(self, image: VLImage, detectArea: Rect | None = None) -> None | VLFaceDetection:
         """
         Detect just one best detection on the image.
 
@@ -461,8 +460,8 @@ class VLFaceDetector:
         )
 
     def postProcessingDetectionBatch(
-        self, detectRes: List[List[Optional[FaceDetection]]]
-    ) -> List[List[Optional[VLFaceDetection]]]:
+        self, detectRes: list[list[FaceDetection | None]]
+    ) -> list[list[VLFaceDetection | None]]:
         """
         Post processing detection results (wrap to  VLFaceDetection)
         Args:
@@ -490,7 +489,7 @@ class VLFaceDetector:
             )
         return res
 
-    def postProcessing(self, detection: Optional[FaceDetection]) -> Optional[VLFaceDetection]:
+    def postProcessing(self, detection: FaceDetection | None) -> VLFaceDetection | None:
         """
         Post processing detection (wrap to  VLFaceDetection)
         Args:
@@ -505,9 +504,7 @@ class VLFaceDetector:
             )
         return None
 
-    def detect(
-        self, images: List[Union[VLImage, ImageForDetection]], limit: int = 5
-    ) -> Union[List[List[VLFaceDetection]], List[List[VLFaceDetection]]]:
+    def detect(self, images: list[VLImage | ImageForDetection], limit: int = 5) -> list[list[VLFaceDetection]]:
         """
         Batch detect faces on images.
 
@@ -520,7 +517,7 @@ class VLFaceDetector:
         detectRes = self._faceDetector.detect(images, limit, True, True)
         return self.postProcessingDetectionBatch(detectRes)  # type: ignore
 
-    def redetectOne(self, image: Union[VLImage, VLFaceDetection], bBox: Rect) -> Union[VLFaceDetection, None]:
+    def redetectOne(self, image: VLImage | VLFaceDetection, bBox: Rect) -> VLFaceDetection | None:
         """
         Redetect faces on an image. If VLFaceDetection is provided, only VLImage from that object will be used.
 
@@ -534,15 +531,15 @@ class VLFaceDetector:
             imageForRedetct = image.image
         else:
             imageForRedetct = image
-        redetection: Union[None, FaceDetection] = self._faceDetector.redetectOne(
+        redetection: None | FaceDetection = self._faceDetector.redetectOne(
             imageForRedetct, bBox=bBox, detect5Landmarks=True, detect68Landmarks=True
         )
         return self.postProcessing(redetection)
 
     def redetect(
         self,
-        imagesAndBBoxes: List[ImageForRedetection],
-    ) -> Union[List[List[Union[VLFaceDetection, None]]], List[List[Union[VLFaceDetection, None]]]]:
+        imagesAndBBoxes: list[ImageForRedetection],
+    ) -> list[list[VLFaceDetection | None]]:
         """
         Redetect faces on images.
 
@@ -589,23 +586,23 @@ class VLWarpedImage(FaceWarpedImage):
 
     def __init__(
         self,
-        body: Union[bytes, ndarray, PilImage, CoreImage, VLImage],
+        body: bytes | ndarray | PilImage | CoreImage | VLImage,
         filename: str = "",
-        colorFormat: Optional[ColorFormat] = None,
+        colorFormat: ColorFormat | None = None,
     ):
         super().__init__(body=body, filename=filename, colorFormat=colorFormat)
-        self._emotions: Optional[Emotions] = None
-        self._eyes: Optional[EyesEstimation] = None
-        self._mouthState: Optional[MouthStates] = None
-        self._basicAttributes: Optional[BasicAttributes] = None
-        self._warpQuality: Optional[Quality] = None
-        self._descriptor: Optional[FaceDescriptor] = None
-        self._mask: Optional[Mask] = None
-        self._glasses: Optional[Glasses] = None
-        self._credibility: Optional[Credibility] = None
+        self._emotions: Emotions | None = None
+        self._eyes: EyesEstimation | None = None
+        self._mouthState: MouthStates | None = None
+        self._basicAttributes: BasicAttributes | None = None
+        self._warpQuality: Quality | None = None
+        self._descriptor: FaceDescriptor | None = None
+        self._mask: Mask | None = None
+        self._glasses: Glasses | None = None
+        self._credibility: Credibility | None = None
 
     @classmethod
-    def initialize(cls, estimatorsCollection: Optional[FaceEstimatorsCollection] = None) -> None:
+    def initialize(cls, estimatorsCollection: FaceEstimatorsCollection | None = None) -> None:
         """
         Initialize class attributes.
 
@@ -709,7 +706,7 @@ class VLWarpedImage(FaceWarpedImage):
             self._credibility = VLWarpedImage.estimatorsCollection.credibilityEstimator.estimate(self)
         return self._credibility
 
-    def asDict(self) -> Dict[str, Dict[str, float]]:
+    def asDict(self) -> dict[str, dict[str, float]]:
         """
         Convert to dict.
 

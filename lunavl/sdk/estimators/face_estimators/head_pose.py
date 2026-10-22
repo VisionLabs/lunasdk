@@ -5,12 +5,12 @@ See `head pose`_.
 """
 
 from enum import Enum
-from typing import Dict, List, Literal, Union, overload
+from typing import Literal, overload
 
 from FaceEngine import FrontalFaceType, HeadPoseEstimation  # pylint: disable=E0611,E0401
 
 from lunavl.sdk.base import BaseEstimation
-from lunavl.sdk.detectors.facedetector import FaceDetection, Landmarks68
+from lunavl.sdk.detectors.facedetector import FaceDetection
 
 from ...async_task import AsyncTask, DefaultPostprocessingFactory
 from ..base import BaseEstimator, ImageWithFaceDetection
@@ -95,7 +95,7 @@ class HeadPose(BaseEstimation):
         """
         return self._coreEstimation.roll
 
-    def asDict(self) -> Dict[str, float]:
+    def asDict(self) -> dict[str, float]:
         """
         Convert angles to dict.
 
@@ -124,8 +124,8 @@ class HeadPoseEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     def estimate(  # type: ignore
-        self, detection: Union[ImageWithFaceDetection, FaceDetection], asyncEstimate: bool = False
-    ) -> Union[HeadPose, AsyncTask[HeadPose]]:
+        self, detection: ImageWithFaceDetection | FaceDetection, asyncEstimate: bool = False
+    ) -> HeadPose | AsyncTask[HeadPose]:
         """
         Realize interface of abstract  estimator. Call estimateByBoundingBox
         """
@@ -134,18 +134,18 @@ class HeadPoseEstimator(BaseEstimator):
     @overload
     def estimateByBoundingBox(
         self,
-        imageWithFaceDetection: Union[ImageWithFaceDetection, FaceDetection],
+        imageWithFaceDetection: ImageWithFaceDetection | FaceDetection,
         asyncEstimate: Literal[False] = False,
     ) -> HeadPose: ...
 
     @overload
     def estimateByBoundingBox(
-        self, imageWithFaceDetection: Union[ImageWithFaceDetection, FaceDetection], asyncEstimate: Literal[True]
+        self, imageWithFaceDetection: ImageWithFaceDetection | FaceDetection, asyncEstimate: Literal[True]
     ) -> AsyncTask[HeadPose]: ...
 
     def estimateByBoundingBox(
-        self, imageWithFaceDetection: Union[ImageWithFaceDetection, FaceDetection], asyncEstimate: bool = False
-    ) -> Union[HeadPose, AsyncTask[HeadPose]]:
+        self, imageWithFaceDetection: ImageWithFaceDetection | FaceDetection, asyncEstimate: bool = False
+    ) -> HeadPose | AsyncTask[HeadPose]:
         """
         Estimate head pose by detection.
 
@@ -168,8 +168,8 @@ class HeadPoseEstimator(BaseEstimator):
         return AsyncTask(task, POST_PROCESSING.postProcessing)
 
     def estimateBatch(
-        self, batch: Union[List[ImageWithFaceDetection], List[FaceDetection]], asyncEstimate: bool = False
-    ) -> Union[List[HeadPose], AsyncTask[List[HeadPose]]]:
+        self, batch: list[ImageWithFaceDetection] | list[FaceDetection], asyncEstimate: bool = False
+    ) -> list[HeadPose] | AsyncTask[list[HeadPose]]:
         """
         Batch estimate head pose by detection.
 

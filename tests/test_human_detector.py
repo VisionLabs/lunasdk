@@ -1,5 +1,3 @@
-from typing import List
-
 import pytest
 
 from lunavl.sdk.base import BoundingBox
@@ -53,7 +51,7 @@ class TestBodyDetector(BaseTestClass):
 
     def assertDetections(
         self,
-        detections: List[HumanDetection],
+        detections: list[HumanDetection],
         imageVl: VLImage,
     ):
         """

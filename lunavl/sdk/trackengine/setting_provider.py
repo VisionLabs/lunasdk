@@ -1,4 +1,4 @@
-from typing import Literal, Optional
+from typing import Literal
 
 from lunavl.sdk.faceengine.setting_provider import BaseSettingsProvider, BaseSettingsSection, BiDirectionEnum
 
@@ -45,7 +45,7 @@ class LoggerSettings(BaseSettingsSection):
     sectionName = "logging"
 
     @property
-    def mode(self) -> Optional[LoggingMode]:
+    def mode(self) -> LoggingMode | None:
         """
         Getter for logging mode
 
@@ -67,7 +67,7 @@ class LoggerSettings(BaseSettingsSection):
         self.setValue("mode", value.value)
 
     @property
-    def logFilePath(self) -> Optional[str]:
+    def logFilePath(self) -> str | None:
         """
         Getter for log file path
 
@@ -86,7 +86,7 @@ class LoggerSettings(BaseSettingsSection):
         self.setValue("log-file-path", value)
 
     @property
-    def severity(self) -> Optional[str]:
+    def severity(self) -> str | None:
         """
         Getter for logging severity level
 
@@ -115,7 +115,7 @@ class OtherSettings(BaseSettingsSection):
     sectionName = "other"
 
     @property
-    def callbackMode(self) -> Optional[IntO1]:
+    def callbackMode(self) -> IntO1 | None:
         """
         Getter for callback mode
 
@@ -134,7 +134,7 @@ class OtherSettings(BaseSettingsSection):
         self.setValue("callback-mode", value)
 
     @property
-    def detectorStep(self) -> Optional[int]:
+    def detectorStep(self) -> int | None:
         """
         Getter for detector step.
 
@@ -153,7 +153,7 @@ class OtherSettings(BaseSettingsSection):
         self.setValue("detector-step", value)
 
     @property
-    def detectorComparer(self) -> Optional[int]:
+    def detectorComparer(self) -> int | None:
         """
         Getter for detectorComparer
 
@@ -172,7 +172,7 @@ class OtherSettings(BaseSettingsSection):
         self.setValue("detector-comparer", value)
 
     @property
-    def useOneDetectionMode(self) -> Optional[IntO1]:
+    def useOneDetectionMode(self) -> IntO1 | None:
         """
         Getter for useOneDetectionMode.
 
@@ -191,7 +191,7 @@ class OtherSettings(BaseSettingsSection):
         self.setValue("use-one-detection-mode", value)
 
     @property
-    def skipFrames(self) -> Optional[int]:
+    def skipFrames(self) -> int | None:
         """
         Getter for skipFrames
 
@@ -210,7 +210,7 @@ class OtherSettings(BaseSettingsSection):
         self.setValue("skip-frames", value)
 
     @property
-    def frgSubtractor(self) -> Optional[IntO1]:
+    def frgSubtractor(self) -> IntO1 | None:
         """
         Getter for frgSubtractor
 
@@ -229,7 +229,7 @@ class OtherSettings(BaseSettingsSection):
         self.setValue("frg-subtractor", value)
 
     @property
-    def callbackBufferSize(self) -> Optional[int]:
+    def callbackBufferSize(self) -> int | None:
         """
         Getter for callbackBufferSize
 
@@ -248,7 +248,7 @@ class OtherSettings(BaseSettingsSection):
         self.setValue("callback-buffer-size", value)
 
     @property
-    def trackingResultsBufferSize(self) -> Optional[int]:
+    def trackingResultsBufferSize(self) -> int | None:
         """
         Getter for trackingResultsBufferSize
 
@@ -267,7 +267,7 @@ class OtherSettings(BaseSettingsSection):
         self.setValue("tracking-results-buffer-size", value)
 
     @property
-    def detectorScaling(self) -> Optional[IntO1]:
+    def detectorScaling(self) -> IntO1 | None:
         """
         Getter for detectorScaling
 
@@ -286,7 +286,7 @@ class OtherSettings(BaseSettingsSection):
         self.setValue("detector-scaling", value)
 
     @property
-    def scaleResultSize(self) -> Optional[int]:
+    def scaleResultSize(self) -> int | None:
         """
         Getter for scaleResultSize
 
@@ -305,7 +305,7 @@ class OtherSettings(BaseSettingsSection):
         self.setValue("scale-result-size", value)
 
     @property
-    def maxDetectionCount(self) -> Optional[int]:
+    def maxDetectionCount(self) -> int | None:
         """
         Getter for maxDetectionCount
 
@@ -324,7 +324,7 @@ class OtherSettings(BaseSettingsSection):
         self.setValue("max-detection-count", value)
 
     @property
-    def minimalTrackLength(self) -> Optional[int]:
+    def minimalTrackLength(self) -> int | None:
         """
         Getter for minimalTrackLength
 
@@ -343,7 +343,7 @@ class OtherSettings(BaseSettingsSection):
         self.setValue("minimal-track-length", value)
 
     @property
-    def trackerType(self) -> Optional[TrackerType]:
+    def trackerType(self) -> TrackerType | None:
         """
         Getter for trackerType
 
@@ -365,7 +365,7 @@ class OtherSettings(BaseSettingsSection):
         self.setValue("tracker-type", value.value)
 
     @property
-    def killIntersectedDetections(self) -> Optional[IntO1]:
+    def killIntersectedDetections(self) -> IntO1 | None:
         """
         Getter for killIntersectedDetections
 
@@ -384,7 +384,7 @@ class OtherSettings(BaseSettingsSection):
         self.setValue("kill-intersected-detections", value)
 
     @property
-    def killIntersectionValue(self) -> Optional[float]:
+    def killIntersectionValue(self) -> float | None:
         """
         Getter for killIntersectionValue
 
@@ -403,7 +403,7 @@ class OtherSettings(BaseSettingsSection):
         self.setValue("kill-intersection-value", value)
 
     @property
-    def framesBufferSize(self) -> Optional[int]:
+    def framesBufferSize(self) -> int | None:
         """
         Getter for framesBufferSize (internal per-stream frame buffer size of the track engine)
 
@@ -432,7 +432,7 @@ class FRGSettings(BaseSettingsSection):
     sectionName = "FRG"
 
     @property
-    def useBinaryFrg(self) -> Optional[IntO1]:
+    def useBinaryFrg(self) -> IntO1 | None:
         """
         Getter for useBinaryFrg
 
@@ -451,7 +451,7 @@ class FRGSettings(BaseSettingsSection):
         self.setValue("use-binary-frg", value)
 
     @property
-    def frgUpdateStep(self) -> Optional[int]:
+    def frgUpdateStep(self) -> int | None:
         """
         Getter for frgUpdateStep
 
@@ -470,7 +470,7 @@ class FRGSettings(BaseSettingsSection):
         self.setValue("frg-update-step", value)
 
     @property
-    def frgScaleSize(self) -> Optional[int]:
+    def frgScaleSize(self) -> int | None:
         """
         Getter for frgScaleSize
 
@@ -499,7 +499,7 @@ class FaceTrackingSettings(BaseSettingsSection):
     sectionName = "face"
 
     @property
-    def faceLandmarksDetection(self) -> Optional[IntO1]:
+    def faceLandmarksDetection(self) -> IntO1 | None:
         """
         Getter for useMobileNet
 
@@ -528,7 +528,7 @@ class BodyTrackingSettings(BaseSettingsSection):
     sectionName = "human"
 
     @property
-    def humanLandmarksDetection(self) -> Optional[IntO1]:
+    def humanLandmarksDetection(self) -> IntO1 | None:
         """
         Getter for humanLandmarksDetection
 
@@ -547,7 +547,7 @@ class BodyTrackingSettings(BaseSettingsSection):
         self.setValue("human-landmarks-detection", value)
 
     @property
-    def removeOverlappedStrategy(self) -> Optional[OverlapRemovingType]:
+    def removeOverlappedStrategy(self) -> OverlapRemovingType | None:
         """
         Getter for removeOverlappedStrategy
 
@@ -569,7 +569,7 @@ class BodyTrackingSettings(BaseSettingsSection):
         self.setValue("remove-overlapped-strategy", value.value)
 
     @property
-    def removeHorizontalRatio(self) -> Optional[float]:
+    def removeHorizontalRatio(self) -> float | None:
         """
         Getter for removeHorizontalRatio
 
@@ -588,7 +588,7 @@ class BodyTrackingSettings(BaseSettingsSection):
         self.setValue("remove-horizontal-ratio", value)
 
     @property
-    def iouConnectionThreshold(self) -> Optional[float]:
+    def iouConnectionThreshold(self) -> float | None:
         """
         Getter for iouConnectionThreshold
 
@@ -607,7 +607,7 @@ class BodyTrackingSettings(BaseSettingsSection):
         self.setValue("iou-connection-threshold", value)
 
     @property
-    def useBodyReid(self) -> Optional[IntO1]:
+    def useBodyReid(self) -> IntO1 | None:
         """
         Getter for useBodyReid
 
@@ -626,7 +626,7 @@ class BodyTrackingSettings(BaseSettingsSection):
         self.setValue("use-body-reid", value)
 
     @property
-    def bodyReidVersion(self) -> Optional[int]:
+    def bodyReidVersion(self) -> int | None:
         """
         Getter for bodyReidVersion
 
@@ -645,7 +645,7 @@ class BodyTrackingSettings(BaseSettingsSection):
         self.setValue("body-reid-version", value)
 
     @property
-    def reidMatchingThreshold(self) -> Optional[float]:
+    def reidMatchingThreshold(self) -> float | None:
         """
         Getter for reidMatchingThreshold
 
@@ -664,7 +664,7 @@ class BodyTrackingSettings(BaseSettingsSection):
         self.setValue("reid-matching-threshold", value)
 
     @property
-    def reidMatchingDetectionsCount(self) -> Optional[int]:
+    def reidMatchingDetectionsCount(self) -> int | None:
         """
         Getter for reidMatchingDetectionsCount
 
@@ -693,7 +693,7 @@ class DetectorsSettings(BaseSettingsSection):
     sectionName = "detectors"
 
     @property
-    def useFaceDetector(self) -> Optional[IntO1]:
+    def useFaceDetector(self) -> IntO1 | None:
         """
         Getter for useFaceDetector
 
@@ -712,7 +712,7 @@ class DetectorsSettings(BaseSettingsSection):
         self.setValue("use-face-detector", value)
 
     @property
-    def useBodyDetector(self) -> Optional[IntO1]:
+    def useBodyDetector(self) -> IntO1 | None:
         """
         Getter for useBodyDetector
 
@@ -741,7 +741,7 @@ class ExperimentalSettings(BaseSettingsSection):
     sectionName = "experimental"
 
     @property
-    def detectMaxBatchSize(self) -> Optional[int]:
+    def detectMaxBatchSize(self) -> int | None:
         """
         Getter for detectMaxBatchSize
 
@@ -760,7 +760,7 @@ class ExperimentalSettings(BaseSettingsSection):
         self.setValue("detect-max-batch-size", value)
 
     @property
-    def redetectMaxBatchSize(self) -> Optional[int]:
+    def redetectMaxBatchSize(self) -> int | None:
         """
         Getter for redetectMaxBatchSize
 
@@ -779,7 +779,7 @@ class ExperimentalSettings(BaseSettingsSection):
         self.setValue("redetect-max-batch-size", value)
 
     @property
-    def trackerMaxBatchSize(self) -> Optional[int]:
+    def trackerMaxBatchSize(self) -> int | None:
         """
         Getter for trackerMaxBatchSize
 
@@ -798,7 +798,7 @@ class ExperimentalSettings(BaseSettingsSection):
         self.setValue("tracker-max-batch-size", value)
 
     @property
-    def reidMaxBatchSize(self) -> Optional[int]:
+    def reidMaxBatchSize(self) -> int | None:
         """
         Getter for reidMaxBatchSize
 
@@ -827,7 +827,7 @@ class HSTrackingSettings(BaseSettingsSection):
     sectionName = "HS-tracking"
 
     @property
-    def firstStepWeight(self) -> Optional[float]:
+    def firstStepWeight(self) -> float | None:
         """Getter for first_step_weight (HSFaceStrategy)"""
         return self.getValue("first_step_weight")
 
@@ -841,7 +841,7 @@ class HSTrackingSettings(BaseSettingsSection):
         self.setValue("first_step_weight", value)
 
     @property
-    def firstStepWeightHuman(self) -> Optional[float]:
+    def firstStepWeightHuman(self) -> float | None:
         """Getter for first_step_weight_human (HSHumanStrategy)"""
         return self.getValue("first_step_weight_human")
 
@@ -855,7 +855,7 @@ class HSTrackingSettings(BaseSettingsSection):
         self.setValue("first_step_weight_human", value)
 
     @property
-    def byteStepWeight(self) -> Optional[float]:
+    def byteStepWeight(self) -> float | None:
         """Getter for byte_step_weight (HSFaceStrategy)"""
         return self.getValue("byte_step_weight")
 
@@ -869,7 +869,7 @@ class HSTrackingSettings(BaseSettingsSection):
         self.setValue("byte_step_weight", value)
 
     @property
-    def byteStepWeightHuman(self) -> Optional[float]:
+    def byteStepWeightHuman(self) -> float | None:
         """Getter for byte_step_weight_human (HSHumanStrategy)"""
         return self.getValue("byte_step_weight_human")
 
@@ -883,7 +883,7 @@ class HSTrackingSettings(BaseSettingsSection):
         self.setValue("byte_step_weight_human", value)
 
     @property
-    def inertia(self) -> Optional[float]:
+    def inertia(self) -> float | None:
         """Getter for inertia (HSFaceStrategy)"""
         return self.getValue("inertia")
 
@@ -897,7 +897,7 @@ class HSTrackingSettings(BaseSettingsSection):
         self.setValue("inertia", value)
 
     @property
-    def inertiaHuman(self) -> Optional[float]:
+    def inertiaHuman(self) -> float | None:
         """Getter for inertia_human (HSHumanStrategy)"""
         return self.getValue("inertia_human")
 
@@ -911,7 +911,7 @@ class HSTrackingSettings(BaseSettingsSection):
         self.setValue("inertia_human", value)
 
     @property
-    def detScoreThr(self) -> Optional[float]:
+    def detScoreThr(self) -> float | None:
         """Getter for det_score_thr (HSFaceStrategy)"""
         return self.getValue("det_score_thr")
 
@@ -925,7 +925,7 @@ class HSTrackingSettings(BaseSettingsSection):
         self.setValue("det_score_thr", value)
 
     @property
-    def detScoreThrHuman(self) -> Optional[float]:
+    def detScoreThrHuman(self) -> float | None:
         """Getter for det_score_thr_human (HSHumanStrategy)"""
         return self.getValue("det_score_thr_human")
 
@@ -939,7 +939,7 @@ class HSTrackingSettings(BaseSettingsSection):
         self.setValue("det_score_thr_human", value)
 
     @property
-    def detScoreLowThr(self) -> Optional[float]:
+    def detScoreLowThr(self) -> float | None:
         """Getter for det_score_low_thr (HSFaceStrategy)"""
         return self.getValue("det_score_low_thr")
 
@@ -953,7 +953,7 @@ class HSTrackingSettings(BaseSettingsSection):
         self.setValue("det_score_low_thr", value)
 
     @property
-    def detScoreLowThrHuman(self) -> Optional[float]:
+    def detScoreLowThrHuman(self) -> float | None:
         """Getter for det_score_low_thr_human (HSHumanStrategy)"""
         return self.getValue("det_score_low_thr_human")
 
@@ -967,7 +967,7 @@ class HSTrackingSettings(BaseSettingsSection):
         self.setValue("det_score_low_thr_human", value)
 
     @property
-    def redetScoreThr(self) -> Optional[float]:
+    def redetScoreThr(self) -> float | None:
         """Getter for redet_score_thr (HSFaceStrategy)"""
         return self.getValue("redet_score_thr")
 
@@ -981,7 +981,7 @@ class HSTrackingSettings(BaseSettingsSection):
         self.setValue("redet_score_thr", value)
 
     @property
-    def redetScoreThrHuman(self) -> Optional[float]:
+    def redetScoreThrHuman(self) -> float | None:
         """Getter for redet_score_thr_human (HSHumanStrategy)"""
         return self.getValue("redet_score_thr_human")
 
@@ -995,7 +995,7 @@ class HSTrackingSettings(BaseSettingsSection):
         self.setValue("redet_score_thr_human", value)
 
     @property
-    def iouThr(self) -> Optional[float]:
+    def iouThr(self) -> float | None:
         """Getter for iou_thr (HSFaceStrategy)"""
         return self.getValue("iou_thr")
 
@@ -1009,7 +1009,7 @@ class HSTrackingSettings(BaseSettingsSection):
         self.setValue("iou_thr", value)
 
     @property
-    def iouThrHuman(self) -> Optional[float]:
+    def iouThrHuman(self) -> float | None:
         """Getter for iou_thr_human (HSHumanStrategy)"""
         return self.getValue("iou_thr_human")
 
@@ -1023,7 +1023,7 @@ class HSTrackingSettings(BaseSettingsSection):
         self.setValue("iou_thr_human", value)
 
     @property
-    def sotTrackerScoreThr(self) -> Optional[float]:
+    def sotTrackerScoreThr(self) -> float | None:
         """Getter for sot_tracker_score_thr"""
         return self.getValue("sot_tracker_score_thr")
 
@@ -1037,7 +1037,7 @@ class HSTrackingSettings(BaseSettingsSection):
         self.setValue("sot_tracker_score_thr", value)
 
     @property
-    def redetectOnKalman(self) -> Optional[IntO1]:
+    def redetectOnKalman(self) -> IntO1 | None:
         """Getter for redetect_on_kalman"""
         return self.getValue("redetect_on_kalman")
 
@@ -1051,7 +1051,7 @@ class HSTrackingSettings(BaseSettingsSection):
         self.setValue("redetect_on_kalman", value)
 
     @property
-    def trustLowAssoc(self) -> Optional[IntO1]:
+    def trustLowAssoc(self) -> IntO1 | None:
         """Getter for trust_low_assoc (HSHumanFaceStrategy)"""
         return self.getValue("trust_low_assoc")
 

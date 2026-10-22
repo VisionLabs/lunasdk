@@ -2,8 +2,10 @@
 Test estimate descriptor.
 """
 
+from collections.abc import Callable, Generator
+from contextlib import AbstractAsyncContextManager as ContextManager
 from enum import Enum
-from typing import Callable, ContextManager, Generator, List, NamedTuple, Tuple, Union
+from typing import NamedTuple
 
 import pytest
 
@@ -47,14 +49,14 @@ class DescriptorCase(NamedTuple):
     aggregatedDescriptor: BaseDescriptor
     descriptorBatch: BaseDescriptorBatch
     type: DescriptorType
-    estimator: Union[FaceDescriptorEstimator, BodyDescriptorEstimator]
+    estimator: FaceDescriptorEstimator | BodyDescriptorEstimator
 
 
 class ExtractorCase(NamedTuple):
     type: DescriptorType
     extractorFactory: Callable
-    versions: List[int]
-    warps: Union[List[BodyWarpedImage], List[FaceWarpedImage]]
+    versions: list[int]
+    warps: list[BodyWarpedImage] | list[FaceWarpedImage]
 
 
 class TestDescriptorFunctionality(BaseTestClass):
@@ -90,7 +92,7 @@ class TestDescriptorFunctionality(BaseTestClass):
 
     def descriptorSubTest(
         self,
-    ) -> Generator[Tuple[ContextManager[None], DescriptorCase], Tuple[ContextManager[None], DescriptorCase], None]:
+    ) -> Generator[tuple[ContextManager[None], DescriptorCase], tuple[ContextManager[None], DescriptorCase], None]:
         """
         Generator for sub tests for human descriptor and face descriptor.
         """
@@ -100,7 +102,7 @@ class TestDescriptorFunctionality(BaseTestClass):
                 descriptor: BaseDescriptor = self.bodyDescriptor
                 aggregatedDescriptor: BaseDescriptor = self.aggregatedBodyDescriptor
                 descriptorBatch: BaseDescriptorBatch = self.bodyDescriptorBatch
-                estimator: Union[BodyDescriptorEstimator, FaceDescriptorEstimator] = self.bodyEstimator
+                estimator: BodyDescriptorEstimator | FaceDescriptorEstimator = self.bodyEstimator
             else:
                 descriptor = self.faceDescriptor
                 aggregatedDescriptor = self.aggregatedFaceDescriptor
@@ -227,7 +229,7 @@ class TestEstimateDescriptor(BaseTestClass):
     Test estimate descriptor.
     """
 
-    cases: Tuple[ExtractorCase, ExtractorCase]
+    cases: tuple[ExtractorCase, ExtractorCase]
 
     @classmethod
     def setup_class(cls):

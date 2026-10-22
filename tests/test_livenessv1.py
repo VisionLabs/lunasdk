@@ -1,5 +1,4 @@
 from collections import namedtuple
-from typing import Optional
 
 import pytest
 
@@ -32,7 +31,7 @@ class TestEstimateLivenessV1(BaseTestClass):
         cls.livenessEstimator = cls.faceEngine.createLivenessV1Estimator()
         cls.detection = cls.detector.detectOne(VLImage.load(filename=LIVENESS_FACE))
 
-    def assertLivenessEstimation(self, estimation: LivenessV1, expectedPrediction: Optional[LivenessPrediction] = None):
+    def assertLivenessEstimation(self, estimation: LivenessV1, expectedPrediction: LivenessPrediction | None = None):
         """
         Assert estimation liveness.
 

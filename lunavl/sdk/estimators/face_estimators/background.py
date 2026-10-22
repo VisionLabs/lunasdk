@@ -4,8 +4,6 @@ Module contains a background estimator.
 See `background`_.
 """
 
-from typing import Dict, List, Union
-
 from FaceEngine import (  # pylint: disable=E0611,E0401
     BackgroundEstimation as CoreBackgroundEstimation,
     BackgroundStatus as CoreBackgroundStatus,
@@ -61,7 +59,7 @@ class FaceDetectionBackground(BaseEstimation):
         """
         return True if self._coreEstimation.status == CoreBackgroundStatus.Solid else False
 
-    def asDict(self) -> Dict[str, Union[float, bool]]:
+    def asDict(self) -> dict[str, float | bool]:
         """Convert estimation to dict."""
         return {"light_background": self.lightBackground, "status": self.status, "solid_color": self.solidColor}
 
@@ -75,8 +73,8 @@ class FaceDetectionBackgroundEstimator(BaseEstimator):
     """
 
     def estimate(  # type: ignore
-        self, imageWithFaceDetection: Union[ImageWithFaceDetection, FaceDetection], asyncEstimate: bool = False
-    ) -> Union[FaceDetectionBackground, AsyncTask[FaceDetectionBackground]]:
+        self, imageWithFaceDetection: ImageWithFaceDetection | FaceDetection, asyncEstimate: bool = False
+    ) -> FaceDetectionBackground | AsyncTask[FaceDetectionBackground]:
         """
         Estimate a face detection background.
 
@@ -99,8 +97,8 @@ class FaceDetectionBackgroundEstimator(BaseEstimator):
         return AsyncTask(task, POST_PROCESSING.postProcessing)
 
     def estimateBatch(
-        self, batch: Union[List[ImageWithFaceDetection], List[FaceDetection]], asyncEstimate: bool = False
-    ) -> Union[List[FaceDetectionBackground], AsyncTask[List[FaceDetectionBackground]]]:
+        self, batch: list[ImageWithFaceDetection] | list[FaceDetection], asyncEstimate: bool = False
+    ) -> list[FaceDetectionBackground] | AsyncTask[list[FaceDetectionBackground]]:
         """
         Estimate background batch.
 

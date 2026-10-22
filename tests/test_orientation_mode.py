@@ -1,5 +1,4 @@
 from collections import namedtuple
-from typing import List
 
 import pytest
 
@@ -21,7 +20,7 @@ class TestOrientationMode(BaseTestClass):
     # orientation mode estimator
     orientationModeEstimator: OrientationModeEstimator
     # images with expected orientation modes
-    testData: List[ImageNExpectedOrientationMode]
+    testData: list[ImageNExpectedOrientationMode]
 
     @classmethod
     def setup_class(cls):

@@ -1,15 +1,15 @@
 from enum import Enum
-from typing import List, Literal, NamedTuple, Tuple, Union, overload
+from typing import Literal, NamedTuple, overload
 
 import FaceEngine
 from FaceEngine import CrowdEstimation, FSDKErrorResult
 
 from lunavl.sdk.async_task import AsyncTask
-from lunavl.sdk.base import BaseEstimation, Landmarks
+from lunavl.sdk.base import BaseEstimation
 from lunavl.sdk.errors.exceptions import assertError
 from lunavl.sdk.estimators.base import BaseEstimator
 from lunavl.sdk.estimators.estimators_utils.extractor_utils import validateInputByBatchEstimator
-from lunavl.sdk.image_utils.geometry import CoreRectI, Point, Rect, Vec2D
+from lunavl.sdk.image_utils.geometry import CoreRectI, Rect, Vec2D
 from lunavl.sdk.image_utils.image import CoreImage, VLImage
 
 
@@ -28,7 +28,7 @@ class PeopleCount(BaseEstimation):
         return self._coreEstimation.count
 
     @property
-    def coordinates(self) -> Tuple[Vec2D, ...]:
+    def coordinates(self) -> tuple[Vec2D, ...]:
         return tuple(Vec2D(point.x, point.y) for point in self._coreEstimation.points.getPoints())
 
     def asDict(self) -> dict:
@@ -49,8 +49,8 @@ class ImageForPeopleEstimation(NamedTuple):
 
 
 def getEstimatorArgsFromImages(
-    images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]],
-) -> Tuple[List[CoreImage], List[CoreRectI]]:
+    images: list[VLImage | ImageForPeopleEstimation | tuple[VLImage, Rect]],
+) -> tuple[list[CoreImage], list[CoreRectI]]:
     """
     Create args for people estimation from image list
     Args:
@@ -77,7 +77,7 @@ def getEstimatorArgsFromImages(
 
 def assertImageForPeopleEstimation(
     coreEstimator,
-    data: Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]],
+    data: VLImage | ImageForPeopleEstimation | tuple[VLImage, Rect],
     targets: "FaceEngine.CrowdRequest",
 ) -> None:
     """
@@ -97,7 +97,7 @@ def assertImageForPeopleEstimation(
     validateInputByBatchEstimator(coreEstimator, coreImages, detectAreas, targets)
 
 
-def postProcessingBatchV1(error: FSDKErrorResult, crowdEstimations: List[CrowdEstimation]) -> List[int]:
+def postProcessingBatchV1(error: FSDKErrorResult, crowdEstimations: list[CrowdEstimation]) -> list[int]:
     """
     Post processing batch people count estimation
 
@@ -127,7 +127,7 @@ def postProcessingV1(error: FSDKErrorResult, crowdEstimation: CrowdEstimation) -
     return crowdEstimation[0].count
 
 
-def postProcessingBatchV2(error: FSDKErrorResult, crowdEstimations: List[CrowdEstimation]) -> List[PeopleCount]:
+def postProcessingBatchV2(error: FSDKErrorResult, crowdEstimations: list[CrowdEstimation]) -> list[PeopleCount]:
     """
     Post processing batch people count estimation
 
@@ -160,7 +160,7 @@ def postProcessingV2(error: FSDKErrorResult, crowdEstimation: CrowdEstimation) -
 class PeopleCountEstimatorV2(BaseEstimator):
     """People count estimator. Estimate people count feature and coordinates"""
 
-    def validateData(self, data: Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]) -> None:
+    def validateData(self, data: VLImage | ImageForPeopleEstimation | tuple[VLImage, Rect]) -> None:
         """
         Validate input data for people count estimation.
 
@@ -172,7 +172,7 @@ class PeopleCountEstimatorV2(BaseEstimator):
     @overload  # type: ignore
     def estimate(
         self,
-        image: Union[VLImage, ImageForPeopleEstimation],
+        image: VLImage | ImageForPeopleEstimation,
         estimationTargets: EstimationTargets,
         asyncEstimate: Literal[False] = False,
     ) -> PeopleCount: ...
@@ -180,14 +180,14 @@ class PeopleCountEstimatorV2(BaseEstimator):
     @overload
     def estimate(
         self,
-        image: Union[VLImage, ImageForPeopleEstimation],
+        image: VLImage | ImageForPeopleEstimation,
         estimationTargets: EstimationTargets,
         asyncEstimate: Literal[True],
     ) -> AsyncTask[PeopleCount]: ...
 
     def estimate(
         self,
-        image: Union[VLImage, ImageForPeopleEstimation],
+        image: VLImage | ImageForPeopleEstimation,
         estimationTargets: EstimationTargets = EstimationTargets.T1,
         asyncEstimate: bool = False,
     ):
@@ -219,22 +219,22 @@ class PeopleCountEstimatorV2(BaseEstimator):
     @overload  # type: ignore
     def estimateBatch(
         self,
-        images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]],
+        images: list[VLImage | ImageForPeopleEstimation | tuple[VLImage, Rect]],
         estimationTargets: EstimationTargets,
         asyncEstimate: Literal[False] = False,
-    ) -> List[PeopleCount]: ...
+    ) -> list[PeopleCount]: ...
 
     @overload
     def estimateBatch(
         self,
-        images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]],
+        images: list[VLImage | ImageForPeopleEstimation | tuple[VLImage, Rect]],
         estimationTargets: EstimationTargets,
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[List[PeopleCount]]: ...
+    ) -> AsyncTask[list[PeopleCount]]: ...
 
     def estimateBatch(
         self,
-        images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]],
+        images: list[VLImage | ImageForPeopleEstimation | tuple[VLImage, Rect]],
         estimationTargets: EstimationTargets = EstimationTargets.T1,
         asyncEstimate: bool = False,
     ):
@@ -264,7 +264,7 @@ class PeopleCountEstimatorV2(BaseEstimator):
 class PeopleCountEstimatorV1(BaseEstimator):
     """People count estimator. Estimate only people count feature. Deprecated"""
 
-    def validateData(self, data: Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]) -> None:
+    def validateData(self, data: VLImage | ImageForPeopleEstimation | tuple[VLImage, Rect]) -> None:
         """
         Validate input data for people count estimation.
 
@@ -276,20 +276,20 @@ class PeopleCountEstimatorV1(BaseEstimator):
     @overload  # type: ignore
     def estimate(
         self,
-        image: Union[VLImage, ImageForPeopleEstimation],
+        image: VLImage | ImageForPeopleEstimation,
         asyncEstimate: Literal[False] = False,
     ) -> int: ...
 
     @overload
     def estimate(
         self,
-        image: Union[VLImage, ImageForPeopleEstimation],
+        image: VLImage | ImageForPeopleEstimation,
         asyncEstimate: Literal[True],
     ) -> AsyncTask[int]: ...
 
     def estimate(
         self,
-        image: Union[VLImage, ImageForPeopleEstimation],
+        image: VLImage | ImageForPeopleEstimation,
         asyncEstimate: bool = False,
     ):
         """
@@ -315,20 +315,20 @@ class PeopleCountEstimatorV1(BaseEstimator):
     @overload  # type: ignore
     def estimateBatch(
         self,
-        images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]],
+        images: list[VLImage | ImageForPeopleEstimation | tuple[VLImage, Rect]],
         asyncEstimate: Literal[False] = False,
-    ) -> List[int]: ...
+    ) -> list[int]: ...
 
     @overload
     def estimateBatch(
         self,
-        images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]],
+        images: list[VLImage | ImageForPeopleEstimation | tuple[VLImage, Rect]],
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[List[int]]: ...
+    ) -> AsyncTask[list[int]]: ...
 
     def estimateBatch(
         self,
-        images: List[Union[VLImage, ImageForPeopleEstimation, Tuple[VLImage, Rect]]],
+        images: list[VLImage | ImageForPeopleEstimation | tuple[VLImage, Rect]],
         asyncEstimate: bool = False,
     ):
         """

@@ -5,7 +5,6 @@ Module realize VLImage - structure for storing image in special format.
 from copy import copy
 from enum import Enum
 from pathlib import Path
-from typing import Optional, Union
 
 import numpy as np
 import requests
@@ -176,10 +175,10 @@ class VLImage:
 
     def __init__(
         self,
-        body: Union[bytes, bytearray, PilImage, CoreImage, np.ndarray],
-        colorFormat: Optional[ColorFormat] = None,
+        body: bytes | bytearray | PilImage | CoreImage | np.ndarray,
+        colorFormat: ColorFormat | None = None,
         filename: str = "",
-        memoryResidence: Optional[MemoryResidence] = None,
+        memoryResidence: MemoryResidence | None = None,
     ):
         """
         Init.
@@ -277,9 +276,9 @@ class VLImage:
     def load(
         cls,
         *,
-        filename: Optional[str] = None,
-        url: Optional[str] = None,
-        colorFormat: Optional[ColorFormat] = None,
+        filename: str | None = None,
+        url: str | None = None,
+        colorFormat: ColorFormat | None = None,
         memoryResidence: MemoryResidence = MemoryResidence.CPU,
     ) -> "VLImage":
         """
@@ -320,7 +319,7 @@ class VLImage:
 
     @staticmethod
     def _coreImageFromNumpyArray(
-        ndarray: np.ndarray, inputColorFormat: ColorFormat, colorFormat: Optional[ColorFormat] = None
+        ndarray: np.ndarray, inputColorFormat: ColorFormat, colorFormat: ColorFormat | None = None
     ) -> CoreImage:
         """
         Load VLImage from numpy array into `self`.
@@ -347,10 +346,10 @@ class VLImage:
     def fromNumpyArray(
         cls,
         arr: np.ndarray,
-        inputColorFormat: Optional[Union[str, ColorFormat]] = None,
-        colorFormat: Optional[ColorFormat] = None,
+        inputColorFormat: str | ColorFormat | None = None,
+        colorFormat: ColorFormat | None = None,
         filename: str = "",
-        memoryResidence: Optional[MemoryResidence] = None,
+        memoryResidence: MemoryResidence | None = None,
     ) -> "VLImage":
         """
         Load VLImage from numpy array.
@@ -534,7 +533,7 @@ class VLImage:
         """
         return self.coreImage.isPadded()
 
-    def save(self, filename: str, colorFormat: Optional[ColorFormat] = None):
+    def save(self, filename: str, colorFormat: ColorFormat | None = None):
         """
         Save image to disk. Support image format: *ppm, jpg, png, tif*.
 

@@ -2,8 +2,6 @@
 Module contains helper functions for a pillow image conversion into np array
 """
 
-import sys
-
 import numpy as np
 import PIL.Image
 from packaging.version import Version

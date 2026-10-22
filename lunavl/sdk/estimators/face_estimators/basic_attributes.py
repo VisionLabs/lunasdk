@@ -5,7 +5,7 @@ See `basic attributes`_.
 
 from enum import Enum
 from functools import partial
-from typing import Any, Dict, List, Literal, Tuple, Union, overload
+from typing import Any, Literal, overload
 
 from FaceEngine import (  # pylint: disable=E0611,E0401; pylint: disable=E0611,E0401
     AttributeRequest,
@@ -190,7 +190,7 @@ class BasicAttributes(BaseEstimation):
         else:
             self.gender = coreEstimation.gender_opt.value()
 
-    def asDict(self) -> Dict[str, Any]:
+    def asDict(self) -> dict[str, Any]:
         """
         Convert to dict.
 
@@ -205,7 +205,7 @@ class BasicAttributes(BaseEstimation):
         return res
 
 
-BasicAttributesBatchResult = Tuple[List[BasicAttributes], Union[None, BasicAttributes]]
+BasicAttributesBatchResult = tuple[list[BasicAttributes], None | BasicAttributes]
 
 POST_PROCESSING = DefaultPostprocessingFactory(BasicAttributes)
 
@@ -219,7 +219,7 @@ class BasicAttributesEstimator(BaseEstimator):
     @overload  # type: ignore
     def estimate(
         self,
-        warp: Union[FaceWarp, FaceWarpedImage],
+        warp: FaceWarp | FaceWarpedImage,
         estimateAge: bool,
         estimateGender: bool,
         estimateEthnicity: bool,
@@ -229,7 +229,7 @@ class BasicAttributesEstimator(BaseEstimator):
     @overload
     def estimate(
         self,
-        warp: Union[FaceWarp, FaceWarpedImage],
+        warp: FaceWarp | FaceWarpedImage,
         estimateAge: bool,
         estimateGender: bool,
         estimateEthnicity: bool,
@@ -238,12 +238,12 @@ class BasicAttributesEstimator(BaseEstimator):
 
     def estimate(  # type: ignore
         self,
-        warp: Union[FaceWarp, FaceWarpedImage],
+        warp: FaceWarp | FaceWarpedImage,
         estimateAge: bool,
         estimateGender: bool,
         estimateEthnicity: bool,
         asyncEstimate: bool = False,
-    ) -> Union[BasicAttributes, AsyncTask[BasicAttributes]]:
+    ) -> BasicAttributes | AsyncTask[BasicAttributes]:
         """
         Estimate a basic attributes (age, gender, ethnicity) from warped images.
 
@@ -274,13 +274,13 @@ class BasicAttributesEstimator(BaseEstimator):
 
     def estimateBasicAttributesBatch(
         self,
-        warps: List[Union[FaceWarp, FaceWarpedImage]],
+        warps: list[FaceWarp | FaceWarpedImage],
         estimateAge: bool,
         estimateGender: bool,
         estimateEthnicity: bool,
         aggregate: bool = False,
         asyncEstimate: bool = False,
-    ) -> Union[BasicAttributesBatchResult, AsyncTask[BasicAttributesBatchResult]]:
+    ) -> BasicAttributesBatchResult | AsyncTask[BasicAttributesBatchResult]:
         """
         Batch basic attributes estimation on warped images.
 

@@ -1,6 +1,5 @@
 from enum import Enum
 from platform import platform
-from typing import Optional
 
 import FaceEngine as CoreFE  # pylint: disable=E0611,E0401
 
@@ -29,8 +28,8 @@ class LaunchOptions:
 
     def __init__(
         self,
-        deviceClass: Optional[DeviceClass] = None,
-        deviceId: Optional[int] = None,
+        deviceClass: DeviceClass | None = None,
+        deviceId: int | None = None,
         runConcurrently: bool = True,
     ):
         self._coreLaunchOptions = CoreFE.LaunchOptions()

@@ -1,4 +1,3 @@
-from functools import wraps
 from itertools import chain
 
 from lunavl.sdk.estimators.face_estimators.portrait_style import PortraitStyle, PortraitStyleCode

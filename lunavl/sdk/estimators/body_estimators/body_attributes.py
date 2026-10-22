@@ -3,8 +3,9 @@
 See headwear_.
 """
 
+from collections.abc import Iterable
 from enum import Enum
-from typing import Dict, Generic, Iterable, List, Optional, Type, TypeVar, Union
+from typing import Generic, TypeVar
 
 from FaceEngine import HumanAttributeRequest, LowerBodyClothing  # pylint: disable=E0611,E0401
 
@@ -325,7 +326,7 @@ class OutwearColor(BaseEstimation):
     """
 
     @property
-    def colors(self) -> List[OutwearColorEnum]:
+    def colors(self) -> list[OutwearColorEnum]:
         """Get all find colors"""
         res = []
 
@@ -361,7 +362,7 @@ class OutwearColor(BaseEstimation):
             res.append(OutwearColorEnum.Unknown)
         return res
 
-    def asDict(self) -> List[str]:
+    def asDict(self) -> list[str]:
         """
         Convert to list.
 
@@ -379,7 +380,7 @@ def asDict(x):
     return x.asDict()
 
 
-def nullable(cls: Type, estimation) -> Optional[object]:
+def nullable(cls: type, estimation) -> object | None:
     """
     Ensure validation is valid before creating resulting object.
     """
@@ -404,7 +405,7 @@ ColorTypeVar = TypeVar("ColorTypeVar")
 class ColorMixin(Generic[ColorTypeVar]):
     """Extracts color from core estimation."""
 
-    _colors: Dict[str, ColorTypeVar] = {}
+    _colors: dict[str, ColorTypeVar] = {}
 
     def singleColor(self, estimation, unknown: ColorTypeVar) -> ColorTypeVar:
         """Find first method (ie isBlack) that returns true, and return appropriate color name."""
@@ -640,7 +641,7 @@ class BodyAttributes(BaseEstimation):
         self.lowerGarment = nullable(LowerGarment, coreEstimation.lowerBodyClothing_opt)
         self.shoes = nullable(Shoes, coreEstimation.shoeColor_opt)
 
-    def asDict(self) -> Union[dict, list]:
+    def asDict(self) -> dict | list:
         """Convert to dict"""
         return {
             "apparent_age": round(self.apparentAge) if self.apparentAge is not None else None,
@@ -664,8 +665,8 @@ class BodyAttributesEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     def estimate(  # type: ignore
-        self, warp: Union[BodyWarp, BodyWarpedImage], asyncEstimate: bool = False
-    ) -> Union[BodyAttributes, AsyncTask[BodyAttributes]]:
+        self, warp: BodyWarp | BodyWarpedImage, asyncEstimate: bool = False
+    ) -> BodyAttributes | AsyncTask[BodyAttributes]:
         """
         Estimate body attributes on warp.
 
@@ -686,8 +687,8 @@ class BodyAttributesEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     def estimateBatch(
-        self, warps: List[Union[BodyWarp, BodyWarpedImage]], asyncEstimate: bool = False
-    ) -> Union[List[BodyAttributes], AsyncTask[List[BodyAttributes]]]:
+        self, warps: list[BodyWarp | BodyWarpedImage], asyncEstimate: bool = False
+    ) -> list[BodyAttributes] | AsyncTask[list[BodyAttributes]]:
         """
         Batch estimate body attributes
 

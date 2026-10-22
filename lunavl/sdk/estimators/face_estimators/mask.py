@@ -4,7 +4,7 @@ See `warp quality`_.
 """
 
 from enum import Enum
-from typing import Dict, List, Literal, Union, overload
+from typing import Literal, overload
 
 from FaceEngine import (  # pylint: disable=E0611,E0401; pylint: disable=E0611,E0401
     DetailedMaskType,
@@ -228,7 +228,7 @@ class Mask(BaseEstimation):
         """
         return MaskState.fromCoreMask(self._coreEstimation.result)
 
-    def asDict(self) -> Dict[str, Union[str, Dict[str, float]]]:
+    def asDict(self) -> dict[str, str | dict[str, float]]:
         """
         Convert to dict.
 
@@ -268,18 +268,18 @@ class MaskEstimator(BaseEstimator):
     #  pylint: disable=W0221
     @overload  # type: ignore
     def estimate(
-        self, faceObject: Union[FaceWarpedImage, FaceWarp, FaceDetection], asyncEstimate: Literal[False] = False
+        self, faceObject: FaceWarpedImage | FaceWarp | FaceDetection, asyncEstimate: Literal[False] = False
     ) -> Mask:  # type: ignore
         ...
 
     @overload
     def estimate(
-        self, faceObject: Union[FaceWarpedImage, FaceWarp, FaceDetection], asyncEstimate: Literal[True]
+        self, faceObject: FaceWarpedImage | FaceWarp | FaceDetection, asyncEstimate: Literal[True]
     ) -> AsyncTask[Mask]: ...
 
     def estimate(
-        self, faceObject: Union[FaceWarpedImage, FaceWarp, FaceDetection], asyncEstimate: bool = False
-    ) -> Union[Mask, AsyncTask[Mask]]:
+        self, faceObject: FaceWarpedImage | FaceWarp | FaceDetection, asyncEstimate: bool = False
+    ) -> Mask | AsyncTask[Mask]:
         """
         Estimate mask from a warp or detection.
 
@@ -309,8 +309,8 @@ class MaskEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     def estimateBatch(
-        self, warps: List[Union[FaceWarp, FaceWarpedImage]], asyncEstimate: bool = False
-    ) -> Union[List[Mask], AsyncTask[List[Mask]]]:
+        self, warps: list[FaceWarp | FaceWarpedImage], asyncEstimate: bool = False
+    ) -> list[Mask] | AsyncTask[list[Mask]]:
         """
         Batch estimate mask from a warp.
 

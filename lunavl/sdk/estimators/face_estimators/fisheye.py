@@ -5,7 +5,6 @@ See `fisheye`_.
 """
 
 import warnings
-from typing import Dict, List, Union
 
 from FaceEngine import FishEye as CoreFishEye, FishEyeEstimation as CoreFishEyeEstimation  # pylint: disable=E0611,E0401
 
@@ -53,7 +52,7 @@ class Fisheye(BaseEstimation):
         """
         return True if self._coreEstimation.result == CoreFishEye.FishEyeEffect else False
 
-    def asDict(self) -> Dict[str, Union[float, bool]]:
+    def asDict(self) -> dict[str, float | bool]:
         """Convert estimation to dict."""
         return {"score": self.score, "status": self.status}
 
@@ -68,9 +67,9 @@ class FisheyeEstimator(BaseEstimator):
 
     def estimate(  # type: ignore
         self,
-        image: Union[FaceDetection, ImageWithFaceDetection, FaceWarp, FaceWarpedImage],
+        image: FaceDetection | ImageWithFaceDetection | FaceWarp | FaceWarpedImage,
         asyncEstimate: bool = False,
-    ) -> Union[Fisheye, AsyncTask[Fisheye]]:
+    ) -> Fisheye | AsyncTask[Fisheye]:
         """
         Estimate fisheye.
 
@@ -101,9 +100,9 @@ class FisheyeEstimator(BaseEstimator):
 
     def estimateBatch(
         self,
-        batch: Union[List[ImageWithFaceDetection], List[FaceDetection], List[FaceWarp], List[FaceWarpedImage]],
+        batch: list[ImageWithFaceDetection] | list[FaceDetection] | list[FaceWarp] | list[FaceWarpedImage],
         asyncEstimate: bool = False,
-    ) -> Union[List[Fisheye], AsyncTask[List[Fisheye]]]:
+    ) -> list[Fisheye] | AsyncTask[list[Fisheye]]:
         """
         Estimate fisheye batch.
 

@@ -3,7 +3,7 @@
 import os
 from enum import Enum
 from pathlib import Path
-from typing import List, Literal, Union, overload
+from typing import Literal, overload
 
 from lunavl.sdk.descriptors.descriptors import FaceDescriptor, FaceDescriptorBatch
 from lunavl.sdk.errors.exceptions import assertError
@@ -66,16 +66,16 @@ class DynamicIndex(CoreIndex):
     @overload
     def search(  # type: ignore
         self, descriptor: FaceDescriptor, maxCount: int, asyncSearch: Literal[False] = False
-    ) -> List[IndexResult]: ...
+    ) -> list[IndexResult]: ...
 
     @overload
     def search(
         self, descriptor: FaceDescriptor, maxCount: int, asyncSearch: Literal[True] = True
-    ) -> AsyncTask[List[IndexResult]]: ...
+    ) -> AsyncTask[list[IndexResult]]: ...
 
     def search(
         self, descriptor: FaceDescriptor, maxCount: int = 1, asyncSearch: bool = False
-    ) -> Union[List[IndexResult], AsyncTask[List[IndexResult]]]:
+    ) -> list[IndexResult] | AsyncTask[list[IndexResult]]:
         """
         Search for descriptors with the shorter distance to passed descriptor.
         Args:
@@ -143,16 +143,16 @@ class DenseIndex(CoreIndex):
     @overload
     def search(  # type: ignore
         self, descriptor: FaceDescriptor, maxCount: int, asyncSearch: Literal[False] = False
-    ) -> List[IndexResult]: ...
+    ) -> list[IndexResult]: ...
 
     @overload
     def search(
         self, descriptor: FaceDescriptor, maxCount: int, asyncSearch: Literal[True] = True
-    ) -> AsyncTask[List[IndexResult]]: ...
+    ) -> AsyncTask[list[IndexResult]]: ...
 
     def search(
         self, descriptor: FaceDescriptor, maxCount: int = 1, asyncSearch: bool = False
-    ) -> Union[List[IndexResult], AsyncTask[List[IndexResult]]]:
+    ) -> list[IndexResult] | AsyncTask[list[IndexResult]]:
         """
         Search for descriptors with the shorter distance to passed descriptor.
         Args:

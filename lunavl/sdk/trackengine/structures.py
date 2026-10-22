@@ -1,4 +1,4 @@
-from typing import Generic, List, Literal, Optional, TypeVar
+from typing import Generic, Literal, TypeVar
 
 from FaceEngine import Face, Human, TrackEngine as te
 from FaceEngine.TrackEngine import (
@@ -54,12 +54,12 @@ class HumanTrackingParams:
 
     def __init__(
         self,
-        inactiveTracksLifetime: Optional[int] = None,
-        iouConnectionThreshold: Optional[float] = None,
-        reIDMatchingDetectionsCount: Optional[int] = None,
-        reIDMatchingThreshold: Optional[float] = None,
-        removeHorizontalRatio: Optional[float] = None,
-        removeOverlappedStrategy: Optional[Literal["NONE", "BOTH", "SCORE"]] = None,
+        inactiveTracksLifetime: int | None = None,
+        iouConnectionThreshold: float | None = None,
+        reIDMatchingDetectionsCount: int | None = None,
+        reIDMatchingThreshold: float | None = None,
+        removeHorizontalRatio: float | None = None,
+        removeOverlappedStrategy: Literal["NONE", "BOTH", "SCORE"] | None = None,
         *,
         coreParams: te.HumanTrackingStreamParams = None,
     ):
@@ -158,18 +158,18 @@ class StreamParams:
 
     def __init__(
         self,
-        callbackBufferSize: Optional[int] = None,
-        detectorScaling: Optional[bool] = None,
-        detectorStep: Optional[int] = None,
-        framesBufferSize: Optional[int] = None,
-        roi: Optional[Rect] = None,
-        humanTrackingParams: Optional[HumanTrackingParams] = None,
-        killIntersectedIOUThreshold: Optional[float] = None,
-        minimalTrackLength: Optional[int] = None,
-        scaledSize: Optional[int] = None,
-        skipFrames: Optional[int] = None,
-        trackingResultsBufferSize: Optional[int] = None,
-        useFrg: Optional[bool] = None,
+        callbackBufferSize: int | None = None,
+        detectorScaling: bool | None = None,
+        detectorStep: int | None = None,
+        framesBufferSize: int | None = None,
+        roi: Rect | None = None,
+        humanTrackingParams: HumanTrackingParams | None = None,
+        killIntersectedIOUThreshold: float | None = None,
+        minimalTrackLength: int | None = None,
+        scaledSize: int | None = None,
+        skipFrames: int | None = None,
+        trackingResultsBufferSize: int | None = None,
+        useFrg: bool | None = None,
         *,
         coreParams: te.StreamParams = None,
     ):
@@ -410,7 +410,7 @@ class FaceTrack(BaseTrackObject[FaceTrackData, FaceDetection]):
         self._detection: FaceDetection | _NoDetection | None = None
 
     @property
-    def detection(self) -> Optional[FaceDetection]:
+    def detection(self) -> FaceDetection | None:
         """Get honest face detection. This detection is a result of detector work (not tracker)"""
         detection = self._detection
         if detection is None:
@@ -448,7 +448,7 @@ class BodyTrack(BaseTrackObject[BodyTrackData, BodyDetection]):
         self._detection: BodyDetection | _NoDetection | None = None
 
     @property
-    def detection(self) -> Optional[BodyDetection]:
+    def detection(self) -> BodyDetection | None:
         """Get honest body detection. This detection is a result of detector work (not tracker)"""
         detection = self._detection
         if detection is None:
@@ -486,7 +486,7 @@ class HumanTrack:
         self._body: BodyTrack | _UnsetValue | None = _UNSET
 
     @property
-    def face(self) -> Optional[FaceTrack]:
+    def face(self) -> FaceTrack | None:
         """Face detection"""
         face = self._face
         if isinstance(face, _UnsetValue):
@@ -499,7 +499,7 @@ class HumanTrack:
         return face
 
     @property
-    def body(self) -> Optional[BodyTrack]:
+    def body(self) -> BodyTrack | None:
         """Body detection"""
         body = self._body
         if isinstance(body, _UnsetValue):
@@ -538,7 +538,7 @@ class TrackingResult:
 
     def __init__(self, coreResult: PyTrackingResult):
         self.coreResult = coreResult
-        self._humanTracks: Optional[List[HumanTrack]] = None
+        self._humanTracks: list[HumanTrack] | None = None
 
     @property
     def image(self) -> VLImage:
@@ -556,7 +556,7 @@ class TrackingResult:
         return self.coreResult.frameId
 
     @property
-    def humanTracks(self) -> List[HumanTrack]:
+    def humanTracks(self) -> list[HumanTrack]:
         """Get all human tracks"""
         if self._humanTracks is None:
             self._humanTracks = [HumanTrack(humanTrack, self.image) for humanTrack in self.coreResult.humanTracks]

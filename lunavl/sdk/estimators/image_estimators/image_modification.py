@@ -5,7 +5,6 @@ See `image modification_.
 """
 
 from enum import Enum
-from typing import List, Union
 
 from FaceEngine import FSDKErrorResult, ImageModificationStatus
 
@@ -107,7 +106,7 @@ class ImageModificationEstimator(BaseEstimator):
 
     def estimate(  # type: ignore
         self, image: VLImage, asyncEstimate: bool = False
-    ) -> Union[ImageModification, AsyncTask[ImageModification]]:
+    ) -> ImageModification | AsyncTask[ImageModification]:
         """
         Estimate image modification from image.
 
@@ -128,8 +127,8 @@ class ImageModificationEstimator(BaseEstimator):
         return postProcessing(error, coreModification)
 
     def estimateBatch(
-        self, images: List[VLImage], asyncEstimate: bool = False
-    ) -> Union[List[ImageModification], AsyncTask[List[ImageModification]]]:
+        self, images: list[VLImage], asyncEstimate: bool = False
+    ) -> list[ImageModification] | AsyncTask[list[ImageModification]]:
         """
         Batch estimate image modification from images.
 

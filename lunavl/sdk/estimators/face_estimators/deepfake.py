@@ -5,7 +5,7 @@ See `deepfake`_.
 """
 
 from enum import Enum
-from typing import List, Literal, Union, overload
+from typing import Literal, overload
 
 from FaceEngine import DeepFakeEstimation, DeepFakeEstimationState  # pylint: disable=E0611,E0401
 
@@ -117,7 +117,7 @@ class DeepfakeEstimator(BaseEstimator):
         self,
         faceDetection: FaceDetection,
         asyncEstimate: bool = False,
-    ) -> Union[Deepfake, AsyncTask[Deepfake]]:
+    ) -> Deepfake | AsyncTask[Deepfake]:
         """
         Estimate a deep fake
 
@@ -144,9 +144,9 @@ class DeepfakeEstimator(BaseEstimator):
     #  pylint: disable=W0221
     def estimateBatch(  # type: ignore
         self,
-        faceDetections: List[FaceDetection],
+        faceDetections: list[FaceDetection],
         asyncEstimate: bool = False,
-    ) -> Union[List[Deepfake], AsyncTask[List[Deepfake]]]:
+    ) -> list[Deepfake] | AsyncTask[list[Deepfake]]:
         """
         Batch estimate deep fake feature
 

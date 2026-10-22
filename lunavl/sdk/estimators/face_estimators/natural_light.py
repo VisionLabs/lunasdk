@@ -3,8 +3,6 @@
 See face_natural_light_.
 """
 
-from typing import List, Union
-
 from FaceEngine import (  # pylint: disable=E0611,E0401
     LightStatus as LightStatusCore,
     NaturalLightEstimation as NaturalLightEstimationCore,
@@ -78,8 +76,8 @@ class FaceNaturalLightEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     def estimate(  # type: ignore
-        self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: bool = False
-    ) -> Union[FaceNaturalLight, AsyncTask[FaceNaturalLight]]:
+        self, warp: FaceWarp | FaceWarpedImage, asyncEstimate: bool = False
+    ) -> FaceNaturalLight | AsyncTask[FaceNaturalLight]:
         """
         Estimate natural face light on warp.
 
@@ -100,8 +98,8 @@ class FaceNaturalLightEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     def estimateBatch(
-        self, warps: List[Union[FaceWarp, FaceWarpedImage]], asyncEstimate: bool = False
-    ) -> Union[List[FaceNaturalLight], AsyncTask[List[FaceNaturalLight]]]:
+        self, warps: list[FaceWarp | FaceWarpedImage], asyncEstimate: bool = False
+    ) -> list[FaceNaturalLight] | AsyncTask[list[FaceNaturalLight]]:
         """
         Estimate batch of face natural light.
 

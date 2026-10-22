@@ -4,8 +4,6 @@ Module realize face descriptor match.
 see `face descriptors matching`_.
 """
 
-from typing import List, Union
-
 from FaceEngine import IDescriptorMatcherPtr  # pylint: disable=E0611,E0401
 
 from lunavl.sdk.descriptors.descriptors import FaceDescriptorFactory
@@ -53,9 +51,9 @@ class FaceMatcher:
 
     def match(
         self,
-        reference: Union[FaceDescriptor, bytes],
-        candidates: Union[FaceDescriptor, bytes, List[Union[FaceDescriptor, bytes]], FaceDescriptorBatch],
-    ) -> Union[MatchingResult, List[MatchingResult]]:
+        reference: FaceDescriptor | bytes,
+        candidates: FaceDescriptor | bytes | list[FaceDescriptor | bytes] | FaceDescriptorBatch,
+    ) -> MatchingResult | list[MatchingResult]:
         """
         Match face descriptor vs face descriptors.
 

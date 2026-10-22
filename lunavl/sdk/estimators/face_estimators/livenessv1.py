@@ -5,7 +5,7 @@ See `livenessv1`_.
 """
 
 from enum import Enum
-from typing import List, Literal, Optional, Union, overload
+from typing import Literal, overload
 
 from FaceEngine import LivenessOneShotRGBEstimation  # pylint: disable=E0611,E0401
 from FaceEngine import FSDKErrorResult, LivenessOneShotState
@@ -117,7 +117,7 @@ def postProcessing(error: FSDKErrorResult, estimation: LivenessOneShotRGBEstimat
     return LivenessV1(estimation, LivenessPrediction.fromCoreLiveness(estimation.State))
 
 
-def postProcessingBatch(error: FSDKErrorResult, estimations: List[LivenessOneShotRGBEstimation]) -> List[LivenessV1]:
+def postProcessingBatch(error: FSDKErrorResult, estimations: list[LivenessOneShotRGBEstimation]) -> list[LivenessV1]:
     """
     Convert a livenessV1 batch estimation from core result  and check error.
     Args:
@@ -142,7 +142,7 @@ class LivenessV1Estimator(BaseEstimator):
     def estimate(
         self,
         faceDetection: FaceDetection,
-        qualityThreshold: Optional[float] = None,
+        qualityThreshold: float | None = None,
         asyncEstimate: Literal[False] = False,
     ) -> LivenessV1: ...
 
@@ -150,16 +150,16 @@ class LivenessV1Estimator(BaseEstimator):
     def estimate(
         self,
         faceDetection: FaceDetection,
-        qualityThreshold: Optional[float],
+        qualityThreshold: float | None,
         asyncEstimate: Literal[True],
     ) -> AsyncTask[LivenessV1]: ...
 
     def estimate(  # type: ignore
         self,
         faceDetection: FaceDetection,
-        qualityThreshold: Optional[float] = None,
+        qualityThreshold: float | None = None,
         asyncEstimate: bool = False,
-    ) -> Union[LivenessV1, AsyncTask[LivenessV1]]:
+    ) -> LivenessV1 | AsyncTask[LivenessV1]:
         """
         Estimate a liveness
 
@@ -197,10 +197,10 @@ class LivenessV1Estimator(BaseEstimator):
     #  pylint: disable=W0221
     def estimateBatch(  # type: ignore
         self,
-        faceDetections: List[FaceDetection],
-        qualityThreshold: Optional[float] = None,
+        faceDetections: list[FaceDetection],
+        qualityThreshold: float | None = None,
         asyncEstimate: bool = False,
-    ) -> Union[List[LivenessV1], AsyncTask[List[LivenessV1]]]:
+    ) -> list[LivenessV1] | AsyncTask[list[LivenessV1]]:
         """
         Batch estimate liveness
 

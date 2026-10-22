@@ -34,6 +34,7 @@ black = "*"
 isort = "*"
 flake8 = "^3.7.9"
 mypy = "*"
+ruff = "*"
 
 [tool.poetry.group.dev.dependencies]
 types-requests = "^2.28.11.15"
@@ -52,3 +53,29 @@ types-tensorflow = "*"
 [tool.black]
 line-length = 120
 target-version = ['py310']
+
+[tool.ruff]
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle (errors)
+    "W",    # pycodestyle (warnings)
+    "F",    # pyflakes
+    "T20",  # flake8-print
+    "UP",   # pyupgrade
+]
+ignore = [
+    "E501",  # line too long
+    "UP040", # `TypeAlias` annotation
+    "UP037", # quoted annotation
+    "UP046", # non-pep695 generic class
+    "UP047", # non-pep695 generic function
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+"docs/source/conf.py" = ["E402"]
+"examples/*" = ["T20"]
+"np.py" = ["E741", "UP031"]
+"tests/*" = ["E731"]
