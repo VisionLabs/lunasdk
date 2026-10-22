@@ -1,5 +1,3 @@
-from typing import Dict
-
 from lunavl.sdk.estimators.face_estimators.facewarper import FaceWarpedImage
 from lunavl.sdk.estimators.face_estimators.glasses import Glasses, GlassesEstimator
 from lunavl.sdk.image_utils.image import VLImage
@@ -24,7 +22,7 @@ class TestGlasses(BaseTestClass):
         cls.warpEyeGlasses = FaceWarpedImage(VLImage.load(filename=WARP_FACE_WITH_EYEGLASSES))
         cls.warpSunGlasses = FaceWarpedImage(VLImage.load(filename=WARP_FACE_WITH_SUNGLASSES))
 
-    def assertGlassesEstimation(self, glasses: Glasses, expectedEstimationResults: Dict[str, str]):
+    def assertGlassesEstimation(self, glasses: Glasses, expectedEstimationResults: dict[str, str]):
         """
         Function checks if the instance belongs to the Glasses class and compares the result with what is expected.
 

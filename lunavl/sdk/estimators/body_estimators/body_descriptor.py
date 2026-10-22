@@ -5,8 +5,6 @@ See `body descriptor`_.
 
 """
 
-from typing import List, Optional, Tuple, Union
-
 from FaceEngine import IDescriptorExtractorPtr  # pylint: disable=E0611,E0401
 
 from lunavl.sdk.descriptors.descriptors import BodyDescriptor, BodyDescriptorBatch, BodyDescriptorFactory
@@ -17,7 +15,7 @@ from ..base import BaseEstimator
 from ..body_estimators.bodywarper import BodyWarp, BodyWarpedImage
 from ..estimators_utils.extractor_utils import estimate, estimateDescriptorsBatch
 
-HummanDescriptorsResult = Tuple[BodyDescriptorBatch, Union[BodyDescriptor, None]]
+HummanDescriptorsResult = tuple[BodyDescriptorBatch, BodyDescriptor | None]
 
 
 class BodyDescriptorEstimator(BaseEstimator):
@@ -44,10 +42,10 @@ class BodyDescriptorEstimator(BaseEstimator):
     #  pylint: disable=W0221
     def estimate(  # type: ignore
         self,
-        warp: Union[BodyWarp, BodyWarpedImage],
-        descriptor: Optional[BodyDescriptor] = None,
+        warp: BodyWarp | BodyWarpedImage,
+        descriptor: BodyDescriptor | None = None,
         asyncEstimate: bool = False,
-    ) -> Union[BodyDescriptor, AsyncTask[BodyDescriptor]]:
+    ) -> BodyDescriptor | AsyncTask[BodyDescriptor]:
         """
         Estimate body descriptor from a warp image.
 
@@ -71,11 +69,11 @@ class BodyDescriptorEstimator(BaseEstimator):
 
     def estimateDescriptorsBatch(
         self,
-        warps: List[Union[BodyWarp, BodyWarpedImage]],
+        warps: list[BodyWarp | BodyWarpedImage],
         aggregate: bool = False,
-        descriptorBatch: Optional[BodyDescriptorBatch] = None,
+        descriptorBatch: BodyDescriptorBatch | None = None,
         asyncEstimate: bool = False,
-    ) -> Union[HummanDescriptorsResult, AsyncTask[HummanDescriptorsResult]]:
+    ) -> HummanDescriptorsResult | AsyncTask[HummanDescriptorsResult]:
         """
         Estimate a batch of descriptors from warped images.
 

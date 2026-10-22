@@ -2,7 +2,6 @@
 
 import os
 from pathlib import Path
-from typing import Optional, Union
 
 import FaceEngine as CoreFE  # pylint: disable=E0611,E0401
 
@@ -73,13 +72,13 @@ class VLFaceEngine:
     """
 
     # path to a file with license info
-    license: Optional[Union[str, Path]] = None
+    license: str | Path | None = None
 
     def __init__(
         self,
-        pathToData: Optional[str] = None,
-        faceEngineConf: Optional[Union[str, FaceEngineSettingsProvider]] = None,
-        runtimeConf: Optional[Union[str, RuntimeSettingsProvider]] = None,
+        pathToData: str | None = None,
+        faceEngineConf: str | FaceEngineSettingsProvider | None = None,
+        runtimeConf: str | RuntimeSettingsProvider | None = None,
     ):
         """
         Init.
@@ -122,7 +121,7 @@ class VLFaceEngine:
         self._faceEngine.setSettingsProvider(self.faceEngineProvider.coreProvider)
         self._faceEngine.setRuntimeSettingsProvider(self.runtimeProvider.coreProvider)
 
-    def getLaunchOptions(self, launchOptions: Optional[LaunchOptions] = None) -> LaunchOptions:
+    def getLaunchOptions(self, launchOptions: LaunchOptions | None = None) -> LaunchOptions:
         """
         Get launch options. If launchOptions is none LaunchOptions will be generated based on the runtime settings.
         """
@@ -133,7 +132,7 @@ class VLFaceEngine:
             launchOptions = LaunchOptions(deviceClass=device)
         return launchOptions
 
-    def activate(self, pathToLicense: Union[str, Path]):
+    def activate(self, pathToLicense: str | Path):
         """
         Activate license
         Args:
@@ -145,7 +144,7 @@ class VLFaceEngine:
         )
 
     def createFaceDetector(
-        self, detectorType: DetectorType, launchOptions: Optional[LaunchOptions] = None
+        self, detectorType: DetectorType, launchOptions: LaunchOptions | None = None
     ) -> FaceDetector:
         """
         Create face detector.
@@ -166,7 +165,7 @@ class VLFaceEngine:
             launchOptions,
         )
 
-    def createHeadPoseEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> HeadPoseEstimator:
+    def createHeadPoseEstimator(self, launchOptions: LaunchOptions | None = None) -> HeadPoseEstimator:
         """
         Create head pose estimator.
 
@@ -181,7 +180,7 @@ class VLFaceEngine:
             self._faceEngine.createHeadPoseEstimator(launchOptions=launchOptions.coreLaunchOptions), launchOptions
         )
 
-    def createWarpQualityEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> WarpQualityEstimator:
+    def createWarpQualityEstimator(self, launchOptions: LaunchOptions | None = None) -> WarpQualityEstimator:
         """
         Create an image quality estimator
 
@@ -211,7 +210,7 @@ class VLFaceEngine:
         """
         return FaceWarper(self._faceEngine.createWarper())
 
-    def createEmotionEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> EmotionsEstimator:
+    def createEmotionEstimator(self, launchOptions: LaunchOptions | None = None) -> EmotionsEstimator:
         """
         Create emotions estimator.
 
@@ -226,7 +225,7 @@ class VLFaceEngine:
             self._faceEngine.createEmotionsEstimator(launchOptions=launchOptions.coreLaunchOptions), launchOptions
         )
 
-    def createMouthEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> MouthStateEstimator:
+    def createMouthEstimator(self, launchOptions: LaunchOptions | None = None) -> MouthStateEstimator:
         """
         Create mouth state estimator.
 
@@ -241,7 +240,7 @@ class VLFaceEngine:
             self._faceEngine.createMouthEstimator(launchOptions=launchOptions.coreLaunchOptions), launchOptions
         )
 
-    def createEyeEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> EyeEstimator:
+    def createEyeEstimator(self, launchOptions: LaunchOptions | None = None) -> EyeEstimator:
         """
         Create eyes estimator.
 
@@ -256,7 +255,7 @@ class VLFaceEngine:
             self._faceEngine.createEyeEstimator(launchOptions=launchOptions.coreLaunchOptions), launchOptions
         )
 
-    def createGazeEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> GazeEstimator:
+    def createGazeEstimator(self, launchOptions: LaunchOptions | None = None) -> GazeEstimator:
         """
         Create gaze direction estimator.
 
@@ -271,7 +270,7 @@ class VLFaceEngine:
             self._faceEngine.createGazeEstimator(launchOptions=launchOptions.coreLaunchOptions), launchOptions
         )
 
-    def createBasicAttributesEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> BasicAttributesEstimator:
+    def createBasicAttributesEstimator(self, launchOptions: LaunchOptions | None = None) -> BasicAttributesEstimator:
         """
         Create basic attributes estimator (age, gender, ethnicity).
 
@@ -286,7 +285,7 @@ class VLFaceEngine:
             self._faceEngine.createAttributeEstimator(launchOptions=launchOptions.coreLaunchOptions), launchOptions
         )
 
-    def createAGSEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> AGSEstimator:
+    def createAGSEstimator(self, launchOptions: LaunchOptions | None = None) -> AGSEstimator:
         """
         Approximate garbage score estimator
 
@@ -302,7 +301,7 @@ class VLFaceEngine:
         )
 
     def createFaceDescriptorEstimator(
-        self, descriptorVersion: int = 0, launchOptions: Optional[LaunchOptions] = None
+        self, descriptorVersion: int = 0, launchOptions: LaunchOptions | None = None
     ) -> FaceDescriptorEstimator:
         """
         Approximate garbage score estimator
@@ -355,7 +354,7 @@ class VLFaceEngine:
         """
         return self._faceEngine
 
-    def createBodyDetector(self, launchOptions: Optional[LaunchOptions] = None) -> BodyDetector:
+    def createBodyDetector(self, launchOptions: LaunchOptions | None = None) -> BodyDetector:
         """
         Create human body detector.
 
@@ -393,7 +392,7 @@ class VLFaceEngine:
         return BodyDescriptorFactory(self, descriptorVersion=descriptorVersion)
 
     def createBodyDescriptorEstimator(
-        self, descriptorVersion: int = DHDV, launchOptions: Optional[LaunchOptions] = None
+        self, descriptorVersion: int = DHDV, launchOptions: LaunchOptions | None = None
     ) -> BodyDescriptorEstimator:
         """
         Create human body descriptor estimator.
@@ -412,7 +411,7 @@ class VLFaceEngine:
             launchOptions,
         )
 
-    def createMaskEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> MaskEstimator:
+    def createMaskEstimator(self, launchOptions: LaunchOptions | None = None) -> MaskEstimator:
         """
         Create an medical mask estimator.
 
@@ -428,7 +427,7 @@ class VLFaceEngine:
             launchOptions,
         )
 
-    def createGlassesEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> GlassesEstimator:
+    def createGlassesEstimator(self, launchOptions: LaunchOptions | None = None) -> GlassesEstimator:
         """
         Create a glasses estimator.
 
@@ -444,7 +443,7 @@ class VLFaceEngine:
             launchOptions,
         )
 
-    def createLivenessV1Estimator(self, launchOptions: Optional[LaunchOptions] = None) -> LivenessV1Estimator:
+    def createLivenessV1Estimator(self, launchOptions: LaunchOptions | None = None) -> LivenessV1Estimator:
         """
         Create an one shot liveness estimator.
 
@@ -462,7 +461,7 @@ class VLFaceEngine:
 
     def createDeepfakeEstimator(
         self,
-        launchOptions: Optional[LaunchOptions] = None,
+        launchOptions: LaunchOptions | None = None,
     ) -> DeepfakeEstimator:
         """
         Create deep fake estimator.
@@ -479,7 +478,7 @@ class VLFaceEngine:
             launchOptions,
         )
 
-    def createOrientationModeEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> OrientationModeEstimator:
+    def createOrientationModeEstimator(self, launchOptions: LaunchOptions | None = None) -> OrientationModeEstimator:
         """
         Create an orientation mode estimator.
 
@@ -497,7 +496,7 @@ class VLFaceEngine:
     def createPeopleCountEstimator(
         self,
         estimatorType: PeopleCountEstimatorType,
-        launchOptions: Optional[LaunchOptions] = None,
+        launchOptions: LaunchOptions | None = None,
     ) -> PeopleCountEstimatorV1:
         """
         Create an people count estimator
@@ -520,7 +519,7 @@ class VLFaceEngine:
     def createPeopleCountEstimatorV2(
         self,
         estimatorType: PeopleCountEstimatorType,
-        launchOptions: Optional[LaunchOptions] = None,
+        launchOptions: LaunchOptions | None = None,
     ) -> PeopleCountEstimatorV2:
         """
         Create an people count estimator
@@ -540,7 +539,7 @@ class VLFaceEngine:
             launchOptions,
         )
 
-    def createDynamicRangeEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> DynamicRangeEstimator:
+    def createDynamicRangeEstimator(self, launchOptions: LaunchOptions | None = None) -> DynamicRangeEstimator:
         """
         Create an dynamic range estimator.
 
@@ -567,7 +566,7 @@ class VLFaceEngine:
         """
         return IndexBuilder(self._faceEngine, descriptorVersion=descriptorVersion, capacity=capacity)
 
-    def createCredibilityEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> CredibilityEstimator:
+    def createCredibilityEstimator(self, launchOptions: LaunchOptions | None = None) -> CredibilityEstimator:
         """
         Create a credibility estimator.
 
@@ -584,7 +583,7 @@ class VLFaceEngine:
         )
 
     def createEyebrowExpressionEstimator(
-        self, launchOptions: Optional[LaunchOptions] = None
+        self, launchOptions: LaunchOptions | None = None
     ) -> EyebrowExpressionEstimator:
         """
         Create a eyebrow expression estimator.
@@ -600,7 +599,7 @@ class VLFaceEngine:
             self._faceEngine.createEyeBrowEstimator(launchOptions=launchOptions.coreLaunchOptions), launchOptions
         )
 
-    def createHeadwearEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> HeadwearEstimator:
+    def createHeadwearEstimator(self, launchOptions: LaunchOptions | None = None) -> HeadwearEstimator:
         """
         Create a headwear estimator.
 
@@ -615,9 +614,7 @@ class VLFaceEngine:
             self._faceEngine.createHeadWearEstimator(launchOptions=launchOptions.coreLaunchOptions), launchOptions
         )
 
-    def createFaceNaturalLightEstimator(
-        self, launchOptions: Optional[LaunchOptions] = None
-    ) -> FaceNaturalLightEstimator:
+    def createFaceNaturalLightEstimator(self, launchOptions: LaunchOptions | None = None) -> FaceNaturalLightEstimator:
         """
         Create a face natural light estimator.
 
@@ -632,7 +629,7 @@ class VLFaceEngine:
             self._faceEngine.createNaturalLightEstimator(launchOptions=launchOptions.coreLaunchOptions), launchOptions
         )
 
-    def createRedEyeEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> RedEyesEstimator:
+    def createRedEyeEstimator(self, launchOptions: LaunchOptions | None = None) -> RedEyesEstimator:
         """
         Create a red-eye estimator.
 
@@ -647,7 +644,7 @@ class VLFaceEngine:
             self._faceEngine.createRedEyeEstimator(launchOptions=launchOptions.coreLaunchOptions), launchOptions
         )
 
-    def createFisheyeEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> FisheyeEstimator:
+    def createFisheyeEstimator(self, launchOptions: LaunchOptions | None = None) -> FisheyeEstimator:
         """
         Create a fisheye effect estimator.
 
@@ -662,7 +659,7 @@ class VLFaceEngine:
             self._faceEngine.createFishEyeEstimator(launchOptions=launchOptions.coreLaunchOptions), launchOptions
         )
 
-    def createPortraitStyleEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> PortraitStyleEstimator:
+    def createPortraitStyleEstimator(self, launchOptions: LaunchOptions | None = None) -> PortraitStyleEstimator:
         """
         Create a portrait style estimator.
 
@@ -677,7 +674,7 @@ class VLFaceEngine:
         )
 
     def createFaceDetectionBackgroundEstimator(
-        self, launchOptions: Optional[LaunchOptions] = None
+        self, launchOptions: LaunchOptions | None = None
     ) -> FaceDetectionBackgroundEstimator:
         """
         Create a face background estimator.
@@ -692,7 +689,7 @@ class VLFaceEngine:
             self._faceEngine.createBackgroundEstimator(launchOptions=launchOptions.coreLaunchOptions), launchOptions
         )
 
-    def createImageColorTypeEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> ImageColorTypeEstimator:
+    def createImageColorTypeEstimator(self, launchOptions: LaunchOptions | None = None) -> ImageColorTypeEstimator:
         """
         Create a image color type estimator.
 
@@ -706,7 +703,7 @@ class VLFaceEngine:
             self._faceEngine.createBlackWhiteEstimator(launchOptions=launchOptions.coreLaunchOptions), launchOptions
         )
 
-    def createBodyAttributesEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> BodyAttributesEstimator:
+    def createBodyAttributesEstimator(self, launchOptions: LaunchOptions | None = None) -> BodyAttributesEstimator:
         """
         Create a body attributes estimator.
 
@@ -720,7 +717,7 @@ class VLFaceEngine:
             self._faceEngine.createHumanAttributeEstimator(launchOptions=launchOptions.coreLaunchOptions), launchOptions
         )
 
-    def createHumanDetector(self, launchOptions: Optional[LaunchOptions] = None) -> HumanDetector:
+    def createHumanDetector(self, launchOptions: LaunchOptions | None = None) -> HumanDetector:
         """
         Create human detector. Human is optional union face, body, ...
 
@@ -736,7 +733,7 @@ class VLFaceEngine:
             launchOptions,
         )
 
-    def createFaceLandmarksEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> FaceLandmarksEstimator:
+    def createFaceLandmarksEstimator(self, launchOptions: LaunchOptions | None = None) -> FaceLandmarksEstimator:
         """
         Create face landmarks estimator.
 
@@ -752,7 +749,7 @@ class VLFaceEngine:
             launchOptions,
         )
 
-    def createFaceOcclusionEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> FaceOcclusionEstimator:
+    def createFaceOcclusionEstimator(self, launchOptions: LaunchOptions | None = None) -> FaceOcclusionEstimator:
         """
         Create face occlusion estimator.
 
@@ -768,7 +765,7 @@ class VLFaceEngine:
             launchOptions,
         )
 
-    def createFacialHairEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> FacialHairEstimator:
+    def createFacialHairEstimator(self, launchOptions: LaunchOptions | None = None) -> FacialHairEstimator:
         """
         Create facial hair estimator.
 
@@ -785,7 +782,7 @@ class VLFaceEngine:
         )
 
     def createImageModificationEstimator(
-        self, launchOptions: Optional[LaunchOptions] = None
+        self, launchOptions: LaunchOptions | None = None
     ) -> ImageModificationEstimator:
         """
         Create image modification estimator.
@@ -802,7 +799,7 @@ class VLFaceEngine:
             launchOptions,
         )
 
-    def createDutyUniformEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> DutyUniformEstimator:
+    def createDutyUniformEstimator(self, launchOptions: LaunchOptions | None = None) -> DutyUniformEstimator:
         """
         Create duty uniform estimator.
 
@@ -818,7 +815,7 @@ class VLFaceEngine:
             launchOptions,
         )
 
-    def createNeckOcclusionEstimator(self, launchOptions: Optional[LaunchOptions] = None) -> NeckOcclusionEstimator:
+    def createNeckOcclusionEstimator(self, launchOptions: LaunchOptions | None = None) -> NeckOcclusionEstimator:
         """
         Create neck occlusion estimator.
 
@@ -835,7 +832,7 @@ class VLFaceEngine:
         )
 
     def createLightColoredClothesEstimator(
-        self, launchOptions: Optional[LaunchOptions] = None
+        self, launchOptions: LaunchOptions | None = None
     ) -> LightColoredClothesEstimator:
         """
         Create lightness of clothing  estimator.
@@ -853,7 +850,7 @@ class VLFaceEngine:
         )
 
     def createPhotorealisticFaceEstimator(
-        self, launchOptions: Optional[LaunchOptions] = None
+        self, launchOptions: LaunchOptions | None = None
     ) -> PhotorealisticFaceEstimator:
         """
         Create photorealistic face estimator estimator.

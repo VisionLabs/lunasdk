@@ -4,7 +4,7 @@ see `mouth state`_
 """
 
 from enum import Enum
-from typing import Dict, List, Literal, Union, overload
+from typing import Literal, overload
 
 from FaceEngine import MouthEstimation, SmileType as CoreSmileType  # pylint: disable=E0611,E0401
 
@@ -72,7 +72,7 @@ class SmileType:
         """With teeth smile score"""
         return self._coreSmileScores.smileOpen
 
-    def asDict(self) -> Dict:
+    def asDict(self) -> dict:
         """Convert to dict"""
         predominant = "none" if self.predominantType == SmileTypeEnum.No else self.predominantType.name.lower()
         return {
@@ -93,7 +93,7 @@ class MouthProperties:
     def __init__(self, coreSmileType, coreSmileScores):
         self.smileType = SmileType(coreSmileType, coreSmileScores)
 
-    def asDict(self) -> Dict:
+    def asDict(self) -> dict:
         """Convert  mouth properties to dict"""
         return {"smile_type": self.smileType.asDict()}
 
@@ -146,7 +146,7 @@ class MouthStates(BaseEstimation):
         """
         return self._coreEstimation.occluded
 
-    def asDict(self) -> Dict:
+    def asDict(self) -> dict:
         """Convert to dict."""
         return {
             "opened": self.opened,
@@ -165,21 +165,17 @@ class MouthStateEstimator(BaseEstimator):
     """
 
     @overload  # type: ignore
-    def estimate(
-        self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[False] = False
-    ) -> MouthStates: ...
+    def estimate(self, warp: FaceWarp | FaceWarpedImage, asyncEstimate: Literal[False] = False) -> MouthStates: ...
 
     @overload
-    def estimate(
-        self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[True]
-    ) -> AsyncTask[MouthStates]: ...
+    def estimate(self, warp: FaceWarp | FaceWarpedImage, asyncEstimate: Literal[True]) -> AsyncTask[MouthStates]: ...
 
     #  pylint: disable=W0221
     def estimate(
         self,
-        warp: Union[FaceWarp, FaceWarpedImage],
+        warp: FaceWarp | FaceWarpedImage,
         asyncEstimate: bool = False,
-    ) -> Union[MouthStates, AsyncTask[MouthStates]]:
+    ) -> MouthStates | AsyncTask[MouthStates]:
         """
         Estimate mouth state on warp.
 
@@ -200,8 +196,8 @@ class MouthStateEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     def estimateBatch(
-        self, warps: List[Union[FaceWarp, FaceWarpedImage]], asyncEstimate: bool = False
-    ) -> Union[List[MouthStates], AsyncTask[List[MouthStates]]]:
+        self, warps: list[FaceWarp | FaceWarpedImage], asyncEstimate: bool = False
+    ) -> list[MouthStates] | AsyncTask[list[MouthStates]]:
         """
         Batch estimate mouth states
 

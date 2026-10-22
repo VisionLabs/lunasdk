@@ -5,7 +5,6 @@ See `orientation mode`_.
 """
 
 from enum import Enum
-from typing import List, Union
 
 from FaceEngine import FSDKErrorResult, OrientationType as CoreOrientationType
 
@@ -83,8 +82,8 @@ class OrientationModeEstimator(BaseEstimator):
     """
 
     def estimate(  # type: ignore
-        self, image: Union[VLImage, FaceWarp, FaceWarpedImage], asyncEstimate: bool = False
-    ) -> Union[OrientationType, AsyncTask[OrientationType]]:
+        self, image: VLImage | FaceWarp | FaceWarpedImage, asyncEstimate: bool = False
+    ) -> OrientationType | AsyncTask[OrientationType]:
         """
         Estimate orientation mode from warped image.
 
@@ -108,8 +107,8 @@ class OrientationModeEstimator(BaseEstimator):
         return postProcessing(error, coreOrientationType)
 
     def estimateBatch(
-        self, images: List[Union[VLImage, FaceWarp, FaceWarpedImage]], asyncEstimate: bool = False
-    ) -> Union[List[OrientationType], AsyncTask[List[OrientationType]]]:
+        self, images: list[VLImage | FaceWarp | FaceWarpedImage], asyncEstimate: bool = False
+    ) -> list[OrientationType] | AsyncTask[list[OrientationType]]:
         """
         Batch estimate orientation mode from warped images.
 

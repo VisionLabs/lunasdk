@@ -6,7 +6,7 @@ See `eyes`_ and `gaze direction`_.
 """
 
 from enum import Enum
-from typing import List, Literal, NamedTuple, Union, overload
+from typing import Literal, NamedTuple, overload
 
 from FaceEngine import (  # pylint: disable=E0611,E0401
     EyeAttributes,
@@ -185,8 +185,8 @@ class WarpWithLandmarks(NamedTuple):
         landmarks (Union[Landmarks5, Landmarks68]): landmarks estimation
     """
 
-    warp: Union[FaceWarp, FaceWarpedImage]
-    landmarks: Union[Landmarks5, Landmarks68]
+    warp: FaceWarp | FaceWarpedImage
+    landmarks: Landmarks5 | Landmarks68
 
 
 POST_PROCESSING_EYES = DefaultPostprocessingFactory(EyesEstimation)
@@ -212,7 +212,7 @@ class EyeEstimator(BaseEstimator):
         self,
         warpWithLandmarks: WarpWithLandmarks,
         asyncEstimate: bool = False,
-    ) -> Union[EyesEstimation, AsyncTask[EyesEstimation]]:
+    ) -> EyesEstimation | AsyncTask[EyesEstimation]:
         """
         Estimate mouth state on warp.
 
@@ -242,8 +242,8 @@ class EyeEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     def estimateBatch(
-        self, warpWithLandmarksList: List[WarpWithLandmarks], asyncEstimate: bool = False
-    ) -> Union[List[EyesEstimation], AsyncTask[List[EyesEstimation]]]:
+        self, warpWithLandmarksList: list[WarpWithLandmarks], asyncEstimate: bool = False
+    ) -> list[EyesEstimation] | AsyncTask[list[EyesEstimation]]:
         """
         Batch estimate mouth state on warps.
 
@@ -355,7 +355,7 @@ class WarpWithLandmarks5(NamedTuple):
         landmarks (Landmarks5): landmarks 5 estimation
     """
 
-    warp: Union[FaceWarp, FaceWarpedImage]
+    warp: FaceWarp | FaceWarpedImage
     landmarks: Landmarks5
 
 
@@ -380,7 +380,7 @@ class GazeEstimator(BaseEstimator):
 
     def estimate(  # type: ignore
         self, warpWithLandmarks5: WarpWithLandmarks5, asyncEstimate: bool = False
-    ) -> Union[GazeDirection, AsyncTask[GazeDirection]]:
+    ) -> GazeDirection | AsyncTask[GazeDirection]:
         """
         Estimate a gaze direction
 
@@ -402,8 +402,8 @@ class GazeEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     def estimateBatch(
-        self, warpWithLandmarks5List: List[WarpWithLandmarks5], asyncEstimate: bool = False
-    ) -> Union[List[GazeDirection], AsyncTask[List[GazeDirection]]]:
+        self, warpWithLandmarks5List: list[WarpWithLandmarks5], asyncEstimate: bool = False
+    ) -> list[GazeDirection] | AsyncTask[list[GazeDirection]]:
         """
         Batch estimate a gaze direction
 

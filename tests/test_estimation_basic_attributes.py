@@ -1,9 +1,9 @@
 from collections import namedtuple
+from collections.abc import Callable
 from dataclasses import asdict, dataclass
 from operator import attrgetter, itemgetter
 from statistics import mean
 from time import time
-from typing import Callable, List, Tuple, Union
 
 import jsonschema
 import pytest
@@ -45,7 +45,7 @@ class Eth:
         return self.Predominant(ethnicities[0][0])
 
     @classmethod
-    def fromSeveral(cls, eths: List[Ethnicities]):
+    def fromSeveral(cls, eths: list[Ethnicities]):
         args = ("asian", "indian", "caucasian", "africanAmerican")
         kwargs = {arg: mean(map(attrgetter(arg), eths)) for arg in args}
         return cls(**kwargs)
@@ -73,7 +73,7 @@ class TestBasicAttributes(BaseTestClass):
 
     def estimate(
         self,
-        warp: Union[FaceWarpedImage, FaceWarp],
+        warp: FaceWarpedImage | FaceWarp,
         estimateAge: bool = False,
         estimateGender: bool = False,
         estimateEthnicity: bool = False,
@@ -96,12 +96,12 @@ class TestBasicAttributes(BaseTestClass):
 
     def estimateBatch(
         self,
-        warps: List[Union[FaceWarp, FaceWarpedImage]],
+        warps: list[FaceWarp | FaceWarpedImage],
         estimateAge: bool = False,
         estimateGender: bool = False,
         estimateEthnicity: bool = False,
         aggregate: bool = False,
-    ) -> Tuple[List[BasicAttributes], Union[None, BasicAttributes]]:
+    ) -> tuple[list[BasicAttributes], None | BasicAttributes]:
         """
         Estimate batch of warps.
 
@@ -124,7 +124,7 @@ class TestBasicAttributes(BaseTestClass):
         )
 
     @staticmethod
-    def assertEth(eth1: Union[Ethnicities, Eth], eth2: Union[Ethnicities, Eth], delta: float = 0.01) -> None:
+    def assertEth(eth1: Ethnicities | Eth, eth2: Ethnicities | Eth, delta: float = 0.01) -> None:
         """
         Assert ethnicities.
 
@@ -145,14 +145,14 @@ class TestBasicAttributes(BaseTestClass):
         expectedEstimation = Estimation(21, 0, Eth(0, 0, 1, 0))
         for estimationType in ("Age", "Gender", "Ethnicity"):
             estimationFlag = f"estimate{estimationType}"
-            basicAttributeGetter: Callable[[BasicAttributes], Union[Ethnicities, float, None]] = attrgetter(
+            basicAttributeGetter: Callable[[BasicAttributes], Ethnicities | float | None] = attrgetter(
                 estimationType.lower()
             )
             expectedValue = getattr(expectedEstimation, estimationType)
             with self.subTest(estimationType=estimationType):
                 singleValue = basicAttributeGetter(self.estimate(self._warp, **{estimationFlag: True}))
                 batchValue = basicAttributeGetter(self.estimateBatch([self._warp] * 2, **{estimationFlag: True})[0][0])
-                assert type(singleValue) == type(batchValue)
+                assert type(singleValue) is type(batchValue)
                 assert isinstance(singleValue, (float, Ethnicities))
 
                 filename = f"./{time()}.jpg"
@@ -171,7 +171,7 @@ class TestBasicAttributes(BaseTestClass):
             [self._warp, self._warp2], estimateAge=True, estimateGender=True, estimateEthnicity=True, aggregate=True
         )
         for estimationType in ("Age", "Gender", "Ethnicity"):
-            estimationGetter: Callable[[Union[BasicAttributes, Eth]], Union[Ethnicities, float]] = attrgetter(
+            estimationGetter: Callable[[BasicAttributes | Eth], Ethnicities | float] = attrgetter(
                 estimationType.lower()
             )
             with self.subTest(estimationType):

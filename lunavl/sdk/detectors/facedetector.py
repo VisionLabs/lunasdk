@@ -4,7 +4,7 @@ Module contains function for detection faces on images.
 
 from enum import Enum
 from functools import partial
-from typing import Any, Dict, List, Literal, Optional, Union, overload
+from typing import Any, Literal, TypeAlias, overload
 
 from FaceEngine import (  # pylint: disable=E0611,E0401
     DT_LANDMARKS5,
@@ -99,16 +99,16 @@ class FaceDetection(BaseDetection):
         super().__init__(coreDetection, image)
 
         if coreDetection.landmarks5_opt.isValid():
-            self.landmarks5: Optional[Landmarks5] = Landmarks5(coreDetection.landmarks5_opt.value())
+            self.landmarks5: Landmarks5 | None = Landmarks5(coreDetection.landmarks5_opt.value())
         else:
             self.landmarks5 = None
 
         if coreDetection.landmarks68_opt.isValid():
-            self.landmarks68: Optional[Landmarks68] = Landmarks68(coreDetection.landmarks68_opt.value())
+            self.landmarks68: Landmarks68 | None = Landmarks68(coreDetection.landmarks68_opt.value())
         else:
             self.landmarks68 = None
 
-    def asDict(self) -> Dict[str, Any]:
+    def asDict(self) -> dict[str, Any]:
         """
         Convert face detection to dict (json).
 
@@ -130,18 +130,18 @@ class FaceDetection(BaseDetection):
 
 
 # alias for detection result
-FacesDetectResult = List[List[FaceDetection]]
+FacesDetectResult: TypeAlias = list[list[FaceDetection]]
 # alias for redetect one result
-FaceRedetectResult = Union[FaceDetection, None]
+FaceRedetectResult: TypeAlias = FaceDetection | None
 # alias for redetect result
-FacesRedetectResult = List[List[FaceRedetectResult]]
+FacesRedetectResult: TypeAlias = list[list[FaceRedetectResult]]
 
 
 def _collectDetectionsResult(
     fsdkDetectRes: IFaceDetectionBatchPtr,
-    images: Union[List[Union[VLImage, ImageForDetection]], List[ImageForRedetection]],
+    images: list[VLImage | ImageForDetection] | list[ImageForRedetection],
     isRedectResult: bool = False,
-) -> Union[List[List[Optional[FaceDetection]]], List[List[Optional[FaceDetection]]]]:
+) -> list[list[FaceDetection | None]]:
     """
     Collect detection results from core reply and prepare face detections
     Args:
@@ -184,8 +184,8 @@ def _collectDetectionsResult(
 
 def collectReDetectionsResult(
     fsdkDetectRes: IFaceDetectionBatchPtr,
-    images: Union[List[Union[VLImage, ImageForDetection]], List[ImageForRedetection]],
-) -> List[List[Optional[FaceDetection]]]:
+    images: list[VLImage | ImageForDetection] | list[ImageForRedetection],
+) -> list[list[FaceDetection | None]]:
     """
     Collect redetection results from core reply and prepare face detections
     Args:
@@ -199,8 +199,8 @@ def collectReDetectionsResult(
 
 def collectDetectionsResult(
     fsdkDetectRes: IFaceDetectionBatchPtr,
-    images: Union[List[VLImage], List[Union[VLImage, ImageForDetection]], List[ImageForRedetection]],
-) -> List[List[FaceDetection]]:
+    images: list[VLImage] | list[VLImage | ImageForDetection] | list[ImageForRedetection],
+) -> list[list[FaceDetection]]:
     """
     Collect detection results from core reply and prepare face detections
     Args:
@@ -212,7 +212,7 @@ def collectDetectionsResult(
     return _collectDetectionsResult(fsdkDetectRes=fsdkDetectRes, images=images, isRedectResult=False)  # type: ignore
 
 
-def postProcessingOne(error: FSDKErrorResult, detectRes: Face, image: VLImage) -> Optional[FaceDetection]:
+def postProcessingOne(error: FSDKErrorResult, detectRes: Face, image: VLImage) -> FaceDetection | None:
     """
     Convert core face detection to `FaceDetection` after detect one and error check.
 
@@ -232,7 +232,7 @@ def postProcessingOne(error: FSDKErrorResult, detectRes: Face, image: VLImage) -
     return FaceDetection(detectRes, image)
 
 
-def postProcessingRedetectOne(error: FSDKErrorResult, detectRes: Face, image: VLImage) -> Optional[FaceDetection]:
+def postProcessingRedetectOne(error: FSDKErrorResult, detectRes: Face, image: VLImage) -> FaceDetection | None:
     """
     Convert core face detection to `FaceDetection`  after redect and error check.
 
@@ -253,8 +253,8 @@ def postProcessingRedetectOne(error: FSDKErrorResult, detectRes: Face, image: VL
 
 
 def postProcessing(
-    error: FSDKErrorResult, detectionsBatch: IFaceDetectionBatchPtr, images: List[Union[VLImage, ImageForDetection]]
-) -> List[List[FaceDetection]]:
+    error: FSDKErrorResult, detectionsBatch: IFaceDetectionBatchPtr, images: list[VLImage | ImageForDetection]
+) -> list[list[FaceDetection]]:
     """
     Convert core face detections from detector results to `FaceDetection` and error check.
 
@@ -271,8 +271,8 @@ def postProcessing(
 
 
 def postProcessingRedetect(
-    error: FSDKErrorResult, detectionsBatch: IFaceDetectionBatchPtr, images: List[ImageForRedetection]
-) -> List[List[Optional[FaceDetection]]]:
+    error: FSDKErrorResult, detectionsBatch: IFaceDetectionBatchPtr, images: list[ImageForRedetection]
+) -> list[list[FaceDetection | None]]:
     """
     Convert core face detections from redetector results to `FaceDetection` and error check.
 
@@ -349,7 +349,7 @@ class FaceDetector(BaseDetector):
     def detectOne(
         self,
         image: VLImage,
-        detectArea: Optional[Rect] = None,
+        detectArea: Rect | None = None,
         detect5Landmarks: bool = True,
         detect68Landmarks: bool = False,
         asyncEstimate: Literal[False] = False,
@@ -359,7 +359,7 @@ class FaceDetector(BaseDetector):
     def detectOne(
         self,
         image: VLImage,
-        detectArea: Optional[Rect],
+        detectArea: Rect | None,
         detect5Landmarks: bool,
         detect68Landmarks: bool,
         asyncEstimate: Literal[True],
@@ -368,7 +368,7 @@ class FaceDetector(BaseDetector):
     def detectOne(
         self,
         image: VLImage,
-        detectArea: Optional[Rect] = None,
+        detectArea: Rect | None = None,
         detect5Landmarks: bool = True,
         detect68Landmarks: bool = False,
         asyncEstimate: bool = False,
@@ -406,7 +406,7 @@ class FaceDetector(BaseDetector):
     @overload  # type: ignore
     def detect(
         self,
-        images: List[Union[VLImage, ImageForDetection]],
+        images: list[VLImage | ImageForDetection],
         limit: int = 5,
         detect5Landmarks: bool = True,
         detect68Landmarks: bool = False,
@@ -416,7 +416,7 @@ class FaceDetector(BaseDetector):
     @overload
     def detect(
         self,
-        images: List[Union[VLImage, ImageForDetection]],
+        images: list[VLImage | ImageForDetection],
         limit: int,
         detect5Landmarks: bool,
         detect68Landmarks: bool,
@@ -425,7 +425,7 @@ class FaceDetector(BaseDetector):
 
     def detect(
         self,
-        images: List[Union[VLImage, ImageForDetection]],
+        images: list[VLImage | ImageForDetection],
         limit: int = 5,
         detect5Landmarks: bool = True,
         detect68Landmarks: bool = False,
@@ -460,7 +460,7 @@ class FaceDetector(BaseDetector):
     def redetectOne(
         self,
         image: VLImage,
-        bBox: Union[Rect, FaceDetection],
+        bBox: Rect | FaceDetection,
         detect5Landmarks: bool = True,
         detect68Landmarks: bool = False,
         asyncEstimate: Literal[False] = False,
@@ -470,7 +470,7 @@ class FaceDetector(BaseDetector):
     def redetectOne(
         self,
         image: VLImage,
-        bBox: Union[Rect, FaceDetection],
+        bBox: Rect | FaceDetection,
         detect5Landmarks: bool,
         detect68Landmarks: bool,
         asyncEstimate: Literal[True],
@@ -479,7 +479,7 @@ class FaceDetector(BaseDetector):
     def redetectOne(  # noqa: F811
         self,
         image: VLImage,
-        bBox: Union[Rect, FaceDetection],
+        bBox: Rect | FaceDetection,
         detect5Landmarks=True,
         detect68Landmarks=False,
         asyncEstimate=False,
@@ -515,7 +515,7 @@ class FaceDetector(BaseDetector):
         )
         return postProcessingRedetectOne(error, detectRes, image)
 
-    def _validateReDetectInput(self, coreImages: List[CoreImage], detectAreas: List[List[Detection]]):
+    def _validateReDetectInput(self, coreImages: list[CoreImage], detectAreas: list[list[Detection]]):
         """
         Validate input data for face re-detect
         Args:
@@ -556,7 +556,7 @@ class FaceDetector(BaseDetector):
     @overload  # type: ignore
     def redetect(
         self,
-        images: List[ImageForRedetection],
+        images: list[ImageForRedetection],
         detect5Landmarks: bool = True,
         detect68Landmarks: bool = False,
         asyncEstimate: Literal[False] = False,
@@ -565,7 +565,7 @@ class FaceDetector(BaseDetector):
     @overload
     def redetect(
         self,
-        images: List[ImageForRedetection],
+        images: list[ImageForRedetection],
         detect5Landmarks: bool,
         detect68Landmarks: bool,
         asyncEstimate: Literal[True],
@@ -573,7 +573,7 @@ class FaceDetector(BaseDetector):
 
     def redetect(
         self,
-        images: List[ImageForRedetection],
+        images: list[ImageForRedetection],
         detect5Landmarks: bool = True,
         detect68Landmarks: bool = False,
         asyncEstimate: bool = False,

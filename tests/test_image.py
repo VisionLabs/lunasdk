@@ -2,7 +2,6 @@ import io
 import os
 from collections import namedtuple
 from pathlib import Path
-from typing import List, Union
 
 import FaceEngine as fe
 import numpy as np
@@ -28,7 +27,7 @@ class TestImage(BaseTestClass):
     """
 
     #: list with paths to test images
-    filesToDelete: List[Union[Path, str]]
+    filesToDelete: list[Path | str]
 
     @classmethod
     def setup_class(cls) -> None:

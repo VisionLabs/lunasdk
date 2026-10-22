@@ -3,7 +3,7 @@ Module realize transfer functions from/to ML framework tensor to/from VLImage wi
 """
 
 import contextlib
-from typing import Iterator
+from collections.abc import Iterator
 
 from FaceEngine import (  # pylint: disable=E0611,E0401
     Image as CoreImage,

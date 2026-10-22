@@ -1,4 +1,4 @@
-from typing import List, Literal, NamedTuple, Union, overload
+from typing import Literal, NamedTuple, overload
 
 from FaceEngine import FaceOcclusionEstimation, FaceOcclusionState, FaceOcclusionType  # pylint: disable=E0611,E0401
 
@@ -189,7 +189,7 @@ class WarpWithLandmarks(NamedTuple):
         landmarks (Union[Landmarks5, Landmarks68]): landmarks estimation
     """
 
-    warp: Union[FaceWarp, FaceWarpedImage]
+    warp: FaceWarp | FaceWarpedImage
     landmarks: Landmarks5
 
 
@@ -216,7 +216,7 @@ class FaceOcclusionEstimator(BaseEstimator):
         self,
         warpWithLandmarks: WarpWithLandmarks,
         asyncEstimate: bool = False,
-    ) -> Union[FaceOcclusion, AsyncTask[FaceOcclusion]]:
+    ) -> FaceOcclusion | AsyncTask[FaceOcclusion]:
         """
         Estimate face occlusion.
 
@@ -242,8 +242,8 @@ class FaceOcclusionEstimator(BaseEstimator):
 
     # pylint: disable=W0221
     def estimateBatch(
-        self, warpWithLandmarksList: List[WarpWithLandmarks], asyncEstimate: bool = False
-    ) -> Union[List[FaceOcclusion], AsyncTask[List[FaceOcclusion]]]:
+        self, warpWithLandmarksList: list[WarpWithLandmarks], asyncEstimate: bool = False
+    ) -> list[FaceOcclusion] | AsyncTask[list[FaceOcclusion]]:
         """
         Batch estimate face occlusion state on warps.
 

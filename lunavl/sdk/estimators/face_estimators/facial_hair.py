@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List, Literal, Union, overload
+from typing import Literal, overload
 
 from FaceEngine import FacialHair as CoreFacialHairState, FacialHairEstimation  # pylint: disable=E0611,E0401
 
@@ -140,18 +140,16 @@ class FacialHairEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     @overload  # type: ignore
-    def estimate(self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[False] = False) -> FacialHair: ...
+    def estimate(self, warp: FaceWarp | FaceWarpedImage, asyncEstimate: Literal[False] = False) -> FacialHair: ...
 
     @overload
-    def estimate(
-        self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[True]
-    ) -> AsyncTask[FacialHair]: ...
+    def estimate(self, warp: FaceWarp | FaceWarpedImage, asyncEstimate: Literal[True]) -> AsyncTask[FacialHair]: ...
 
     def estimate(  # type: ignore
         self,
-        warp: Union[FaceWarp, FaceWarpedImage],
+        warp: FaceWarp | FaceWarpedImage,
         asyncEstimate: bool = False,
-    ) -> Union[FacialHair, AsyncTask[FacialHair]]:
+    ) -> FacialHair | AsyncTask[FacialHair]:
         """
         Estimate facial hair.
 
@@ -173,8 +171,8 @@ class FacialHairEstimator(BaseEstimator):
 
     # pylint: disable=W0221
     def estimateBatch(
-        self, warps: List[Union[FaceWarp, FaceWarpedImage]], asyncEstimate: bool = False
-    ) -> Union[List[FacialHair], AsyncTask[List[FacialHair]]]:
+        self, warps: list[FaceWarp | FaceWarpedImage], asyncEstimate: bool = False
+    ) -> list[FacialHair] | AsyncTask[list[FacialHair]]:
         """
         Batch estimate facial hair state on warps.
 

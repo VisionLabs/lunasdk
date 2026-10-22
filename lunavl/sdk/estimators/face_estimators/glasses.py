@@ -4,7 +4,7 @@ See `warp quality`_.
 """
 
 from enum import Enum
-from typing import Dict, List, Literal, Union, overload
+from typing import Literal, overload
 
 from FaceEngine import GlassesEstimation
 
@@ -69,7 +69,7 @@ class Glasses(BaseEstimation):
         """
         return GlassesState.fromCoreGlasses(self._coreEstimation.name)
 
-    def asDict(self) -> Dict[str, Union[str, Dict[str, float]]]:
+    def asDict(self) -> dict[str, str | dict[str, float]]:
         """
         Convert to dict.
 
@@ -91,14 +91,14 @@ class GlassesEstimator(BaseEstimator):
     """
 
     @overload  # type: ignore
-    def estimate(self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[False] = False) -> Glasses: ...
+    def estimate(self, warp: FaceWarp | FaceWarpedImage, asyncEstimate: Literal[False] = False) -> Glasses: ...
 
     @overload
-    def estimate(self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[True]) -> AsyncTask[Glasses]: ...
+    def estimate(self, warp: FaceWarp | FaceWarpedImage, asyncEstimate: Literal[True]) -> AsyncTask[Glasses]: ...
 
     def estimate(  # type: ignore
-        self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: bool = False
-    ) -> Union[Glasses, AsyncTask[Glasses]]:
+        self, warp: FaceWarp | FaceWarpedImage, asyncEstimate: bool = False
+    ) -> Glasses | AsyncTask[Glasses]:
         """
         Estimate glasses from a warp.
 
@@ -119,8 +119,8 @@ class GlassesEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     def estimateBatch(
-        self, warps: List[Union[FaceWarp, FaceWarpedImage]], asyncEstimate: bool = False
-    ) -> Union[List[Glasses], AsyncTask[List[Glasses]]]:
+        self, warps: list[FaceWarp | FaceWarpedImage], asyncEstimate: bool = False
+    ) -> list[Glasses] | AsyncTask[list[Glasses]]:
         """
         Batch estimate glasses
 

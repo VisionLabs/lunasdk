@@ -1,5 +1,5 @@
 from functools import partial
-from typing import Dict, List, Literal, Tuple, Union, overload
+from typing import Literal, overload
 
 from FaceEngine import Detection as CoreFaceDetection, FSDKError, Image as CoreImage  # pylint: disable=E0611,E0401
 
@@ -10,10 +10,10 @@ from lunavl.sdk.errors.exceptions import LunaSDKException, assertError
 from ...errors.errors import LunaVLError
 from ..base import BaseEstimator
 
-PreparedBatch = List[Tuple[CoreImage, CoreFaceDetection, List[int]]]
+PreparedBatch = list[tuple[CoreImage, CoreFaceDetection, list[int]]]
 
 
-def _prepareBatch(detections: List[FaceDetection]) -> PreparedBatch:
+def _prepareBatch(detections: list[FaceDetection]) -> PreparedBatch:
     """
     Prepare face detections for core estimator
 
@@ -23,7 +23,7 @@ def _prepareBatch(detections: List[FaceDetection]) -> PreparedBatch:
     Returns:
         List of Tuples. Each tuple is image, Core detections on the image, detection index in original detection array.
     """
-    res: Dict[int, Tuple[CoreImage, CoreFaceDetection, List[int]]] = {}
+    res: dict[int, tuple[CoreImage, CoreFaceDetection, list[int]]] = {}
     for idx, detection in enumerate(detections):
         imageId = id(detection.image)
         imageDetections = res.get(imageId)
@@ -44,7 +44,7 @@ def _postProcessingBatch(
     batchSize: int,
     preparedBatch: PreparedBatch,
     landmarksType: Literal[FaceLandmarks.Landmarks5],
-) -> List[Landmarks5]: ...
+) -> list[Landmarks5]: ...
 
 
 @overload
@@ -54,7 +54,7 @@ def _postProcessingBatch(
     batchSize: int,
     preparedBatch: PreparedBatch,
     landmarksType: Literal[FaceLandmarks.Landmarks68],
-) -> List[Landmarks68]: ...
+) -> list[Landmarks68]: ...
 
 
 def _postProcessingBatch(
@@ -63,7 +63,7 @@ def _postProcessingBatch(
     batchSize: int,
     preparedBatch: PreparedBatch,
     landmarksType: Literal[FaceLandmarks.Landmarks5, FaceLandmarks.Landmarks68],
-) -> Union[List[Landmarks68], List[Landmarks5]]:
+) -> list[Landmarks68] | list[Landmarks5]:
     """
     Post processing core landmarks estimations. Validate error and convert resul to float structure
 
@@ -80,11 +80,11 @@ def _postProcessingBatch(
     if landmarksType == FaceLandmarks.Landmarks5:
         landmarksClass = Landmarks5
         getter = estimatedBatch.getLandmarks5
-        res: List[Landmarks5] = [None for _ in range(batchSize)]  # type: ignore
+        res: list[Landmarks5] = [None for _ in range(batchSize)]  # type: ignore
     else:
         landmarksClass = Landmarks68  # type: ignore
         getter = estimatedBatch.getLandmarks68
-        res: List[Landmarks68] = [None for _ in range(batchSize)]  # type: ignore
+        res: list[Landmarks68] = [None for _ in range(batchSize)]  # type: ignore
     for imageIdx in range(len(preparedBatch)):
         allImageLandmarks = getter(imageIdx)
         detectionIndexes = preparedBatch[imageIdx][2]
@@ -114,7 +114,7 @@ def _postProcessing(
 
 def _postProcessing(
     error, estimatedBatch, landmarksType: Literal[FaceLandmarks.Landmarks5, FaceLandmarks.Landmarks68]
-) -> Union[Landmarks5, Landmarks68]:
+) -> Landmarks5 | Landmarks68:
     """
     Post processing one core landmarks estimations. Validate error and convert result to a lunavl structure.
 
@@ -213,7 +213,7 @@ class FaceLandmarksEstimator(BaseEstimator):
         detections: list[FaceDetection],
         landmarksType: Literal[FaceLandmarks.Landmarks5],
         asyncEstimate: Literal[False] = False,
-    ) -> List[Landmarks5]: ...
+    ) -> list[Landmarks5]: ...
 
     @overload
     def estimateBatch(
@@ -221,7 +221,7 @@ class FaceLandmarksEstimator(BaseEstimator):
         detections: list[FaceDetection],
         landmarksType: Literal[FaceLandmarks.Landmarks5],
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[List[Landmarks5]]: ...
+    ) -> AsyncTask[list[Landmarks5]]: ...
 
     @overload
     def estimateBatch(
@@ -229,7 +229,7 @@ class FaceLandmarksEstimator(BaseEstimator):
         detections: list[FaceDetection],
         landmarksType: Literal[FaceLandmarks.Landmarks68],
         asyncEstimate: Literal[False],
-    ) -> List[Landmarks68]: ...
+    ) -> list[Landmarks68]: ...
 
     @overload
     def estimateBatch(
@@ -237,14 +237,14 @@ class FaceLandmarksEstimator(BaseEstimator):
         detections: list[FaceDetection],
         landmarksType: Literal[FaceLandmarks.Landmarks68],
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[List[Landmarks68]]: ...
+    ) -> AsyncTask[list[Landmarks68]]: ...
 
     def estimateBatch(
         self,
         detections: list[FaceDetection],
         landmarksType: Literal[FaceLandmarks.Landmarks5, FaceLandmarks.Landmarks68],
         asyncEstimate: bool = False,
-    ) -> Union[List[Landmarks5], List[Landmarks68], AsyncTask[List[Landmarks68]], AsyncTask[List[Landmarks5]]]:
+    ) -> list[Landmarks5] | list[Landmarks68] | AsyncTask[list[Landmarks68]] | AsyncTask[list[Landmarks5]]:
         """
         Estimate mouth state on warp.
 
@@ -292,8 +292,8 @@ class FaceLandmarksEstimator(BaseEstimator):
 
     def _validate(
         self,
-        coreImages: Union[CoreImage, List[CoreImage]],
-        detections: Union[CoreFaceDetection, List[List[CoreFaceDetection]]],
+        coreImages: CoreImage | list[CoreImage],
+        detections: CoreFaceDetection | list[list[CoreFaceDetection]],
     ):
         """
         Validate input data for estimations. Collect errors from single operations and raise complex exception

@@ -3,7 +3,7 @@
 See `warp quality`_.
 """
 
-from typing import Dict, List, Literal, Union, overload
+from typing import Literal, overload
 
 from FaceEngine import SubjectiveQuality as CoreQuality  # pylint: disable=E0611,E0401
 
@@ -88,7 +88,7 @@ class Quality(BaseEstimation):
         """
         return self._coreEstimation.light
 
-    def asDict(self) -> Dict[str, float]:
+    def asDict(self) -> dict[str, float]:
         """
         Convert to dict.
 
@@ -116,16 +116,14 @@ class WarpQualityEstimator(BaseEstimator):
     #  pylint: disable=W0221
     @overload  # type: ignore
     def estimate(
-        self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[False] = False
+        self, warp: FaceWarp | FaceWarpedImage, asyncEstimate: Literal[False] = False
     ) -> Quality:  # type: ignore
         ...
 
     @overload
-    def estimate(self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[True]) -> AsyncTask[Quality]: ...
+    def estimate(self, warp: FaceWarp | FaceWarpedImage, asyncEstimate: Literal[True]) -> AsyncTask[Quality]: ...
 
-    def estimate(
-        self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: bool = False
-    ) -> Union[Quality, AsyncTask[Quality]]:
+    def estimate(self, warp: FaceWarp | FaceWarpedImage, asyncEstimate: bool = False) -> Quality | AsyncTask[Quality]:
         """
         Estimate quality from a warp.
 
@@ -146,8 +144,8 @@ class WarpQualityEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     def estimateBatch(
-        self, warps: List[Union[FaceWarp, FaceWarpedImage]], asyncEstimate: bool = False
-    ) -> Union[List[Quality], AsyncTask[List[Quality]]]:
+        self, warps: list[FaceWarp | FaceWarpedImage], asyncEstimate: bool = False
+    ) -> list[Quality] | AsyncTask[list[Quality]]:
         """
         Batch estimate emotions
 

@@ -3,7 +3,7 @@ Module contains function for detection human bodies on images.
 """
 
 from functools import partial
-from typing import Any, Dict, List, Literal, Optional, Union, overload
+from typing import Literal, TypeAlias, overload
 
 from FaceEngine import Detection, FSDKErrorResult, Human, HumanDetectionType  # pylint: disable=E0611,E0401
 
@@ -26,7 +26,7 @@ from .base import (
 )
 
 
-def _createCoreBodies(image: ImageForRedetection) -> List[Human]:
+def _createCoreBodies(image: ImageForRedetection) -> list[Human]:
     """
     Create core humans for redetection
     Args:
@@ -66,9 +66,9 @@ def createHumanDetection(image: VLImage, detection: Detection):
 
 def collectDetectionsResult(
     fsdkDetectRes,
-    images: Union[List[Union[VLImage, ImageForDetection]], List[ImageForRedetection]],
+    images: list[VLImage | ImageForDetection] | list[ImageForRedetection],
     isRedectResult: bool = False,
-) -> Union[List[List[BodyDetection]], List[List[Optional[BodyDetection]]]]:
+) -> list[list[BodyDetection]] | list[list[BodyDetection | None]]:
     """
     Collect detection results from core reply and prepare human detections
     Args:
@@ -98,7 +98,7 @@ def collectDetectionsResult(
     return res
 
 
-def postProcessingOne(error: FSDKErrorResult, detectRes, image: VLImage) -> Optional[BodyDetection]:
+def postProcessingOne(error: FSDKErrorResult, detectRes, image: VLImage) -> BodyDetection | None:
     """
     Convert a core human detection to `BodyDetection` after detect one and error check.
 
@@ -128,7 +128,7 @@ def postProcessingOne(error: FSDKErrorResult, detectRes, image: VLImage) -> Opti
     return humanDetection
 
 
-def postProcessingRedetectOne(error: FSDKErrorResult, detectRes, image: VLImage) -> Optional[BodyDetection]:
+def postProcessingRedetectOne(error: FSDKErrorResult, detectRes, image: VLImage) -> BodyDetection | None:
     """
     Convert a core human detection to `BodyDetection` after redect and error check.
 
@@ -149,8 +149,8 @@ def postProcessingRedetectOne(error: FSDKErrorResult, detectRes, image: VLImage)
 
 
 def postProcessing(
-    error: FSDKErrorResult, fsdkDetectRes, images: List[Union[VLImage, ImageForDetection]]
-) -> List[List[BodyDetection]]:
+    error: FSDKErrorResult, fsdkDetectRes, images: list[VLImage | ImageForDetection]
+) -> list[list[BodyDetection]]:
     """
     Convert core human detections from detector results to `HumanDetection` and error check.
 
@@ -167,8 +167,8 @@ def postProcessing(
 
 
 def postProcessingRedect(
-    error: FSDKErrorResult, fsdkDetectRes, images: List[ImageForRedetection]
-) -> List[List[Optional[BodyDetection]]]:
+    error: FSDKErrorResult, fsdkDetectRes, images: list[ImageForRedetection]
+) -> list[list[BodyDetection | None]]:
     """
     Convert core human redetections from detector results to `HumanDetection` and error check.
 
@@ -185,13 +185,13 @@ def postProcessingRedect(
 
 
 # alias for detect one result
-DetectOneResult = Union[None, BodyDetection]
+DetectOneResult: TypeAlias = BodyDetection | None
 # alias for detection result
-DetectResult = List[List[BodyDetection]]
+DetectResult: TypeAlias = list[list[BodyDetection]]
 # alias for redection result
-RedetectBatchResult = List[List[Union[BodyDetection, None]]]
+RedetectBatchResult: TypeAlias = list[list[BodyDetection | None]]
 # alias for redect one result
-RedetectResult = Union[None, BodyDetection]
+RedetectResult: TypeAlias = BodyDetection | None
 
 
 class BodyDetector(BaseDetector):
@@ -235,7 +235,7 @@ class BodyDetector(BaseDetector):
     def detectOne(
         self,
         image: VLImage,
-        detectArea: Optional[Rect] = None,
+        detectArea: Rect | None = None,
         limit: int = 5,
         asyncEstimate: Literal[False] = False,
     ) -> DetectOneResult: ...
@@ -244,7 +244,7 @@ class BodyDetector(BaseDetector):
     def detectOne(
         self,
         image: VLImage,
-        detectArea: Optional[Rect],
+        detectArea: Rect | None,
         limit: int,
         asyncEstimate: Literal[True],
     ) -> AsyncTask[DetectOneResult]: ...
@@ -252,7 +252,7 @@ class BodyDetector(BaseDetector):
     def detectOne(
         self,
         image: VLImage,
-        detectArea: Optional[Rect] = None,
+        detectArea: Rect | None = None,
         limit: int = 5,
         asyncEstimate: bool = False,
     ):
@@ -286,22 +286,22 @@ class BodyDetector(BaseDetector):
     @overload
     def detect(
         self,
-        images: List[Union[VLImage, ImageForDetection]],
+        images: list[VLImage | ImageForDetection],
         limit: int = 5,
         asyncEstimate: Literal[False] = False,
-    ) -> Union[DetectResult, AsyncTask[DetectResult]]: ...
+    ) -> DetectResult | AsyncTask[DetectResult]: ...
 
     @overload
     def detect(
         self,
-        images: List[Union[VLImage, ImageForDetection]],
+        images: list[VLImage | ImageForDetection],
         limit: int,
         asyncEstimate: Literal[True] = True,
-    ) -> Union[DetectResult, AsyncTask[DetectResult]]: ...
+    ) -> DetectResult | AsyncTask[DetectResult]: ...
 
     def detect(
         self,
-        images: List[Union[VLImage, ImageForDetection]],
+        images: list[VLImage | ImageForDetection],
         limit: int = 5,
         asyncEstimate=False,
     ):
@@ -329,9 +329,9 @@ class BodyDetector(BaseDetector):
     def redetectOne(  # noqa: F811
         self,
         image: VLImage,
-        bBox: Union[Rect, BodyDetection],
+        bBox: Rect | BodyDetection,
         asyncEstimate=False,
-    ) -> Union[RedetectResult, AsyncTask[RedetectResult]]:
+    ) -> RedetectResult | AsyncTask[RedetectResult]:
         """
         Redetect human body on an image in area, restricted with image.bBox, bBox or detection.
 
@@ -360,9 +360,9 @@ class BodyDetector(BaseDetector):
 
     def redetect(
         self,
-        images: List[ImageForRedetection],
+        images: list[ImageForRedetection],
         asyncEstimate=False,
-    ) -> Union[RedetectBatchResult, AsyncTask[RedetectBatchResult]]:
+    ) -> RedetectBatchResult | AsyncTask[RedetectBatchResult]:
         """
         Redetect human on each image.image in area, restricted with image.bBox.
 

@@ -1,6 +1,6 @@
 import unittest
 from operator import attrgetter
-from typing import Any, Dict, Type
+from typing import Any
 
 import numpy as np
 from _pytest._code import ExceptionInfo
@@ -69,7 +69,7 @@ class BaseTestClass(unittest.TestCase):
             )
 
     @staticmethod
-    def generateColorToArrayMap() -> Dict[ColorFormat, np.ndarray]:
+    def generateColorToArrayMap() -> dict[ColorFormat, np.ndarray]:
         """
         Get images as ndarrays in all available color formats.
 
@@ -111,7 +111,7 @@ class BaseTestClass(unittest.TestCase):
         return allImages
 
     @staticmethod
-    def getColorToImageMap() -> Dict[ColorFormat, VLImage]:
+    def getColorToImageMap() -> dict[ColorFormat, VLImage]:
         """
         Get images as vl image in all available color formats.
 
@@ -124,7 +124,7 @@ class BaseTestClass(unittest.TestCase):
         }
 
     @staticmethod
-    def assertAsyncEstimation(task: AsyncTask, expectedTypeResult: Type[Any]):
+    def assertAsyncEstimation(task: AsyncTask, expectedTypeResult: type[Any]):
         """
         Assert single async estimation
         Args:
@@ -136,7 +136,7 @@ class BaseTestClass(unittest.TestCase):
         isinstance(res, expectedTypeResult)
 
     @staticmethod
-    def assertAsyncBatchEstimation(task: AsyncTask, expectedTypeResult: Type[Any], batchLength: int = 2):
+    def assertAsyncBatchEstimation(task: AsyncTask, expectedTypeResult: type[Any], batchLength: int = 2):
         """
         Assert batch async estimation
         Args:
@@ -152,7 +152,7 @@ class BaseTestClass(unittest.TestCase):
             isinstance(estimation, expectedTypeResult)
 
     @staticmethod
-    def assertAsyncBatchEstimationWithAggregation(task: AsyncTask, expectedTypeResult: Type[Any], batchLength: int = 2):
+    def assertAsyncBatchEstimationWithAggregation(task: AsyncTask, expectedTypeResult: type[Any], batchLength: int = 2):
         """
         Assert batch async estimation with aggregation
         Args:

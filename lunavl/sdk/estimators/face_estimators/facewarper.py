@@ -1,7 +1,7 @@
 """Module for creating warped images"""
 
 from functools import partial
-from typing import List, Literal, Optional, Union, overload
+from typing import Literal, overload
 
 from FaceEngine import Image as CoreImage, IWarperPtr, Transformation  # pylint: disable=E0611,E0401
 from numpy import ndarray
@@ -27,9 +27,9 @@ class FaceWarpedImage(VLImage):
 
     def __init__(
         self,
-        body: Union[bytes, bytearray, ndarray, PilImage, CoreImage, VLImage],
+        body: bytes | bytearray | ndarray | PilImage | CoreImage | VLImage,
         filename: str = "",
-        colorFormat: Optional[ColorFormat] = None,
+        colorFormat: ColorFormat | None = None,
     ):
         """
         Init.
@@ -64,7 +64,7 @@ class FaceWarpedImage(VLImage):
 
     #  pylint: disable=W0221
     @classmethod
-    def load(cls, *, filename: Optional[str] = None, url: Optional[str] = None) -> "FaceWarpedImage":  # type: ignore
+    def load(cls, *, filename: str | None = None, url: str | None = None) -> "FaceWarpedImage":  # type: ignore
         """
         Load image from numpy array or file or url.
 
@@ -119,7 +119,7 @@ def postProcessing(error, warp, faceDetection: FaceDetection):
     return FaceWarp(warpedImage, faceDetection)
 
 
-def postProcessingBatch(error, warps, faceDetections: List[FaceDetection]):
+def postProcessingBatch(error, warps, faceDetections: list[FaceDetection]):
     """Warper batch post-processing"""
     assertError(error)
     return [postProcessing(error, warp, faceDetection) for warp, faceDetection in zip(warps, faceDetections)]
@@ -190,15 +190,15 @@ class FaceWarper:
 
     @overload  # type: ignore
     def warpBatch(
-        self, faceDetections: List[FaceDetection], asyncEstimate: Literal[False] = False
-    ) -> List[FaceWarp]: ...  # type: ignore
+        self, faceDetections: list[FaceDetection], asyncEstimate: Literal[False] = False
+    ) -> list[FaceWarp]: ...  # type: ignore
     @overload  # type: ignore
     def warpBatch(
-        self, faceDetections: List[FaceDetection], asyncEstimate: Literal[True] = True
-    ) -> AsyncTask[List[FaceWarp]]: ...  # type: ignore
+        self, faceDetections: list[FaceDetection], asyncEstimate: Literal[True] = True
+    ) -> AsyncTask[list[FaceWarp]]: ...  # type: ignore
     def warpBatch(
-        self, faceDetections: List[FaceDetection], asyncEstimate: bool = False
-    ) -> Union[List[FaceWarp], AsyncTask[List[FaceWarp]]]:
+        self, faceDetections: list[FaceDetection], asyncEstimate: bool = False
+    ) -> list[FaceWarp] | AsyncTask[list[FaceWarp]]:
         """
         Create warps from detections batch.
 
@@ -224,7 +224,7 @@ class FaceWarper:
 
     def makeWarpTransformationWithLandmarks(
         self, faceDetection: FaceDetection, typeLandmarks: str
-    ) -> Union[Landmarks68, Landmarks5]:
+    ) -> Landmarks68 | Landmarks5:
         """
         Make warp transformation with landmarks
 

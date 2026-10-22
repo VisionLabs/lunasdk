@@ -3,7 +3,7 @@
 See ags_.
 """
 
-from typing import List, Literal, Optional, Union, overload
+from typing import Literal, overload
 
 from FaceEngine import FSDKErrorResult  # pylint: disable=E0611,E0401
 
@@ -34,8 +34,8 @@ def postProcessing(
 
 def postProcessingBatch(
     error: FSDKErrorResult,
-    estimations: List[float],
-) -> List[float]:
+    estimations: list[float],
+) -> list[float]:
     """
     Postprocessing batch core estimations
     Args:
@@ -58,7 +58,7 @@ class AGSEstimator(BaseEstimator):
     @overload  # type: ignore
     def estimate(
         self,
-        detection: Optional[FaceDetection] = None,
+        detection: FaceDetection | None = None,
         imageWithFaceDetection: None = None,
         asyncEstimate: Literal[False] = False,
     ) -> float: ...
@@ -66,17 +66,17 @@ class AGSEstimator(BaseEstimator):
     @overload
     def estimate(
         self,
-        detection: Optional[FaceDetection],
+        detection: FaceDetection | None,
         imageWithFaceDetection: ImageWithFaceDetection,
         asyncEstimate: Literal[True],
     ) -> AsyncTask[float]: ...
 
     def estimate(
         self,
-        detection: Optional[FaceDetection] = None,
-        imageWithFaceDetection: Optional[ImageWithFaceDetection] = None,
+        detection: FaceDetection | None = None,
+        imageWithFaceDetection: ImageWithFaceDetection | None = None,
         asyncEstimate: bool = False,
-    ) -> Union[float, AsyncTask[float]]:
+    ) -> float | AsyncTask[float]:
         """
         Estimate ags for single image/detection.
 
@@ -108,20 +108,20 @@ class AGSEstimator(BaseEstimator):
     @overload  # type: ignore
     def estimateBatch(
         self,
-        detections: Union[List[FaceDetection], List[ImageWithFaceDetection]],
+        detections: list[FaceDetection] | list[ImageWithFaceDetection],
         asyncEstimate: Literal[False] = False,
-    ) -> List[float]: ...
+    ) -> list[float]: ...
 
     @overload
     def estimateBatch(
-        self, detections: Union[List[FaceDetection], List[ImageWithFaceDetection]], asyncEstimate: Literal[True]
-    ) -> AsyncTask[List[float]]: ...
+        self, detections: list[FaceDetection] | list[ImageWithFaceDetection], asyncEstimate: Literal[True]
+    ) -> AsyncTask[list[float]]: ...
 
     def estimateBatch(
         self,
-        detections: Union[List[FaceDetection], List[ImageWithFaceDetection]],
+        detections: list[FaceDetection] | list[ImageWithFaceDetection],
         asyncEstimate: bool = False,
-    ) -> Union[List[float], AsyncTask[List[float]]]:
+    ) -> list[float] | AsyncTask[list[float]]:
         """
         Estimate ags for list of detections.
 

@@ -1,5 +1,4 @@
 from collections import namedtuple
-from typing import Dict
 
 import pytest
 
@@ -70,7 +69,7 @@ class TestMask(BaseTestClass):
 
         cls.detector = cls.faceEngine.createFaceDetector(DetectorType.FACE_DET_V3)
 
-    def assertMaskEstimation(self, mask: Mask, expectedEstimationResults: Dict[str, float]):
+    def assertMaskEstimation(self, mask: Mask, expectedEstimationResults: dict[str, float]):
         """
         Function checks if the instance belongs to the Mask class and compares the result with what is expected.
 

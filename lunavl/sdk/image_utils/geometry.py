@@ -2,7 +2,7 @@
 Module contains geometric structures (Rect, Point, Size)
 """
 
-from typing import Dict, Generic, NamedTuple, Tuple, TypeVar, Union
+from typing import Generic, NamedTuple, TypeVar
 
 from FaceEngine import (  # pylint: disable=E0611,E0401
     EyelidLandmarks,
@@ -52,7 +52,7 @@ class Size(Generic[COORDINATE_TYPE]):
         >>> str(Size(1, 2))
         'width = 1, height = 2'
         """
-        return "width = {}, height = {}".format(self.width, self.height)
+        return f"width = {self.width}, height = {self.height}"
 
     def asDict(self) -> dict:
         """
@@ -91,7 +91,7 @@ class Point(Generic[COORDINATE_TYPE]):
         self.y: COORDINATE_TYPE = y  # pylint: disable=C0103
 
     @classmethod
-    def fromVector2(cls, vec2: Union[Vector2f, Vector2i]) -> "Point":
+    def fromVector2(cls, vec2: Vector2f | Vector2i) -> "Point":
         """
         Create Point from Core Vector2i and Vector2f
 
@@ -106,7 +106,7 @@ class Point(Generic[COORDINATE_TYPE]):
         point.y = vec2.y
         return point
 
-    def toVector2(self) -> Union[Vector2i, Vector2f]:
+    def toVector2(self) -> Vector2i | Vector2f:
         """
         Create Vector2i or Vector2f from point
 
@@ -123,7 +123,7 @@ class Point(Generic[COORDINATE_TYPE]):
             return Vector2i(self.x, self.y)
         return Vector2f(self.x, self.y)
 
-    def asDict(self) -> Tuple[int, int]:
+    def asDict(self) -> tuple[int, int]:
         """
         Convert point to list
 
@@ -138,7 +138,7 @@ class Point(Generic[COORDINATE_TYPE]):
         return int(self.x), int(self.y)
 
     def __repr__(self):
-        return "x = {}, y = {}".format(self.x, self.y)
+        return f"x = {self.x}, y = {self.y}"
 
 
 class Vec2D(NamedTuple):
@@ -199,7 +199,7 @@ class Rect(Generic[COORDINATE_TYPE]):
         return CoreRectF(*map(float, (self.x, self.y, self.width, self.height)))
 
     @classmethod
-    def fromCoreRect(cls, rect: Union[CoreRectF, CoreRectI]) -> "Rect":
+    def fromCoreRect(cls, rect: CoreRectF | CoreRectI) -> "Rect":
         """
         Load rect from core rect
 
@@ -582,7 +582,7 @@ class Rect(Generic[COORDINATE_TYPE]):
         newRect.coreRect = self.coreRect.adjusted(dx, dy, dw, dh)
         return newRect
 
-    def asDict(self) -> Dict[str, COORDINATE_TYPE]:
+    def asDict(self) -> dict[str, COORDINATE_TYPE]:
         """
         Convert rect to dict
 

@@ -4,7 +4,6 @@ See eyebrow_expression_.
 """
 
 from enum import Enum
-from typing import List, Union
 
 from FaceEngine import (  # pylint: disable=E0611,E0401
     EyeBrowEstimation as CoreEyeBrowEstimation,
@@ -150,8 +149,8 @@ class EyebrowExpressionEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     def estimate(  # type: ignore
-        self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: bool = False
-    ) -> Union[EyebrowExpressions, AsyncTask[EyebrowExpressions]]:
+        self, warp: FaceWarp | FaceWarpedImage, asyncEstimate: bool = False
+    ) -> EyebrowExpressions | AsyncTask[EyebrowExpressions]:
         """
         Eyebrow expression on warp.
 
@@ -172,8 +171,8 @@ class EyebrowExpressionEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     def estimateBatch(
-        self, warps: List[Union[FaceWarp, FaceWarpedImage]], asyncEstimate: bool = False
-    ) -> Union[List[EyebrowExpressions], AsyncTask[List[EyebrowExpressions]]]:
+        self, warps: list[FaceWarp | FaceWarpedImage], asyncEstimate: bool = False
+    ) -> list[EyebrowExpressions] | AsyncTask[list[EyebrowExpressions]]:
         """
         Batch estimate eyebrow expressions
 

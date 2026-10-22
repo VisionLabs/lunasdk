@@ -1,5 +1,4 @@
 import unittest
-from typing import Optional
 
 from lunavl.sdk.estimators.face_estimators.emotions import Emotions
 from lunavl.sdk.faceengine.setting_provider import DetectorType
@@ -22,7 +21,7 @@ class TestEstimateEmotions(BaseTestClass):
         cls.warper = cls.faceEngine.createFaceWarper()
         cls.emotionEstimator = cls.faceEngine.createEmotionEstimator()
 
-    def assert_emotion_reply(self, emotionDetection: dict, predominantEmotion: Optional[str] = None) -> None:
+    def assert_emotion_reply(self, emotionDetection: dict, predominantEmotion: str | None = None) -> None:
         """
         Assert emotions dict
         Args:

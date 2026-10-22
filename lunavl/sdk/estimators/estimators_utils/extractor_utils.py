@@ -1,7 +1,7 @@
 """Common descriptor extractor utils"""
 
 from functools import partial
-from typing import List, Optional, Tuple, TypeVar, Union
+from typing import TypeVar
 
 from FaceEngine import FSDKError, FSDKErrorResult, IDescriptorExtractorPtr  # pylint: disable=E0611,E0401
 
@@ -37,8 +37,8 @@ def postProcessing(error: FSDKErrorResult, gs: float, descriptor: GenericDescipt
 
 
 def postProcessingBatch(
-    error: FSDKErrorResult, gScores: List[float], descriptorBatch: GenericDescriptorBatch
-) -> Tuple[GenericDescriptorBatch, None]:
+    error: FSDKErrorResult, gScores: list[float], descriptorBatch: GenericDescriptorBatch
+) -> tuple[GenericDescriptorBatch, None]:
     """
     Post processing batch extraction result without aggregation, error check.
 
@@ -60,10 +60,10 @@ def postProcessingBatch(
 def postProcessingBatchWithAggregation(
     error: FSDKErrorResult,
     aggregetionGs: float,
-    gScores: List[float],
+    gScores: list[float],
     descriptorBatch: GenericDescriptorBatch,
     aggregatedDescriptor: GenericDesciptor,
-) -> Tuple[GenericDescriptorBatch, GenericDesciptor]:
+) -> tuple[GenericDescriptorBatch, GenericDesciptor]:
     """
     Post processing batch extraction result with aggregation, error check.
 
@@ -86,12 +86,12 @@ def postProcessingBatchWithAggregation(
 
 
 def estimate(
-    warp: Union[BodyWarp, BodyWarpedImage, FaceWarp, FaceWarpedImage],
+    warp: BodyWarp | BodyWarpedImage | FaceWarp | FaceWarpedImage,
     descriptorFactory: BaseDescriptorFactory,
     coreEstimator: IDescriptorExtractorPtr,
-    descriptor: Optional[BaseDescriptor] = None,
+    descriptor: BaseDescriptor | None = None,
     asyncEstimate: bool = False,
-) -> Union[BaseDescriptor, AsyncTask[BaseDescriptor]]:
+) -> BaseDescriptor | AsyncTask[BaseDescriptor]:
     """
     Estimate a face descriptor or a human descriptor from the warped image.
 
@@ -144,16 +144,13 @@ def validateInputByBatchEstimator(estimator, *args):
 
 
 def estimateDescriptorsBatch(
-    warps: Union[List[Union[BodyWarp, BodyWarpedImage]], List[Union[FaceWarp, FaceWarpedImage]]],
+    warps: list[BodyWarp | BodyWarpedImage] | list[FaceWarp | FaceWarpedImage],
     descriptorFactory: BaseDescriptorFactory,
     coreEstimator: IDescriptorExtractorPtr,
     aggregate: bool = False,
-    descriptorBatch: Optional[BaseDescriptorBatch] = None,
+    descriptorBatch: BaseDescriptorBatch | None = None,
     asyncEstimate: bool = False,
-) -> Union[
-    Tuple[BaseDescriptorBatch, Union[BaseDescriptor, None]],
-    AsyncTask[Tuple[BaseDescriptorBatch, Union[BaseDescriptor, None]]],
-]:
+) -> tuple[BaseDescriptorBatch, BaseDescriptor | None] | AsyncTask[tuple[BaseDescriptorBatch, BaseDescriptor | None]]:
     """
     Estimate a batch of descriptors from warped images.
 

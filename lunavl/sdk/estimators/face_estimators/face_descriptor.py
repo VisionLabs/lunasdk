@@ -5,8 +5,6 @@ See `face descriptor`_.
 
 """
 
-from typing import List, Optional, Tuple, Union
-
 from FaceEngine import IDescriptorExtractorPtr  # pylint: disable=E0611,E0401
 
 from lunavl.sdk.async_task import AsyncTask
@@ -17,7 +15,7 @@ from ..base import BaseEstimator
 from ..estimators_utils.extractor_utils import estimate, estimateDescriptorsBatch
 from ..face_estimators.facewarper import FaceWarp, FaceWarpedImage
 
-FaceDescriptorBatchEstimation = Tuple[FaceDescriptorBatch, Union[FaceDescriptor, None]]
+FaceDescriptorBatchEstimation = tuple[FaceDescriptorBatch, FaceDescriptor | None]
 
 
 class FaceDescriptorEstimator(BaseEstimator):
@@ -44,10 +42,10 @@ class FaceDescriptorEstimator(BaseEstimator):
     #  pylint: disable=W0221
     def estimate(  # type: ignore
         self,
-        warp: Union[FaceWarp, FaceWarpedImage],
-        descriptor: Optional[FaceDescriptor] = None,
+        warp: FaceWarp | FaceWarpedImage,
+        descriptor: FaceDescriptor | None = None,
         asyncEstimate: bool = False,
-    ) -> Union[FaceDescriptor, AsyncTask[FaceDescriptor]]:
+    ) -> FaceDescriptor | AsyncTask[FaceDescriptor]:
         """
         Estimate face descriptor from a warp image.
 
@@ -71,11 +69,11 @@ class FaceDescriptorEstimator(BaseEstimator):
 
     def estimateDescriptorsBatch(
         self,
-        warps: List[Union[FaceWarp, FaceWarpedImage]],
+        warps: list[FaceWarp | FaceWarpedImage],
         aggregate: bool = False,
-        descriptorBatch: Optional[FaceDescriptorBatch] = None,
+        descriptorBatch: FaceDescriptorBatch | None = None,
         asyncEstimate: bool = False,
-    ) -> Union[FaceDescriptorBatchEstimation, AsyncTask[FaceDescriptorBatchEstimation]]:
+    ) -> FaceDescriptorBatchEstimation | AsyncTask[FaceDescriptorBatchEstimation]:
         """
         Estimate a batch of descriptors from warped images.
 

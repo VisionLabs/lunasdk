@@ -5,7 +5,7 @@ SDK configuration module.
 import os
 from enum import Enum
 from pathlib import Path
-from typing import Any, Optional, Tuple, Type, TypeVar, Union
+from typing import Any, Self, TypeVar
 
 import FaceEngine as CoreFE
 from FaceEngine import (  # pylint: disable=E0611,E0401
@@ -26,7 +26,7 @@ class BiDirectionEnum(Enum):
     """
 
     @classmethod
-    def getEnum(cls: Type[BI_ENUM], enumValue: Union[int, str]) -> BI_ENUM:
+    def getEnum(cls, enumValue: int | str) -> Self:
         """
         Get enum by value.
 
@@ -41,7 +41,7 @@ class BiDirectionEnum(Enum):
         for enumMember in cls:
             if enumMember.value == enumValue:
                 return enumMember
-        raise KeyError("Enum {} does not contain  member with value {}".format(cls.__name__, enumValue))
+        raise KeyError(f"Enum {cls.__name__} does not contain  member with value {enumValue}")
 
 
 class CpuClass(Enum):
@@ -100,7 +100,7 @@ class Point4:
         self.z = z
         self.w = w
 
-    def asTuple(self) -> Tuple[float, float, float, float]:
+    def asTuple(self) -> tuple[float, float, float, float]:
         """
         Convert point to tuple.
 
@@ -124,7 +124,7 @@ class Point3:
         self.y = y
         self.z = z
 
-    def asTuple(self) -> Tuple[float, float, float]:
+    def asTuple(self) -> tuple[float, float, float]:
         """
         Convert point to tuple.
 
@@ -146,7 +146,7 @@ class Point2:
         self.x = float(x)
         self.y = float(y)
 
-    def asTuple(self) -> Tuple[float, float]:
+    def asTuple(self) -> tuple[float, float]:
         """
         Convert point to tuple.
 
@@ -221,7 +221,7 @@ class BaseSettingsSection:
         """
         self._coreSettingProvider.setValue(self.__class__.sectionName, name, CoreFE.SettingsProviderValue(value))
 
-    def getValue(self, name: str) -> Optional[Any]:
+    def getValue(self, name: str) -> Any | None:
         """
         Get setting value
         Args:
@@ -249,7 +249,7 @@ class SystemSettings(BaseSettingsSection):
     sectionName = "system"
 
     @property
-    def verboseLogging(self) -> Optional[VerboseLogging]:
+    def verboseLogging(self) -> VerboseLogging | None:
         """
         Getter for verboseLogging
 
@@ -272,7 +272,7 @@ class SystemSettings(BaseSettingsSection):
         self.setValue("verboseLogging", value.value)
 
     @property
-    def betaMode(self) -> Optional[bool]:
+    def betaMode(self) -> bool | None:
         """
         Getter for betaMode
 
@@ -294,7 +294,7 @@ class SystemSettings(BaseSettingsSection):
         self.setValue("betaMode", int(value))
 
     @property
-    def defaultDetectorType(self) -> Optional[DetectorType]:
+    def defaultDetectorType(self) -> DetectorType | None:
         """
         Getter for defaultDetectorType
 
@@ -337,7 +337,7 @@ class RuntimeSettings(BaseSettingsSection):
     sectionName = "Runtime"
 
     @property
-    def deviceClass(self) -> Optional[DeviceClass]:
+    def deviceClass(self) -> DeviceClass | None:
         """
         Get device class.
 
@@ -359,7 +359,7 @@ class RuntimeSettings(BaseSettingsSection):
         self.setValue("deviceClass", value.value)
 
     @property
-    def cpuClass(self) -> Optional[CpuClass]:
+    def cpuClass(self) -> CpuClass | None:
         """
         Getter for cpuClass
 
@@ -382,7 +382,7 @@ class RuntimeSettings(BaseSettingsSection):
         self.setValue("cpuClass", value.value)
 
     @property
-    def numThreads(self) -> Optional[int]:
+    def numThreads(self) -> int | None:
         """
         Getter for numThreads
 
@@ -401,7 +401,7 @@ class RuntimeSettings(BaseSettingsSection):
         self.setValue("numThreads", value)
 
     @property
-    def verboseLogging(self) -> Optional[VerboseLogging]:
+    def verboseLogging(self) -> VerboseLogging | None:
         """
         Getter for verboseLogging
 
@@ -423,7 +423,7 @@ class RuntimeSettings(BaseSettingsSection):
         self.setValue("verboseLogging", value.value)
 
     @property
-    def numComputeStreams(self) -> Optional[int]:
+    def numComputeStreams(self) -> int | None:
         """
         Getter for numComputeStreams
 
@@ -442,7 +442,7 @@ class RuntimeSettings(BaseSettingsSection):
         self.setValue("numComputeStreams", value)
 
     @property
-    def programCacheSize(self) -> Optional[int]:
+    def programCacheSize(self) -> int | None:
         """
         Getter for programCacheSize
 
@@ -461,7 +461,7 @@ class RuntimeSettings(BaseSettingsSection):
         self.setValue("programCacheSize", value)
 
     @property
-    def defaultGpuDevice(self) -> Optional[int]:
+    def defaultGpuDevice(self) -> int | None:
         """
         Getter for defaultGpuDevice (0, 1, ...)
 
@@ -480,7 +480,7 @@ class RuntimeSettings(BaseSettingsSection):
         self.setValue("defaultGpuDevice", value)
 
     @property
-    def cpuHighWatermark(self) -> Optional[int]:
+    def cpuHighWatermark(self) -> int | None:
         """
         Getter for cpuHighWatermark
 
@@ -505,7 +505,7 @@ class RuntimeSettings(BaseSettingsSection):
             self.setValue("cpuHighWatermark", value)
 
     @property
-    def gpuHighWatermark(self) -> Optional[int]:
+    def gpuHighWatermark(self) -> int | None:
         """
         Getter for gpuHighWatermark
 
@@ -530,7 +530,7 @@ class RuntimeSettings(BaseSettingsSection):
             self.setValue("gpuHighWatermark", value)
 
     @property
-    def pinThreads(self) -> Optional[bool]:
+    def pinThreads(self) -> bool | None:
         """
         Getter for pinThreads
 
@@ -569,7 +569,7 @@ class DescriptorFactorySettings(BaseSettingsSection):
     sectionName = "DescriptorFactory::Settings"
 
     @property
-    def model(self) -> Optional[int]:
+    def model(self) -> int | None:
         """
         Getter for model
 
@@ -588,7 +588,7 @@ class DescriptorFactorySettings(BaseSettingsSection):
         self.setValue("model", value)
 
     @property
-    def useMobileNet(self) -> Optional[bool]:
+    def useMobileNet(self) -> bool | None:
         """
         Getter for useMobileNet
 
@@ -610,7 +610,7 @@ class DescriptorFactorySettings(BaseSettingsSection):
         self.setValue("useMobileNet", int(value))
 
     @property
-    def distance(self) -> Optional[Distance]:
+    def distance(self) -> Distance | None:
         """
         Getter for distance
 
@@ -632,7 +632,7 @@ class DescriptorFactorySettings(BaseSettingsSection):
         self.setValue("distance", value.value)
 
     @property
-    def descriptorCountWarningLevel(self) -> Optional[str]:
+    def descriptorCountWarningLevel(self) -> str | None:
         """
         Getter for descriptorCountWarningLevel
 
@@ -676,7 +676,7 @@ class FaceDetV3Settings(BaseSettingsSection):
     sectionName = "FaceDetV3::Settings"
 
     @property
-    def scoreThreshold(self) -> Optional[float]:
+    def scoreThreshold(self) -> float | None:
         """
         Getter for scoreThreshold
 
@@ -695,7 +695,7 @@ class FaceDetV3Settings(BaseSettingsSection):
         self.setValue("ScoreThreshold", float(value))
 
     @property
-    def redetectScoreThreshold(self) -> Optional[float]:
+    def redetectScoreThreshold(self) -> float | None:
         """
         Getter for redetectScoreThreshold
 
@@ -714,7 +714,7 @@ class FaceDetV3Settings(BaseSettingsSection):
         self.setValue("RedetectScoreThreshold", float(value))
 
     @property
-    def NMSThreshold(self) -> Optional[float]:
+    def NMSThreshold(self) -> float | None:
         """
         Getter for NMSThreshold
 
@@ -733,7 +733,7 @@ class FaceDetV3Settings(BaseSettingsSection):
         self.setValue("NMSThreshold", float(value))
 
     @property
-    def strictMinSize(self) -> Optional[int]:
+    def strictMinSize(self) -> int | None:
         """
         Getter for strictMinSize
 
@@ -752,7 +752,7 @@ class FaceDetV3Settings(BaseSettingsSection):
         self.setValue("strictlyMinSize", value)
 
     @property
-    def minFaceSize(self) -> Optional[int]:
+    def minFaceSize(self) -> int | None:
         """
         Getter for minFaceSize
 
@@ -771,7 +771,7 @@ class FaceDetV3Settings(BaseSettingsSection):
         self.setValue("minFaceSize", value)
 
     @property
-    def maxFaceSize(self) -> Optional[int]:
+    def maxFaceSize(self) -> int | None:
         """
         Getter for maxFaceSize
 
@@ -790,7 +790,7 @@ class FaceDetV3Settings(BaseSettingsSection):
         self.setValue("maxFaceSize", value)
 
     @property
-    def nms(self) -> Optional[NMS]:
+    def nms(self) -> NMS | None:
         """
         Getter for nms
 
@@ -812,7 +812,7 @@ class FaceDetV3Settings(BaseSettingsSection):
         self.setValue("nms", value.value)
 
     @property
-    def redetectTensorSize(self) -> Optional[int]:
+    def redetectTensorSize(self) -> int | None:
         """
         Getter for redetectTensorSize
 
@@ -831,7 +831,7 @@ class FaceDetV3Settings(BaseSettingsSection):
         self.setValue("RedetectTensorSize", value)
 
     @property
-    def redetectFaceTargetSize(self) -> Optional[int]:
+    def redetectFaceTargetSize(self) -> int | None:
         """
         Getter for redetectFaceTargetSize
 
@@ -850,7 +850,7 @@ class FaceDetV3Settings(BaseSettingsSection):
         self.setValue("RedetectFaceTargetSize", value)
 
     @property
-    def paddings(self) -> Optional[Point4]:
+    def paddings(self) -> Point4 | None:
         """
         Getter for paddings
 
@@ -872,7 +872,7 @@ class FaceDetV3Settings(BaseSettingsSection):
         self.setValue("paddings", value.asTuple())
 
     @property
-    def paddingsIR(self) -> Optional[Point4]:
+    def paddingsIR(self) -> Point4 | None:
         """
         Getter for paddingsIR
 
@@ -894,7 +894,7 @@ class FaceDetV3Settings(BaseSettingsSection):
         self.setValue("paddingsIR", value.asTuple())
 
     @property
-    def planPrefix(self) -> Optional[str]:
+    def planPrefix(self) -> str | None:
         """
         Getter for planPrefix
 
@@ -913,7 +913,7 @@ class FaceDetV3Settings(BaseSettingsSection):
         self.setValue("planPrefix", value)
 
     @property
-    def useOrientationMode(self) -> Optional[bool]:
+    def useOrientationMode(self) -> bool | None:
         """
         Getter for useOrientationMode
 
@@ -958,7 +958,7 @@ class FaceDetV5Settings(BaseSettingsSection):
     sectionName = "FaceDetV5::Settings"
 
     @property
-    def scoreThreshold(self) -> Optional[float]:
+    def scoreThreshold(self) -> float | None:
         """
         Getter for scoreThreshold
 
@@ -977,7 +977,7 @@ class FaceDetV5Settings(BaseSettingsSection):
         self.setValue("ScoreThreshold", float(value))
 
     @property
-    def redetectScoreThreshold(self) -> Optional[float]:
+    def redetectScoreThreshold(self) -> float | None:
         """
         Getter for redetectScoreThreshold
 
@@ -996,7 +996,7 @@ class FaceDetV5Settings(BaseSettingsSection):
         self.setValue("RedetectScoreThreshold", float(value))
 
     @property
-    def NMSThreshold(self) -> Optional[float]:
+    def NMSThreshold(self) -> float | None:
         """
         Getter for NMSThreshold
 
@@ -1015,7 +1015,7 @@ class FaceDetV5Settings(BaseSettingsSection):
         self.setValue("NMSThreshold", float(value))
 
     @property
-    def strictMinSize(self) -> Optional[int]:
+    def strictMinSize(self) -> int | None:
         """
         Getter for strictMinSize
 
@@ -1034,7 +1034,7 @@ class FaceDetV5Settings(BaseSettingsSection):
         self.setValue("strictlyMinSize", value)
 
     @property
-    def minFaceSize(self) -> Optional[int]:
+    def minFaceSize(self) -> int | None:
         """
         Getter for minFaceSize
 
@@ -1053,7 +1053,7 @@ class FaceDetV5Settings(BaseSettingsSection):
         self.setValue("minFaceSize", value)
 
     @property
-    def maxFaceSize(self) -> Optional[int]:
+    def maxFaceSize(self) -> int | None:
         """
         Getter for maxFaceSize
 
@@ -1072,7 +1072,7 @@ class FaceDetV5Settings(BaseSettingsSection):
         self.setValue("maxFaceSize", value)
 
     @property
-    def nms(self) -> Optional[NMS]:
+    def nms(self) -> NMS | None:
         """
         Getter for nms
 
@@ -1094,7 +1094,7 @@ class FaceDetV5Settings(BaseSettingsSection):
         self.setValue("nms", value.value)
 
     @property
-    def redetectTensorSize(self) -> Optional[int]:
+    def redetectTensorSize(self) -> int | None:
         """
         Getter for redetectTensorSize
 
@@ -1113,7 +1113,7 @@ class FaceDetV5Settings(BaseSettingsSection):
         self.setValue("RedetectTensorSize", value)
 
     @property
-    def redetectFaceTargetSize(self) -> Optional[int]:
+    def redetectFaceTargetSize(self) -> int | None:
         """
         Getter for redetectFaceTargetSize
 
@@ -1132,7 +1132,7 @@ class FaceDetV5Settings(BaseSettingsSection):
         self.setValue("RedetectFaceTargetSize", value)
 
     @property
-    def paddings(self) -> Optional[Point4]:
+    def paddings(self) -> Point4 | None:
         """
         Getter for paddings
 
@@ -1154,7 +1154,7 @@ class FaceDetV5Settings(BaseSettingsSection):
         self.setValue("paddings", value.asTuple())
 
     @property
-    def planPrefix(self) -> Optional[str]:
+    def planPrefix(self) -> str | None:
         """
         Getter for planPrefix
 
@@ -1190,7 +1190,7 @@ class FaceDetV12Settings(BaseSettingsSection):
     """
 
     @property
-    def firstThreshold(self) -> Optional[float]:
+    def firstThreshold(self) -> float | None:
         """
         Getter for firstThreshold
 
@@ -1209,7 +1209,7 @@ class FaceDetV12Settings(BaseSettingsSection):
         self.setValue("FirstThreshold", float(value))
 
     @property
-    def secondThreshold(self) -> Optional[float]:
+    def secondThreshold(self) -> float | None:
         """
         Getter for secondThreshold
 
@@ -1228,7 +1228,7 @@ class FaceDetV12Settings(BaseSettingsSection):
         self.setValue("SecondThreshold", float(value))
 
     @property
-    def thirdThreshold(self) -> Optional[float]:
+    def thirdThreshold(self) -> float | None:
         """
         Getter for thirdThreshold
 
@@ -1247,7 +1247,7 @@ class FaceDetV12Settings(BaseSettingsSection):
         self.setValue("ThirdThreshold", float(value))
 
     @property
-    def strictMinSize(self) -> Optional[bool]:
+    def strictMinSize(self) -> bool | None:
         """
         Getter for strictMinSize
 
@@ -1266,7 +1266,7 @@ class FaceDetV12Settings(BaseSettingsSection):
         self.setValue("strictlyMinSize", value)
 
     @property
-    def minFaceSize(self) -> Optional[int]:
+    def minFaceSize(self) -> int | None:
         """
         Getter for minFaceSize
 
@@ -1285,7 +1285,7 @@ class FaceDetV12Settings(BaseSettingsSection):
         self.setValue("minFaceSize", value)
 
     @property
-    def scaleFactor(self) -> Optional[float]:
+    def scaleFactor(self) -> float | None:
         """
         Getter for scaleFactor
 
@@ -1304,7 +1304,7 @@ class FaceDetV12Settings(BaseSettingsSection):
         self.setValue("scaleFactor", float(value))
 
     @property
-    def paddings(self) -> Optional[Point4]:
+    def paddings(self) -> Point4 | None:
         """
         Getter for paddings
 
@@ -1326,7 +1326,7 @@ class FaceDetV12Settings(BaseSettingsSection):
         self.setValue("paddings", value.asTuple())
 
     @property
-    def redetectTolerance(self) -> Optional[float]:
+    def redetectTolerance(self) -> float | None:
         """
         Getter for redetectTolerance
 
@@ -1345,7 +1345,7 @@ class FaceDetV12Settings(BaseSettingsSection):
         self.setValue("redetectTolerance", float(value))
 
     @property
-    def useLNet(self) -> Optional[bool]:
+    def useLNet(self) -> bool | None:
         """
         Getter for useLNet
 
@@ -1399,7 +1399,7 @@ class BodyDetectorSettings(BaseSettingsSection):
     sectionName = "HumanDetector::Settings"
 
     @property
-    def scoreThreshold(self) -> Optional[float]:
+    def scoreThreshold(self) -> float | None:
         """
         Getter for scoreThreshold
 
@@ -1418,7 +1418,7 @@ class BodyDetectorSettings(BaseSettingsSection):
         self.setValue("ScoreThreshold", float(value))
 
     @property
-    def redetectScoreThreshold(self) -> Optional[float]:
+    def redetectScoreThreshold(self) -> float | None:
         """
         Getter for redetectScoreThreshold
 
@@ -1437,7 +1437,7 @@ class BodyDetectorSettings(BaseSettingsSection):
         self.setValue("RedetectScoreThreshold", float(value))
 
     @property
-    def NMSThreshold(self) -> Optional[float]:
+    def NMSThreshold(self) -> float | None:
         """
         Getter for NMSThreshold
 
@@ -1456,7 +1456,7 @@ class BodyDetectorSettings(BaseSettingsSection):
         self.setValue("NMSThreshold", float(value))
 
     @property
-    def redetectNMSThreshold(self) -> Optional[float]:
+    def redetectNMSThreshold(self) -> float | None:
         """
         Getter for redetectNMSThreshold
 
@@ -1475,7 +1475,7 @@ class BodyDetectorSettings(BaseSettingsSection):
         self.setValue("RedetectNMSThreshold", float(value))
 
     @property
-    def imageSize(self) -> Optional[int]:
+    def imageSize(self) -> int | None:
         """
         Getter for imageSize
 
@@ -1494,7 +1494,7 @@ class BodyDetectorSettings(BaseSettingsSection):
         self.setValue("imageSize", value)
 
     @property
-    def nms(self) -> Optional[NMS]:
+    def nms(self) -> NMS | None:
         """
         Getter for nms
 
@@ -1516,7 +1516,7 @@ class BodyDetectorSettings(BaseSettingsSection):
         self.setValue("nms", value.value)
 
     @property
-    def redetectNMS(self) -> Optional[NMS]:
+    def redetectNMS(self) -> NMS | None:
         """
         Getter for redetectMms
 
@@ -1556,7 +1556,7 @@ class HumanDetectorSettings(BaseSettingsSection):
     sectionName = "HumanFaceDetector::Settings"
 
     @property
-    def faceThreshold(self) -> Optional[float]:
+    def faceThreshold(self) -> float | None:
         """
         Getter for faceThreshold
 
@@ -1575,7 +1575,7 @@ class HumanDetectorSettings(BaseSettingsSection):
         self.setValue("faceThreshold", float(value))
 
     @property
-    def bodyThreshold(self) -> Optional[float]:
+    def bodyThreshold(self) -> float | None:
         """
         Getter for humanThreshold
 
@@ -1594,7 +1594,7 @@ class HumanDetectorSettings(BaseSettingsSection):
         self.setValue("humanThreshold", float(value))
 
     @property
-    def associationThreshold(self) -> Optional[float]:
+    def associationThreshold(self) -> float | None:
         """
         Getter for associationThreshold
 
@@ -1613,7 +1613,7 @@ class HumanDetectorSettings(BaseSettingsSection):
         self.setValue("associationThreshold", float(value))
 
     @property
-    def strictMinSize(self) -> Optional[bool]:
+    def strictMinSize(self) -> bool | None:
         """
         Getter for strictMinSize
 
@@ -1632,7 +1632,7 @@ class HumanDetectorSettings(BaseSettingsSection):
         self.setValue("strictlyMinSize", value)
 
     @property
-    def minFaceSize(self) -> Optional[int]:
+    def minFaceSize(self) -> int | None:
         """
         Getter for minFaceSize
 
@@ -1651,7 +1651,7 @@ class HumanDetectorSettings(BaseSettingsSection):
         self.setValue("minFaceSize", value)
 
     @property
-    def nmsFaceThreshold(self) -> Optional[float]:
+    def nmsFaceThreshold(self) -> float | None:
         """
         Getter for nmsFaceThreshold
 
@@ -1670,7 +1670,7 @@ class HumanDetectorSettings(BaseSettingsSection):
         self.setValue("nmsFaceThreshold", float(value))
 
     @property
-    def nmsBodyThreshold(self) -> Optional[float]:
+    def nmsBodyThreshold(self) -> float | None:
         """
         Getter for nmsHumanThreshold
 
@@ -1703,7 +1703,7 @@ class LNetBaseSettings(BaseSettingsSection):
     """
 
     @property
-    def planName(self) -> Optional[str]:
+    def planName(self) -> str | None:
         """
         Getter for planName
 
@@ -1722,7 +1722,7 @@ class LNetBaseSettings(BaseSettingsSection):
         self.setValue("planName", value)
 
     @property
-    def size(self) -> Optional[int]:
+    def size(self) -> int | None:
         """
         Getter for size
 
@@ -1741,7 +1741,7 @@ class LNetBaseSettings(BaseSettingsSection):
         self.setValue("size", value)
 
     @property
-    def mean(self) -> Optional[Point3]:
+    def mean(self) -> Point3 | None:
         """
         Getter for mean
 
@@ -1763,7 +1763,7 @@ class LNetBaseSettings(BaseSettingsSection):
         self.setValue("mean", value.asTuple())
 
     @property
-    def sigma(self) -> Optional[Point3]:
+    def sigma(self) -> Point3 | None:
         """
         Getter for sigma
 
@@ -1821,7 +1821,7 @@ class FaceOcclusionEstimatorSettings(BaseSettingsSection):
     sectionName = "FaceOcclusionEstimator::Settings"
 
     @property
-    def normalHairCoeff(self) -> Optional[float]:
+    def normalHairCoeff(self) -> float | None:
         """
         Getter for normalHairCoeff
 
@@ -1840,7 +1840,7 @@ class FaceOcclusionEstimatorSettings(BaseSettingsSection):
         self.setValue("normalHairCoeff", float(value))
 
     @property
-    def overallOcclusionThreshold(self) -> Optional[float]:
+    def overallOcclusionThreshold(self) -> float | None:
         """
         Getter for overallOcclusionThreshold
 
@@ -1859,7 +1859,7 @@ class FaceOcclusionEstimatorSettings(BaseSettingsSection):
         self.setValue("overallOcclusionThreshold", float(value))
 
     @property
-    def foreheadThreshold(self) -> Optional[float]:
+    def foreheadThreshold(self) -> float | None:
         """
         Getter for foreheadThreshold
 
@@ -1878,7 +1878,7 @@ class FaceOcclusionEstimatorSettings(BaseSettingsSection):
         self.setValue("foreheadThreshold", float(value))
 
     @property
-    def eyeThreshold(self) -> Optional[float]:
+    def eyeThreshold(self) -> float | None:
         """
         Getter for eyeThreshold
 
@@ -1897,7 +1897,7 @@ class FaceOcclusionEstimatorSettings(BaseSettingsSection):
         self.setValue("eyeThreshold", float(value))
 
     @property
-    def noseThreshold(self) -> Optional[float]:
+    def noseThreshold(self) -> float | None:
         """
         Getter for noseThreshold
 
@@ -1916,7 +1916,7 @@ class FaceOcclusionEstimatorSettings(BaseSettingsSection):
         self.setValue("noseThreshold", float(value))
 
     @property
-    def mouthThreshold(self) -> Optional[float]:
+    def mouthThreshold(self) -> float | None:
         """
         Getter for mouthThreshold
 
@@ -1935,7 +1935,7 @@ class FaceOcclusionEstimatorSettings(BaseSettingsSection):
         self.setValue("mouthThreshold", float(value))
 
     @property
-    def lowerFaceThreshold(self) -> Optional[float]:
+    def lowerFaceThreshold(self) -> float | None:
         """
         Getter for lowerFaceThreshold
 
@@ -1971,7 +1971,7 @@ class QualityEstimatorSettings(BaseSettingsSection):
     sectionName = "QualityEstimator::Settings"
 
     @property
-    def size(self) -> Optional[int]:
+    def size(self) -> int | None:
         """
         Getter for size
 
@@ -1990,7 +1990,7 @@ class QualityEstimatorSettings(BaseSettingsSection):
         self.setValue("size", value)
 
     @property
-    def expLight(self) -> Optional[Point3]:
+    def expLight(self) -> Point3 | None:
         """
         Getter for expLight
 
@@ -2012,7 +2012,7 @@ class QualityEstimatorSettings(BaseSettingsSection):
         self.setValue("expLight", value.asTuple())
 
     @property
-    def expDark(self) -> Optional[Point3]:
+    def expDark(self) -> Point3 | None:
         """
         Getter for expDark
 
@@ -2034,7 +2034,7 @@ class QualityEstimatorSettings(BaseSettingsSection):
         self.setValue("expDark", value.asTuple())
 
     @property
-    def logGray(self) -> Optional[Point4]:
+    def logGray(self) -> Point4 | None:
         """
         Getter for logGray
 
@@ -2056,7 +2056,7 @@ class QualityEstimatorSettings(BaseSettingsSection):
         self.setValue("logGray", value.asTuple())
 
     @property
-    def expBlur(self) -> Optional[Point3]:
+    def expBlur(self) -> Point3 | None:
         """
         Getter for expBlur
 
@@ -2078,7 +2078,7 @@ class QualityEstimatorSettings(BaseSettingsSection):
         self.setValue("expBlur", value.asTuple())
 
     @property
-    def platt(self) -> Optional[Point2]:
+    def platt(self) -> Point2 | None:
         """
         Getter for platt
 
@@ -2112,7 +2112,7 @@ class HeadPoseEstimatorSettings(BaseSettingsSection):
     sectionName = "HeadPoseEstimator::Settings"
 
     @property
-    def useEstimationByImage(self) -> Optional[bool]:
+    def useEstimationByImage(self) -> bool | None:
         """
         Getter for useEstimationByImage
 
@@ -2134,7 +2134,7 @@ class HeadPoseEstimatorSettings(BaseSettingsSection):
         self.setValue("useEstimationByImage", int(value))
 
     @property
-    def useEstimationByLandmarks(self) -> Optional[bool]:
+    def useEstimationByLandmarks(self) -> bool | None:
         """
         Getter for useEstimationByLandmarks
 
@@ -2167,7 +2167,7 @@ class EyeEstimatorSettings(BaseSettingsSection):
     sectionName = "EyeEstimator::Settings"
 
     @property
-    def useStatusPlan(self) -> Optional[bool]:
+    def useStatusPlan(self) -> bool | None:
         """
         Getter for useStatusPlan
 
@@ -2200,7 +2200,7 @@ class BestShotQualityEstimatorSettings(BaseSettingsSection):
     sectionName = "BestShotQualityEstimator::Settings"
 
     @property
-    def runSubestimatorsConcurrently(self) -> Optional[int]:
+    def runSubestimatorsConcurrently(self) -> int | None:
         """
         Getter for runSubestimatorsConcurrently
 
@@ -2231,7 +2231,7 @@ class AttributeEstimatorSettings(BaseSettingsSection):
     sectionName = "AttributeEstimator::Settings"
 
     @property
-    def genderThreshold(self) -> Optional[float]:
+    def genderThreshold(self) -> float | None:
         """
         Getter for genderThreshold
 
@@ -2250,7 +2250,7 @@ class AttributeEstimatorSettings(BaseSettingsSection):
         self.setValue("genderThreshold", float(value))
 
     @property
-    def adultThreshold(self) -> Optional[float]:
+    def adultThreshold(self) -> float | None:
         """
         Getter for adultThreshold
 
@@ -2282,7 +2282,7 @@ class GlassesEstimatorSettings(BaseSettingsSection):
     sectionName = "GlassesEstimator::Settings"
 
     @property
-    def noGlassesThreshold(self) -> Optional[float]:
+    def noGlassesThreshold(self) -> float | None:
         """
         Getter for noGlassesThreshold
 
@@ -2301,7 +2301,7 @@ class GlassesEstimatorSettings(BaseSettingsSection):
         self.setValue("noGlassesThreshold", float(value))
 
     @property
-    def eyeGlassesThreshold(self) -> Optional[float]:
+    def eyeGlassesThreshold(self) -> float | None:
         """
         Getter for eyeGlassesThreshold
 
@@ -2320,7 +2320,7 @@ class GlassesEstimatorSettings(BaseSettingsSection):
         self.setValue("eyeGlassesThreshold", float(value))
 
     @property
-    def sunGlassesThreshold(self) -> Optional[float]:
+    def sunGlassesThreshold(self) -> float | None:
         """
         Getter for sunGlassesThreshold
 
@@ -2350,7 +2350,7 @@ class OverlapEstimatorSettings(BaseSettingsSection):
     sectionName = "OverlapEstimator::Settings"
 
     @property
-    def overlapThreshold(self) -> Optional[float]:
+    def overlapThreshold(self) -> float | None:
         """
         Getter for overlapThreshold
 
@@ -2380,7 +2380,7 @@ class ChildEstimatorSettings(BaseSettingsSection):
     sectionName = "ChildEstimator::Settings"
 
     @property
-    def childThreshold(self) -> Optional[float]:
+    def childThreshold(self) -> float | None:
         """
         Getter for childThreshold
 
@@ -2412,7 +2412,7 @@ class LivenessIREstimatorSettings(BaseSettingsSection):
     sectionName = "LivenessIREstimator::Settings"
 
     @property
-    def cooperativeMode(self) -> Optional[bool]:
+    def cooperativeMode(self) -> bool | None:
         """
         Getter for cooperativeMode
 
@@ -2434,7 +2434,7 @@ class LivenessIREstimatorSettings(BaseSettingsSection):
         self.setValue("cooperativeMode", int(value))
 
     @property
-    def irCooperativeThreshold(self) -> Optional[float]:
+    def irCooperativeThreshold(self) -> float | None:
         """
         Getter for irCooperativeThreshold
 
@@ -2453,7 +2453,7 @@ class LivenessIREstimatorSettings(BaseSettingsSection):
         self.setValue("irCooperativeThreshold", float(value))
 
     @property
-    def irNonCooperativeThreshold(self) -> Optional[float]:
+    def irNonCooperativeThreshold(self) -> float | None:
         """
         Getter for irNonCooperativeThreshold
 
@@ -2485,7 +2485,7 @@ class MaskEstimatorSettings(BaseSettingsSection):
     sectionName = "MedicalMaskEstimator::Settings"
 
     @property
-    def medicalMaskThreshold(self) -> Optional[float]:
+    def medicalMaskThreshold(self) -> float | None:
         """
         Getter for medicalMaskThreshold
 
@@ -2504,7 +2504,7 @@ class MaskEstimatorSettings(BaseSettingsSection):
         self.setValue("maskThreshold", float(value))
 
     @property
-    def missingThreshold(self) -> Optional[float]:
+    def missingThreshold(self) -> float | None:
         """
         Getter for missingThreshold
 
@@ -2523,7 +2523,7 @@ class MaskEstimatorSettings(BaseSettingsSection):
         self.setValue("noMaskThreshold", float(value))
 
     @property
-    def occludedThreshold(self) -> Optional[float]:
+    def occludedThreshold(self) -> float | None:
         """
         Getter for occludedThreshold
 
@@ -2555,7 +2555,7 @@ class MouthEstimatorSettings(BaseSettingsSection):
     sectionName = "MouthEstimator::Settings"
 
     @property
-    def occlusionThreshold(self) -> Optional[float]:
+    def occlusionThreshold(self) -> float | None:
         """
         Getter for occlusionThreshold
 
@@ -2574,7 +2574,7 @@ class MouthEstimatorSettings(BaseSettingsSection):
         self.setValue("occlusionThreshold", float(value))
 
     @property
-    def smileThreshold(self) -> Optional[float]:
+    def smileThreshold(self) -> float | None:
         """
         Getter for smileThreshold
 
@@ -2593,7 +2593,7 @@ class MouthEstimatorSettings(BaseSettingsSection):
         self.setValue("smileThreshold", float(value))
 
     @property
-    def openThreshold(self) -> Optional[float]:
+    def openThreshold(self) -> float | None:
         """
         Getter for openThreshold
 
@@ -2626,7 +2626,7 @@ class HeadAndShouldersLivenessEstimatorSettings(BaseSettingsSection):
     sectionName = "HeadAndShouldersLivenessEstimator::Settings"
 
     @property
-    def headWidthKoeff(self) -> Optional[float]:
+    def headWidthKoeff(self) -> float | None:
         """
         Getter for betaMode
 
@@ -2645,7 +2645,7 @@ class HeadAndShouldersLivenessEstimatorSettings(BaseSettingsSection):
         self.setValue("headWidthKoeff", float(value))
 
     @property
-    def headHeightKoeff(self) -> Optional[float]:
+    def headHeightKoeff(self) -> float | None:
         """
         Getter for betaMode
 
@@ -2664,7 +2664,7 @@ class HeadAndShouldersLivenessEstimatorSettings(BaseSettingsSection):
         self.setValue("headHeightKoeff", float(value))
 
     @property
-    def shouldersWidthKoeff(self) -> Optional[float]:
+    def shouldersWidthKoeff(self) -> float | None:
         """
         Getter for betaMode
 
@@ -2683,7 +2683,7 @@ class HeadAndShouldersLivenessEstimatorSettings(BaseSettingsSection):
         self.setValue("shouldersWidthKoeff", float(value))
 
     @property
-    def shouldersHeightKoeff(self) -> Optional[float]:
+    def shouldersHeightKoeff(self) -> float | None:
         """
         Getter for betaMode
 
@@ -2717,7 +2717,7 @@ class LivenessV1Estimator(BaseSettingsSection):
     sectionName = "LivenessOneShotRGBEstimator::Settings"
 
     @property
-    def realThreshold(self) -> Optional[float]:
+    def realThreshold(self) -> float | None:
         """
         Getter for realThreshold
 
@@ -2736,7 +2736,7 @@ class LivenessV1Estimator(BaseSettingsSection):
         self.setValue("realThreshold", float(value))
 
     @property
-    def qualityThreshold(self) -> Optional[float]:
+    def qualityThreshold(self) -> float | None:
         """
         Getter for qualityThreshold
 
@@ -2755,7 +2755,7 @@ class LivenessV1Estimator(BaseSettingsSection):
         self.setValue("qualityThreshold", float(value))
 
     @property
-    def version(self) -> Optional[int]:
+    def version(self) -> int | None:
         """
         Getter for current LivenessV1 estimator version
 
@@ -2786,7 +2786,7 @@ class DeepfakeEstimator(BaseSettingsSection):
     sectionName = "DeepFakeEstimator::Settings"
 
     @property
-    def realThreshold(self) -> Optional[float]:
+    def realThreshold(self) -> float | None:
         """
         Getter for realThreshold
 
@@ -2805,7 +2805,7 @@ class DeepfakeEstimator(BaseSettingsSection):
         self.setValue("realThreshold", float(value))
 
     @property
-    def version(self) -> Optional[int]:
+    def version(self) -> int | None:
         """
         Getter for current deepfake estimator version
 
@@ -2835,7 +2835,7 @@ class PhotorealisticFaceEstimator(BaseSettingsSection):
     sectionName = "PhotorealisticFaceEstimator::Settings"
 
     @property
-    def threshold(self) -> Optional[float]:
+    def threshold(self) -> float | None:
         """
         Getter for real threshold
 
@@ -2862,7 +2862,7 @@ class IndexSettings(BaseSettingsSection):
     sectionName = "IndexBuilder::Settings"
 
     @property
-    def search(self) -> Optional[int]:
+    def search(self) -> int | None:
         """EF coefficient for search."""
         return self.getValue("search")
 
@@ -2872,7 +2872,7 @@ class IndexSettings(BaseSettingsSection):
         return self.setValue("search", value)
 
     @property
-    def construction(self) -> Optional[int]:
+    def construction(self) -> int | None:
         """EF coefficient for construction."""
         return self.getValue("construction")
 
@@ -2897,7 +2897,7 @@ class BaseSettingsProvider:
     # default configuration filename.
     defaultConfName = ""
 
-    def __init__(self, pathToConfig: Optional[Union[str, Path]] = None):
+    def __init__(self, pathToConfig: str | Path | None = None):
         """
         Init.
 

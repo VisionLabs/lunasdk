@@ -1,5 +1,3 @@
-from typing import List
-
 from lunavl.sdk.estimators.body_estimators.body_attributes import (
     ApparentGender,
     ApparentGenderEnum,
@@ -82,7 +80,7 @@ class TestBodyAttributes(BaseTestClass):
         assert isinstance(estimation.backpack, BackpackState)
         assert estimation.backpack.predominantState == BackpackStateEnum.Unknown
 
-    def estimate(self, image: str = ONE_FACE) -> List[BodyAttributes]:
+    def estimate(self, image: str = ONE_FACE) -> list[BodyAttributes]:
         """Estimate body attributes on image"""
         detections = self.detector.detect([VLImage.load(filename=image)])[0]
         warps = [self.warper.warp(bodyDetection) for bodyDetection in detections]

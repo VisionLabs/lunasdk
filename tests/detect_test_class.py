@@ -1,6 +1,5 @@
 import itertools
 from collections import namedtuple
-from typing import List, Type, Union
 
 from lunavl.sdk.base import BoundingBox
 from lunavl.sdk.detectors.base import BaseDetection
@@ -39,7 +38,7 @@ class BaseDetectorTestClass(BaseTestClass):
     """
 
     #: detection class
-    detectionClass: Type[BaseDetection]
+    detectionClass: type[BaseDetection]
 
     def assertBoundingBox(self, boundingBox: BoundingBox):
         """
@@ -66,7 +65,7 @@ class BaseDetectorTestClass(BaseTestClass):
 
     def assertDetection(
         self,
-        detection: Union[FaceDetection, BodyDetection, Union[List[FaceDetection], List[BodyDetection]]],
+        detection: FaceDetection | BodyDetection | list[FaceDetection] | list[BodyDetection],
         imageVl: VLImage,
     ):
         """
@@ -96,7 +95,7 @@ class BodyDetectTestClass(BaseDetectorTestClass):
 
     #: global human detector
     detector: BodyDetector
-    detectionClass: Type[BodyDetection] = BodyDetection
+    detectionClass: type[BodyDetection] = BodyDetection
 
     @classmethod
     def setup_class(cls):
@@ -106,7 +105,7 @@ class BodyDetectTestClass(BaseDetectorTestClass):
         super().setup_class()
         cls.detector = cls.faceEngine.createBodyDetector()
 
-    def assertBodyDetection(self, detection: Union[BodyDetection, List[BodyDetection]], imageVl: VLImage):
+    def assertBodyDetection(self, detection: BodyDetection | list[BodyDetection], imageVl: VLImage):
         """
         Function checks if an instance is FaceDetection class
 
@@ -118,8 +117,8 @@ class BodyDetectTestClass(BaseDetectorTestClass):
 
 
 class FaceDetectTestClass(BaseDetectorTestClass):
-    detectors: List[FaceDetector]
-    detectionClass: Type[FaceDetection] = FaceDetection
+    detectors: list[FaceDetector]
+    detectionClass: type[FaceDetection] = FaceDetection
 
     @classmethod
     def setup_class(cls):
@@ -139,7 +138,7 @@ class FaceDetectTestClass(BaseDetectorTestClass):
             for landmarks5, landmarks68 in itertools.product((True, False), (True, False))
         ]
 
-    def assertFaceDetection(self, detection: Union[FaceDetection, List[FaceDetection]], imageVl: VLImage):
+    def assertFaceDetection(self, detection: FaceDetection | list[FaceDetection], imageVl: VLImage):
         """
         Function checks if an instance is FaceDetection class
 

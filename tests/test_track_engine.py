@@ -257,7 +257,7 @@ def test_detect_body_landmarks(detectLandmarks):
     frame = Frame(image=img, streamId=streamId, frameNumber=1)
     res = te.track([frame])
     te.closeStream(streamId)
-    track = res[0].humanTracks[0]
+    _track = res[0].humanTracks[0]
 
 
 @pytest.mark.parametrize("detectLandmarks", [0, 1])

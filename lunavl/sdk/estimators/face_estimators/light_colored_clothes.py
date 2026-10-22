@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List, Literal, Union, overload
+from typing import Literal, overload
 
 from ...async_task import AsyncTask, DefaultPostprocessingFactory
 from ...base import BaseEstimation
@@ -124,7 +124,7 @@ class LightColoredClothesEstimator(BaseEstimator):
         self,
         faceDetection: FaceDetection,
         asyncEstimate: bool = False,
-    ) -> Union[LightColoredClothes, AsyncTask[LightColoredClothes]]:
+    ) -> LightColoredClothes | AsyncTask[LightColoredClothes]:
         """
         Estimate whether light colored clothes is being worn
 
@@ -151,9 +151,9 @@ class LightColoredClothesEstimator(BaseEstimator):
     #  pylint: disable=W0221
     def estimateBatch(  # type: ignore
         self,
-        faceDetections: List[FaceDetection],
+        faceDetections: list[FaceDetection],
         asyncEstimate: bool = False,
-    ) -> Union[List[LightColoredClothes], AsyncTask[List[LightColoredClothes]]]:
+    ) -> list[LightColoredClothes] | AsyncTask[list[LightColoredClothes]]:
         """
         Batch estimate lightness of clothing
 

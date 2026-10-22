@@ -4,7 +4,6 @@ See headwear_.
 """
 
 from enum import Enum
-from typing import List, Union
 
 from FaceEngine import (  # pylint: disable=E0611,E0401
     HeadWearEstimation as HeadWearCore,
@@ -132,8 +131,8 @@ class HeadwearEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     def estimate(  # type: ignore
-        self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: bool = False
-    ) -> Union[Headwear, AsyncTask[Headwear]]:
+        self, warp: FaceWarp | FaceWarpedImage, asyncEstimate: bool = False
+    ) -> Headwear | AsyncTask[Headwear]:
         """
         Estimate headwear on warp.
 
@@ -154,8 +153,8 @@ class HeadwearEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     def estimateBatch(
-        self, warps: List[Union[FaceWarp, FaceWarpedImage]], asyncEstimate: bool = False
-    ) -> Union[List[Headwear], AsyncTask[List[Headwear]]]:
+        self, warps: list[FaceWarp | FaceWarpedImage], asyncEstimate: bool = False
+    ) -> list[Headwear] | AsyncTask[list[Headwear]]:
         """
         Batch estimate headwear
 

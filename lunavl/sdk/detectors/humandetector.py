@@ -3,7 +3,7 @@ Module contains function for detection on images.
 """
 
 from functools import partial
-from typing import Any, Dict, List, Literal, Optional, Union, overload
+from typing import Any, Literal, overload
 
 from FaceEngine import Face, FSDKErrorResult, Human  # pylint: disable=E0611,E0401
 
@@ -31,10 +31,10 @@ class HumanDetection:
 
     def __init__(
         self,
-        coreFaceDetection: Optional[Face],
-        coreBodyDetection: Optional[Human],
+        coreFaceDetection: Face | None,
+        coreBodyDetection: Human | None,
         image: VLImage,
-        score: Optional[float] = None,
+        score: float | None = None,
     ):
         """
         Init.
@@ -50,7 +50,7 @@ class HumanDetection:
         self.associationScore = score
         self.image = image
 
-    def asDict(self) -> Dict[str, Any]:
+    def asDict(self) -> dict[str, Any]:
         """
         Convert human detection to dict (json).
 
@@ -66,12 +66,12 @@ class HumanDetection:
 
 
 # alias for detection result
-HumanDetectResult = List[List[HumanDetection]]
+HumanDetectResult = list[list[HumanDetection]]
 
 
 def collectDetectionsResult(
     fsdkDetectRes,
-    images: List[Union[VLImage, ImageForDetection]],
+    images: list[VLImage | ImageForDetection],
 ) -> HumanDetectResult:
     """
     Collect detection results from core reply and prepare human detections
@@ -132,8 +132,8 @@ def collectDetectionsResult(
 
 
 def postProcessing(
-    error: FSDKErrorResult, detectionsBatch, images: List[Union[VLImage, ImageForDetection]]
-) -> List[List[HumanDetection]]:
+    error: FSDKErrorResult, detectionsBatch, images: list[VLImage | ImageForDetection]
+) -> list[list[HumanDetection]]:
     """
     Convert core hbodies and faces detections from detector results to `HumanDetection` and error check.
 
@@ -172,22 +172,22 @@ class HumanDetector:
     @overload  # type: ignore
     def detect(
         self,
-        images: List[Union[VLImage, ImageForDetection]],
+        images: list[VLImage | ImageForDetection],
         asyncEstimate: Literal[False] = False,
     ) -> HumanDetectResult: ...
 
     @overload
     def detect(
         self,
-        images: List[Union[VLImage, ImageForDetection]],
+        images: list[VLImage | ImageForDetection],
         asyncEstimate: Literal[True],
     ) -> AsyncTask[HumanDetectResult]: ...
 
     def detect(
         self,
-        images: List[Union[VLImage, ImageForDetection]],
+        images: list[VLImage | ImageForDetection],
         asyncEstimate=False,
-    ) -> Union[HumanDetectResult, AsyncTask[HumanDetectResult]]:
+    ) -> HumanDetectResult | AsyncTask[HumanDetectResult]:
         """
         Batch detect humans on images.
 

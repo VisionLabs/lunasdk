@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List, Literal, Union, overload
+from typing import Literal, overload
 
 from ...async_task import AsyncTask, DefaultPostprocessingFactory
 from ...base import BaseEstimation
@@ -124,7 +124,7 @@ class NeckOcclusionEstimator(BaseEstimator):
         self,
         faceDetection: FaceDetection,
         asyncEstimate: bool = False,
-    ) -> Union[NeckOcclusion, AsyncTask[NeckOcclusion]]:
+    ) -> NeckOcclusion | AsyncTask[NeckOcclusion]:
         """
         Estimate neck occlusion state
 
@@ -151,9 +151,9 @@ class NeckOcclusionEstimator(BaseEstimator):
     #  pylint: disable=W0221
     def estimateBatch(  # type: ignore
         self,
-        faceDetections: List[FaceDetection],
+        faceDetections: list[FaceDetection],
         asyncEstimate: bool = False,
-    ) -> Union[List[NeckOcclusion], AsyncTask[List[NeckOcclusion]]]:
+    ) -> list[NeckOcclusion] | AsyncTask[list[NeckOcclusion]]:
         """
         Batch estimate neck occlusion state
 

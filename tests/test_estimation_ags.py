@@ -39,7 +39,7 @@ class TestBasicAttributes(BaseTestClass):
 
         singleValue = self.estimator.estimate(imageWithFaceDetection=imageWithFaceDetection)
         batchValue = self.estimator.estimateBatch([imageWithFaceDetection])[0]
-        assert type(singleValue) == type(batchValue)
+        assert type(singleValue) is type(batchValue)
         assert isinstance(singleValue, float)
         assert abs(expectedAgs - singleValue) < EXPECTED_PRECISION
 
@@ -50,7 +50,7 @@ class TestBasicAttributes(BaseTestClass):
         expectedAgs = 0.84804
         singleValue = self.estimator.estimate(detection=self.detection1)
         batchValue = self.estimator.estimateBatch(detections=[self.detection1])[0]
-        assert type(singleValue) == type(batchValue)
+        assert type(singleValue) is type(batchValue)
         assert isinstance(singleValue, float)
         assert abs(expectedAgs - singleValue) < EXPECTED_PRECISION
 

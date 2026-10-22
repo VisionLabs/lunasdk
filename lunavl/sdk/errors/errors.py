@@ -3,7 +3,6 @@ Module contains class ErrorInfo. Structure for errors.
 """
 
 import inspect
-from typing import Dict, Union
 
 from FaceEngine import FSDKErrorResult  # pylint: disable=E0611,E0401
 
@@ -33,7 +32,7 @@ class ErrorInfo:
         self.description = desc
         self.detail = detail
 
-    def asDict(self) -> Dict[str, Union[int, str]]:
+    def asDict(self) -> dict[str, int | str]:
         """
         Convert  to dict.
 
@@ -55,7 +54,7 @@ class ErrorInfo:
         >>> ErrorInfo(123, "Test", "Test error")
         error code: 123, desc: Test, detail: Test error
         """
-        return "error code: {}, desc: {}, detail: {}".format(self.errorCode, self.description, self.detail)
+        return f"error code: {self.errorCode}, desc: {self.description}, detail: {self.detail}"
 
     def format(self, *formatArgs) -> "ErrorInfo":
         """

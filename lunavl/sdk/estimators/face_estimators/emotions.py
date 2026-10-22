@@ -4,7 +4,7 @@ See emotions_.
 """
 
 from enum import Enum
-from typing import List, Literal, Union, overload
+from typing import Literal, overload
 
 from FaceEngine import Emotions as CoreEmotions  # pylint: disable=E0611,E0401
 
@@ -190,14 +190,12 @@ class EmotionsEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     @overload  # type: ignore
-    def estimate(self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[False] = False) -> Emotions: ...
+    def estimate(self, warp: FaceWarp | FaceWarpedImage, asyncEstimate: Literal[False] = False) -> Emotions: ...
 
     @overload
-    def estimate(self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: Literal[True]) -> AsyncTask[Emotions]: ...
+    def estimate(self, warp: FaceWarp | FaceWarpedImage, asyncEstimate: Literal[True]) -> AsyncTask[Emotions]: ...
 
-    def estimate(
-        self, warp: Union[FaceWarp, FaceWarpedImage], asyncEstimate: bool = False
-    ) -> Union[Emotions, AsyncTask[Emotions]]:
+    def estimate(self, warp: FaceWarp | FaceWarpedImage, asyncEstimate: bool = False) -> Emotions | AsyncTask[Emotions]:
         """
         Estimate emotion on warp.
 
@@ -218,8 +216,8 @@ class EmotionsEstimator(BaseEstimator):
 
     #  pylint: disable=W0221
     def estimateBatch(
-        self, warps: List[Union[FaceWarp, FaceWarpedImage]], asyncEstimate: bool = False
-    ) -> Union[List[Emotions], AsyncTask[List[Emotions]]]:
+        self, warps: list[FaceWarp | FaceWarpedImage], asyncEstimate: bool = False
+    ) -> list[Emotions] | AsyncTask[list[Emotions]]:
         """
         Batch estimate emotions
 

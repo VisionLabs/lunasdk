@@ -1,10 +1,10 @@
-from typing import Dict, List, Literal, Optional, TypeVar, Union, overload
+from typing import Literal, TypeVar, overload
 
 import TrackEngine as te
 
 from ..async_task import AsyncTask, DefaultPostprocessingFactory
 from ..faceengine.engine import VLFaceEngine
-from ..launch_options import DeviceClass, LaunchOptions
+from ..launch_options import LaunchOptions
 from .setting_provider import TrackEngineSettingsProvider
 from .structures import Frame, StreamParams, TrackingResult
 
@@ -26,8 +26,8 @@ class VLTrackEngine:
     def __init__(
         self,
         faceEngine: VLFaceEngine,
-        trackEngineConf: Optional[Union[str, TrackEngineSettingsProvider]] = None,
-        launchOptions: Optional[LaunchOptions] = None,
+        trackEngineConf: str | TrackEngineSettingsProvider | None = None,
+        launchOptions: LaunchOptions | None = None,
     ):
         """
 
@@ -49,13 +49,13 @@ class VLTrackEngine:
             faceEngine._faceEngine, self.trackEngineProvider.coreProvider, launchOptions=launchOptions.coreLaunchOptions
         )
 
-        self._streamIdToStream: Dict[int, te.PyIStream] = {}
+        self._streamIdToStream: dict[int, te.PyIStream] = {}
 
     @overload  # type: ignore
-    def track(self, frames: list[Frame], asyncEstimate: Literal[False] = False) -> List[TrackingResult]: ...
+    def track(self, frames: list[Frame], asyncEstimate: Literal[False] = False) -> list[TrackingResult]: ...
 
     @overload
-    def track(self, frames: list[Frame], asyncEstimate: Literal[True]) -> AsyncTask[List[TrackingResult]]: ...
+    def track(self, frames: list[Frame], asyncEstimate: Literal[True]) -> AsyncTask[list[TrackingResult]]: ...
 
     def track(self, frames: list[Frame], asyncEstimate: bool = False):
         """
@@ -74,7 +74,7 @@ class VLTrackEngine:
             estimated tracks for processed frames(may differ from input frames) if asyncEstimate is false otherwise
             async task.
         """
-        streamIdsToFrames: Dict[int, List[te.Frame]] = {}
+        streamIdsToFrames: dict[int, list[te.Frame]] = {}
         streamIds = []
         coreStreamFrames = []
         for frame in frames:
@@ -89,7 +89,7 @@ class VLTrackEngine:
         task = self._trackEngine.async_trackMultiFrame(streamIds, coreStreamFrames)
         return AsyncTask(task, POST_PROCESSING.postProcessingBatch)
 
-    def registerStream(self, params: Optional[StreamParams] = None) -> int:
+    def registerStream(self, params: StreamParams | None = None) -> int:
         """
         Register stream.
         Args:

@@ -69,18 +69,21 @@ build_cpu:pypi:
     - *use_cpusdk
   extends: .build_python_package
 
-mypy:storages:
+linters:
   stage: build
   tags: [ 'luna-bench' ]
   script:
     - poetry env use python3.12
     - !reference [.prepare_poetry]
-    - poetry run mypy ${CI_PROJECT_DIR}/lunavl/
+    # one job for all linters: lunavl dependencies are heavy, install them once
+    - failed=0
+    - poetry run autoflake . --check --quiet || failed=1
+    - poetry run black . --check || failed=1
+    - poetry run isort . --check || failed=1
+    - poetry run ruff check || failed=1
+    - poetry run mypy ${CI_PROJECT_DIR}/lunavl/ || failed=1
+    - exit $((failed))
   allow_failure: true
-
-forrmaters:
-  stage: validate
-  extends: .code_style_formatters
 
 test:unittests:
   stage: test
