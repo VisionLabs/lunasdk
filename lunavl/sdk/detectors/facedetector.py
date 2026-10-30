@@ -4,7 +4,7 @@ Module contains function for detection faces on images.
 
 from enum import Enum
 from functools import partial
-from typing import Any, Literal, TypeAlias, overload
+from typing import Any, Literal, Self, TypeAlias, overload
 
 from FaceEngine import (  # pylint: disable=E0611,E0401
     DT_LANDMARKS5,
@@ -21,7 +21,7 @@ from FaceEngine import (  # pylint: disable=E0611,E0401
 )
 
 from ..async_task import AsyncTask
-from ..base import Landmarks
+from ..base import BoundingBox, Landmarks
 from ..detectors.base import (
     BaseDetection,
     BaseDetector,
@@ -107,6 +107,36 @@ class FaceDetection(BaseDetection):
             self.landmarks68: Landmarks68 | None = Landmarks68(coreDetection.landmarks68_opt.value())
         else:
             self.landmarks68 = None
+
+    @classmethod
+    def _fromTrackResult(cls, coreDetection: Face, image: VLImage, landmarks5: Landmarks5 | None = None) -> Self:
+        """
+        Build a face detection from a tracker result on the human tracking hot path.
+
+        Internal: called by `FaceTrack.detection` only, with the core face it has just built. The result is the same
+        as `FaceDetection(coreDetection, image)` with a single Python call (the base class part is inlined, see
+        `BaseDetection._fromTrackResult`): the bounding box is `coreDetection.detection`, a copy owned by the core
+        face, not the tracker detection; the landmarks optionals are not re-read through pybind11 - the caller passes
+        the landmarks5 it set, landmarks68 is never set on a freshly built core face (both are pinned by
+        `tests/test_track_structures.py`, as is that both paths fill the same slots).
+
+        Args:
+            coreDetection: core face built from the tracker detection
+            image: original image
+            landmarks5: landmarks5 set to `coreDetection.landmarks5_opt`, if any
+
+        Returns:
+            face detection
+        """
+        self = object.__new__(cls)
+        self._coreEstimation = coreDetection
+        boundingBox = object.__new__(BoundingBox)
+        boundingBox._coreEstimation = coreDetection.detection
+        self.boundingBox = boundingBox
+        self._image = image
+        self.landmarks5 = landmarks5
+        self.landmarks68 = None
+        return self
 
     def asDict(self) -> dict[str, Any]:
         """
