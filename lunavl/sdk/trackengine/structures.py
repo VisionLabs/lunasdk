@@ -414,17 +414,21 @@ class FaceTrack(BaseTrackObject[FaceTrackData, FaceDetection]):
         """Get honest face detection. This detection is a result of detector work (not tracker)"""
         detection = self._detection
         if detection is None:
-            if not self.coreEstimation.isDetector:
+            coreEstimation = self.coreEstimation
+            if not coreEstimation.isDetector:
                 self._detection = _NO_DETECTION
                 return None
-            coreFace = Face(self.image.coreImage, self.coreEstimation.detection)
-            face = FaceDetection(coreFace, self.image)
-            coreLandmarks = self.coreEstimation.landmarks
+            # every pybind11 read is a round-trip, so each value is read once
+            coreFace = Face(self.image.coreImage, coreEstimation.detection)
+            coreLandmarks = coreEstimation.landmarks
             # all-zero landmarks mean "not estimated"; isValid() checks it in C++ instead of reading
             # every point through pybind11 (the tracker returns all-zero landmarks unless landmarks are enabled)
             if coreLandmarks.isValid():
                 coreFace.landmarks5_opt.set(coreLandmarks)
-                face.landmarks5 = Landmarks5(coreLandmarks)
+                landmarks5 = Landmarks5(coreLandmarks)
+            else:
+                landmarks5 = None
+            face = FaceDetection._fromTrackResult(coreFace, self.image, landmarks5)
             self._detection = face
             return face
         if detection is _NO_DETECTION:
@@ -452,13 +456,15 @@ class BodyTrack(BaseTrackObject[BodyTrackData, BodyDetection]):
         """Get honest body detection. This detection is a result of detector work (not tracker)"""
         detection = self._detection
         if detection is None:
-            if not self.coreEstimation.isDetector:
+            coreEstimation = self.coreEstimation
+            if not coreEstimation.isDetector:
                 self._detection = _NO_DETECTION
                 return None
+            # every pybind11 read is a round-trip, so each value is read once
             coreBody = Human()
             coreBody.img = self.image.coreImage
-            coreBody.detection = self.coreEstimation.detection
-            body = BodyDetection(coreBody, self.image)
+            coreBody.detection = coreEstimation.detection
+            body = BodyDetection._fromTrackResult(coreBody, self.image)
             self._detection = body
             return body
         if detection is _NO_DETECTION:

@@ -114,3 +114,73 @@ def test_body_track_detection():
     assert detection.boundingBox.score == pytest.approx(0.9)
     # a synthetic detection is not "valid" for FaceEngine, so only the raw rect is filled
     assert detection.coreEstimation.detection.getRawRect().width == pytest.approx(80.0)
+
+
+def filledSlots(obj) -> dict:
+    """Slots of an object which are set, with their values"""
+    return {
+        slot: getattr(obj, slot)
+        for cls in type(obj).__mro__
+        for slot in getattr(cls, "__slots__", ())
+        if hasattr(obj, slot)
+    }
+
+
+def rawRect(detection: Detection) -> tuple:
+    rect = detection.getRawRect()
+    return rect.x, rect.y, rect.width, rect.height
+
+
+#: raw rect of `makeDetection`
+TRACK_RAW_RECT = (100.0, 120.0, 80.0, 100.0)
+
+
+def assertBoundingBoxIsCopy(detection, data, track) -> None:
+    """The bbox comes from the tracker detection but is a copy: writing to it does not touch the tracker state"""
+    boundingBox = detection.boundingBox.coreEstimation
+    assert rawRect(boundingBox) == pytest.approx(TRACK_RAW_RECT)
+    assert detection.boundingBox.score == pytest.approx(0.9)
+    # the bbox is the detection of the core estimation itself, as `BaseDetection.__init__` makes it
+    assert boundingBox is detection.coreEstimation.detection
+    assert boundingBox is not data.detection
+    boundingBox.setRawRect(RectFloat(1.0, 2.0, 3.0, 4.0))
+    assert rawRect(data.detection) == pytest.approx(TRACK_RAW_RECT)
+    assert rawRect(track.coreEstimation.detection) == pytest.approx(TRACK_RAW_RECT)
+
+
+@pytest.mark.parametrize(
+    "points", [(), tuple((idx, 110.0 + idx, 220.0 + idx) for idx in range(5))], ids=["no_landmarks", "landmarks"]
+)
+def test_face_track_detection_same_as_constructor(points):
+    """The hot-path face detection is the same as one built by the FaceDetection constructor"""
+    data = makeFaceData(isDetector=True, points=points)
+    track = FaceTrack(data, IMAGE)
+    detection = track.detection
+    expected = FaceDetection(detection.coreEstimation, IMAGE)
+
+    assert type(detection) is FaceDetection
+    assert detection.image is IMAGE
+    # a freshly built core face has no landmarks68, so `_fromTrackResult` does not read the optional
+    assert not detection.coreEstimation.landmarks68_opt.isValid()
+    assert detection.landmarks68 is None
+    assert (detection.landmarks5 is None) == (expected.landmarks5 is None)
+    # both paths fill the same slots, a field added to __init__ only fails here
+    assert filledSlots(detection).keys() == filledSlots(expected).keys()
+    assert detection.boundingBox.coreEstimation is expected.boundingBox.coreEstimation
+    assert detection.asDict() == expected.asDict()
+    assertBoundingBoxIsCopy(detection, data, track)
+
+
+def test_body_track_detection_same_as_constructor():
+    """The hot-path body detection is the same as one built by the BodyDetection constructor"""
+    data = makeBodyData(isDetector=True)
+    track = BodyTrack(data, IMAGE)
+    detection = track.detection
+    expected = BodyDetection(detection.coreEstimation, IMAGE)
+
+    assert type(detection) is BodyDetection
+    assert detection.image is IMAGE
+    assert filledSlots(detection).keys() == filledSlots(expected).keys()
+    assert detection.boundingBox.coreEstimation is expected.boundingBox.coreEstimation
+    assert detection.asDict() == expected.asDict()
+    assertBoundingBoxIsCopy(detection, data, track)

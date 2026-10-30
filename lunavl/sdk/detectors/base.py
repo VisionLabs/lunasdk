@@ -1,4 +1,4 @@
-from typing import Any, NamedTuple
+from typing import Any, NamedTuple, Self
 
 from FaceEngine import (  # pylint: disable=E0611,E0401
     Detection,
@@ -72,6 +72,31 @@ class BaseDetection(BaseEstimation):
 
         self.boundingBox = BoundingBox(coreDetection.detection)
         self._image = image
+
+    @classmethod
+    def _fromTrackResult(cls, coreDetection: Any, image: VLImage) -> Self:
+        """
+        Build a detection from a tracker result on the human tracking hot path.
+
+        Internal: called by `BodyTrack.detection` only, with the core detection it has just built. The result is
+        the same as `cls(coreDetection, image)` - the bounding box is `coreDetection.detection`, a copy owned by
+        the core detection, not the tracker one - with a single Python call instead of the __init__ chain.
+        `tests/test_track_structures.py` checks that both paths fill the same slots.
+
+        Args:
+            coreDetection: core detection (Human) built from the tracker detection
+            image: original image
+
+        Returns:
+            detection
+        """
+        self = object.__new__(cls)
+        self._coreEstimation = coreDetection
+        boundingBox = object.__new__(BoundingBox)
+        boundingBox._coreEstimation = coreDetection.detection
+        self.boundingBox = boundingBox
+        self._image = image
+        return self
 
     @property
     def image(self) -> VLImage:
