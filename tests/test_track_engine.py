@@ -256,7 +256,7 @@ def test_detect_body_landmarks(detectLandmarks):
     streamId = te.registerStream()
     frame = Frame(image=img, streamId=streamId, frameNumber=1)
     res = te.track([frame])
-    te.closeStream(streamId)
+    res = te.closeStream(streamId)
     _track = res[0].humanTracks[0]
 
 
