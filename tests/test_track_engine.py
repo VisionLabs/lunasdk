@@ -235,7 +235,7 @@ def test_return_face_landmarks(detectFace, detectBody):
 
     if detectBody:
         res = te.track([frame])
-        te.closeStream(streamId)
+        res = te.closeStream(streamId)
         track = res[0].humanTracks[0]
     else:
         res = te.track([frame])
@@ -256,7 +256,7 @@ def test_detect_body_landmarks(detectLandmarks):
     streamId = te.registerStream()
     frame = Frame(image=img, streamId=streamId, frameNumber=1)
     res = te.track([frame])
-    te.closeStream(streamId)
+    res = te.closeStream(streamId)
     _track = res[0].humanTracks[0]
 
 
