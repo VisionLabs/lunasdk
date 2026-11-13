@@ -79,14 +79,14 @@ LARGE_IMAGE = getPathToImage("large_image.jpg")
 # https://commons.wikimedia.org/wiki/File:Red-eye_effect.png
 RED_EYES = getPathToImage("red_eyes.png")
 
-# https://www.pexels.com/ru-ru/photo/11462516/
+# https://www.pexels.com/photo/grayscale-portrait-of-a-woman-11462516/
 BLACK_AND_WHITE = getPathToImage("b&w.jpg")
 
-# https://www.pexels.com/ru-ru/photo/11495661/
+# https://www.pexels.com/photo/woman-in-baseball-hat-sitting-down-11495661/
 BASEBALL_CAP = getPathToImage("baseball_cap.jpg")
 # https://free-images.com/display/russian_boy_in_cap.html
 PEAKED_CAP = getPathToImage("peaked_cap.jpg")
-# https://www.pexels.com/ru-ru/photo/10513680/
+# https://www.pexels.com/photo/woman-with-shawl-on-head-10513680/
 SHAWL = getPathToImage("shawl.jpg")
 # https://unsplash.com/photos/8vT-DgHZDG4
 BEANIE = getPathToImage("beanie.jpg")
@@ -161,8 +161,8 @@ PURPLE_SHORTS = getPathToImage("purple_shorts.jpg")
 DEEPFAKE = getPathToImage("deepfake.jpg")
 
 HAX = getPathToImage("hax.jpg")
-# https://ru.wikipedia.org/wiki/%D0%94%D0%BE%D0%BD%D0%BD%D0%B0_%D0%92%D0%B5%D0%BB%D0%B0%D1%82%D0%B0
+# https://en.wikipedia.org/wiki/La_velata
 RAFAEL = getPathToImage("rafael.jpg")
-# https://ru.freepik.com/free-photo/old-general-uniform-front-view_32501337.htm
+# https://www.freepik.com/free-photo/old-general-uniform-front-view_32501337.htm
 DUTY_UNIFORM = getPathToImage("duty_uniform.jpg")
 CROP_DISGUST = getPathToImage("crop_disgust.jpg")

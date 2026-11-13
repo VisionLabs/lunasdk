@@ -25,7 +25,7 @@ class TestImage(BaseTestClass):
         assert image.rect.height == npArray.shape[0]
         assert image.getByteDepth == npArray.shape[2]
         assert np.array_equal(image.asNPArray(), npArray)
-        # сhecking that the memory is really the same (reference to the memory match)
+        # checking that the memory is really the same (reference to the memory match)
         value = random.randint(1, 256)
         image.asNPArray()[0][1][0] = value
         assert npArray[0][1][0] == value

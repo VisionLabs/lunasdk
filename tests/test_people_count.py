@@ -159,7 +159,7 @@ class TestPeopleCount(BaseTestClass):
             exceptionInfo.value.context[1], LunaVLError.InvalidRect.format("Invalid rectangle")
         )
 
-    def test_people_count_batch_with_area_without_people(self):  # todo: change asserted values LUNA-6049
+    def test_people_count_batch_with_area_without_people(self):  # todo: change asserted values
         """
         Test estimation with not contain people area
         """
