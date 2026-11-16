@@ -320,7 +320,8 @@ class RuntimeSettings(BaseSettingsSection):
     """
     Flower library is the default neural network inference engine.
 
-    See the SDK configuration guide for the runtime settings section.
+    Runtime settings of the SDK configuration file (*runtime.conf* in *$FSDK_ROOT/data*).
+
     Properties:
         cpuClass (CpuClass): class of cpu by supported instructions
         deviceClass (DeviceClass):  execution device type cpu, gpu.

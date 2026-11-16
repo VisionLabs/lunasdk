@@ -296,7 +296,8 @@ class VLImage:
         Raises:
             ValueError: if no one argument  did not set.
 
-        >>> VLImage.load(url='https://example.com/face.jpg').rect
+        >>> VLImage.load(url='https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg').rect
+        x = 0, y = 0, width = 3250, height = 4333
 
         todo: more doc test
         """
@@ -382,7 +383,7 @@ class VLImage:
         """
         Get image format.
 
-        >>> image = VLImage.load(url='https://example.com/face.jpg')
+        >>> image = VLImage.load(url='https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg')
         >>> image.format.value
         'R8G8B8'
         """
@@ -438,7 +439,7 @@ class VLImage:
         Returns:
             channel count.
 
-        >>> img = VLImage.load(url='https://example.com/face.jpg')
+        >>> img = VLImage.load(url='https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg')
         >>> img.channelCount
         3
         """
@@ -452,7 +453,7 @@ class VLImage:
         Returns:
             channel size in bytes.
 
-        >>> img = VLImage.load(url='https://example.com/face.jpg')
+        >>> img = VLImage.load(url='https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg')
         >>> img.channelSize
         8
         """
@@ -469,7 +470,7 @@ class VLImage:
         Notes:
             padding bytes are considered spare channels.
 
-        >>> img = VLImage.load(url='https://example.com/face.jpg')
+        >>> img = VLImage.load(url='https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg')
         >>> img.channelStep
         3
         """
@@ -517,7 +518,7 @@ class VLImage:
         Notes:
             padding is ignored for padded channels.
 
-        >>> VLImage.load(url='https://example.com/face.jpg').isBGR()
+        >>> VLImage.load(url='https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg').isBGR()
         False
         """
         return self.coreImage.isBGR()

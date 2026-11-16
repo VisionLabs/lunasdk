@@ -16,8 +16,7 @@ Attributes estimation example:
 >>> from lunavl.sdk.luna_faces import VLFaceDetector
 >>> from lunavl.sdk.luna_faces import VLImage
 >>> detector = VLFaceDetector()
->>> image = VLImage.load(
-...         url='https://example.com/face.jpg')
+>>> image = VLImage.load(url='https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg')
 >>> detection = detector.detectOne(image)
 >>> detection.basicAttributes.age
 16.0
