@@ -120,6 +120,7 @@ class LunaVLError:
     InvalidType = ErrorInfo(100033, "Unsupported image type", "{}")
     InvalidWidth = ErrorInfo(100034, "Invalid image width", "{}")
     BatchedInternalError = ErrorInfo(100035, "Batching error", "{}")
+    LandmarksNotEstimated = ErrorInfo(100036, "Core answered Ok without landmarks", "{}")
 
     HighMemoryUsage = ErrorInfo(110020, "High memory usage", "{}")
     # next 110029 error, 110028 was removed
