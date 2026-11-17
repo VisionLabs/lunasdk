@@ -81,8 +81,7 @@ def _postProcessingBatch(
         list of landmarks, one per requested detection
 
     Raises:
-        LunaSDKException: if the core answered Ok without landmarks for some requested detection,
-            or returned a wrong number of landmarks for one image
+        LunaSDKException: if the core answered a wrong number of landmarks for an image
     """
     assertError(error)
     if landmarksType == FaceLandmarks.Landmarks5:
@@ -96,18 +95,12 @@ def _postProcessingBatch(
     for imageIdx in range(len(preparedBatch)):
         allImageLandmarks = getter(imageIdx)
         detectionIndexes = preparedBatch[imageIdx][2]
-        if not allImageLandmarks:
+        if len(allImageLandmarks) != len(detectionIndexes):
             logger.error(
-                "core landmarks estimation answered Ok without landmarks for %d requested detections",
+                "core landmarks estimation returned %d results for %d requested detections",
+                len(allImageLandmarks),
                 len(detectionIndexes),
             )
-            raise LunaSDKException(
-                LunaVLError.LandmarksNotEstimated.format(
-                    f"core landmarks estimation answered Ok without landmarks "
-                    f"for {len(detectionIndexes)} requested detections"
-                )
-            )
-        if len(allImageLandmarks) != len(detectionIndexes):
             raise LunaSDKException(
                 LunaVLError.BatchedInternalError.format(
                     f"core landmarks estimation returned {len(allImageLandmarks)} results "
@@ -150,18 +143,9 @@ def _postProcessing(
 
     Returns:
         Landmarks5 or Landmarks68
-
-    Raises:
-        LunaSDKException: if the core answered Ok without landmarks for the requested detection
     """
     assertError(error)
     landmarksClass = Landmarks5 if landmarksType == FaceLandmarks.Landmarks5 else Landmarks68
-    if not estimatedBatch:
-        raise LunaSDKException(
-            LunaVLError.LandmarksNotEstimated.format(
-                "core landmarks estimation answered Ok without landmarks for the requested detection"
-            )
-        )
     estimatedLandmarks = estimatedBatch[0]
     landmarks = landmarksClass(estimatedLandmarks)
     return landmarks  # type: ignore
@@ -222,7 +206,7 @@ class FaceLandmarksEstimator(BaseEstimator):
         Returns:
             estimated landmarks, an async task if asyncEstimate is True
         Raises:
-            LunaSDKException: if estimation failed or the core answered Ok without landmarks
+            LunaSDKException: if estimation failed
         """
         if landmarksType == FaceLandmarks.Landmarks5:
             postProcessing = partial(_postProcessing, landmarksType=FaceLandmarks.Landmarks5)
@@ -290,7 +274,7 @@ class FaceLandmarksEstimator(BaseEstimator):
         Returns:
             estimated landmarks per detection
         Raises:
-            LunaSDKException: if the core answered Ok without landmarks for some detection
+            LunaSDKException: if estimation failed
         """
         preparedBatch = _prepareBatch(detections)
         coreImages = [image[0] for image in preparedBatch]
