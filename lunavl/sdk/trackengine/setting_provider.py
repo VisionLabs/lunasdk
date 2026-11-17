@@ -37,9 +37,7 @@ class OverlapRemovingType(BiDirectionEnum):
 
 class LoggerSettings(BaseSettingsSection):
     """
-    Logging section settings.
-
-    See details https://docs.visionlabs.ai/sdk/v.5.16.0/sdk/trackengine-handbook/settings/#logging-section
+    Logging section settings of the TrackEngine configuration file (*trackengine.conf* in *$FSDK_ROOT/data*).
     """
 
     sectionName = "logging"
@@ -107,9 +105,7 @@ class LoggerSettings(BaseSettingsSection):
 
 class OtherSettings(BaseSettingsSection):
     """
-    Other section settings.
-
-    See details https://docs.visionlabs.ai/sdk/v.5.16.0/sdk/trackengine-handbook/settings/#other-section
+    Other section settings of the TrackEngine configuration file (*trackengine.conf* in *$FSDK_ROOT/data*).
     """
 
     sectionName = "other"
@@ -424,9 +420,7 @@ class OtherSettings(BaseSettingsSection):
 
 class FRGSettings(BaseSettingsSection):
     """
-    Frg section settings.
-
-    See details https://docs.visionlabs.ai/sdk/v.5.16.0/sdk/trackengine-handbook/settings/#frg
+    Frg section settings of the TrackEngine configuration file (*trackengine.conf* in *$FSDK_ROOT/data*).
     """
 
     sectionName = "FRG"
@@ -491,9 +485,7 @@ class FRGSettings(BaseSettingsSection):
 
 class FaceTrackingSettings(BaseSettingsSection):
     """
-    Face tracking section settings.
-
-    See details https://docs.visionlabs.ai/sdk/v.5.16.0/sdk/trackengine-handbook/settings/#face-tracking-specific-parameters-section
+    Face tracking section settings of the TrackEngine configuration file (*trackengine.conf* in *$FSDK_ROOT/data*).
     """
 
     sectionName = "face"
@@ -520,9 +512,7 @@ class FaceTrackingSettings(BaseSettingsSection):
 
 class BodyTrackingSettings(BaseSettingsSection):
     """
-    Body tracking section settings.
-
-    See details https://docs.visionlabs.ai/sdk/v.5.16.0/sdk/trackengine-handbook/settings/#humanbody-tracking-specific-parameters-section
+    Body tracking section settings of the TrackEngine configuration file (*trackengine.conf* in *$FSDK_ROOT/data*).
     """
 
     sectionName = "human"
@@ -685,9 +675,7 @@ class BodyTrackingSettings(BaseSettingsSection):
 
 class DetectorsSettings(BaseSettingsSection):
     """
-    Detectors section settings.
-
-    See details https://docs.visionlabs.ai/sdk/v.5.16.0/sdk/trackengine-handbook/settings/#detectors
+    Detectors section settings of the TrackEngine configuration file (*trackengine.conf* in *$FSDK_ROOT/data*).
     """
 
     sectionName = "detectors"
@@ -733,9 +721,7 @@ class DetectorsSettings(BaseSettingsSection):
 
 class ExperimentalSettings(BaseSettingsSection):
     """
-    Experimental section settings.
-
-    See details https://docs.visionlabs.ai/sdk/v.5.16.0/sdk/trackengine-handbook/settings/#detectors
+    Experimental section settings of the TrackEngine configuration file (*trackengine.conf* in *$FSDK_ROOT/data*).
     """
 
     sectionName = "experimental"
@@ -819,9 +805,7 @@ class ExperimentalSettings(BaseSettingsSection):
 
 class HSTrackingSettings(BaseSettingsSection):
     """
-    HS-tracking section settings.
-
-    See details https://docs.visionlabs.ai/sdk/v.5.16.0/sdk/trackengine-handbook/settings/#hs-tracking-section
+    HS-tracking section settings of the TrackEngine configuration file (*trackengine.conf* in *$FSDK_ROOT/data*).
     """
 
     sectionName = "HS-tracking"

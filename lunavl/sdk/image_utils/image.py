@@ -57,7 +57,7 @@ class RotationAngle(Enum):
 
 class ColorFormat(Enum):
     """
-    Enum for vl luna color formats
+    Enum for the SDK color formats
     """
 
     #: 3 channel, 8 bit per channel, B-G-R color order format;
@@ -296,8 +296,8 @@ class VLImage:
         Raises:
             ValueError: if no one argument  did not set.
 
-        >>> VLImage.load(url='https://st.kp.yandex.net/im/kadr/3/1/4/kinopoisk.ru-Keira-Knightley-3142930.jpg').rect
-        x = 0, y = 0, width = 1000, height = 1288
+        >>> VLImage.load(url='https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg').rect
+        x = 0, y = 0, width = 3250, height = 4333
 
         todo: more doc test
         """
@@ -383,7 +383,7 @@ class VLImage:
         """
         Get image format.
 
-        >>> image = VLImage.load(url='https://st.kp.yandex.net/im/kadr/3/1/4/kinopoisk.ru-Keira-Knightley-3142930.jpg')
+        >>> image = VLImage.load(url='https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg')
         >>> image.format.value
         'R8G8B8'
         """
@@ -439,7 +439,7 @@ class VLImage:
         Returns:
             channel count.
 
-        >>> img = VLImage.load(url='https://st.kp.yandex.net/im/kadr/3/1/4/kinopoisk.ru-Keira-Knightley-3142930.jpg')
+        >>> img = VLImage.load(url='https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg')
         >>> img.channelCount
         3
         """
@@ -453,7 +453,7 @@ class VLImage:
         Returns:
             channel size in bytes.
 
-        >>> img = VLImage.load(url='https://st.kp.yandex.net/im/kadr/3/1/4/kinopoisk.ru-Keira-Knightley-3142930.jpg')
+        >>> img = VLImage.load(url='https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg')
         >>> img.channelSize
         8
         """
@@ -470,7 +470,7 @@ class VLImage:
         Notes:
             padding bytes are considered spare channels.
 
-        >>> img = VLImage.load(url='https://st.kp.yandex.net/im/kadr/3/1/4/kinopoisk.ru-Keira-Knightley-3142930.jpg')
+        >>> img = VLImage.load(url='https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg')
         >>> img.channelStep
         3
         """
@@ -518,7 +518,7 @@ class VLImage:
         Notes:
             padding is ignored for padded channels.
 
-        >>> VLImage.load(url='https://st.kp.yandex.net/im/kadr/3/1/4/kinopoisk.ru-Keira-Knightley-3142930.jpg').isBGR()
+        >>> VLImage.load(url='https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg').isBGR()
         False
         """
         return self.coreImage.isBGR()

@@ -320,7 +320,8 @@ class RuntimeSettings(BaseSettingsSection):
     """
     Flower library is the default neural network inference engine.
 
-    See https://docs.visionlabs.ai/sdk/server/v.5.29.0/configurationguide/runtime-settings
+    Runtime settings of the SDK configuration file (*runtime.conf* in *$FSDK_ROOT/data*).
+
     Properties:
         cpuClass (CpuClass): class of cpu by supported instructions
         deviceClass (DeviceClass):  execution device type cpu, gpu.
