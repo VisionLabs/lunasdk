@@ -45,7 +45,7 @@ def _postProcessingBatch(
     batchSize: int,
     preparedBatch: PreparedBatch,
     landmarksType: Literal[FaceLandmarks.Landmarks5],
-) -> list[Landmarks5 | None]: ...
+) -> list[Landmarks5]: ...
 
 
 @overload
@@ -55,7 +55,7 @@ def _postProcessingBatch(
     batchSize: int,
     preparedBatch: PreparedBatch,
     landmarksType: Literal[FaceLandmarks.Landmarks68],
-) -> list[Landmarks68 | None]: ...
+) -> list[Landmarks68]: ...
 
 
 def _postProcessingBatch(
@@ -64,7 +64,7 @@ def _postProcessingBatch(
     batchSize: int,
     preparedBatch: PreparedBatch,
     landmarksType: Literal[FaceLandmarks.Landmarks5, FaceLandmarks.Landmarks68],
-) -> list[Landmarks68 | None] | list[Landmarks5 | None]:
+) -> list[Landmarks68] | list[Landmarks5]:
     """
     Post processing core landmarks estimations. Validate error and convert resul to float structure
 
@@ -75,11 +75,11 @@ def _postProcessingBatch(
         landmarksType: estimated landmarks type
 
     Returns:
-        list of landmarks, an element is None if the core did not return landmarks for its detection
+        list of landmarks, one per requested detection
 
     Raises:
-        LunaSDKException: if the core returned Ok without landmarks for all the requested detections,
-            or returned some but not all landmarks of one image
+        LunaSDKException: if the core answered Ok without landmarks for some requested detection,
+            or returned a wrong number of landmarks for one image
     """
     assertError(error)
     if landmarksType == FaceLandmarks.Landmarks5:
@@ -93,7 +93,14 @@ def _postProcessingBatch(
     for imageIdx in range(len(preparedBatch)):
         allImageLandmarks = getter(imageIdx)
         detectionIndexes = preparedBatch[imageIdx][2]
-        if allImageLandmarks and len(allImageLandmarks) != len(detectionIndexes):
+        if not allImageLandmarks:
+            raise LunaSDKException(
+                LunaVLError.LandmarksNotEstimated.format(
+                    f"core landmarks estimation answered Ok without landmarks "
+                    f"for {len(detectionIndexes)} requested detections"
+                )
+            )
+        if len(allImageLandmarks) != len(detectionIndexes):
             raise LunaSDKException(
                 LunaVLError.BatchedInternalError.format(
                     f"core landmarks estimation returned {len(allImageLandmarks)} results "
@@ -105,13 +112,7 @@ def _postProcessingBatch(
             landmarks = landmarksClass(estimatedLandmarks)
             resultIdx = detectionIndexes[idx]
             res[resultIdx] = landmarks
-    if batchSize and all(landmarks is None for landmarks in res):
-        raise LunaSDKException(
-            LunaVLError.LandmarksNotEstimated.format(
-                f"core landmarks estimation answered Ok without landmarks for {batchSize} requested detections"
-            )
-        )
-    return res
+    return [landmarks for landmarks in res if landmarks is not None]
 
 
 @overload
@@ -240,7 +241,7 @@ class FaceLandmarksEstimator(BaseEstimator):
         detections: list[FaceDetection],
         landmarksType: Literal[FaceLandmarks.Landmarks5],
         asyncEstimate: Literal[False] = False,
-    ) -> list[Landmarks5 | None]: ...
+    ) -> list[Landmarks5]: ...
 
     @overload
     def estimateBatch(
@@ -248,7 +249,7 @@ class FaceLandmarksEstimator(BaseEstimator):
         detections: list[FaceDetection],
         landmarksType: Literal[FaceLandmarks.Landmarks5],
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[list[Landmarks5 | None]]: ...
+    ) -> AsyncTask[list[Landmarks5]]: ...
 
     @overload
     def estimateBatch(
@@ -256,7 +257,7 @@ class FaceLandmarksEstimator(BaseEstimator):
         detections: list[FaceDetection],
         landmarksType: Literal[FaceLandmarks.Landmarks68],
         asyncEstimate: Literal[False],
-    ) -> list[Landmarks68 | None]: ...
+    ) -> list[Landmarks68]: ...
 
     @overload
     def estimateBatch(
@@ -264,19 +265,14 @@ class FaceLandmarksEstimator(BaseEstimator):
         detections: list[FaceDetection],
         landmarksType: Literal[FaceLandmarks.Landmarks68],
         asyncEstimate: Literal[True],
-    ) -> AsyncTask[list[Landmarks68 | None]]: ...
+    ) -> AsyncTask[list[Landmarks68]]: ...
 
     def estimateBatch(
         self,
         detections: list[FaceDetection],
         landmarksType: Literal[FaceLandmarks.Landmarks5, FaceLandmarks.Landmarks68],
         asyncEstimate: bool = False,
-    ) -> (
-        list[Landmarks5 | None]
-        | list[Landmarks68 | None]
-        | AsyncTask[list[Landmarks68 | None]]
-        | AsyncTask[list[Landmarks5 | None]]
-    ):
+    ) -> list[Landmarks5] | list[Landmarks68] | AsyncTask[list[Landmarks68]] | AsyncTask[list[Landmarks5]]:
         """
         Estimate landmarks of face detections.
 
@@ -286,10 +282,9 @@ class FaceLandmarksEstimator(BaseEstimator):
             asyncEstimate: estimate or run estimation in background
 
         Returns:
-            estimated landmarks per detection, an element is None if the core did not return landmarks for it,
-            an async task if asyncEstimate is True
+            estimated landmarks per detection
         Raises:
-            LunaSDKException: if estimation failed or the core answered Ok without landmarks for all detections
+            LunaSDKException: if the core answered Ok without landmarks for some detection
         """
         preparedBatch = _prepareBatch(detections)
         coreImages = [image[0] for image in preparedBatch]
