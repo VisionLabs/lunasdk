@@ -89,7 +89,7 @@ def _postProcessingBatch(
     else:
         landmarksClass = Landmarks68  # type: ignore
         getter = estimatedBatch.getLandmarks68
-        res = [None for _ in range(batchSize)]
+        res: list[Landmarks68 | None] = [None for _ in range(batchSize)]  # type: ignore[no-redef]
     for imageIdx in range(len(preparedBatch)):
         allImageLandmarks = getter(imageIdx)
         detectionIndexes = preparedBatch[imageIdx][2]
@@ -107,12 +107,11 @@ def _postProcessingBatch(
                     f"for {len(detectionIndexes)} requested detections"
                 )
             )
-
         for idx, estimatedLandmarks in enumerate(allImageLandmarks):
             landmarks = landmarksClass(estimatedLandmarks)
             resultIdx = detectionIndexes[idx]
             res[resultIdx] = landmarks
-    return [landmarks for landmarks in res if landmarks is not None]
+    return res  # type: ignore[return-value]
 
 
 @overload
