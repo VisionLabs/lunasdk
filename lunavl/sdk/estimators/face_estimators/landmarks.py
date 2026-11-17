@@ -1,3 +1,4 @@
+import logging
 from functools import partial
 from typing import Literal, overload
 
@@ -11,6 +12,8 @@ from ...errors.errors import LunaVLError
 from ..base import BaseEstimator
 
 PreparedBatch = list[tuple[CoreImage, list[CoreFaceDetection], list[int]]]
+
+logger = logging.getLogger(__name__)
 
 
 def _prepareBatch(detections: list[FaceDetection]) -> PreparedBatch:
@@ -94,6 +97,10 @@ def _postProcessingBatch(
         allImageLandmarks = getter(imageIdx)
         detectionIndexes = preparedBatch[imageIdx][2]
         if not allImageLandmarks:
+            logger.error(
+                "core landmarks estimation answered Ok without landmarks for %d requested detections",
+                len(detectionIndexes),
+            )
             raise LunaSDKException(
                 LunaVLError.LandmarksNotEstimated.format(
                     f"core landmarks estimation answered Ok without landmarks "
