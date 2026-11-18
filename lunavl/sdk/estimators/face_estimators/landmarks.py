@@ -1,3 +1,4 @@
+import logging
 from functools import partial
 from typing import Literal, overload
 
@@ -10,7 +11,9 @@ from lunavl.sdk.errors.exceptions import LunaSDKException, assertError
 from ...errors.errors import LunaVLError
 from ..base import BaseEstimator
 
-PreparedBatch = list[tuple[CoreImage, CoreFaceDetection, list[int]]]
+PreparedBatch = list[tuple[CoreImage, list[CoreFaceDetection], list[int]]]
+
+logger = logging.getLogger(__name__)
 
 
 def _prepareBatch(detections: list[FaceDetection]) -> PreparedBatch:
@@ -23,13 +26,14 @@ def _prepareBatch(detections: list[FaceDetection]) -> PreparedBatch:
     Returns:
         List of Tuples. Each tuple is image, Core detections on the image, detection index in original detection array.
     """
-    res: dict[int, tuple[CoreImage, CoreFaceDetection, list[int]]] = {}
+    res: dict[int, tuple[CoreImage, list[CoreFaceDetection], list[int]]] = {}
     for idx, detection in enumerate(detections):
-        imageId = id(detection.image)
-        imageDetections = res.get(imageId)
+        coreImage = detection.image.coreImage
         coreDetection: CoreFaceDetection = detection.coreEstimation.detection
-        if not imageDetections:
-            res[imageId] = (detection.image.coreImage, [coreDetection], [idx])
+        imageKey = id(coreImage)
+        imageDetections = res.get(imageKey)
+        if imageDetections is None:
+            res[imageKey] = (coreImage, [coreDetection], [idx])
         else:
             imageDetections[1].append(coreDetection)
             imageDetections[2].append(idx)
@@ -74,26 +78,40 @@ def _postProcessingBatch(
         landmarksType: estimated landmarks type
 
     Returns:
-        list of landmarks
+        list of landmarks, one per requested detection
+
+    Raises:
+        LunaSDKException: if the core answered a wrong number of landmarks for an image
     """
     assertError(error)
     if landmarksType == FaceLandmarks.Landmarks5:
         landmarksClass = Landmarks5
         getter = estimatedBatch.getLandmarks5
-        res: list[Landmarks5] = [None for _ in range(batchSize)]  # type: ignore
+        res: list[Landmarks5 | None] = [None for _ in range(batchSize)]
     else:
         landmarksClass = Landmarks68  # type: ignore
         getter = estimatedBatch.getLandmarks68
-        res: list[Landmarks68] = [None for _ in range(batchSize)]  # type: ignore
+        res: list[Landmarks68 | None] = [None for _ in range(batchSize)]  # type: ignore[no-redef]
     for imageIdx in range(len(preparedBatch)):
         allImageLandmarks = getter(imageIdx)
         detectionIndexes = preparedBatch[imageIdx][2]
-
+        if len(allImageLandmarks) != len(detectionIndexes):
+            logger.error(
+                "core landmarks estimation returned %d results for %d requested detections",
+                len(allImageLandmarks),
+                len(detectionIndexes),
+            )
+            raise LunaSDKException(
+                LunaVLError.BatchedInternalError.format(
+                    f"core landmarks estimation returned {len(allImageLandmarks)} results "
+                    f"for {len(detectionIndexes)} requested detections"
+                )
+            )
         for idx, estimatedLandmarks in enumerate(allImageLandmarks):
             landmarks = landmarksClass(estimatedLandmarks)
             resultIdx = detectionIndexes[idx]
             res[resultIdx] = landmarks
-    return res
+    return res  # type: ignore[return-value]
 
 
 @overload
@@ -178,7 +196,7 @@ class FaceLandmarksEstimator(BaseEstimator):
         asyncEstimate: bool = False,
     ):
         """
-        Estimate mouth state on warp.
+        Estimate landmarks of a face detection.
 
         Args:
             detection: face detection
@@ -186,7 +204,7 @@ class FaceLandmarksEstimator(BaseEstimator):
             asyncEstimate: estimate or run estimation in background
 
         Returns:
-            estimated states if asyncEstimate is False otherwise async task
+            estimated landmarks, an async task if asyncEstimate is True
         Raises:
             LunaSDKException: if estimation failed
         """
@@ -246,15 +264,15 @@ class FaceLandmarksEstimator(BaseEstimator):
         asyncEstimate: bool = False,
     ) -> list[Landmarks5] | list[Landmarks68] | AsyncTask[list[Landmarks68]] | AsyncTask[list[Landmarks5]]:
         """
-        Estimate mouth state on warp.
+        Estimate landmarks of face detections.
 
         Args:
-            detections: face detection
+            detections: face detections
             landmarksType: landmarks type for estimation
             asyncEstimate: estimate or run estimation in background
 
         Returns:
-            estimated states if asyncEstimate is False otherwise async task
+            estimated landmarks per detection
         Raises:
             LunaSDKException: if estimation failed
         """
