@@ -545,11 +545,19 @@ class TrackingResult:
     def __init__(self, coreResult: PyTrackingResult):
         self.coreResult = coreResult
         self._humanTracks: list[HumanTrack] | None = None
+        self._image: VLImage | None = None
 
     @property
     def image(self) -> VLImage:
-        """Get image origin"""
-        return VLImage(self.coreResult.image)
+        """Frame of this tracking, pinned by the worker that produced the result"""
+        if self._image is None:
+            self._image = VLImage(self.coreResult.image)
+        return self._image
+
+    @image.setter
+    def image(self, image: VLImage) -> None:
+        """Pin the result to a given wrapper of the input frame"""
+        self._image = image
 
     @property
     def streamId(self) -> int:
